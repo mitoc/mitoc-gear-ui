@@ -20,10 +20,12 @@ function App() {
         <Route path="/login">
           <LoginPage />
         </Route>
-        {!isLoading && !loggedIn && <Redirect to="/login" />}
-        {!isLoading && loggedIn && <Redirect to="/people" />}
         <Route path="/people">
           <PeoplePage />
+        </Route>
+        <Route exact path="/">
+          {!isLoading && !loggedIn && <Redirect to="/login" />}
+          {!isLoading && loggedIn && <Redirect to="/people" />}
         </Route>
       </Switch>
     </Router>

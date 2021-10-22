@@ -9,8 +9,6 @@ export function LoginForm() {
   const [password, setPassword] = useState<string>("");
   return (
     <form>
-      <span>Not logged in</span>
-      <br />
       <label>
         Email:
         <input
@@ -51,10 +49,3 @@ export function LoginForm() {
     </form>
   );
 }
-
-// async function login() {
-//   return request("/auth/login/", "POST", {
-//     username: "florian.pagnoux@gmail.com",
-//     password: "aadmin",
-//   });
-// }
