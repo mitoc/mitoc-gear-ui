@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import { useAppDispatch } from "../../app/hooks";
-import { logIn } from "./authSlice";
+import { useAppDispatch } from "app/hooks";
+import { logIn } from "features/auth/authSlice";
 
 export function LoginForm() {
   const dispatch = useAppDispatch();
