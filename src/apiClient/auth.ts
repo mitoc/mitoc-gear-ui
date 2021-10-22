@@ -19,7 +19,12 @@ async function logIn(query: LogInQuery): Promise<User | ApiError> {
   return request("/auth/login/", "POST", query);
 }
 
+async function logOut(): Promise<void> {
+  return request("/auth/logout/", "POST");
+}
+
 export const authClient = {
   loggedIn,
   logIn,
+  logOut,
 };

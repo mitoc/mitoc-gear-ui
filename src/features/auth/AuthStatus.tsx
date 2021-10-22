@@ -1,8 +1,10 @@
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
 
+import { logOut } from "./authSlice";
 import { LoginForm } from "./LoginForm";
 
 export function AuthStatus() {
+  const dispatch = useAppDispatch();
   const isLoading = useAppSelector(
     (state) => state.auth.loadingStatus === "loading"
   );
@@ -14,7 +16,9 @@ export function AuthStatus() {
   } else {
     return (
       <span>
-        {user.firstName} {user.lastName}
+        Logged in as {user.firstName} {user.lastName}
+        <br />
+        <button onClick={() => dispatch(logOut())}>Log out</button>
       </span>
     );
   }

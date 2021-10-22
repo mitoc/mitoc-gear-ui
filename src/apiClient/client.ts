@@ -15,7 +15,22 @@ export async function request(path: string, method: string, data?: Data) {
     credentials: "include",
     ...(data != null && method === "POST" && { body: JSON.stringify(data) }),
   });
-  return await response.json();
+  if (!response.ok) {
+    throw Error(await parseResponse(response));
+  }
+  try {
+    return parseResponse(response);
+  } catch (e) {
+    return;
+  }
+}
+
+async function parseResponse(response: Response) {
+  try {
+    return await response.json();
+  } catch (e) {
+    return;
+  }
 }
 
 let _csrfToken: any = null;

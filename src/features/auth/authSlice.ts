@@ -18,6 +18,7 @@ export const checkLoggedIn = createAsyncThunk(
 );
 
 export const logIn = createAsyncThunk("auth/logIn", authClient.logIn);
+export const logOut = createAsyncThunk("auth/logOut", authClient.logOut);
 
 const authSlice = createSlice({
   name: "auth",
@@ -48,7 +49,19 @@ const authSlice = createSlice({
         }
         state.loggedIn = true;
         state.user = action.payload as User;
+      })
+      .addCase(logOut.pending, (state) => {
+        state.loadingStatus = "loading";
+      })
+      .addCase(logOut.rejected, (state, action) => {
         console.log(action.payload);
+        state.loadingStatus = "idle";
+      })
+      .addCase(logOut.fulfilled, (state, action) => {
+        state.loadingStatus = "idle";
+        console.log(action.payload);
+        delete state.user;
+        state.loggedIn = false;
       });
   },
 });
