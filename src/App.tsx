@@ -1,19 +1,18 @@
-import { useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
-import { useAppDispatch } from "./app/hooks";
-import { checkLoggedIn } from "./features/auth/authSlice";
-
+import { useLoadCurrentUser } from "./features/auth";
 import LoginPage from "./pages/LogIn";
 import PeoplePage from "./pages/People";
 
 import "./App.css";
 
 function App() {
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(checkLoggedIn());
-  }, []);
+  const { loggedIn, isLoading } = useLoadCurrentUser();
 
   return (
     <Router>
@@ -21,6 +20,7 @@ function App() {
         <Route path="/login">
           <LoginPage />
         </Route>
+        {!isLoading && !loggedIn && <Redirect to="/login" />}
         <Route path="/people">
           <PeoplePage />
         </Route>

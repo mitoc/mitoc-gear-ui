@@ -1,7 +1,6 @@
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 
 import { logOut } from "./authSlice";
-import { LoginForm } from "./LoginForm";
 
 export function AuthStatus() {
   const dispatch = useAppDispatch();
@@ -12,7 +11,7 @@ export function AuthStatus() {
   if (isLoading) {
     return <span>It's loading!</span>;
   } else if (user == null) {
-    return <LoginForm />;
+    return <div />;
   } else {
     return (
       <span>
