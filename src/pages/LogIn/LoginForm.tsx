@@ -8,44 +8,51 @@ export function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   return (
-    <form>
-      <label>
-        Email:
-        <input
-          type="email"
-          value={email}
-          onChange={(evt) => {
-            setEmail(evt.target.value);
-          }}
-        />
-      </label>
-      <br />
-      <label>
-        Password:
-        <input
-          type="password"
-          value={password}
-          onChange={(evt) => {
-            setPassword(evt.target.value);
-          }}
-        />
-      </label>
-      <br />
-      <button
-        type="submit"
-        onClick={(evt) => {
-          evt.preventDefault();
-          dispatch(
-            logIn({
-              username: email,
-              password,
-            })
-          );
-        }}
-      >
-        Log in
-      </button>
-      <br />
-    </form>
+    <div className="row">
+      <div className="col-sm-6">
+        <form>
+          <label className="form-group w-100 mb-2">
+            Email:
+            <input
+              className="form-control"
+              type="email"
+              value={email}
+              onChange={(evt) => {
+                setEmail(evt.target.value);
+              }}
+            />
+          </label>
+          <br />
+          <label className="form-group w-100 mb-2">
+            Password:
+            <input
+              type="password"
+              className="form-control"
+              value={password}
+              onChange={(evt) => {
+                setPassword(evt.target.value);
+              }}
+            />
+          </label>
+          <br />
+          <button
+            className="btn btn-primary"
+            type="submit"
+            onClick={(evt) => {
+              evt.preventDefault();
+              dispatch(
+                logIn({
+                  username: email,
+                  password,
+                })
+              );
+            }}
+          >
+            Log in
+          </button>
+          <br />
+        </form>
+      </div>
+    </div>
   );
 }
