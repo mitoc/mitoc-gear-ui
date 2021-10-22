@@ -5,3 +5,8 @@ export interface User {
   email: string;
   isDeskworker: boolean;
 }
+
+export interface ApiError {
+  msg: string;
+  err: string;
+}

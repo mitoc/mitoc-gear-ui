@@ -1,5 +1,7 @@
 import { useAppSelector } from "../../app/hooks";
 
+import { LoginForm } from "./LoginForm";
+
 export function AuthStatus() {
   const isLoading = useAppSelector(
     (state) => state.auth.loadingStatus === "loading"
@@ -8,7 +10,7 @@ export function AuthStatus() {
   if (isLoading) {
     return <span>It's loading!</span>;
   } else if (user == null) {
-    return <span>Not logged in</span>;
+    return <LoginForm />;
   } else {
     return (
       <span>

@@ -1,29 +1,23 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { loggedIn } from "../../apiClient/loggedIn";
-
-export interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  isDeskworker: boolean;
-}
+import { authClient, LogInQuery } from "../../apiClient/auth";
+import type { User, ApiError } from "../../apiClient/types";
 
 export interface AuthState {
   loadingStatus: "loading" | "idle";
   loggedIn?: boolean;
   user?: User;
+  error?: string;
 }
 
 const initialState: AuthState = { loadingStatus: "idle" };
 
 export const checkLoggedIn = createAsyncThunk(
   "auth/checkLoggedIn",
-  async () => {
-    return loggedIn();
-  }
+  authClient.loggedIn
 );
+
+export const logIn = createAsyncThunk("auth/logIn", authClient.logIn);
 
 const authSlice = createSlice({
   name: "auth",
@@ -42,6 +36,19 @@ const authSlice = createSlice({
         state.loadingStatus = "idle";
         state.loggedIn = action.payload.loggedIn;
         state.user = action.payload.user;
+      })
+      .addCase(logIn.pending, (state) => {
+        state.loadingStatus = "loading";
+      })
+      .addCase(logIn.fulfilled, (state, action) => {
+        state.loadingStatus = "idle";
+        if ((action.payload as ApiError).err != null) {
+          state.error = (action.payload as ApiError).msg;
+          return;
+        }
+        state.loggedIn = true;
+        state.user = action.payload as User;
+        console.log(action.payload);
       });
   },
 });

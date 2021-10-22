@@ -3,7 +3,7 @@ type Data = { [key: string]: any };
 const API_HOST = "http://127.0.0.1:8000/api/v1";
 
 export async function request(path: string, method: string, data?: Data) {
-  const params = {
+  const response = await fetch(`${API_HOST}${path}`, {
     method: method,
     headers:
       method === "POST"
@@ -13,19 +13,14 @@ export async function request(path: string, method: string, data?: Data) {
           }
         : { "Content-Type": "application/json" },
     credentials: "include",
-  };
-  if (method === "POST") {
-    params.body = JSON.stringify(data);
-  }
-  const response = await fetch(`${API_HOST}${path}`, params);
-  console.log(response);
+    ...(data != null && method === "POST" && { body: JSON.stringify(data) }),
+  });
   return await response.json();
 }
 
 let _csrfToken: any = null;
 
 async function getCsrfToken() {
-  console.log({ _csrfToken });
   if (_csrfToken == null) {
     const response = await fetch(`${API_HOST}/auth/csrf/`, {
       credentials: "include",
