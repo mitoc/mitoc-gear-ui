@@ -14,7 +14,9 @@ export function useLoadCurrentUser() {
 
 export function useCurrentUser() {
   return useAppSelector((state) => ({
-    isLoading: state.auth.loadingStatus === "loading",
+    isLoading:
+      state.auth.loadingStatus === "loading" ||
+      state.auth.loadingStatus === "blank",
     loggedIn: state.auth.loggedIn,
     user: state.auth.user,
   }));

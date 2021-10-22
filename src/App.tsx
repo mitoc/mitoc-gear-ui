@@ -21,6 +21,7 @@ function App() {
           <LoginPage />
         </Route>
         {!isLoading && !loggedIn && <Redirect to="/login" />}
+        {!isLoading && loggedIn && <Redirect to="/people" />}
         <Route path="/people">
           <PeoplePage />
         </Route>

@@ -4,13 +4,13 @@ import { authClient, LogInQuery } from "../../apiClient/auth";
 import type { User, ApiError } from "../../apiClient/types";
 
 export interface AuthState {
-  loadingStatus: "loading" | "idle";
+  loadingStatus: "loading" | "idle" | "blank";
   loggedIn?: boolean;
   user?: User;
   error?: string;
 }
 
-const initialState: AuthState = { loadingStatus: "idle" };
+const initialState: AuthState = { loadingStatus: "blank" };
 
 export const checkLoggedIn = createAsyncThunk(
   "auth/checkLoggedIn",
