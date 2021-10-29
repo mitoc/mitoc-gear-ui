@@ -8,7 +8,7 @@ export default function BaseLayout({ children }: Props) {
   return (
     <>
       <Header />
-      {children}
+      <div className="container main-content">{children}</div>
     </>
   );
 }

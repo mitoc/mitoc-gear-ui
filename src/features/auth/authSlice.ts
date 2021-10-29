@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { authClient, LogInQuery } from "../../apiClient/auth";
-import type { User, ApiError } from "../../apiClient/types";
+import { authClient } from "apiClient/auth";
+import type { User, ApiError } from "apiClient/types";
 
 export interface AuthState {
   loadingStatus: "loading" | "idle" | "blank";

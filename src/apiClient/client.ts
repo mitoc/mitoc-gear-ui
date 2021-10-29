@@ -7,7 +7,7 @@ export async function request(
   method: string,
   data?: Data,
   maxRetry: number = 3
-) {
+): Promise<any> {
   const response = await fetch(`${API_HOST}${path}`, {
     method: method,
     headers:

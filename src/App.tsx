@@ -5,6 +5,8 @@ import {
   Redirect,
 } from "react-router-dom";
 
+import BaseLayout from "components/BaseLayout";
+
 import { useLoadCurrentUser } from "./features/auth";
 import LoginPage from "./pages/LogIn";
 import PeoplePage from "./pages/People";
@@ -16,18 +18,20 @@ function App() {
 
   return (
     <Router>
-      <Switch>
-        <Route path="/login">
-          <LoginPage />
-        </Route>
-        <Route path="/people">
-          <PeoplePage />
-        </Route>
-        <Route exact path="/">
+      <BaseLayout>
+        <Switch>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
           {!isLoading && !loggedIn && <Redirect to="/login" />}
-          {!isLoading && loggedIn && <Redirect to="/people" />}
-        </Route>
-      </Switch>
+          <Route path="/people">
+            <PeoplePage />
+          </Route>
+          <Route exact path="/">
+            {!isLoading && loggedIn && <Redirect to="/people" />}
+          </Route>
+        </Switch>
+      </BaseLayout>
     </Router>
   );
 }
