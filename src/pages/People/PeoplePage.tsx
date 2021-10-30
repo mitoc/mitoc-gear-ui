@@ -22,7 +22,6 @@ export default function PeoplePage() {
       debounce(
         (q: string, page?: number) =>
           peopleClient.getPersonList(q, page).then((data) => {
-            console.log(data);
             setPeople(data.results);
             setNbPage(Math.ceil(data.count / 50));
           }),
@@ -56,22 +55,12 @@ export default function PeoplePage() {
           type="text"
           placeholder="Search"
           onChange={(data) => {
-            setPage(0);
+            setPage(1);
             setQuery(data.target.value);
           }}
         />
       </Form.Group>
-      <Pagination>
-        <Pagination.Prev onClick={() => setPage((p) => p - 1)} />
-        <Pagination.Item onClick={() => setPage(1)}>1</Pagination.Item>
-        <Pagination.Ellipsis />
-        <Pagination.Item active>{page}</Pagination.Item>
-        <Pagination.Ellipsis />
-        <Pagination.Item onClick={() => setPage((p) => nbPage)}>
-          {nbPage}
-        </Pagination.Item>
-        <Pagination.Next onClick={() => setPage((p) => p + 1)} />
-      </Pagination>
+      <TablePagination setPage={setPage} page={page} nbPage={nbPage} />
 
       <DataGrid
         columns={columns}
@@ -83,6 +72,49 @@ export default function PeoplePage() {
         style={{ height: 50 * (people.length + 1) + 2 }}
       />
     </>
+  );
+}
+
+function TablePagination({
+  page,
+  setPage,
+  nbPage,
+}: {
+  page: number;
+  setPage: (p: number) => void;
+  nbPage: number;
+}) {
+  const goToPage = (p: number) => () => setPage(p);
+
+  return (
+    <Pagination>
+      <Pagination.Prev disabled={page == 1} onClick={goToPage(page - 1)} />
+      {page > 1 && <Pagination.Item onClick={goToPage(1)}>1</Pagination.Item>}
+      {page - 2 > 1 && <Pagination.Ellipsis onClick={goToPage(page - 2)} />}
+      {page - 1 > 1 && (
+        <Pagination.Item onClick={goToPage(page - 1)}>
+          {page - 1}
+        </Pagination.Item>
+      )}
+      <Pagination.Item active>{page}</Pagination.Item>
+      {page + 1 < nbPage && (
+        <Pagination.Item onClick={goToPage(page + 1)}>
+          {page + 1}
+        </Pagination.Item>
+      )}
+
+      {page + 2 < nbPage && (
+        <Pagination.Ellipsis onClick={goToPage(page + 2)} />
+      )}
+
+      {page < nbPage && (
+        <Pagination.Item onClick={goToPage(nbPage)}>{nbPage}</Pagination.Item>
+      )}
+      <Pagination.Next
+        disabled={page === nbPage}
+        onClick={goToPage(page + 1)}
+      />
+    </Pagination>
   );
 }
 

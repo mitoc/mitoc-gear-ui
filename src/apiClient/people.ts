@@ -18,7 +18,6 @@ async function getPersonList(
   q?: String,
   page?: number
 ): Promise<ListWrapper<PersonSummary>> {
-  console.log({ q });
   return request("/people/", "GET", {
     ...(q && { q }),
     ...(page && { page }),

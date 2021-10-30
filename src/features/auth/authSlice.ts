@@ -54,12 +54,10 @@ const authSlice = createSlice({
         state.loadingStatus = "loading";
       })
       .addCase(logOut.rejected, (state, action) => {
-        console.log(action.payload);
         state.loadingStatus = "idle";
       })
       .addCase(logOut.fulfilled, (state, action) => {
         state.loadingStatus = "idle";
-        console.log(action.payload);
         delete state.user;
         state.loggedIn = false;
       });
