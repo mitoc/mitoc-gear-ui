@@ -8,7 +8,7 @@ export function useLoadCurrentUser() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(checkLoggedIn());
-  }, []);
+  }, [dispatch]);
   return useCurrentUser();
 }
 

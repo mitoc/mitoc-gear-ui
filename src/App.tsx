@@ -9,7 +9,7 @@ import BaseLayout from "components/BaseLayout";
 
 import { useLoadCurrentUser } from "./features/auth";
 import LoginPage from "./pages/LogIn";
-import PeoplePage from "./pages/People";
+import { PeoplePage, PersonPage } from "./pages/People";
 
 import "./App.css";
 
@@ -24,8 +24,11 @@ function App() {
             <LoginPage />
           </Route>
           {!isLoading && !loggedIn && <Redirect to="/login" />}
-          <Route path="/people">
+          <Route exact path="/people">
             <PeoplePage />
+          </Route>
+          <Route path="/people/:personId">
+            <PersonPage />
           </Route>
           <Route exact path="/">
             {!isLoading && loggedIn && <Redirect to="/people" />}

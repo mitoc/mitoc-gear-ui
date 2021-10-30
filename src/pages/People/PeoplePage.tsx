@@ -11,7 +11,7 @@ type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
   name: string;
 };
 
-export default function PeoplePage() {
+export function PeoplePage() {
   const [people, setPeople] = useState<PersonSummary[] | null>(null);
   const [page, setPage] = useState<number>(1);
   const [nbPage, setNbPage] = useState<number>(1);
@@ -32,7 +32,7 @@ export default function PeoplePage() {
 
   useEffect(() => {
     fetch(query.trim(), page);
-  }, [query, page]);
+  }, [query, page, fetch]);
 
   if (people == null) {
     return null;
@@ -88,7 +88,7 @@ function TablePagination({
 
   return (
     <Pagination>
-      <Pagination.Prev disabled={page == 1} onClick={goToPage(page - 1)} />
+      <Pagination.Prev disabled={page === 1} onClick={goToPage(page - 1)} />
       {page > 1 && <Pagination.Item onClick={goToPage(1)}>1</Pagination.Item>}
       {page - 2 > 1 && <Pagination.Ellipsis onClick={goToPage(page - 2)} />}
       {page - 1 > 1 && (
