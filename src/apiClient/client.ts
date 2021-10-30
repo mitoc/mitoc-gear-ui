@@ -8,7 +8,9 @@ export async function request(
   data?: Data,
   maxRetry: number = 3
 ): Promise<any> {
-  const response = await fetch(`${API_HOST}${path}`, {
+  const queryParams =
+    data != null && method === "GET" ? "?" + getQueryParams(data) : "";
+  const response = await fetch(`${API_HOST}${path}${queryParams}`, {
     method: method,
     headers:
       method === "POST"
@@ -32,6 +34,10 @@ export async function request(
   } catch (e) {
     return;
   }
+}
+
+function getQueryParams(data?: Record<string, any>) {
+  return new URLSearchParams(data);
 }
 
 async function parseResponse(response: Response) {

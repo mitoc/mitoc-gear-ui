@@ -14,8 +14,15 @@ export interface PersonSummary {
   email: string;
 }
 
-async function getPersonList(): Promise<ListWrapper<PersonSummary>> {
-  return request("/people", "GET");
+async function getPersonList(
+  q?: String,
+  page?: number
+): Promise<ListWrapper<PersonSummary>> {
+  console.log({ q });
+  return request("/people/", "GET", {
+    ...(q && { q }),
+    ...(page && { page }),
+  });
 }
 
 export const peopleClient = {
