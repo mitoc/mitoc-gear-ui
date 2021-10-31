@@ -14,7 +14,17 @@ export interface PersonSummary {
   email: string;
 }
 
-export interface Person extends PersonSummary {}
+export interface Expireable {
+  expires: string;
+}
+
+export interface Person extends PersonSummary {
+  affiliation: string;
+  membership?: Expireable;
+  waiver?: Expireable;
+  frequentFlyerCheck?: Expireable;
+  groups: { groupName: string }[];
+}
 
 async function getPersonList(
   q?: String,

@@ -4,14 +4,14 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Badge from "react-bootstrap/Badge";
 
-import { peopleClient, Person } from "apiClient/people";
+import { peopleClient, Person, Expireable } from "apiClient/people";
 
 export function PersonPage() {
   const [person, setPerson] = useState<Person | null>(null);
   const { personId } = useParams<{ personId: string }>();
   useEffect(() => {
     peopleClient.getPerson(personId).then((person) => setPerson(person));
-  }, []);
+  }, [personId]);
   if (person == null) {
     return null;
   }
@@ -33,19 +33,11 @@ export function PersonPage() {
               </Badge>
             ))}
           </div>
-          <ExpireableTile
-            title="Membership"
-            expDate={person.membership.expires}
-            required
-          />
-          <ExpireableTile
-            title="Waiver"
-            expDate={person.waiver.expires}
-            required
-          />
+          <ExpireableTile title="Membership" exp={person.membership} required />
+          <ExpireableTile title="Waiver" exp={person.waiver} required />
           <ExpireableTile
             title="Frequent flyer checks"
-            expDate={person.frequentFlyerCheck.expires}
+            exp={person.frequentFlyerCheck}
           />
         </div>
       </div>
@@ -68,18 +60,36 @@ const ColoredTile = styled.div<{ color?: string }>`
 
 function ExpireableTile({
   title,
-  expDate,
+  exp,
   required,
 }: {
   title: string;
-  expDate: string;
+  exp: Expireable;
   required?: boolean;
 }) {
+  const expDate = exp?.expires;
   const today = new Date().toISOString().split("T")[0];
-  const isExpired = today >= expDate;
+  const isExpired = exp == null || today >= expDate;
   const color =
     isExpired && required ? "bs-danger" : isExpired ? "bs-warning" : "bs-teal";
   const colorTxt = `var(--${color})`;
+
+  const Wrapper = ({ children }: { children: React.ReactNode }) => {
+    return (
+      <ColoredTile className="p-2 mb-2 mt-2" color={colorTxt}>
+        <strong>{title}</strong>: {children}
+      </ColoredTile>
+    );
+  };
+
+  if (exp == null) {
+    return (
+      <Wrapper>
+        <span style={{ color: colorTxt, fontWeight: "bold" }}>No record</span>
+      </Wrapper>
+    );
+  }
+
   const prefix = isExpired ? "Expired since" : "Expires on";
   const fmtDate = (date: string) =>
     new Date(date).toLocaleDateString("en-US", {
@@ -89,11 +99,11 @@ function ExpireableTile({
     });
 
   return (
-    <ColoredTile className="p-2 mb-2 mt-2" color={colorTxt}>
-      <strong>{title}</strong>: {prefix}{" "}
+    <Wrapper>
+      {prefix}{" "}
       <span style={{ color: colorTxt, fontWeight: "bold" }}>
         {fmtDate(expDate)}
       </span>
-    </ColoredTile>
+    </Wrapper>
   );
 }
