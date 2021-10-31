@@ -14,6 +14,8 @@ export interface PersonSummary {
   email: string;
 }
 
+export interface Person extends PersonSummary {}
+
 async function getPersonList(
   q?: String,
   page?: number
@@ -24,6 +26,11 @@ async function getPersonList(
   });
 }
 
+async function getPerson(id: string): Promise<Person> {
+  return request(`/people/${id}`, "GET");
+}
+
 export const peopleClient = {
   getPersonList,
+  getPerson,
 };
