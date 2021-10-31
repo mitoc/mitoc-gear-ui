@@ -24,6 +24,11 @@ export interface Person extends PersonSummary {
   waiver?: Expireable;
   frequentFlyerCheck?: Expireable;
   groups: { groupName: string }[];
+  notes: {
+    note: string;
+    dateInserted: string;
+    author: { firstName: string; lastName: string };
+  }[];
 }
 
 async function getPersonList(
