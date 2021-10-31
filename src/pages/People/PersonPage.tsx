@@ -6,6 +6,7 @@ import { peopleClient, Person } from "apiClient/people";
 
 import { PersonProfile } from "./PersonProfile";
 import { Notes } from "./Notes";
+import { PersonRentals } from "./PersonRentals";
 
 export function PersonPage() {
   const [person, setPerson] = useState<Person | null>(null);
@@ -23,10 +24,7 @@ export function PersonPage() {
         <Notes notes={person.notes} />
       </div>
       <div className="col-7 p-2">
-        <div className="border rounded-2 p-2 bg-light">
-          <h3>Gear out</h3>
-          {JSON.stringify(person)}
-        </div>
+        <PersonRentals rentals={person.rentals} />
       </div>
     </div>
   );

@@ -29,6 +29,14 @@ export interface Person extends PersonSummary {
     dateInserted: string;
     author: { firstName: string; lastName: string };
   }[];
+  rentals: {
+    id: string;
+    checkedout: string;
+    type: {
+      typeName: string;
+      rentalAmount: string;
+    };
+  }[];
 }
 
 async function getPersonList(
