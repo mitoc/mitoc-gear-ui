@@ -1,11 +1,13 @@
 import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import DataGrid, { Row, RowRendererProps } from "react-data-grid";
+
 import Form from "react-bootstrap/Form";
 import Pagination from "react-bootstrap/Pagination";
 import { debounce } from "lodash";
+import styled from "styled-components";
 
 import { peopleClient, PersonSummary } from "apiClient/people";
+import { DataGrid } from "components/DataGrid";
 
 type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
   name: string;
@@ -43,9 +45,10 @@ export function PeoplePage() {
     ...other,
   }));
 
-  const columns = [
-    { key: "name", name: "Name" },
-    { key: "email", name: "Email" },
+  const myColumns = [
+    { key: "name", header: "Name" },
+    { key: "email", header: "Email" },
+    { key: "rentals", header: "Rentals", renderer: RentalCell },
   ];
 
   return (
@@ -62,15 +65,7 @@ export function PeoplePage() {
       </Form.Group>
       <TablePagination setPage={setPage} page={page} nbPage={nbPage} />
 
-      <DataGrid
-        columns={columns}
-        rows={peopleData}
-        rowRenderer={LinkRow}
-        className="fill-grid"
-        enableVirtualization={false}
-        rowHeight={50}
-        style={{ height: 50 * (people.length + 1) + 2 }}
-      />
+      <DataGrid columns={myColumns} data={peopleData} rowWrapper={LinkRow} />
     </>
   );
 }
@@ -118,13 +113,37 @@ function TablePagination({
   );
 }
 
-function LinkRow(props: RowRendererProps<TablePerson>) {
-  const { row } = props;
-  const { id } = row;
+function LinkRow({
+  item: person,
+  children,
+}: {
+  item: TablePerson;
+  children: React.ReactNode;
+}) {
+  const { id } = person;
   const href = `/people/${id}`;
+  return <Link to={href}>{children}</Link>;
+}
+
+function RentalCell({ item: person }: { item: TablePerson }) {
   return (
-    <Link to={href}>
-      <Row {...props} />
-    </Link>
+    <List>
+      {person.rentals.map(({ id, type }) => (
+        <li key={id}>
+          {id} — {type.typeName}
+        </li>
+      ))}
+    </List>
   );
 }
+
+const List = styled.ul`
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+
+  li {
+    line-height: unset;
+  }
+`;

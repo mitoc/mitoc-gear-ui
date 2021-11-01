@@ -12,6 +12,7 @@ export interface PersonSummary {
   firstName: string;
   lastName: string;
   email: string;
+  rentals: Rental[];
 }
 
 export interface Expireable {
@@ -29,15 +30,17 @@ export interface Person extends PersonSummary {
     dateInserted: string;
     author: { firstName: string; lastName: string };
   }[];
-  rentals: {
-    id: string;
-    checkedout: string;
-    type: {
-      typeName: string;
-      rentalAmount: string;
-    };
-  }[];
+
   mitocCredit: string;
+}
+
+export interface Rental {
+  id: string;
+  checkedout: string;
+  type: {
+    typeName: string;
+    rentalAmount: string;
+  };
 }
 
 async function getPersonList(
