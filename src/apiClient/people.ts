@@ -37,6 +37,8 @@ export interface Person extends PersonSummary {
 export interface Rental {
   id: string;
   checkedout: string;
+  totalAmount: number;
+  weeksOut: number;
   type: {
     typeName: string;
     rentalAmount: string;

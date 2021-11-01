@@ -15,7 +15,7 @@ export function PersonRentals({ rentals }: Props) {
       <h3>Gear out</h3>
       <Table>
         <tbody>
-          {rentals.map(({ id, type, checkedout }) => (
+          {rentals.map(({ id, type, checkedout, weeksOut, totalAmount }) => (
             <tr>
               <td>
                 <Link to={`/gear/${id}`}>{id}</Link>
@@ -27,9 +27,9 @@ export function PersonRentals({ rentals }: Props) {
               <td>
                 Checked out on {formatDate(checkedout)}
                 <br />
-                <span>Weekends out: 85</span>
+                <span>Weekends out: {weeksOut}</span>
                 <br />
-                <span>Total amount: $45</span>
+                <span>Total amount: {totalAmount}</span>
               </td>
               <td className="align-middle">
                 <Button
