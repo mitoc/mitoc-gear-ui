@@ -31,6 +31,9 @@ export function PersonProfile({ person }: Props) {
         title="Frequent flyer checks"
         exp={person.frequentFlyerCheck}
       />
+      <div>
+        <strong>Mitoc credit:</strong> ${person.mitocCredit}
+      </div>
     </div>
   );
 }

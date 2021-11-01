@@ -37,6 +37,7 @@ export interface Person extends PersonSummary {
       rentalAmount: string;
     };
   }[];
+  mitocCredit: string;
 }
 
 async function getPersonList(
