@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 
+import { useCurrentUser, logOut } from "features/auth";
+import { useAppDispatch } from "app/hooks";
+
 export function Header() {
+  const { user } = useCurrentUser();
+  const dispatch = useAppDispatch();
   return (
     <Navbar bg="dark" className="navbar-dark navbar-fixed-top mb-4">
       <Container>
@@ -21,6 +27,18 @@ export function Header() {
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
+        {user != null && (
+          <Nav className="justify-content-end">
+            <NavDropdown
+              title={`${user.firstName} ${user.lastName[0]}.`}
+              id="nav-profile-dropdown"
+            >
+              <NavDropdown.Item onClick={() => dispatch(logOut())}>
+                Log out
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        )}
       </Container>
     </Navbar>
   );
