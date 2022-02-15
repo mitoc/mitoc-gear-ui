@@ -1,3 +1,10 @@
+export interface ListWrapper<T> {
+  count: number;
+  previous: string | null;
+  next: string | null;
+  results: T[];
+}
+
 export interface User {
   id: number;
   firstName: string;

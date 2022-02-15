@@ -1,11 +1,5 @@
 import { request } from "./client";
-
-export interface ListWrapper<T> {
-  count: number;
-  previous: string | null;
-  next: string | null;
-  results: T[];
-}
+import { ListWrapper } from "./types";
 
 export interface PersonSummary {
   id: number;

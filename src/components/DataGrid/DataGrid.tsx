@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { isPlainObject, isArray } from "lodash";
+import { isPlainObject, isArray, get } from "lodash";
 
 interface Item {
   [key: string]: any;
@@ -89,7 +89,7 @@ function renderValue<T extends Item>(col: Column<T>, item: T) {
     const Renderer = col.renderer;
     return <Renderer item={item} />;
   }
-  const value = item[col.key];
+  const value = get(item, col.key);
   if (isPlainObject(value) || isArray(value)) {
     return JSON.stringify(value);
   }
@@ -119,7 +119,7 @@ const DataGridWrapper = styled.div<{ colCount: number }>`
     border-right: 1px solid #ddd;
   }
 
-  a {
+  > a {
     color: unset;
     text-decoration: none;
   }
