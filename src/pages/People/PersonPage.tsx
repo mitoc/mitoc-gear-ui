@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { peopleClient, Person } from "apiClient/people";
+import { Notes } from "components/Notes";
 
 import { PersonProfile } from "./PersonProfile";
-import { Notes } from "./Notes";
 import { PersonRentals } from "./PersonRentals";
 
 export function PersonPage() {

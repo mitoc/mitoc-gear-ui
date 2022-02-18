@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { getGearItem, GearSummary } from "apiClient/gear";
+import { getGearItem, GearItem } from "apiClient/gear";
+import { Notes } from "components/Notes";
 
 import { GearInfoPanel } from "./GearInfoPanel";
 
 export function GearItemPage() {
   const { gearId } = useParams<{ gearId: string }>();
-  const [gearItem, setGearItem] = useState<GearSummary | null>(null);
+  const [gearItem, setGearItem] = useState<GearItem | null>(null);
   useEffect(() => {
-    getGearItem(gearId).then((person) => setGearItem(person));
+    getGearItem(gearId).then((item) => setGearItem(item));
   }, [gearId]);
   if (gearItem == null) {
     return null;
@@ -19,7 +20,7 @@ export function GearItemPage() {
       <div className="col-5 p-2">
         <GearInfoPanel gearItem={gearItem} />
         {/* <PersonProfile person={person} /> */}
-        {/* <Notes notes={person.notes} /> */}
+        <Notes notes={gearItem.notes} />
       </div>
       <div className="col-7 p-2">
         {/* <PersonRentals rentals={person.rentals} /> */}

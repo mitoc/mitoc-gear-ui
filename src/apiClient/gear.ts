@@ -1,6 +1,6 @@
 import { request } from "./client";
 import { PersonSummary } from "./people";
-import { ListWrapper } from "./types";
+import { ListWrapper, Note } from "./types";
 
 export interface GearSummary {
   id: string;
@@ -20,6 +20,10 @@ export interface GearSummary {
   };
 }
 
+export interface GearItem extends GearSummary {
+  notes: Note[];
+}
+
 async function getGearList(
   q?: String,
   page?: number,
@@ -32,7 +36,7 @@ async function getGearList(
   });
 }
 
-async function getGearItem(id: string): Promise<GearSummary> {
+async function getGearItem(id: string): Promise<GearItem> {
   return request(`/gear/${id}`, "GET");
 }
 

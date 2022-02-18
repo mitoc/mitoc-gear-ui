@@ -1,5 +1,5 @@
 import { request } from "./client";
-import { ListWrapper } from "./types";
+import { ListWrapper, Note } from "./types";
 
 export interface PersonSummary {
   id: number;
@@ -19,11 +19,7 @@ export interface Person extends PersonSummary {
   waiver?: Expireable;
   frequentFlyerCheck?: Expireable;
   groups: { groupName: string }[];
-  notes: {
-    note: string;
-    dateInserted: string;
-    author: { firstName: string; lastName: string };
-  }[];
+  notes: Note[];
 
   mitocCredit: string;
 }

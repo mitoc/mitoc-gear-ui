@@ -17,3 +17,9 @@ export interface ApiError {
   msg: string;
   err: string;
 }
+
+export interface Note {
+  note: string;
+  dateInserted: string;
+  author: { firstName: string; lastName: string };
+}
