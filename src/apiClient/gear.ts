@@ -19,11 +19,13 @@ export interface GearSummary {
 
 async function getGearList(
   q?: String,
-  page?: number
+  page?: number,
+  includeRetired?: boolean
 ): Promise<ListWrapper<GearSummary>> {
   return request("/gear/", "GET", {
     ...(q && { q }),
     ...(page && { page }),
+    ...(!includeRetired && { retired: false }),
   });
 }
 
