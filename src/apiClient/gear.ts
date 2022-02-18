@@ -9,12 +9,15 @@ export interface GearSummary {
   checkedOutTo: PersonSummary | null;
   dailyFee: number;
   depositAmount: number;
-  description: string;
+  description?: string;
   missing: string;
   restricted: boolean;
   retired: string;
-  size: string;
-  specification: string;
+  size?: string;
+  specification?: string;
+  type: {
+    typeName: string;
+  };
 }
 
 async function getGearList(

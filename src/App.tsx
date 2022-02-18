@@ -10,7 +10,7 @@ import BaseLayout from "components/BaseLayout";
 import { useLoadCurrentUser } from "./features/auth";
 import LoginPage from "./pages/LogIn";
 import { PeoplePage, PersonPage } from "./pages/People";
-import { AllGearPage } from "./pages/Gear";
+import { AllGearPage, GearItemPage } from "./pages/Gear";
 
 import "./App.css";
 
@@ -33,6 +33,9 @@ function App() {
           </Route>
           <Route exact path="/gear">
             <AllGearPage />
+          </Route>
+          <Route path="/gear/:gearId">
+            <GearItemPage />
           </Route>
           <Route exact path="/">
             {!isLoading && loggedIn && <Redirect to="/people" />}
