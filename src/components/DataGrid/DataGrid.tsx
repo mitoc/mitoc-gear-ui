@@ -10,6 +10,7 @@ type Column<T extends Item> = {
   key: string;
   header: string;
   renderer?: React.ComponentType<{ item: T }>;
+  className?: string;
 };
 
 type Props<T extends Item> = {
@@ -66,15 +67,18 @@ function Row<T>({
 }) {
   const row = (
     <div role="row" aria-rowindex={1 + 1 + idx}>
-      {columns.map((col, colIdx) => (
-        <div
-          className="p-2 d-flex align-items-center"
-          role="gridcell"
-          aria-colindex={1 + colIdx}
-        >
-          {renderValue(col, item)}
-        </div>
-      ))}
+      {columns.map((col, colIdx) => {
+        const { className } = col;
+        return (
+          <div
+            className={className ?? "p-2 d-flex align-items-center"}
+            role="gridcell"
+            aria-colindex={1 + colIdx}
+          >
+            {renderValue(col, item)}
+          </div>
+        );
+      })}
     </div>
   );
   const Wrapper = rowWrapper;
