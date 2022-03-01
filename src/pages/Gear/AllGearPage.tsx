@@ -8,6 +8,8 @@ import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
 import { formatDate } from "lib/fmtDate";
 
+import { GearStatus } from "./GearStatus";
+
 export function AllGearPage() {
   const [gearList, setGearList] = useState<GearSummary[] | null>(null);
   const [page, setPage] = useState<number>(1);
@@ -39,7 +41,7 @@ export function AllGearPage() {
     { key: "id", header: "Serial Number" },
     { key: "type.typeName", header: "Type" },
     { key: "description", header: "Description", renderer: DescriptionCell },
-    { key: "renter", header: "Checked out to", renderer: RenterCell },
+    { key: "status", header: "Status", renderer: StatusCell },
   ];
 
   return (
@@ -93,20 +95,6 @@ function DescriptionCell({ item: gearItem }: { item: GearSummary }) {
   );
 }
 
-function RenterCell({ item: gearItem }: { item: GearSummary }) {
-  if (gearItem.checkedOutTo == null) {
-    return null;
-  }
-  const renter = gearItem.checkedOutTo;
-  const rental = renter.rentals.find((r) => r.id === gearItem.id)!;
-  return (
-    <div>
-      <Link to={"/people/" + renter.id}>
-        <strong>
-          {renter.firstName} {renter.lastName}
-        </strong>
-      </Link>{" "}
-      {rental.weeksOut} weeks ago ({formatDate(rental.checkedout)})
-    </div>
-  );
+function StatusCell({ item: gearItem }: { item: GearSummary }) {
+  return <GearStatus gearItem={gearItem} />;
 }

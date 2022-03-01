@@ -19,12 +19,9 @@ export function GearItemPage() {
     <div className="row">
       <div className="col-5 p-2">
         <GearInfoPanel gearItem={gearItem} />
-        {/* <PersonProfile person={person} /> */}
         <Notes notes={gearItem.notes} />
       </div>
-      <div className="col-7 p-2">
-        {/* <PersonRentals rentals={person.rentals} /> */}
-      </div>
+      <div className="col-7 p-2"></div>
     </div>
   );
 }
