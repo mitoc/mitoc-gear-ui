@@ -1,17 +1,36 @@
+import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
 
-import type { GearRental } from "apiClient/gear";
 import { formatDate } from "lib/fmtDate";
+import { GearRental, getGearRentalHistory } from "apiClient/gear";
+import { TablePagination } from "components/TablePagination";
 
 type Props = {
-  rentals: GearRental[] | null;
+  gearId: string;
 };
 
-export function GearRentalsHistory({ rentals }: Props) {
+export function GearRentalsHistory({ gearId }: Props) {
+  const [rentals, setRentals] = useState<GearRental[] | null>(null);
+  const [nbPages, setNbPages] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
+
+  useEffect(() => {
+    getGearRentalHistory(gearId, page).then((rentalsList) => {
+      setRentals(rentalsList.results);
+      setNbPages(Math.ceil(rentalsList.count / 50));
+    });
+  }, [gearId, page]);
+
   return (
     <div className="border rounded-2 p-2 bg-light">
-      <h3>Rental History</h3>
+      <div className="d-flex justify-content-between">
+        <h3>Rental History</h3>
+        {nbPages > 1 && (
+          <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+        )}
+      </div>
+
       {rentals && (
         <Table>
           <thead>
@@ -24,7 +43,7 @@ export function GearRentalsHistory({ rentals }: Props) {
             {rentals.map(({ person, checkedout, returned, weeksOut }) => (
               <tr>
                 <td>
-                  <Link to={`/person/${person.id}`}>
+                  <Link to={`/people/${person.id}`}>
                     {person.firstName} {person.lastName}
                   </Link>
                 </td>

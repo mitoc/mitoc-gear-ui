@@ -7,10 +7,8 @@ import styled from "styled-components";
 import { GearSummary, getGearList } from "apiClient/gear";
 import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
-import { formatDate } from "lib/fmtDate";
 
 import { GearStatus } from "./GearStatus";
-import { iteratorSymbol } from "immer/dist/internal";
 
 export function AllGearPage() {
   const [gearList, setGearList] = useState<GearSummary[] | null>(null);
