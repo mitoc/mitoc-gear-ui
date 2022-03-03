@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { getGearItem, GearItem } from "apiClient/gear";
+import {
+  getGearItem,
+  GearItem,
+  GearRental,
+  getGearRentalHistory,
+} from "apiClient/gear";
 import { Notes } from "components/Notes";
 
 import { GearInfoPanel } from "./GearInfoPanel";
+import { GearRentalsHistory } from "./GearRentalsHistory";
 
 export function GearItemPage() {
   const { gearId } = useParams<{ gearId: string }>();
   const [gearItem, setGearItem] = useState<GearItem | null>(null);
+  const [rentals, setRentals] = useState<GearRental[] | null>(null);
   useEffect(() => {
     getGearItem(gearId).then((item) => setGearItem(item));
+    getGearRentalHistory(gearId).then((rentalsList) =>
+      setRentals(rentalsList.results)
+    );
   }, [gearId]);
   if (gearItem == null) {
     return null;
@@ -21,7 +31,9 @@ export function GearItemPage() {
         <GearInfoPanel gearItem={gearItem} />
         <Notes notes={gearItem.notes} />
       </div>
-      <div className="col-7 p-2"></div>
+      <div className="col-7 p-2">
+        <GearRentalsHistory rentals={rentals} />
+      </div>
     </div>
   );
 }

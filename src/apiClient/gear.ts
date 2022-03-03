@@ -24,6 +24,17 @@ export interface GearItem extends GearSummary {
   notes: Note[];
 }
 
+export interface GearRental {
+  person: {
+    id: number;
+    firstName: string;
+    lastName: string;
+  };
+  checkedout: string;
+  returned: string;
+  weeksOut: number;
+}
+
 async function getGearList(
   q?: String,
   page?: number,
@@ -40,4 +51,11 @@ async function getGearItem(id: string): Promise<GearItem> {
   return request(`/gear/${id}`, "GET");
 }
 
-export { getGearList, getGearItem };
+async function getGearRentalHistory(
+  id: string,
+  page?: number
+): Promise<ListWrapper<GearRental>> {
+  return request(`/gear/${id}/rentals/`, "GET", { ...(page && { page }) });
+}
+
+export { getGearList, getGearItem, getGearRentalHistory };
