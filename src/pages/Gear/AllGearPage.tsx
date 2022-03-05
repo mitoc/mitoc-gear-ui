@@ -1,37 +1,20 @@
-import { useEffect, useState, useMemo } from "react";
-import { debounce } from "lodash";
+import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import { GearSummary, getGearList } from "apiClient/gear";
+import { GearSummary } from "apiClient/gear";
 import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
+import { useGearList } from "hooks/useGearList";
 
 import { GearStatus } from "./GearStatus";
 
 export function AllGearPage() {
-  const [gearList, setGearList] = useState<GearSummary[] | null>(null);
   const [page, setPage] = useState<number>(1);
-  const [nbPage, setNbPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
 
-  const fetch = useMemo(
-    () =>
-      debounce(
-        (q: string, page?: number) =>
-          getGearList(q, page).then((data) => {
-            setGearList(data.results);
-            setNbPage(Math.ceil(data.count / 50));
-          }),
-        300
-      ),
-    [setGearList]
-  );
-
-  useEffect(() => {
-    fetch(query.trim(), page);
-  }, [query, page, fetch]);
+  const { gearList, nbPage } = useGearList({ query, page });
 
   if (gearList == null) {
     return null;
