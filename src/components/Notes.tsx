@@ -7,7 +7,7 @@ type Props = {
 
 export function Notes({ notes }: Props) {
   return (
-    <div className="border rounded-2 p-2 bg-light">
+    <div className="border rounded-2 p-2 mb-3 bg-light">
       <h4>Notes</h4>
       {notes.map((note) => {
         return (

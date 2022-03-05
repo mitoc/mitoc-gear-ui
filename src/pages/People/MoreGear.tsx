@@ -4,10 +4,14 @@ import styled from "styled-components";
 
 import { useGearList } from "hooks/useGearList";
 import { TablePagination } from "components/TablePagination";
+import { GearSummary } from "apiClient/gear";
 
-type Props = {};
+type Props = {
+  onAddGear: (item: GearSummary) => void;
+  gearToCheckout: GearSummary[];
+};
 
-export function MoreGear() {
+export function MoreGear({ onAddGear, gearToCheckout }: Props) {
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
@@ -49,59 +53,65 @@ export function MoreGear() {
             </tr>
           </thead>
           <tbody>
-            {gearList.map(
-              ({
-                id,
-                type,
-                depositAmount,
-                dailyFee,
-                restricted,
-                specification,
-                available,
-                checkedOutTo,
-                missing,
-                broken,
-                retired,
-              }) => (
-                <tr>
-                  <td className="text-center">
-                    {available ? (
-                      <AddButton className="btn btn-outline-primary w-100 h-100">
-                        Add
-                      </AddButton>
-                    ) : (
-                      <strong className="text-danger">
-                        {checkedOutTo
-                          ? "Checked out"
-                          : missing
-                          ? "Missing"
-                          : broken
-                          ? "Broken"
-                          : retired
-                          ? "Retired"
-                          : ""}
-                      </strong>
-                    )}
-                  </td>
-                  <td className="mw-40">
-                    {type.typeName} (<Link to={`/gear/${id}`}>{id}</Link>)
-                  </td>
-                  <td>
-                    <>
-                      {restricted && (
-                        <>
-                          RESTRICTED
-                          <br />
-                        </>
+            {gearList
+              .filter((item) => !gearToCheckout.some((g) => g.id === item.id))
+              .map((gearItem) => {
+                const {
+                  id,
+                  type,
+                  depositAmount,
+                  dailyFee,
+                  restricted,
+                  specification,
+                  available,
+                  checkedOutTo,
+                  missing,
+                  broken,
+                  retired,
+                } = gearItem;
+                return (
+                  <tr>
+                    <td className="text-center">
+                      {available ? (
+                        <AddButton
+                          className="btn btn-outline-primary w-100 h-100"
+                          onClick={() => onAddGear(gearItem)}
+                        >
+                          Add
+                        </AddButton>
+                      ) : (
+                        <strong className="text-danger">
+                          {checkedOutTo
+                            ? "Checked out"
+                            : missing
+                            ? "Missing"
+                            : broken
+                            ? "Broken"
+                            : retired
+                            ? "Retired"
+                            : ""}
+                        </strong>
                       )}
-                      {specification}
-                    </>
-                  </td>
-                  <td>{depositAmount}</td>
-                  <td>{dailyFee}</td>
-                </tr>
-              )
-            )}
+                    </td>
+                    <td className="mw-40">
+                      {type.typeName} (<Link to={`/gear/${id}`}>{id}</Link>)
+                    </td>
+                    <td>
+                      <>
+                        {restricted && (
+                          <>
+                            RESTRICTED
+                            <br />
+                          </>
+                        )}
+                        {specification}
+                      </>
+                    </td>
+                    <td>{depositAmount}</td>
+                    <td>{dailyFee}</td>
+                  </tr>
+                );
+              })}
           </tbody>
         </Table>
       )}
