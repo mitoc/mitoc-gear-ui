@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import { debounce } from "lodash";
 import styled from "styled-components";
 
-import { peopleClient, PersonSummary } from "apiClient/people";
+import { getPersonList, PersonSummary } from "apiClient/people";
 import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
 
@@ -23,7 +23,7 @@ export function PeoplePage() {
     () =>
       debounce(
         (q: string, page?: number) =>
-          peopleClient.getPersonList(q, page).then((data) => {
+          getPersonList(q, page).then((data) => {
             setPeople(data.results);
             setNbPage(Math.ceil(data.count / 50));
           }),

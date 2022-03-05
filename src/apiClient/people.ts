@@ -27,6 +27,7 @@ export interface Person extends PersonSummary {
 export interface Rental {
   id: string;
   checkedout: string;
+  returned?: string;
   totalAmount: number;
   weeksOut: number;
   type: {
@@ -49,7 +50,11 @@ async function getPerson(id: string): Promise<Person> {
   return request(`/people/${id}`, "GET");
 }
 
-export const peopleClient = {
-  getPersonList,
-  getPerson,
-};
+async function getPersonRentalHistory(
+  id: string,
+  page?: number
+): Promise<ListWrapper<Rental>> {
+  return request(`/people/${id}/rentals/`, "GET", { ...(page && { page }) });
+}
+
+export { getPersonList, getPerson, getPersonRentalHistory };

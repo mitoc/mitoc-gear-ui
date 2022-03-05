@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { peopleClient, Person } from "apiClient/people";
+import { getPerson, Person } from "apiClient/people";
 import { Notes } from "components/Notes";
 
 import { PersonProfile } from "./PersonProfile";
@@ -15,7 +15,7 @@ export function PersonPage() {
   const [tab, setTab] = useState<PersonPageTabs>(PersonPageTabs.gearOut);
   const { personId } = useParams<{ personId: string }>();
   useEffect(() => {
-    peopleClient.getPerson(personId).then((person) => setPerson(person));
+    getPerson(personId).then((person) => setPerson(person));
   }, [personId]);
   if (person == null) {
     return null;
@@ -32,7 +32,9 @@ export function PersonPage() {
           <PersonRentals rentals={person.rentals} />
         )}
         {tab === PersonPageTabs.moreGear && <MoreGear />}
-        {tab === PersonPageTabs.rentalHistory && <PersonRentalsHistory />}
+        {tab === PersonPageTabs.rentalHistory && (
+          <PersonRentalsHistory personId={personId} />
+        )}
       </div>
     </div>
   );
