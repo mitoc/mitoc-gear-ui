@@ -11,7 +11,11 @@ export function MoreGear() {
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
-  const { gearList, nbPage } = useGearList({ query, page });
+  const { gearList, nbPage } = useGearList({
+    query,
+    page,
+    runOnEmptyQuery: false,
+  });
 
   return (
     <div className="border rounded-2 p-2 bg-light">

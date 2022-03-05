@@ -1,4 +1,4 @@
-import { debounce } from "lodash";
+import { debounce, isEmpty } from "lodash";
 import { useMemo, useEffect, useState } from "react";
 
 import { GearSummary, getGearList } from "apiClient/gear";
@@ -6,9 +6,10 @@ import { GearSummary, getGearList } from "apiClient/gear";
 type Args = {
   query: string;
   page?: number;
+  runOnEmptyQuery?: boolean;
 };
 
-export function useGearList({ query, page }: Args) {
+export function useGearList({ query, page, runOnEmptyQuery = true }: Args) {
   const [gearList, setGearList] = useState<GearSummary[] | null>(null);
   const [nbPage, setNbPage] = useState<number>(1);
   const fetch = useMemo(
@@ -25,7 +26,9 @@ export function useGearList({ query, page }: Args) {
   );
 
   useEffect(() => {
-    fetch(query.trim(), page);
+    if (!isEmpty(query) || runOnEmptyQuery) {
+      fetch(query.trim(), page);
+    }
   }, [query, page, fetch]);
 
   return { nbPage, gearList };
