@@ -57,4 +57,8 @@ async function getPersonRentalHistory(
   return request(`/people/${id}/rentals/`, "GET", { ...(page && { page }) });
 }
 
-export { getPersonList, getPerson, getPersonRentalHistory };
+async function checkoutGear(personID: number, gearIDs: string[]) {
+  return request(`/people/${personID}/rentals/`, "POST", { gear_ids: gearIDs });
+}
+
+export { getPersonList, getPerson, getPersonRentalHistory, checkoutGear };
