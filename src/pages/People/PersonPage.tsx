@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { isEmpty } from "lodash";
 
-import { getPerson, Person } from "apiClient/people";
+import { getPerson, Person, Rental } from "apiClient/people";
 import { GearSummary } from "apiClient/gear";
 import { Notes } from "components/Notes";
 
@@ -12,25 +12,38 @@ import { MoreGear } from "./MoreGear";
 import { PersonTabsSelector, PersonPageTabs } from "./PersonTabs";
 import { PersonRentalsHistory } from "./PersonRentalsHistory";
 import { CheckoutStaging } from "./CheckoutStaging";
+import { ReturnStaging } from "./ReturnStaging";
 
 export function PersonPage() {
   const [tab, setTab] = useState<PersonPageTabs>(PersonPageTabs.gearOut);
   const { personId } = useParams<{ personId: string }>();
-  const { person, refresh } = usePerson(personId);
-  const [gearToCheckout, setGearToCheckout] = useState<GearSummary[]>([]);
+  const { person, refresh: refreshPerson } = usePerson(personId);
+  const {
+    items: gearToCheckout,
+    add: addToCheckout,
+    clear: clearCheckout,
+    remove: removeFromCheckout,
+  } = useBasket<GearSummary>();
+  const {
+    items: rentalsToReturn,
+    add: addToReturn,
+    clear: clearReturn,
+    remove: removeFromReturn,
+  } = useBasket<Rental>();
+
   if (person == null) {
     return null;
   }
-  const onAddGear = (item: GearSummary) =>
-    setGearToCheckout((gear) => [...gear, item]);
-
-  const onRemoveGear = (id: string) =>
-    setGearToCheckout((gear) => gear.filter((i) => i.id !== id));
 
   const onCheckout = () => {
-    setGearToCheckout([]);
-    refresh();
+    clearCheckout();
+    refreshPerson();
     setTab(PersonPageTabs.gearOut);
+  };
+
+  const onReturn = () => {
+    clearReturn();
+    refreshPerson();
   };
 
   return (
@@ -38,22 +51,34 @@ export function PersonPage() {
       <div className="col-5 p-2">
         <PersonProfile person={person} />
         <Notes notes={person.notes} />
-        {tab === PersonPageTabs.moreGear && !isEmpty(gearToCheckout) && (
+        {!isEmpty(gearToCheckout) && (
           <CheckoutStaging
             person={person}
             gearToCheckout={gearToCheckout}
-            onRemove={onRemoveGear}
-            onClear={onCheckout}
+            onRemove={removeFromCheckout}
+            onCheckout={onCheckout}
+          />
+        )}
+        {!isEmpty(rentalsToReturn) && (
+          <ReturnStaging
+            person={person}
+            rentalsToReturn={rentalsToReturn}
+            onRemove={removeFromReturn}
+            onReturn={onReturn}
           />
         )}
       </div>
       <div className="col-7 p-2">
         <PersonTabsSelector activeTab={tab} updateTab={setTab} />
         {tab === PersonPageTabs.gearOut && (
-          <PersonRentals rentals={person.rentals} />
+          <PersonRentals
+            rentals={person.rentals}
+            rentalsToReturn={rentalsToReturn}
+            onReturn={addToReturn}
+          />
         )}
         {tab === PersonPageTabs.moreGear && (
-          <MoreGear onAddGear={onAddGear} gearToCheckout={gearToCheckout} />
+          <MoreGear onAddGear={addToCheckout} gearToCheckout={gearToCheckout} />
         )}
         {tab === PersonPageTabs.rentalHistory && (
           <PersonRentalsHistory personId={personId} />
@@ -73,4 +98,21 @@ function usePerson(personId: string) {
   useEffect(refresh, [personId]);
 
   return { person, refresh };
+}
+
+function useBasket<T extends { id: string }>() {
+  const [items, setItems] = useState<T[]>([]);
+  const add = (item: T) => setItems((gear) => [...gear, item]);
+
+  const remove = (id: string) =>
+    setItems((gear) => gear.filter((i) => i.id !== id));
+
+  const clear = () => setItems([]);
+
+  return {
+    items,
+    add,
+    remove,
+    clear,
+  };
 }

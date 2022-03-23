@@ -9,23 +9,21 @@ type Props = {
   person: Person;
   gearToCheckout: GearSummary[];
   onRemove: (id: string) => void;
-  onClear: () => void;
+  onCheckout: () => void;
 };
 
 export function CheckoutStaging({
   person,
   gearToCheckout,
   onRemove,
-  onClear,
+  onCheckout: onCheckoutCB,
 }: Props) {
   const totalDeposit = sum(map(gearToCheckout, "depositAmount"));
   const totalDailyFee = sum(map(gearToCheckout, "dailyFee"));
   const gearIDs = map(gearToCheckout, "id");
 
   const onCheckout = () => {
-    checkoutGear(person.id, gearIDs).then(() => {
-      onClear();
-    });
+    checkoutGear(person.id, gearIDs).then(onCheckoutCB);
   };
 
   return (

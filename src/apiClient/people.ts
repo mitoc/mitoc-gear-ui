@@ -32,7 +32,7 @@ export interface Rental {
   weeksOut: number;
   type: {
     typeName: string;
-    rentalAmount: string;
+    rentalAmount: number;
   };
 }
 
