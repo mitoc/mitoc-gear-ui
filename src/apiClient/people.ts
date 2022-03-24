@@ -36,6 +36,11 @@ export interface Rental {
   };
 }
 
+export interface GearToReturn {
+  id: string;
+  daysCharged?: number;
+}
+
 async function getPersonList(
   q?: String,
   page?: number
@@ -61,4 +66,19 @@ async function checkoutGear(personID: number, gearIDs: string[]) {
   return request(`/people/${personID}/rentals/`, "POST", { gearIds: gearIDs });
 }
 
-export { getPersonList, getPerson, getPersonRentalHistory, checkoutGear };
+async function returnGear(
+  personID: number,
+  gear: GearToReturn[],
+  checkNumber: string,
+  useMitocCredit?: boolean
+) {
+  return request(`/people/${personID}/return/`, "POST", { gear, checkNumber });
+}
+
+export {
+  checkoutGear,
+  getPerson,
+  getPersonList,
+  getPersonRentalHistory,
+  returnGear,
+};

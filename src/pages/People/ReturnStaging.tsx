@@ -5,7 +5,7 @@ import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
 import { formatDate } from "lib/fmtDate";
 
-import { Person, Rental } from "apiClient/people";
+import { Person, Rental, returnGear } from "apiClient/people";
 
 type Props = {
   person: Person;
@@ -40,7 +40,13 @@ export function ReturnStaging({
   );
 
   const onReturn = () => {
-    onReturnCB();
+    returnGear(
+      person.id,
+      rentalsToReturn.map((rental) => ({
+        id: rental.id,
+      })),
+      checkNumber
+    ).then(onReturnCB);
   };
 
   return (
