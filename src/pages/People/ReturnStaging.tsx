@@ -6,13 +6,14 @@ import { Link } from "react-router-dom";
 import { formatDate } from "lib/fmtDate";
 
 import { Person, Rental, returnGear } from "apiClient/people";
-import type { PurchasableItem } from "apiClient/gear";
 import { Checkbox } from "components/Inputs/Checkbox";
+
+import type { ItemToPurchase } from "./types";
 
 type Props = {
   person: Person;
   rentalsToReturn: Rental[];
-  gearToBuy: PurchasableItem[];
+  gearToBuy: ItemToPurchase[];
   onRemove: (id: string) => void;
   onRemovePurchasable: (id: string) => void;
   onReturn: () => void;
@@ -27,7 +28,6 @@ export function ReturnStaging({
   gearToBuy,
 }: Props) {
   // TODO: HANDLE NON INTEGER DAYS OUT
-  // TODO: Remove purchasable doesn't work well
 
   const [checkNumber, setCheckNumber] = useState<string>("");
   const [shouldUseMitocCredit, setShouldUseMitocCredit] = useState<boolean>(
@@ -165,7 +165,7 @@ export function ReturnStaging({
               </tr>
             </thead>
             <tbody>
-              {gearToBuy.map(({ id, name, price }) => (
+              {gearToBuy.map(({ id, item: { name, price } }) => (
                 <tr key={id}>
                   <td>{name}</td>
                   <td>{price}</td>

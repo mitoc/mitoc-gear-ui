@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { isEmpty } from "lodash";
 
 import { getPerson, Person, Rental } from "apiClient/people";
-import { GearSummary, PurchasableItem } from "apiClient/gear";
+import { GearSummary } from "apiClient/gear";
 import { Notes } from "components/Notes";
 
 import { PersonProfile } from "./PersonProfile";
@@ -14,6 +14,7 @@ import { PersonTabsSelector, PersonPageTabs } from "./PersonTabs";
 import { PersonRentalsHistory } from "./PersonRentalsHistory";
 import { CheckoutStaging } from "./CheckoutStaging";
 import { ReturnStaging } from "./ReturnStaging";
+import type { ItemToPurchase } from "./types";
 
 export function PersonPage() {
   const [tab, setTab] = useState<PersonPageTabs>(PersonPageTabs.gearOut);
@@ -37,7 +38,7 @@ export function PersonPage() {
     add: addGearToBuy,
     remove: removeGearToBuy,
     clear: clearPurchases,
-  } = useBasket<PurchasableItem>();
+  } = useBasket<ItemToPurchase>();
 
   if (person == null) {
     return null;

@@ -1,8 +1,10 @@
-import { PurchasableItem } from "apiClient/gear";
 import { usePurchasableItems } from "features/cache/hooks";
+import { uniqueID } from "lib/uniqueID";
+
+import type { ItemToPurchase } from "./types";
 
 type Props = {
-  onAdd: (item: PurchasableItem) => void;
+  onAdd: (item: ItemToPurchase) => void;
 };
 
 export function BuyGear({ onAdd }: Props) {
@@ -24,7 +26,7 @@ export function BuyGear({ onAdd }: Props) {
               <td className="text-center">
                 <button
                   className="btn btn-outline-primary w-100 h-100"
-                  onClick={() => onAdd(item)}
+                  onClick={() => onAdd({ id: uniqueID(), item })}
                 >
                   Buy
                 </button>
