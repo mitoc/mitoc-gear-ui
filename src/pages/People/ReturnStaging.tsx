@@ -7,6 +7,7 @@ import { formatDate } from "lib/fmtDate";
 
 import { Person, Rental, returnGear } from "apiClient/people";
 import type { PurchasableItem } from "apiClient/gear";
+import { Checkbox } from "components/Inputs/Checkbox";
 
 type Props = {
   person: Person;
@@ -25,17 +26,19 @@ export function ReturnStaging({
   onRemovePurchasable,
   gearToBuy,
 }: Props) {
-  // TODO: HANDLE BOD RENTERS
-  // TODO: HANDLE MITOC CREDIT
   // TODO: HANDLE NON INTEGER DAYS OUT
+  // TODO: Remove purchasable doesn't work well
 
   const [checkNumber, setCheckNumber] = useState<string>("");
+  const [shouldUseMitocCredit, setShouldUseMitocCredit] = useState<boolean>(
+    person.mitocCredit > 0
+  );
   const { rentals, toggleWaiveFee, overrideDaysOut } = useReturnState(
     rentalsToReturn,
     person.groups.some((group) => group.groupName === "BOD")
   );
 
-  const paymentDue =
+  const totalDue =
     sum(
       map(rentals, (item) => {
         return item.waived
@@ -46,6 +49,11 @@ export function ReturnStaging({
       })
     ) + sum(map(gearToBuy, "price"));
 
+  const creditToSpent = shouldUseMitocCredit
+    ? Math.min(person.mitocCredit, totalDue)
+    : 0;
+  const paymentDue = totalDue - creditToSpent;
+
   const onReturn = () => {
     returnGear(
       person.id,
@@ -53,7 +61,8 @@ export function ReturnStaging({
         id: rental.id,
       })),
       gearToBuy.map((item) => item.id),
-      checkNumber
+      checkNumber,
+      creditToSpent
     ).then(onReturnCB);
   };
 
@@ -70,26 +79,19 @@ export function ReturnStaging({
     <div className="border rounded-2 p-2 mb-3 bg-light">
       <h3>{title}</h3>
       <h4>Payment due: {paymentDue}</h4>
+      {person.mitocCredit > 0 && totalDue > 0 && (
+        <div>
+          <Checkbox
+            value={shouldUseMitocCredit}
+            onChange={setShouldUseMitocCredit}
+          />{" "}
+          Use ${creditToSpent} of MITOC credit
+        </div>
+      )}
 
       {!isEmpty(rentalsToReturn) && (
         <>
           {!returnOnly && <h4>Returns</h4>}
-          <Table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>Items</th>
-                <th>Payment Due</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td></td>
-                <td>{rentalsToReturn.length}</td>
-                <td>{paymentDue}</td>
-              </tr>
-            </tbody>
-          </Table>
 
           <Table>
             <thead>
@@ -121,13 +123,10 @@ export function ReturnStaging({
                       days
                     </div>
                     Waive fee{" "}
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      checked={rentals[id].waived}
-                      onChange={(evt) => {
-                        console.log();
-                        toggleWaiveFee(id, evt.target.checked);
+                    <Checkbox
+                      value={rentals[id].waived}
+                      onChange={(value) => {
+                        toggleWaiveFee(id, value);
                       }}
                     />
                   </td>

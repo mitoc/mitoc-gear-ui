@@ -20,8 +20,7 @@ export interface Person extends PersonSummary {
   frequentFlyerCheck?: Expireable;
   groups: { groupName: string }[];
   notes: Note[];
-
-  mitocCredit: string;
+  mitocCredit: number;
 }
 
 export interface Rental {
@@ -77,6 +76,7 @@ async function returnGear(
     gear,
     checkNumber,
     purchases,
+    useMitocCredit,
   });
 }
 
