@@ -1,10 +1,12 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 
 import authReducer from "../features/auth/authSlice";
+import cacheReducer from "../features/cache/cacheSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    cache: cacheReducer,
   },
 });
 

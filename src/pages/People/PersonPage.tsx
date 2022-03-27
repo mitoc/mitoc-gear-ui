@@ -3,12 +3,13 @@ import { useParams } from "react-router-dom";
 import { isEmpty } from "lodash";
 
 import { getPerson, Person, Rental } from "apiClient/people";
-import { GearSummary } from "apiClient/gear";
+import { GearSummary, PurchasableItem } from "apiClient/gear";
 import { Notes } from "components/Notes";
 
 import { PersonProfile } from "./PersonProfile";
 import { PersonRentals } from "./PersonRentals";
 import { MoreGear } from "./MoreGear";
+import { BuyGear } from "./BuyGear";
 import { PersonTabsSelector, PersonPageTabs } from "./PersonTabs";
 import { PersonRentalsHistory } from "./PersonRentalsHistory";
 import { CheckoutStaging } from "./CheckoutStaging";
@@ -30,6 +31,12 @@ export function PersonPage() {
     clear: clearReturn,
     remove: removeFromReturn,
   } = useBasket<Rental>();
+
+  const {
+    items: gearToBuy,
+    add: addGearToBuy,
+    remove: removeGearToBuy,
+  } = useBasket<PurchasableItem>();
 
   if (person == null) {
     return null;
@@ -80,6 +87,7 @@ export function PersonPage() {
         {tab === PersonPageTabs.moreGear && (
           <MoreGear onAddGear={addToCheckout} gearToCheckout={gearToCheckout} />
         )}
+        {tab === PersonPageTabs.buyGear && <BuyGear onAdd={addGearToBuy} />}
         {tab === PersonPageTabs.rentalHistory && (
           <PersonRentalsHistory personId={personId} />
         )}

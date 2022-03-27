@@ -6,12 +6,14 @@ type Props = {
 export enum PersonPageTabs {
   gearOut = "gearOut",
   moreGear = "moreGear",
+  buyGear = "buyGear",
   rentalHistory = "rentalHistory",
 }
 
 const tabs = [
   { name: PersonPageTabs.gearOut, label: "Gear out" },
-  { name: PersonPageTabs.moreGear, label: "More Gear" },
+  { name: PersonPageTabs.moreGear, label: "Rent Gear" },
+  { name: PersonPageTabs.buyGear, label: "Buy Gear" },
   { name: PersonPageTabs.rentalHistory, label: "Rental History" },
 ];
 

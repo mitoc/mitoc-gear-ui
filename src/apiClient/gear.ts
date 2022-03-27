@@ -35,6 +35,12 @@ export interface GearRental {
   weeksOut: number;
 }
 
+export interface PurchasableItem {
+  id: string;
+  price: number;
+  name: string;
+}
+
 async function getGearList(
   q?: String,
   page?: number,
@@ -58,4 +64,8 @@ async function getGearRentalHistory(
   return request(`/gear/${id}/rentals/`, "GET", { ...(page && { page }) });
 }
 
-export { getGearList, getGearItem, getGearRentalHistory };
+async function getPurchasableList(): Promise<PurchasableItem[]> {
+  return request(`/purchasable/`, "GET");
+}
+
+export { getGearList, getGearItem, getGearRentalHistory, getPurchasableList };
