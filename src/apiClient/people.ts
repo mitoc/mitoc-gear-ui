@@ -69,10 +69,15 @@ async function checkoutGear(personID: number, gearIDs: string[]) {
 async function returnGear(
   personID: number,
   gear: GearToReturn[],
-  checkNumber: string,
-  useMitocCredit?: boolean
+  purchases: string[] = [],
+  checkNumber: string = "",
+  useMitocCredit?: number
 ) {
-  return request(`/people/${personID}/return/`, "POST", { gear, checkNumber });
+  return request(`/people/${personID}/return/`, "POST", {
+    gear,
+    checkNumber,
+    purchases,
+  });
 }
 
 export {

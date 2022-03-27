@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { sum, map, mapValues, keyBy, flow } from "lodash";
+import { sum, map, mapValues, keyBy, flow, isEmpty } from "lodash";
 import styled from "styled-components";
 import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
 import { formatDate } from "lib/fmtDate";
 
 import { Person, Rental, returnGear } from "apiClient/people";
+import type { PurchasableItem } from "apiClient/gear";
 
 type Props = {
   person: Person;
   rentalsToReturn: Rental[];
+  gearToBuy: PurchasableItem[];
   onRemove: (id: string) => void;
+  onRemovePurchasable: (id: string) => void;
   onReturn: () => void;
 };
 
@@ -19,6 +22,8 @@ export function ReturnStaging({
   rentalsToReturn,
   onReturn: onReturnCB,
   onRemove,
+  onRemovePurchasable,
+  gearToBuy,
 }: Props) {
   // TODO: HANDLE BOD RENTERS
   // TODO: HANDLE MITOC CREDIT
@@ -29,15 +34,16 @@ export function ReturnStaging({
     rentalsToReturn
   );
 
-  const paymentDue = sum(
-    map(rentals, (item) => {
-      return item.waived
-        ? 0
-        : item.daysOutOverride != null
-        ? item.daysOutOverride * item.type.rentalAmount
-        : item.totalAmount;
-    })
-  );
+  const paymentDue =
+    sum(
+      map(rentals, (item) => {
+        return item.waived
+          ? 0
+          : item.daysOutOverride != null
+          ? item.daysOutOverride * item.type.rentalAmount
+          : item.totalAmount;
+      })
+    ) + sum(map(gearToBuy, "price"));
 
   const onReturn = () => {
     returnGear(
@@ -49,11 +55,23 @@ export function ReturnStaging({
     ).then(onReturnCB);
   };
 
+  const returnOnly = isEmpty(gearToBuy);
+  const purchaseOnly = isEmpty(rentalsToReturn);
+
+  const title = purchaseOnly
+    ? "Purchases"
+    : returnOnly
+    ? "Gear to return"
+    : "Return and purchases";
+
   return (
     <div className="border rounded-2 p-2 mb-3 bg-light">
-      <h3>Gear to return</h3>
-      {rentalsToReturn && (
+      <h3>{title}</h3>
+      <h4>Payment due: {paymentDue}</h4>
+
+      {!isEmpty(rentalsToReturn) && (
         <>
+          {!returnOnly && <h4>Returns</h4>}
           <Table>
             <thead>
               <tr>
@@ -120,6 +138,37 @@ export function ReturnStaging({
                     <button
                       className="btn btn-outline-secondary"
                       onClick={() => onRemove(id)}
+                    >
+                      X
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </>
+      )}
+      {!isEmpty(gearToBuy) && (
+        <>
+          {!purchaseOnly && <h4>Purchases</h4>}
+
+          <Table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              {gearToBuy.map(({ id, name, price }) => (
+                <tr key={id}>
+                  <td>{name}</td>
+                  <td>{price}</td>
+                  <td>
+                    <button
+                      className="btn btn-outline-secondary"
+                      onClick={() => onRemovePurchasable(id)}
                     >
                       X
                     </button>

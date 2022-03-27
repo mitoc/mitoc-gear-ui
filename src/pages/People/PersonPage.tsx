@@ -36,6 +36,7 @@ export function PersonPage() {
     items: gearToBuy,
     add: addGearToBuy,
     remove: removeGearToBuy,
+    clear: clearPurchases,
   } = useBasket<PurchasableItem>();
 
   if (person == null) {
@@ -50,6 +51,7 @@ export function PersonPage() {
 
   const onReturn = () => {
     clearReturn();
+    clearPurchases();
     refreshPerson();
   };
 
@@ -66,10 +68,12 @@ export function PersonPage() {
             onCheckout={onCheckout}
           />
         )}
-        {!isEmpty(rentalsToReturn) && (
+        {(!isEmpty(rentalsToReturn) || !isEmpty(gearToBuy)) && (
           <ReturnStaging
             person={person}
             rentalsToReturn={rentalsToReturn}
+            gearToBuy={gearToBuy}
+            onRemovePurchasable={removeGearToBuy}
             onRemove={removeFromReturn}
             onReturn={onReturn}
           />
