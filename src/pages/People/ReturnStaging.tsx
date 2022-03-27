@@ -31,7 +31,8 @@ export function ReturnStaging({
 
   const [checkNumber, setCheckNumber] = useState<string>("");
   const { rentals, toggleWaiveFee, overrideDaysOut } = useReturnState(
-    rentalsToReturn
+    rentalsToReturn,
+    person.groups.some((group) => group.groupName === "BOD")
   );
 
   const paymentDue =
@@ -51,6 +52,7 @@ export function ReturnStaging({
       rentalsToReturn.map((rental) => ({
         id: rental.id,
       })),
+      gearToBuy.map((item) => item.id),
       checkNumber
     ).then(onReturnCB);
   };
@@ -123,7 +125,10 @@ export function ReturnStaging({
                       type="checkbox"
                       className="form-check-input"
                       checked={rentals[id].waived}
-                      onChange={() => toggleWaiveFee(id)}
+                      onChange={(evt) => {
+                        console.log();
+                        toggleWaiveFee(id, evt.target.checked);
+                      }}
                     />
                   </td>
                   <td>
@@ -190,7 +195,7 @@ export function ReturnStaging({
           ></input>
         </label>
         <button className="btn btn-primary btn-lg" onClick={onReturn}>
-          Return
+          {purchaseOnly ? "Purchase" : "Return"}
         </button>
       </div>
     </div>
@@ -218,20 +223,25 @@ type ReturnState = Record<
   { waived?: boolean; daysOutOverride?: number }
 >;
 
-function useReturnState(rentalsToReturn: Rental[]) {
+function useReturnState(rentalsToReturn: Rental[], waiveByDefault?: boolean) {
   const [state, setState] = useState<ReturnState>({});
 
   const rentals = flow(
     (r: Rental[]) => keyBy(r, "id"),
-    (r) => mapValues(r, (rental, id) => ({ ...rental, ...(state[id] ?? {}) }))
+    (r) =>
+      mapValues(r, (rental, id) => ({
+        ...rental,
+        ...(waiveByDefault && { waived: true }),
+        ...(state[id] ?? {}),
+      }))
   )(rentalsToReturn);
 
-  const toggleWaiveFee = (id: string) => {
+  const toggleWaiveFee = (id: string, value: boolean) => {
     setState((state) => ({
       ...state,
       [id]: {
         ...(state[id] ?? {}),
-        waived: !state[id]?.waived,
+        waived: value,
       },
     }));
   };
