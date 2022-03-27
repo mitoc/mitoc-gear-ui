@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { sum, map, mapValues, keyBy, flow, isEmpty } from "lodash";
-import styled from "styled-components";
 import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
 import { formatDate } from "lib/fmtDate";
 
 import { Person, Rental, returnGear } from "apiClient/people";
 import { Checkbox } from "components/Inputs/Checkbox";
+import { NumberField } from "components/Inputs/NumberField";
 
 import type { ItemToPurchase } from "./types";
 
@@ -111,15 +111,16 @@ export function ReturnStaging({
                     <br />
                     <div>
                       Charge for:{" "}
-                      <SmallNumberInput
-                        type="number"
-                        className="form-control sm"
-                        value={rentals[id].daysOutOverride ?? weeksOut}
-                        onChange={(evt) =>
-                          // TODO: Improve this
-                          overrideDaysOut(id, Number(evt.target.value))
+                      <NumberField
+                        value={
+                          rentals[id].daysOutOverride !== undefined
+                            ? rentals[id].daysOutOverride
+                            : weeksOut
                         }
-                      ></SmallNumberInput>{" "}
+                        onChange={(value) => {
+                          overrideDaysOut(id, value);
+                        }}
+                      />{" "}
                       days
                     </div>
                     Waive fee{" "}
@@ -201,25 +202,9 @@ export function ReturnStaging({
   );
 }
 
-const ArrowLessNumberInput = styled.input`
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  -moz-appearance: textfield;
-`;
-
-const SmallNumberInput = styled(ArrowLessNumberInput)`
-  width: 2.5rem;
-  display: inline;
-  padding: 0.2rem;
-  height: 1.5rem;
-`;
-
 type ReturnState = Record<
   string,
-  { waived?: boolean; daysOutOverride?: number }
+  { waived?: boolean; daysOutOverride: number | null }
 >;
 
 function useReturnState(rentalsToReturn: Rental[], waiveByDefault?: boolean) {
@@ -245,7 +230,7 @@ function useReturnState(rentalsToReturn: Rental[], waiveByDefault?: boolean) {
     }));
   };
 
-  const overrideDaysOut = (id: string, value: number | undefined) => {
+  const overrideDaysOut = (id: string, value: number | null) => {
     setState((state) => ({
       ...state,
       [id]: {
