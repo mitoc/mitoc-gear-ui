@@ -3,9 +3,10 @@ import styled from "styled-components";
 type Props = {
   value: number | null;
   onChange: (value: number | null) => void;
+  integer?: boolean;
 };
 
-export function NumberField({ value, onChange }: Props) {
+export function NumberField({ value, onChange, integer }: Props) {
   return (
     <SmallNumberInput
       type="number"
@@ -16,7 +17,9 @@ export function NumberField({ value, onChange }: Props) {
         if (rawValue === "") {
           return onChange(null);
         }
-        onChange(Number(rawValue));
+        const valueAsNumber = Number(rawValue);
+        const value = integer ? Math.round(valueAsNumber) : valueAsNumber;
+        onChange(value);
       }}
     ></SmallNumberInput>
   );

@@ -27,8 +27,6 @@ export function ReturnStaging({
   onRemovePurchasable,
   gearToBuy,
 }: Props) {
-  // TODO: HANDLE NON INTEGER DAYS OUT
-
   const [checkNumber, setCheckNumber] = useState<string>("");
   const [shouldUseMitocCredit, setShouldUseMitocCredit] = useState<boolean>(
     person.mitocCredit > 0
@@ -120,6 +118,7 @@ export function ReturnStaging({
                         onChange={(value) => {
                           overrideDaysOut(id, value);
                         }}
+                        integer={true}
                       />{" "}
                       days
                     </div>
