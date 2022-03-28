@@ -25,16 +25,25 @@ export function Header() {
             <Nav.Link as={Link} to="/gear">
               Gear
             </Nav.Link>
+            <Nav.Link
+              href="https://docs.google.com/spreadsheets/d/1CW3j4K4_HmXlDbO1vPRvIW76SI41EYNbaZKKrqmrgTk/edit?hl=en&hl=en#gid=1019012678"
+              target="_blank"
+            >
+              Restricted gear doc
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
         {user != null && (
-          <Nav className="justify-content-end">
+          <Nav className="justify-content-end me-2">
             <NavDropdown
               title={`${user.firstName} ${user.lastName[0]}.`}
               id="nav-profile-dropdown"
             >
               <NavDropdown.Item onClick={() => dispatch(logOut())}>
                 Log out
+              </NavDropdown.Item>
+              <NavDropdown.Item href="http://goo.gl/nPMjmc" target="_blank">
+                Request desk credit
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
