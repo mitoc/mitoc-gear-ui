@@ -1,19 +1,9 @@
-const dateFmtOptions = {
-  year: "numeric",
-  month: "short",
-  day: "numeric",
-} as const;
-
-const datetimeFmtOptions = {
-  ...dateFmtOptions,
-  hour: "numeric",
-  minute: "numeric",
-} as const;
+import * as dayjs from "dayjs";
 
 export function formatDate(date: string) {
-  return new Date(date).toLocaleDateString("en-US", dateFmtOptions);
+  return dayjs(date).format("MMM D YYYY");
 }
 
 export function formatDateTime(date: string) {
-  return new Date(date).toLocaleDateString("en-US", datetimeFmtOptions);
+  return dayjs(date).format("MMM D YYYY, hh:mma");
 }

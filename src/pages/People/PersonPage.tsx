@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { isEmpty } from "lodash";
 
-import { getPerson, Person, Rental } from "apiClient/people";
+import { useAppDispatch } from "app/hooks";
+import { Rental } from "apiClient/people";
 import { GearSummary } from "apiClient/gear";
 import { Notes } from "components/Notes";
+import { usePerson, fetchPerson } from "features/cache";
 
 import { PersonProfile } from "./PersonProfile";
 import { PersonRentals } from "./PersonRentals";
@@ -17,9 +19,11 @@ import { ReturnStaging } from "./ReturnStaging";
 import type { ItemToPurchase } from "./types";
 
 export function PersonPage() {
+  const dispatch = useAppDispatch();
   const [tab, setTab] = useState<PersonPageTabs>(PersonPageTabs.gearOut);
   const { personId } = useParams<{ personId: string }>();
-  const { person, refresh: refreshPerson } = usePerson(personId);
+  const person = usePerson(personId);
+  const refreshPerson = () => dispatch(fetchPerson(personId));
   const {
     items: gearToCheckout,
     add: addToCheckout,
@@ -59,7 +63,7 @@ export function PersonPage() {
   return (
     <div className="row">
       <div className="col-5 p-2">
-        <PersonProfile person={person} />
+        <PersonProfile person={person} refreshPerson={refreshPerson} />
         <Notes notes={person.notes} />
         {!isEmpty(gearToCheckout) && (
           <CheckoutStaging
@@ -99,18 +103,6 @@ export function PersonPage() {
       </div>
     </div>
   );
-}
-
-function usePerson(personId: string) {
-  const [person, setPerson] = useState<Person | null>(null);
-
-  const refresh = () => {
-    getPerson(personId).then((person) => setPerson(person));
-  };
-
-  useEffect(refresh, [personId]);
-
-  return { person, refresh };
 }
 
 function useBasket<T extends { id: string }>() {

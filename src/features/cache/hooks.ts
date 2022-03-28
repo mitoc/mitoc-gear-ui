@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 
-import { fetchPurchasableItems } from "./cacheSlice";
+import { fetchPurchasableItems, fetchPerson } from "./cacheSlice";
 
 export function usePurchasableItems() {
   const dispatch = useAppDispatch();
@@ -15,12 +15,14 @@ export function usePurchasableItems() {
   return items ?? [];
 }
 
-export function useCurrentUser() {
-  return useAppSelector((state) => ({
-    isLoading:
-      state.auth.loadingStatus === "loading" ||
-      state.auth.loadingStatus === "blank",
-    loggedIn: state.auth.loggedIn,
-    user: state.auth.user,
-  }));
+export function usePerson(id: string) {
+  const dispatch = useAppDispatch();
+  const person = useAppSelector((state) => state.cache.people[id]?.value);
+  useEffect(() => {
+    if (person != null) {
+      return;
+    }
+    dispatch(fetchPerson(id));
+  }, [dispatch]);
+  return person;
 }

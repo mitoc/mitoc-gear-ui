@@ -1,8 +1,10 @@
+import * as dayjs from "dayjs";
+
 import { request } from "./client";
 import { ListWrapper, Note } from "./types";
 
 export interface PersonSummary {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -51,7 +53,14 @@ async function getPersonList(
 }
 
 async function getPerson(id: string): Promise<Person> {
-  return request(`/people/${id}`, "GET");
+  return request(`/people/${id}/`, "GET");
+}
+
+async function addFFChecks(id: string, date: Date, checkNumber: string) {
+  return request(`/people/${id}/frequent_flyer_check/`, "POST", {
+    expires: dayjs(date).format("YYYY-MM-DD"),
+    ...(checkNumber && { checkNumber }),
+  });
 }
 
 async function getPersonRentalHistory(
@@ -81,6 +90,7 @@ async function returnGear(
 }
 
 export {
+  addFFChecks,
   checkoutGear,
   getPerson,
   getPersonList,
