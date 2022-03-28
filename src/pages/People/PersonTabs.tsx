@@ -21,7 +21,7 @@ export function PersonTabsSelector({ activeTab, updateTab }: Props) {
   return (
     <ul className="nav nav-tabs">
       {tabs.map((tab) => (
-        <li className="nav-item">
+        <li className="nav-item" key={tab.name}>
           <button
             className={`nav-link ${tab.name === activeTab ? "active" : ""}`}
             onClick={() => updateTab(tab.name)}

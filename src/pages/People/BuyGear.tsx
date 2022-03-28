@@ -21,9 +21,9 @@ export function BuyGear({ onAdd }: Props) {
         </thead>
         <tbody>
           {items.map((item) => {
-            const { name, price } = item;
+            const { id, name, price } = item;
             return (
-              <tr>
+              <tr key={id}>
                 <td className="text-center">
                   <button
                     className="btn btn-outline-primary w-100 h-100"

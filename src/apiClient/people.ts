@@ -18,7 +18,7 @@ export interface Person extends PersonSummary {
   membership?: Expireable;
   waiver?: Expireable;
   frequentFlyerCheck?: Expireable;
-  groups: { groupName: string }[];
+  groups: { groupName: string; id: string }[];
   notes: Note[];
   mitocCredit: number;
 }

@@ -20,7 +20,7 @@ export function PersonProfile({ person }: Props) {
 
       <div>
         {person.groups.map((group) => (
-          <Badge className="me-1" bg="secondary">
+          <Badge key={group.id} className="me-1" bg="secondary">
             {group.groupName}
           </Badge>
         ))}

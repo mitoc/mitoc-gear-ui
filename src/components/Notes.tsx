@@ -1,5 +1,6 @@
 import { formatDateTime } from "lib/fmtDate";
 import type { Person } from "apiClient/people";
+import React from "react";
 
 type Props = {
   notes: Person["notes"];
@@ -11,7 +12,7 @@ export function Notes({ notes }: Props) {
       <h4>Notes</h4>
       {notes.map((note) => {
         return (
-          <>
+          <React.Fragment key={note.dateInserted}>
             <hr />
             <div>
               {formatDateTime(note.dateInserted)}, {note.author.firstName}{" "}
@@ -20,7 +21,7 @@ export function Notes({ notes }: Props) {
                 {note.note}
               </blockquote>
             </div>
-          </>
+          </React.Fragment>
         );
       })}
     </div>

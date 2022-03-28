@@ -70,7 +70,7 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
                   retired,
                 } = gearItem;
                 return (
-                  <tr>
+                  <tr key={id}>
                     <td className="text-center">
                       {available ? (
                         <AddButton

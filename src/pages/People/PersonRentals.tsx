@@ -23,7 +23,7 @@ export function PersonRentals({ rentals, onReturn, rentalsToReturn }: Props) {
               const { id, type, checkedout, weeksOut, totalAmount } = rental;
 
               return (
-                <tr>
+                <tr key={id}>
                   <td>
                     <Link to={`/gear/${id}`}>{id}</Link>
                     <br />

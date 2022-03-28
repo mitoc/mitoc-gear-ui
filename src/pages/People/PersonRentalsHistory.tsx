@@ -44,7 +44,7 @@ export function PersonRentalsHistory({ personId }: Props) {
           </thead>
           <tbody>
             {rentals.map(({ id, type, checkedout, returned, weeksOut }) => (
-              <tr>
+              <tr key={id + checkedout}>
                 <td>
                   <Link to={`/gear/${id}`}>{id}</Link>
                 </td>
