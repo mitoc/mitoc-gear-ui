@@ -17,7 +17,7 @@ export interface Expireable {
 
 export interface Person extends PersonSummary {
   affiliation: string;
-  membership?: Expireable;
+  membership?: Expireable & { membershipType: string };
   waiver?: Expireable;
   frequentFlyerCheck?: Expireable;
   groups: { groupName: string; id: string }[];
@@ -40,6 +40,12 @@ export interface Rental {
 export interface GearToReturn {
   id: string;
   daysCharged?: number;
+}
+
+export interface Affiliation {
+  id: string;
+  name: string;
+  dues: number;
 }
 
 async function getPersonList(
@@ -69,6 +75,13 @@ async function addWaiver(id: string, date: Date) {
   });
 }
 
+async function addMembership(id: string, date: Date, membershipType: string) {
+  return request(`/people/${id}/membership/`, "POST", {
+    expires: dayjs(date).format("YYYY-MM-DD"),
+    membershipType,
+  });
+}
+
 async function getPersonRentalHistory(
   id: string,
   page?: number
@@ -95,10 +108,16 @@ async function returnGear(
   });
 }
 
+async function getAffiliations() {
+  return request(`/affiliations/`, "GET");
+}
+
 export {
   addFFChecks,
+  addMembership,
   addWaiver,
   checkoutGear,
+  getAffiliations,
   getPerson,
   getPersonList,
   getPersonRentalHistory,

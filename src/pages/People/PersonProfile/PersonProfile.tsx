@@ -5,6 +5,7 @@ import type { Person } from "apiClient/people";
 import { ExpirableTile } from "./ExpirableTile";
 import { FrequentFlyerForm } from "./FrequentFlyerForm";
 import { WaiverForm } from "./WaiverForm";
+import { MembershipForm } from "./MembershipForm";
 
 type Props = {
   person: Person;
@@ -32,6 +33,7 @@ export function PersonProfile({ person }: Props) {
         title="Membership"
         person={person}
         exp={person.membership}
+        AddForm={MembershipForm}
         required
       />
       <ExpirableTile

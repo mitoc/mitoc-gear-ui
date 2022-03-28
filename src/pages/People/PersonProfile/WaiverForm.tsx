@@ -24,6 +24,7 @@ export function WaiverForm({ person, onClose }: Props) {
           <DatePicker
             selected={date}
             onChange={(date: Date) => setDate(date)}
+            className="w-50"
           />
         </label>
         <br />

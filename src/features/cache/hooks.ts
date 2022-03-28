@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 
-import { fetchPurchasableItems, fetchPerson } from "./cacheSlice";
+import {
+  fetchPurchasableItems,
+  fetchAffiliations,
+  fetchPerson,
+} from "./cacheSlice";
 
 export function usePurchasableItems() {
   const dispatch = useAppDispatch();
@@ -11,6 +15,18 @@ export function usePurchasableItems() {
       return;
     }
     dispatch(fetchPurchasableItems());
+  }, [dispatch]);
+  return items ?? [];
+}
+
+export function useAffiliations() {
+  const dispatch = useAppDispatch();
+  const items = useAppSelector((state) => state.cache.affiliations.value);
+  useEffect(() => {
+    if (items != null) {
+      return;
+    }
+    dispatch(fetchAffiliations());
   }, [dispatch]);
   return items ?? [];
 }

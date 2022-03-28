@@ -1,7 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { PurchasableItem, getPurchasableList } from "apiClient/gear";
-import { Person, getPerson } from "apiClient/people";
+import {
+  Person,
+  getPerson,
+  getAffiliations,
+  Affiliation,
+} from "apiClient/people";
 
 export enum LoadingStatus {
   "loading" = "loading",
@@ -10,8 +15,12 @@ export enum LoadingStatus {
 
 export interface CacheState {
   purchasableItems: {
-    status: "loading" | "idle";
+    status: LoadingStatus;
     value?: PurchasableItem[];
+  };
+  affiliations: {
+    status: LoadingStatus;
+    value?: Affiliation[];
   };
   people: {
     [id: string]: {
@@ -22,7 +31,8 @@ export interface CacheState {
 }
 
 const initialState: CacheState = {
-  purchasableItems: { status: "idle" },
+  purchasableItems: { status: LoadingStatus.idle },
+  affiliations: { status: LoadingStatus.idle },
   people: {},
 };
 
@@ -33,6 +43,11 @@ export const fetchPurchasableItems = createAsyncThunk(
 
 export const fetchPerson = createAsyncThunk("cache/fetchPerson", getPerson);
 
+export const fetchAffiliations = createAsyncThunk(
+  "cache/fetchAffiliations",
+  getAffiliations
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -40,11 +55,18 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchPurchasableItems.pending, (state) => {
-        state.purchasableItems.status = "loading";
+        state.purchasableItems.status = LoadingStatus.loading;
       })
       .addCase(fetchPurchasableItems.fulfilled, (state, action) => {
-        state.purchasableItems.status = "idle";
+        state.purchasableItems.status = LoadingStatus.idle;
         state.purchasableItems.value = action.payload;
+      })
+      .addCase(fetchAffiliations.pending, (state) => {
+        state.affiliations.status = LoadingStatus.loading;
+      })
+      .addCase(fetchAffiliations.fulfilled, (state, action) => {
+        state.affiliations.status = LoadingStatus.idle;
+        state.affiliations.value = action.payload;
       })
       .addCase(fetchPerson.pending, (state, action) => {
         state.people[action.meta.arg] = {

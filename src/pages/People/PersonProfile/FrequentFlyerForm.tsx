@@ -25,10 +25,11 @@ export function FrequentFlyerForm({ person, onClose }: Props) {
           <DatePicker
             selected={date}
             onChange={(date: Date) => setDate(date)}
+            className="w-50"
           />
         </label>
         <br />
-        <label className="form-group w-100 mb-2">
+        <label className="form-group w-50 mb-2">
           Check number:
           <input
             type="text"
