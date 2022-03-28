@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { getGearItem, GearItem } from "apiClient/gear";
+import { getGearItem, GearItem, addNote } from "apiClient/gear";
 import { Notes } from "components/Notes";
 
 import { GearInfoPanel } from "./GearInfoPanel";
@@ -10,9 +10,11 @@ import { GearRentalsHistory } from "./GearRentalsHistory";
 export function GearItemPage() {
   const { gearId } = useParams<{ gearId: string }>();
   const [gearItem, setGearItem] = useState<GearItem | null>(null);
+  const refreshGear = () =>
+    getGearItem(gearId).then((item) => setGearItem(item));
 
   useEffect(() => {
-    getGearItem(gearId).then((item) => setGearItem(item));
+    refreshGear();
   }, [gearId]);
   if (gearItem == null) {
     return null;
@@ -20,8 +22,11 @@ export function GearItemPage() {
   return (
     <div className="row">
       <div className="col-5 p-2">
-        <GearInfoPanel gearItem={gearItem} />
-        <Notes notes={gearItem.notes} />
+        <GearInfoPanel gearItem={gearItem} refreshGear={refreshGear} />
+        <Notes
+          notes={gearItem.notes}
+          onAdd={(note) => addNote(gearId, note).then(refreshGear)}
+        />
       </div>
       <div className="col-7 p-2">
         <GearRentalsHistory gearId={gearId} />

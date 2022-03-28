@@ -54,7 +54,7 @@ async function getGearList(
 }
 
 async function getGearItem(id: string): Promise<GearItem> {
-  return request(`/gear/${id}`, "GET");
+  return request(`/gear/${id}/`, "GET");
 }
 
 async function getGearRentalHistory(
@@ -68,4 +68,53 @@ async function getPurchasableList(): Promise<PurchasableItem[]> {
   return request(`/purchasable/`, "GET");
 }
 
-export { getGearList, getGearItem, getGearRentalHistory, getPurchasableList };
+async function addNote(id: string, note: string) {
+  return request(`/gear/${id}/note/`, "POST", {
+    note,
+  });
+}
+
+async function markRetired(id: string, note?: string) {
+  return request(`/gear/${id}/retired/`, "POST", {
+    note,
+  });
+}
+async function markBroken(id: string, note: string) {
+  return request(`/gear/${id}/broken/`, "POST", {
+    note,
+  });
+}
+async function markMissing(id: string, note?: string) {
+  return request(`/gear/${id}/missing/`, "POST", {
+    note,
+  });
+}
+async function markUnretired(id: string, note?: string) {
+  return request(`/gear/${id}/retired/`, "DELETE", {
+    note,
+  });
+}
+async function markFixed(id: string, note?: string) {
+  return request(`/gear/${id}/broken/`, "DELETE", {
+    note,
+  });
+}
+async function markFound(id: string, note?: string) {
+  return request(`/gear/${id}/missing/`, "DELETE", {
+    note,
+  });
+}
+
+export {
+  addNote,
+  getGearItem,
+  getGearList,
+  getGearRentalHistory,
+  getPurchasableList,
+  markBroken,
+  markFixed,
+  markFound,
+  markMissing,
+  markRetired,
+  markUnretired,
+};

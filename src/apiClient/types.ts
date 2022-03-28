@@ -19,6 +19,7 @@ export interface ApiError {
 }
 
 export interface Note {
+  id: string;
   note: string;
   dateInserted: string;
   author: { firstName: string; lastName: string };

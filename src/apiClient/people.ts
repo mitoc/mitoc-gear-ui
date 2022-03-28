@@ -82,6 +82,16 @@ async function addMembership(id: string, date: Date, membershipType: string) {
   });
 }
 
+async function addNote(id: string, note: string) {
+  return request(`/people/${id}/note/`, "POST", {
+    note,
+  });
+}
+
+async function archiveNote(personId: string, noteId: string) {
+  return request(`/people/${personId}/note/${noteId}/archive/`, "POST");
+}
+
 async function getPersonRentalHistory(
   id: string,
   page?: number
@@ -115,7 +125,9 @@ async function getAffiliations() {
 export {
   addFFChecks,
   addMembership,
+  addNote,
   addWaiver,
+  archiveNote,
   checkoutGear,
   getAffiliations,
   getPerson,

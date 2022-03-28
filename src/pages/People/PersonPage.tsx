@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { isEmpty } from "lodash";
 
 import { useAppDispatch } from "app/hooks";
-import { Rental } from "apiClient/people";
+import { Rental, addNote, archiveNote } from "apiClient/people";
 import { GearSummary } from "apiClient/gear";
 import { Notes } from "components/Notes";
 import { usePerson, fetchPerson } from "features/cache";
@@ -64,7 +64,15 @@ export function PersonPage() {
     <div className="row">
       <div className="col-5 p-2">
         <PersonProfile person={person} refreshPerson={refreshPerson} />
-        <Notes notes={person.notes} />
+        <Notes
+          notes={person.notes}
+          onAdd={(note) => {
+            return addNote(person.id, note).then(refreshPerson);
+          }}
+          onArchive={(noteId) => {
+            archiveNote(person.id, noteId).then(refreshPerson);
+          }}
+        />
         {!isEmpty(gearToCheckout) && (
           <CheckoutStaging
             person={person}

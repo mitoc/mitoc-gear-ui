@@ -13,7 +13,7 @@ export async function request(
   const response = await fetch(`${API_HOST}${path}${queryParams}`, {
     method: method,
     headers:
-      method === "POST"
+      method !== "GET"
         ? {
             "X-CSRFTOKEN": await getCsrfToken(),
             "Content-Type": "application/json",

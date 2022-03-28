@@ -1,14 +1,22 @@
+import { useState } from "react";
 import { GearSummary } from "apiClient/gear";
 
 import { GearStatus } from "./GearStatus";
+import { GearStatusForm, GearStatusFormType } from "./GearStatusForm";
 
-export function GearInfoPanel({ gearItem }: { gearItem: GearSummary }) {
+type Props = { gearItem: GearSummary; refreshGear: () => void };
+
+export function GearInfoPanel({ gearItem, refreshGear }: Props) {
+  const [formToShow, setFormToShow] = useState<GearStatusFormType>(
+    GearStatusFormType.none
+  );
   const gearStatusColor =
     gearItem.missing || gearItem.retired || gearItem.broken
       ? "alert-danger"
       : gearItem.checkedOutTo
       ? "alert-info"
       : "";
+
   return (
     <div className="border rounded-2 p-2 mb-3 bg-light">
       <h4>
@@ -38,6 +46,36 @@ export function GearInfoPanel({ gearItem }: { gearItem: GearSummary }) {
       <Field value={gearItem.size} title="Size" />
       <Field value={formatNumber(gearItem.depositAmount)} title="Deposit" />
       <Field value={formatNumber(gearItem.dailyFee)} title="Daily Fee" />
+      <div className="mt-2">
+        <button
+          className="btn btn-outline-secondary me-1"
+          onClick={() => setFormToShow(GearStatusFormType.broken)}
+        >
+          {!gearItem.broken ? "Mark broken" : "Mark fixed"}
+        </button>
+        <button
+          className="btn btn-outline-secondary me-1 ms-1"
+          onClick={() => setFormToShow(GearStatusFormType.missing)}
+        >
+          {!gearItem.missing ? "Mark missing" : "Mark found"}
+        </button>
+        <button
+          className="btn btn-outline-secondary ms-1"
+          onClick={() => setFormToShow(GearStatusFormType.retired)}
+        >
+          {!gearItem.retired ? "Mark retired" : "Mark unretired"}
+        </button>
+      </div>
+      {formToShow !== GearStatusFormType.none && (
+        <GearStatusForm
+          formType={formToShow}
+          gearItem={gearItem}
+          onChange={() => {
+            refreshGear();
+            setFormToShow(GearStatusFormType.none);
+          }}
+        />
+      )}
     </div>
   );
 }
