@@ -99,12 +99,12 @@ async function getPersonRentalHistory(
   return request(`/people/${id}/rentals/`, "GET", { ...(page && { page }) });
 }
 
-async function checkoutGear(personID: number, gearIDs: string[]) {
+async function checkoutGear(personID: string, gearIDs: string[]) {
   return request(`/people/${personID}/rentals/`, "POST", { gearIds: gearIDs });
 }
 
 async function returnGear(
-  personID: number,
+  personID: string,
   gear: GearToReturn[],
   purchases: string[] = [],
   checkNumber: string = "",
