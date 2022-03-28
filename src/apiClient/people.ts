@@ -63,6 +63,12 @@ async function addFFChecks(id: string, date: Date, checkNumber: string) {
   });
 }
 
+async function addWaiver(id: string, date: Date) {
+  return request(`/people/${id}/waiver/`, "POST", {
+    expires: dayjs(date).format("YYYY-MM-DD"),
+  });
+}
+
 async function getPersonRentalHistory(
   id: string,
   page?: number
@@ -91,6 +97,7 @@ async function returnGear(
 
 export {
   addFFChecks,
+  addWaiver,
   checkoutGear,
   getPerson,
   getPersonList,

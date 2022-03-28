@@ -4,6 +4,7 @@ import type { Person } from "apiClient/people";
 
 import { ExpirableTile } from "./ExpirableTile";
 import { FrequentFlyerForm } from "./FrequentFlyerForm";
+import { WaiverForm } from "./WaiverForm";
 
 type Props = {
   person: Person;
@@ -37,6 +38,7 @@ export function PersonProfile({ person }: Props) {
         title="Waiver"
         person={person}
         exp={person.waiver}
+        AddForm={WaiverForm}
         required
       />
       <ExpirableTile
