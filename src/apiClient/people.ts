@@ -1,4 +1,4 @@
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 
 import { request } from "./client";
 import { ListWrapper, Note } from "./types";
