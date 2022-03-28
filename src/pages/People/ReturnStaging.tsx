@@ -45,7 +45,7 @@ export function ReturnStaging({
           ? item.daysOutOverride * item.type.rentalAmount
           : item.totalAmount;
       })
-    ) + sum(map(gearToBuy, "price"));
+    ) + sum(map(gearToBuy, "item.price"));
 
   const creditToSpent = shouldUseMitocCredit
     ? Math.min(person.mitocCredit, totalDue)
