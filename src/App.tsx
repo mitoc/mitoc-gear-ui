@@ -18,7 +18,7 @@ function App() {
   const { loggedIn, isLoading } = useLoadCurrentUser();
 
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <BaseLayout>
         <Switch>
           <Route path="/login">
