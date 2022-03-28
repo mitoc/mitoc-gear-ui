@@ -34,14 +34,16 @@ export function GearRentalsHistory({ gearId }: Props) {
       {rentals && (
         <Table>
           <thead>
-            <th>Renter</th>
-            <th>Checked out</th>
-            <th>Returned</th>
-            <th>Weeks out</th>
+            <tr>
+              <th>Renter</th>
+              <th>Checked out</th>
+              <th>Returned</th>
+              <th>Weeks out</th>
+            </tr>
           </thead>
           <tbody>
             {rentals.map(({ person, checkedout, returned, weeksOut }) => (
-              <tr>
+              <tr key={person.id + checkedout}>
                 <td>
                   <Link to={`/people/${person.id}`}>
                     {person.firstName} {person.lastName}
