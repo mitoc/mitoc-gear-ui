@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { isPlainObject, isArray, get } from "lodash";
 
 interface Item {
+  id: string;
   [key: string]: any;
 }
 
@@ -44,6 +45,7 @@ export function DataGrid<T extends Item>(props: Props<T>) {
       </div>
       {props.data.map((item, rowIdx) => (
         <Row
+          key={item.id}
           columns={props.columns}
           idx={rowIdx}
           item={item}
@@ -54,7 +56,7 @@ export function DataGrid<T extends Item>(props: Props<T>) {
   );
 }
 
-function Row<T>({
+function Row<T extends Item>({
   columns,
   idx,
   item,
@@ -74,6 +76,7 @@ function Row<T>({
             className={className ?? "p-2 d-flex align-items-center"}
             role="gridcell"
             aria-colindex={1 + colIdx}
+            key={col.key}
           >
             {renderValue(col, item)}
           </div>

@@ -1,6 +1,5 @@
 import { sum, map } from "lodash";
 import Table from "react-bootstrap/Table";
-import { Link } from "react-router-dom";
 
 import { GearSummary } from "apiClient/gear";
 import { checkoutGear, Person } from "apiClient/people";
