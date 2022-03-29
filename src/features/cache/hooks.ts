@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
+
 import { useAppDispatch, useAppSelector } from "app/hooks";
 
 import {
   fetchPurchasableItems,
   fetchAffiliations,
   fetchPerson,
+  fetchPersonList,
 } from "./cacheSlice";
 
 export function usePurchasableItems() {
@@ -41,4 +43,29 @@ export function usePerson(id: string) {
     dispatch(fetchPerson(id));
   }, [dispatch]);
   return person;
+}
+
+export function usePersonList(query: string, page?: number) {
+  const dispatch = useAppDispatch();
+  const q = query.trim();
+  const p = page ?? 1;
+  const personList = useAppSelector(
+    (state) => state.cache.peopleSets[q]?.results?.[p]?.value
+  );
+  const count = useAppSelector((state) => state.cache.peopleSets[q]?.number);
+  const nbPages = count != null ? Math.ceil(count / 50) : count;
+
+  const fetch = useCallback(
+    (q: string, page?: number) => dispatch(fetchPersonList({ q, page })),
+    [dispatch]
+  );
+
+  useEffect(() => {
+    if (personList != null) {
+      return;
+    }
+    fetch(q, p);
+  }, [fetch, q, p]);
+
+  return { personList, nbPages };
 }

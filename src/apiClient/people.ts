@@ -48,10 +48,13 @@ export interface Affiliation {
   dues: number;
 }
 
-async function getPersonList(
-  q?: String,
-  page?: number
-): Promise<ListWrapper<PersonSummary>> {
+async function getPersonList({
+  q,
+  page,
+}: {
+  q?: string;
+  page?: number;
+}): Promise<ListWrapper<PersonSummary>> {
   return request("/people/", "GET", {
     ...(q && { q }),
     ...(page && { page }),

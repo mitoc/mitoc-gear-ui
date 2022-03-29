@@ -1,12 +1,13 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 
 import Form from "react-bootstrap/Form";
-import { debounce } from "lodash";
 import styled from "styled-components";
 
-import { getPersonList, PersonSummary } from "apiClient/people";
+import { PersonSummary } from "apiClient/people";
+import { usePersonList } from "features/cache";
 import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
+import { TextField } from "components/Inputs/TextField";
 import { PersonLink } from "components/PersonLink";
 
 type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
@@ -14,27 +15,25 @@ type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
 };
 
 export function PeoplePage() {
-  const [people, setPeople] = useState<PersonSummary[] | null>(null);
   const [page, setPage] = useState<number>(1);
-  const [nbPage, setNbPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
+  const [people, setPeople] = useState<PersonSummary[] | undefined>(undefined);
+  const [nbPage, setNbPage] = useState<number | undefined>(undefined);
 
-  const fetch = useMemo(
-    () =>
-      debounce(
-        (q: string, page?: number) =>
-          getPersonList(q, page).then((data) => {
-            setPeople(data.results);
-            setNbPage(Math.ceil(data.count / 50));
-          }),
-        300
-      ),
-    [setPeople]
-  );
+  const { personList, nbPages: rawNbPages } = usePersonList(query, page);
 
+  // We want to keep the old person list and nbPages when a query is in flight
+  // This makes the UI more stable
   useEffect(() => {
-    fetch(query.trim(), page);
-  }, [query, page, fetch]);
+    if (personList != null) {
+      setPeople(personList);
+    }
+  }, [personList]);
+  useEffect(() => {
+    if (rawNbPages != null) {
+      setNbPage(rawNbPages);
+    }
+  }, [rawNbPages]);
 
   const peopleData = people?.map(({ firstName, lastName, ...other }) => ({
     name: `${firstName} ${lastName}`,
@@ -49,26 +48,22 @@ export function PeoplePage() {
 
   return (
     <>
-      <Form.Group className="mb-3 w-100">
-        <Form.Control
-          type="text"
-          placeholder="Search"
-          onChange={(data) => {
-            setPage(1);
-            setQuery(data.target.value);
-          }}
-        />
-      </Form.Group>
+      <TextField
+        value={query}
+        onChange={(newQuery) => {
+          setPage(1);
+          setQuery(newQuery);
+        }}
+        placeholder="Search"
+        debounceTime={300}
+      />
+
+      {nbPage != null && (
+        <TablePagination setPage={setPage} page={page} nbPage={nbPage} />
+      )}
 
       {peopleData && (
-        <>
-          <TablePagination setPage={setPage} page={page} nbPage={nbPage} />
-          <DataGrid
-            columns={myColumns}
-            data={peopleData}
-            rowWrapper={LinkRow}
-          />
-        </>
+        <DataGrid columns={myColumns} data={peopleData} rowWrapper={LinkRow} />
       )}
     </>
   );
@@ -82,7 +77,6 @@ function LinkRow({
   children: React.ReactNode;
 }) {
   const { id } = person;
-  const href = `/people/${id}`;
   return <PersonLink id={id}>{children}</PersonLink>;
 }
 
