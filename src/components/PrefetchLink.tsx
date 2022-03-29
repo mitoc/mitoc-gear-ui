@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Link, LinkProps } from "react-router-dom";
-import type { AsyncThunkAction } from "@reduxjs/toolkit";
+import type { AsyncThunk } from "@reduxjs/toolkit";
 
 import { useAppDispatch } from "app/hooks";
 import { useEffect } from "react";
@@ -8,7 +8,7 @@ import { useCallback } from "react";
 
 type Props = {
   id: string;
-  fetchAction: (arg: string) => AsyncThunkAction<any, string, {}>;
+  fetchAction: AsyncThunk<any, string, {}>;
 } & LinkProps;
 
 const delay = 150;

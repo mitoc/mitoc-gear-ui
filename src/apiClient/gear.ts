@@ -6,6 +6,7 @@ export interface GearSummary {
   id: string;
   available: boolean;
   broken: string;
+  // TODO: This is weird, we shouldn't have the rentals in there
   checkedOutTo: PersonSummary | null;
   dailyFee: number;
   depositAmount: number;
