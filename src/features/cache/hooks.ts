@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import type { AsyncThunk } from "@reduxjs/toolkit";
 
 import { useAppDispatch, useAppSelector } from "app/hooks";
+import { ListWrapper } from "apiClient/types";
 
 import {
   fetchPurchasableItems,
@@ -9,7 +11,8 @@ import {
   fetchPersonList,
   fetchGearList,
 } from "./cacheSlice";
-import { SetsKey, ValueList } from "./types";
+
+import { PaginatedQueryState, CacheState } from "./types";
 
 export function usePurchasableItems() {
   const dispatch = useAppDispatch();
@@ -47,44 +50,45 @@ export function usePerson(id: string) {
   return person;
 }
 
-function useItemList<K extends SetsKey>(pty: K, query: string, page?: number) {
+function useItemList<T, Arg extends { q?: string; page?: number }>(
+  get: (state: CacheState) => PaginatedQueryState<T>,
+  fetchFn: AsyncThunk<ListWrapper<T>, Arg, {}>,
+  arg: Arg
+) {
   const dispatch = useAppDispatch();
-  const q = query.trim();
-  const p = page ?? 1;
+  const q = (arg.q ?? "").trim();
+  const p = arg.page ?? 1;
   const items = useAppSelector(
-    (state) => state.cache[pty][q]?.results?.[p]?.value
-  ) as ValueList<K>;
-  const count = useAppSelector((state) => state.cache[pty][q]?.number);
+    (state) => get(state.cache)[q]?.results?.[p]?.value
+  );
+
+  const count = useAppSelector((state) => get(state.cache)[q]?.number);
   const nbPages = count != null ? Math.ceil(count / 50) : count;
 
-  const fetchFn = pty === "peopleSets" ? fetchPersonList : fetchGearList;
-
-  const fetch = useCallback(
-    // @ts-expect-error
-    (q: string, page?: number) => dispatch(fetchFn({ q, page })),
-    [dispatch]
-  );
+  const fetch = useCallback((arg: Arg) => dispatch(fetchFn(arg)), [dispatch]);
 
   useEffect(() => {
     if (items != null) {
       return;
     }
-    fetch(q, p);
-  }, [fetch, q, p]);
+    fetch(arg);
+  }, [fetch, JSON.stringify(arg)]);
 
   return { items, nbPages };
 }
 
+const foo = <T>(x: T) => x;
+
 /* Similiar to useItemList, but keep returing old result while waiting for the
  * query to complete. This makes the UI more stable.
  */
-function useSmoothItemList<K extends SetsKey>(
-  pty: K,
-  query: string,
-  page?: number
+function useSmoothItemList<T, Arg extends { q?: string; page?: number }>(
+  get: (state: CacheState) => PaginatedQueryState<T>,
+  fetchFn: AsyncThunk<ListWrapper<T>, Arg, {}>,
+  arg: Arg
 ) {
-  const { items, nbPages } = useItemList(pty, query, page);
-  const [smoothItems, setItems] = useState<ValueList<K> | undefined>(undefined);
+  const { items, nbPages } = useItemList(get, fetchFn, arg);
+  const [smoothItems, setItems] = useState<T[] | undefined>(undefined);
   const [smoothNbPages, setNbPages] = useState<number | undefined>(undefined);
   useEffect(() => {
     if (items != null) {
@@ -100,20 +104,24 @@ function useSmoothItemList<K extends SetsKey>(
   return { items: smoothItems, nbPages: smoothNbPages };
 }
 
-export function usePersonList(query: string, page?: number) {
+export function usePersonList(q?: string, page?: number) {
   const { items: personList, nbPages } = useSmoothItemList(
-    "peopleSets",
-    query,
-    page
+    (cache) => cache.peopleSets,
+    fetchPersonList,
+    { q, page }
   );
   return { personList, nbPages };
 }
 
-export function useGearList(query: string, page?: number) {
+export function useGearList(
+  q?: string,
+  page?: number,
+  includeRetired: boolean = false
+) {
   const { items: gearList, nbPages } = useSmoothItemList(
-    "gearSets",
-    query,
-    page
+    (cache) => cache.gearSets,
+    fetchGearList,
+    { q, page, includeRetired }
   );
   return { gearList, nbPages };
 }

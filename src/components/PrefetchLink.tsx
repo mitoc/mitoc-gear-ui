@@ -1,9 +1,8 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Link, LinkProps } from "react-router-dom";
 import type { AsyncThunkAction } from "@reduxjs/toolkit";
 
 import { useAppDispatch } from "app/hooks";
-import { fetchPerson } from "features/cache";
 import { useEffect } from "react";
 import { useCallback } from "react";
 

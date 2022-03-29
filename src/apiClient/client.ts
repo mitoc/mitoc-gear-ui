@@ -8,6 +8,9 @@ export async function request(
   data?: Data,
   maxRetry: number = 3
 ): Promise<any> {
+  if (maxRetry <= 0) {
+    return;
+  }
   const queryParams =
     data != null && method === "GET" ? "?" + getQueryParams(data) : "";
   const response = await fetch(`${API_HOST}${path}${queryParams}`, {

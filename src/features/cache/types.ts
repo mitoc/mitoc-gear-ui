@@ -27,22 +27,16 @@ export interface CacheState {
       value?: GearItem;
     };
   };
-  peopleSets: PaginatedQueryState<"peopleSets">;
-  gearSets: PaginatedQueryState<"gearSets">;
+  peopleSets: PaginatedQueryState<PersonSummary>;
+  gearSets: PaginatedQueryState<GearSummary>;
 }
 
-export type SetsKey = "peopleSets" | "gearSets";
-
-export type ValueList<K extends SetsKey> = K extends "peopleSets"
-  ? PersonSummary[]
-  : GearSummary[];
-
-export interface PaginatedQueryState<K extends SetsKey> {
+export interface PaginatedQueryState<T> {
   [queryKey: string]: {
     status: LoadingStatus;
     number?: number;
     results: {
-      [page: number]: { status: LoadingStatus; value?: ValueList<K> };
+      [page: number]: { status: LoadingStatus; value?: T[] };
     };
   };
 }

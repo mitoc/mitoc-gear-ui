@@ -1,50 +1,58 @@
 import { partial } from "lodash";
 
-import { LoadingStatus, CacheState, SetsKey, ValueList } from "./types";
+import { LoadingStatus, CacheState, PaginatedQueryState } from "./types";
 
 function getDefaultQueryState() {
   return { results: {}, status: LoadingStatus.loading };
 }
 
-function markPageLoading(
-  pty: SetsKey,
-  state: CacheState,
+function markPageLoading<T>(
+  get: (state: CacheState) => PaginatedQueryState<T>,
+  cacheState: CacheState,
   query: string,
   page: number
 ) {
-  state[pty][query] ??= getDefaultQueryState();
-  state[pty][query].results[page] = {
+  const state = get(cacheState);
+  state[query] ??= getDefaultQueryState();
+  state[query].results[page] = {
     status: LoadingStatus.loading,
   };
 }
 
-function markPageFetched<K extends SetsKey>(
-  pty: K,
-  state: CacheState,
+function markPageFetched<T>(
+  get: (state: CacheState) => PaginatedQueryState<T>,
+  cacheState: CacheState,
   query: string,
   page: number,
-  response: { count: number; results: ValueList<K> }
+  response: { count: number; results: T[] }
 ) {
-  state[pty][query] ??= getDefaultQueryState();
+  const state = get(cacheState);
+  state[query] ??= getDefaultQueryState();
 
-  state[pty][query].status = LoadingStatus.idle;
-  state[pty][query].number = response.count;
-  state[pty][query].results[page] = {
+  state[query].status = LoadingStatus.idle;
+  state[query].number = response.count;
+  state[query].results[page] = {
     status: LoadingStatus.idle,
   };
-  state[pty][query].results[page].value = response.results;
+  state[query].results[page].value = response.results;
 }
 
-export const markPeoplePageLoading = partial(markPageLoading, "peopleSets");
+export const markPeoplePageLoading = partial(
+  markPageLoading,
+  (cache) => cache.peopleSets
+);
 
 export const markPeoplePageFetched = partial(
   markPageFetched,
-  "peopleSets" as const
+  (cache) => cache.peopleSets
 );
 
-export const markGearPageLoading = partial(markPageLoading, "gearSets");
+export const markGearPageLoading = partial(
+  markPageLoading,
+  (cache) => cache.gearSets
+);
 
 export const markGearPageFetched = partial(
   markPageFetched,
-  "gearSets" as const
+  (cache) => cache.gearSets
 );
