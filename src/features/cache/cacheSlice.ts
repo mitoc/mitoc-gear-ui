@@ -1,51 +1,22 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { PurchasableItem, getPurchasableList } from "apiClient/gear";
+import { getPurchasableList, getGearList } from "apiClient/gear";
+import { getAffiliations, getPerson, getPersonList } from "apiClient/people";
+
+import { LoadingStatus, CacheState } from "./types";
 import {
-  Affiliation,
-  getAffiliations,
-  getPerson,
-  getPersonList,
-  Person,
-  PersonSummary,
-} from "apiClient/people";
-
-export enum LoadingStatus {
-  "loading" = "loading",
-  "idle" = "idle",
-}
-
-export interface CacheState {
-  purchasableItems: {
-    status: LoadingStatus;
-    value?: PurchasableItem[];
-  };
-  affiliations: {
-    status: LoadingStatus;
-    value?: Affiliation[];
-  };
-  people: {
-    [id: string]: {
-      status: LoadingStatus;
-      value?: Person;
-    };
-  };
-  peopleSets: {
-    [queryKey: string]: {
-      status: LoadingStatus;
-      number?: number;
-      results: {
-        [page: number]: { status: LoadingStatus; value?: PersonSummary[] };
-      };
-    };
-  };
-}
+  markPeoplePageLoading,
+  markPeoplePageFetched,
+  markGearPageLoading,
+  markGearPageFetched,
+} from "./paginatedQueryState";
 
 const initialState: CacheState = {
   purchasableItems: { status: LoadingStatus.idle },
   affiliations: { status: LoadingStatus.idle },
   people: {},
   peopleSets: {},
+  gearSets: {},
 };
 
 export const fetchPurchasableItems = createAsyncThunk(
@@ -56,9 +27,11 @@ export const fetchPurchasableItems = createAsyncThunk(
 export const fetchPerson = createAsyncThunk("cache/fetchPerson", getPerson);
 
 export const fetchPersonList = createAsyncThunk(
-  "cache/fetchPeople",
+  "cache/fetchPersonList",
   getPersonList
 );
+
+export const fetchGearList = createAsyncThunk("cache/getGearList", getGearList);
 
 export const fetchAffiliations = createAsyncThunk(
   "cache/fetchAffiliations",
@@ -98,26 +71,34 @@ const authSlice = createSlice({
         };
       })
       .addCase(fetchPersonList.pending, (state, action) => {
-        const q = action.meta.arg.q ?? "";
-        const currentSet = state.peopleSets[q] ?? { results: {} };
-        if (currentSet.number == null) {
-          currentSet.status = LoadingStatus.loading;
-        }
-        currentSet.results[action.meta.arg.page ?? 1] = {
-          status: LoadingStatus.loading,
-        };
-        state.peopleSets[q] = currentSet;
+        markPeoplePageLoading(
+          state,
+          action.meta.arg.q ?? "",
+          action.meta.arg.page ?? 1
+        );
       })
       .addCase(fetchPersonList.fulfilled, (state, action) => {
-        const q = action.meta.arg.q ?? "";
-        const currentSet = state.peopleSets[q] ?? { results: {} };
-        currentSet.status = LoadingStatus.idle;
-        currentSet.number = action.payload.count;
-        currentSet.results[action.meta.arg.page ?? 1] = {
-          status: LoadingStatus.idle,
-          value: action.payload.results,
-        };
-        state.peopleSets[q] = currentSet;
+        markPeoplePageFetched(
+          state,
+          action.meta.arg.q ?? "",
+          action.meta.arg.page ?? 1,
+          action.payload
+        );
+      })
+      .addCase(fetchGearList.pending, (state, action) => {
+        markGearPageLoading(
+          state,
+          action.meta.arg.q ?? "",
+          action.meta.arg.page ?? 1
+        );
+      })
+      .addCase(fetchGearList.fulfilled, (state, action) => {
+        markGearPageFetched(
+          state,
+          action.meta.arg.q ?? "",
+          action.meta.arg.page ?? 1,
+          action.payload
+        );
       });
   },
 });

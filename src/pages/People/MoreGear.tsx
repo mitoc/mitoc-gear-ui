@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import { useGearList } from "hooks/useGearList";
+import { useGearList } from "features/cache";
 import { TablePagination } from "components/TablePagination";
 import { GearSummary } from "apiClient/gear";
 
@@ -15,18 +15,14 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
-  const { gearList, nbPage } = useGearList({
-    query,
-    page,
-    runOnEmptyQuery: false,
-  });
+  const { gearList, nbPages } = useGearList(query, page);
 
   return (
     <div className="border rounded-2 p-2 bg-light">
       <div className="d-flex justify-content-between">
         <h3>More gear</h3>
-        {nbPage > 1 && (
-          <TablePagination setPage={setPage} page={page} nbPage={nbPage} />
+        {nbPages != null && nbPages > 1 && (
+          <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
         )}
       </div>
       <label className="form-group w-100 mb-2 d-flex flex-row align-items-center">

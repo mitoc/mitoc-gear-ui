@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-import Form from "react-bootstrap/Form";
 import styled from "styled-components";
 
 import { PersonSummary } from "apiClient/people";
@@ -17,25 +16,10 @@ type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
 export function PeoplePage() {
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
-  const [people, setPeople] = useState<PersonSummary[] | undefined>(undefined);
-  const [nbPage, setNbPage] = useState<number | undefined>(undefined);
 
-  const { personList, nbPages: rawNbPages } = usePersonList(query, page);
+  const { personList, nbPages } = usePersonList(query, page);
 
-  // We want to keep the old person list and nbPages when a query is in flight
-  // This makes the UI more stable
-  useEffect(() => {
-    if (personList != null) {
-      setPeople(personList);
-    }
-  }, [personList]);
-  useEffect(() => {
-    if (rawNbPages != null) {
-      setNbPage(rawNbPages);
-    }
-  }, [rawNbPages]);
-
-  const peopleData = people?.map(({ firstName, lastName, ...other }) => ({
+  const peopleData = personList?.map(({ firstName, lastName, ...other }) => ({
     name: `${firstName} ${lastName}`,
     ...other,
   }));
@@ -58,8 +42,8 @@ export function PeoplePage() {
         debounceTime={300}
       />
 
-      {nbPage != null && (
-        <TablePagination setPage={setPage} page={page} nbPage={nbPage} />
+      {nbPages != null && (
+        <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
       )}
 
       {peopleData && (

@@ -41,11 +41,15 @@ export interface PurchasableItem {
   name: string;
 }
 
-async function getGearList(
-  q?: String,
-  page?: number,
-  includeRetired?: boolean
-): Promise<ListWrapper<GearSummary>> {
+async function getGearList({
+  q,
+  page,
+  includeRetired,
+}: {
+  q?: string;
+  page?: number;
+  includeRetired?: boolean;
+}): Promise<ListWrapper<GearSummary>> {
   return request("/gear/", "GET", {
     ...(q && { q }),
     ...(page && { page }),

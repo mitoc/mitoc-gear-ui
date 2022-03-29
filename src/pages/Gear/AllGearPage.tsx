@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { GearSummary } from "apiClient/gear";
 import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
-import { useGearList } from "hooks/useGearList";
+import { useGearList } from "features/cache";
 
 import { GearStatus } from "./GearStatus";
 
@@ -14,7 +14,7 @@ export function AllGearPage() {
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
 
-  const { gearList, nbPage } = useGearList({ query, page });
+  const { gearList, nbPages } = useGearList(query, page);
 
   const myColumns = [
     { key: "id", header: "Serial Number", renderer: IDCell, className: "" },
@@ -36,11 +36,12 @@ export function AllGearPage() {
         />
       </Form.Group>
 
+      {nbPages != null && (
+        <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+      )}
+
       {gearList && (
-        <>
-          <TablePagination setPage={setPage} page={page} nbPage={nbPage} />
-          <DataGrid columns={myColumns} data={gearList} rowWrapper={LinkRow} />
-        </>
+        <DataGrid columns={myColumns} data={gearList} rowWrapper={LinkRow} />
       )}
     </>
   );
