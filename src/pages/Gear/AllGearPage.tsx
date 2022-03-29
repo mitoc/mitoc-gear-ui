@@ -1,10 +1,10 @@
 import { useState } from "react";
-import Form from "react-bootstrap/Form";
 import styled from "styled-components";
 
 import { GearSummary } from "apiClient/gear";
 import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
+import { TextField } from "components/Inputs/TextField";
 import { GearLink } from "components/GearLink";
 import { useGearList } from "features/cache";
 
@@ -25,16 +25,15 @@ export function AllGearPage() {
 
   return (
     <>
-      <Form.Group className="mb-3 w-100">
-        <Form.Control
-          type="text"
-          placeholder="Search"
-          onChange={(data) => {
-            setPage(1);
-            setQuery(data.target.value);
-          }}
-        />
-      </Form.Group>
+      <TextField
+        value={query}
+        onChange={(newQuery) => {
+          setPage(1);
+          setQuery(newQuery);
+        }}
+        placeholder="Search"
+        debounceTime={300}
+      />
 
       {nbPages != null && (
         <TablePagination setPage={setPage} page={page} nbPage={nbPages} />

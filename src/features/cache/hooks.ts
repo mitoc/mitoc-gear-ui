@@ -50,19 +50,20 @@ export function usePerson(id: string) {
   return person;
 }
 
-function useItemList<T, Arg extends { q?: string; page?: number }>(
+function useItemList<T, Arg extends { page?: number }>(
   get: (state: CacheState) => PaginatedQueryState<T>,
   fetchFn: AsyncThunk<ListWrapper<T>, Arg, {}>,
   arg: Arg
 ) {
   const dispatch = useAppDispatch();
-  const q = (arg.q ?? "").trim();
-  const p = arg.page ?? 1;
+  const { page, ...otherArgs } = arg;
+  const query = JSON.stringify(otherArgs);
+  const p = page ?? 1;
   const items = useAppSelector(
-    (state) => get(state.cache)[q]?.results?.[p]?.value
+    (state) => get(state.cache)[query]?.results?.[p]?.value
   );
 
-  const count = useAppSelector((state) => get(state.cache)[q]?.number);
+  const count = useAppSelector((state) => get(state.cache)[query]?.number);
   const nbPages = count != null ? Math.ceil(count / 50) : count;
 
   const fetch = useCallback((arg: Arg) => dispatch(fetchFn(arg)), [dispatch]);
@@ -77,12 +78,10 @@ function useItemList<T, Arg extends { q?: string; page?: number }>(
   return { items, nbPages };
 }
 
-const foo = <T>(x: T) => x;
-
 /* Similiar to useItemList, but keep returing old result while waiting for the
  * query to complete. This makes the UI more stable.
  */
-function useSmoothItemList<T, Arg extends { q?: string; page?: number }>(
+function useSmoothItemList<T, Arg extends { page?: number }>(
   get: (state: CacheState) => PaginatedQueryState<T>,
   fetchFn: AsyncThunk<ListWrapper<T>, Arg, {}>,
   arg: Arg
@@ -108,7 +107,7 @@ export function usePersonList(q?: string, page?: number) {
   const { items: personList, nbPages } = useSmoothItemList(
     (cache) => cache.peopleSets,
     fetchPersonList,
-    { q, page }
+    { q: q?.trim() ?? "", page }
   );
   return { personList, nbPages };
 }
@@ -121,7 +120,7 @@ export function useGearList(
   const { items: gearList, nbPages } = useSmoothItemList(
     (cache) => cache.gearSets,
     fetchGearList,
-    { q, page, includeRetired }
+    { q: q?.trim() ?? "", page, includeRetired }
   );
   return { gearList, nbPages };
 }

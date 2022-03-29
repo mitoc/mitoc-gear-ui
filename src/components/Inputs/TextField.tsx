@@ -6,6 +6,7 @@ type Props = {
   onChange: (value: string) => void;
   debounceTime?: number;
   placeholder?: string;
+  className?: string;
 };
 
 export function TextField({
@@ -13,6 +14,7 @@ export function TextField({
   onChange,
   debounceTime,
   placeholder,
+  className,
 }: Props) {
   const [localValue, setLocalValue] = useState<string>(value);
 
@@ -24,7 +26,7 @@ export function TextField({
   }, [onChange, debounceTime]);
 
   return (
-    <div className="form-group mb-3 w-100">
+    <div className={`form-group mb-3 ${className ?? "w-100"}`}>
       <input
         type="text"
         className="form-control"

@@ -86,32 +86,28 @@ const authSlice = createSlice({
         };
       })
       .addCase(fetchPersonList.pending, (state, action) => {
-        markPeoplePageLoading(
-          state,
-          action.meta.arg.q ?? "",
-          action.meta.arg.page ?? 1
-        );
+        const { page, ...otherArgs } = action.meta.arg;
+        markPeoplePageLoading(state, JSON.stringify(otherArgs), page ?? 1);
       })
       .addCase(fetchPersonList.fulfilled, (state, action) => {
+        const { page, ...otherArgs } = action.meta.arg;
         markPeoplePageFetched(
           state,
-          action.meta.arg.q ?? "",
-          action.meta.arg.page ?? 1,
+          JSON.stringify(otherArgs),
+          page ?? 1,
           action.payload
         );
       })
       .addCase(fetchGearList.pending, (state, action) => {
-        markGearPageLoading(
-          state,
-          action.meta.arg.q ?? "",
-          action.meta.arg.page ?? 1
-        );
+        const { page, ...otherArgs } = action.meta.arg;
+        markGearPageLoading(state, JSON.stringify(otherArgs), page ?? 1);
       })
       .addCase(fetchGearList.fulfilled, (state, action) => {
+        const { page, ...otherArgs } = action.meta.arg;
         markGearPageFetched(
           state,
-          action.meta.arg.q ?? "",
-          action.meta.arg.page ?? 1,
+          JSON.stringify(otherArgs),
+          page ?? 1,
           action.payload
         );
       });

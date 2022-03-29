@@ -5,6 +5,7 @@ import { useGearList } from "features/cache";
 import { TablePagination } from "components/TablePagination";
 import { GearSummary } from "apiClient/gear";
 import { GearLink } from "components/GearLink";
+import { TextField } from "components/Inputs/TextField";
 
 type Props = {
   onAddGear: (item: GearSummary) => void;
@@ -26,14 +27,15 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
         )}
       </div>
       <label className="form-group w-100 mb-2 d-flex flex-row align-items-center">
-        <span className="me-2">Search:</span>
-        <input
-          type="text"
-          className="form-control w-50"
+        <TextField
           value={query}
-          onChange={(evt) => {
-            setQuery(evt.target.value);
+          onChange={(newQuery) => {
+            setPage(1);
+            setQuery(newQuery);
           }}
+          placeholder="Search"
+          debounceTime={300}
+          className="w-50"
         />
       </label>
 
