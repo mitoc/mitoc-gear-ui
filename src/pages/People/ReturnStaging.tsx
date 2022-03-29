@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { sum, map, mapValues, keyBy, flow, isEmpty } from "lodash";
 import Table from "react-bootstrap/Table";
-import { Link } from "react-router-dom";
 import { formatDate } from "lib/fmtDate";
 
 import { Person, Rental, returnGear } from "apiClient/people";
 import { Checkbox } from "components/Inputs/Checkbox";
 import { NumberField } from "components/Inputs/NumberField";
+import { GearLink } from "components/GearLink";
 
 import type { ItemToPurchase } from "./types";
 
@@ -131,7 +131,7 @@ export function ReturnStaging({
                     />
                   </td>
                   <td>
-                    <Link to={`/gear/${id}`}>{id}</Link>
+                    <GearLink id={id}>{id}</GearLink>
                     <br />
                     {type.typeName}
                     <br />

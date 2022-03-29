@@ -1,4 +1,4 @@
-import type { PurchasableItem, GearSummary } from "apiClient/gear";
+import type { PurchasableItem, GearSummary, GearItem } from "apiClient/gear";
 import type { Affiliation, Person, PersonSummary } from "apiClient/people";
 
 export enum LoadingStatus {
@@ -19,6 +19,12 @@ export interface CacheState {
     [id: string]: {
       status: LoadingStatus;
       value?: Person;
+    };
+  };
+  gear: {
+    [id: string]: {
+      status: LoadingStatus;
+      value?: GearItem;
     };
   };
   peopleSets: PaginatedQueryState<"peopleSets">;

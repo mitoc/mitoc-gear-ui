@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Form from "react-bootstrap/Form";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import { GearSummary } from "apiClient/gear";
 import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
+import { GearLink } from "components/GearLink";
 import { useGearList } from "features/cache";
 
 import { GearStatus } from "./GearStatus";
@@ -54,9 +54,7 @@ function LinkRow({
   item: GearSummary;
   children: React.ReactNode;
 }) {
-  const { id } = gearItem;
-  const href = `/gear/${id}`;
-  return <Link to={href}>{children}</Link>;
+  return <GearLink id={gearItem.id}>{children}</GearLink>;
 }
 
 function IDCell({ item: gearItem }: { item: GearSummary }) {

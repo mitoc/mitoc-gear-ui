@@ -1,9 +1,9 @@
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
-import { Link } from "react-router-dom";
 
 import type { Person, Rental } from "apiClient/people";
 import { formatDate } from "lib/fmtDate";
+import { GearLink } from "components/GearLink";
 
 type Props = {
   rentals: Person["rentals"];
@@ -25,7 +25,7 @@ export function PersonRentals({ rentals, onReturn, rentalsToReturn }: Props) {
               return (
                 <tr key={id}>
                   <td>
-                    <Link to={`/gear/${id}`}>{id}</Link>
+                    <GearLink id={id}>{id}</GearLink>
                     <br />
                     <span>{type.typeName}</span>
                     <br />

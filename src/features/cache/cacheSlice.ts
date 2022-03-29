@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { getPurchasableList, getGearList } from "apiClient/gear";
+import { getPurchasableList, getGearList, getGearItem } from "apiClient/gear";
 import { getAffiliations, getPerson, getPersonList } from "apiClient/people";
 
 import { LoadingStatus, CacheState } from "./types";
@@ -15,6 +15,7 @@ const initialState: CacheState = {
   purchasableItems: { status: LoadingStatus.idle },
   affiliations: { status: LoadingStatus.idle },
   people: {},
+  gear: {},
   peopleSets: {},
   gearSets: {},
 };
@@ -25,6 +26,8 @@ export const fetchPurchasableItems = createAsyncThunk(
 );
 
 export const fetchPerson = createAsyncThunk("cache/fetchPerson", getPerson);
+
+export const fetchGear = createAsyncThunk("cache/fetchGear", getGearItem);
 
 export const fetchPersonList = createAsyncThunk(
   "cache/fetchPersonList",
@@ -67,6 +70,18 @@ const authSlice = createSlice({
       .addCase(fetchPerson.fulfilled, (state, action) => {
         state.people[action.meta.arg] = {
           ...(state.people[action.meta.arg] ?? {}),
+          ...{ status: LoadingStatus.idle, value: action.payload },
+        };
+      })
+      .addCase(fetchGear.pending, (state, action) => {
+        state.gear[action.meta.arg] = {
+          ...(state.gear[action.meta.arg] ?? {}),
+          ...{ status: LoadingStatus.loading },
+        };
+      })
+      .addCase(fetchGear.fulfilled, (state, action) => {
+        state.gear[action.meta.arg] = {
+          ...(state.gear[action.meta.arg] ?? {}),
           ...{ status: LoadingStatus.idle, value: action.payload },
         };
       })

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import { useGearList } from "features/cache";
 import { TablePagination } from "components/TablePagination";
 import { GearSummary } from "apiClient/gear";
+import { GearLink } from "components/GearLink";
 
 type Props = {
   onAddGear: (item: GearSummary) => void;
@@ -90,7 +90,7 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
                       )}
                     </td>
                     <td className="mw-40">
-                      {type.typeName} (<Link to={`/gear/${id}`}>{id}</Link>)
+                      {type.typeName} (<GearLink id={id}>{id}</GearLink>)
                     </td>
                     <td>
                       <>

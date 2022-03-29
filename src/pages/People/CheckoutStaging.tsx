@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import { GearSummary } from "apiClient/gear";
 import { checkoutGear, Person } from "apiClient/people";
+import { GearLink } from "components/GearLink";
 
 type Props = {
   person: Person;
@@ -64,7 +65,7 @@ export function CheckoutStaging({
               {gearToCheckout.map(({ id, type, dailyFee, depositAmount }) => (
                 <tr key={id}>
                   <td>
-                    <Link to={`/gear/${id}`}>{id}</Link>
+                    <GearLink id={id}>{id}</GearLink>
                   </td>
                   <td>{type.typeName}</td>
                   <td>{depositAmount}</td>

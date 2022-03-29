@@ -31,18 +31,18 @@ export function GearRentalsHistory({ gearId }: Props) {
         )}
       </div>
 
-      {rentals && (
-        <Table>
-          <thead>
-            <tr>
-              <th>Renter</th>
-              <th>Checked out</th>
-              <th>Returned</th>
-              <th>Weeks out</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rentals.map(({ person, checkedout, returned, weeksOut }) => (
+      <Table>
+        <thead>
+          <tr>
+            <th>Renter</th>
+            <th>Checked out</th>
+            <th>Returned</th>
+            <th>Weeks out</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rentals &&
+            rentals.map(({ person, checkedout, returned, weeksOut }) => (
               <tr key={person.id + checkedout}>
                 <td>
                   <PersonLink id={person.id}>
@@ -54,9 +54,8 @@ export function GearRentalsHistory({ gearId }: Props) {
                 <td>{weeksOut}</td>
               </tr>
             ))}
-          </tbody>
-        </Table>
-      )}
+        </tbody>
+      </Table>
     </div>
   );
 }
