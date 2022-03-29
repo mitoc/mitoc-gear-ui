@@ -58,7 +58,7 @@ export function ReturnStaging({
       rentalsToReturn.map((rental) => ({
         id: rental.id,
       })),
-      gearToBuy.map((item) => item.id),
+      gearToBuy.map((item) => item.item.id),
       checkNumber,
       creditToSpent
     ).then(onReturnCB);
