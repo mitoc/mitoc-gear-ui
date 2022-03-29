@@ -14,7 +14,6 @@ export function Notes({ notes, onAdd, onArchive }: Props) {
   const [showForm, setShowForm] = useState<boolean>(false);
   const [newNote, setNewNote] = useState<string>("");
 
-  console.log(onArchive);
   return (
     <div className="border rounded-2 p-2 mb-3 bg-light">
       <div className="d-flex justify-content-between">

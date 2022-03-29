@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import { Link } from "react-router-dom";
 
 import { formatDate } from "lib/fmtDate";
 import { GearRental, getGearRentalHistory } from "apiClient/gear";
 import { TablePagination } from "components/TablePagination";
+import { PersonLink } from "components/PersonLink";
 
 type Props = {
   gearId: string;
@@ -45,9 +45,9 @@ export function GearRentalsHistory({ gearId }: Props) {
             {rentals.map(({ person, checkedout, returned, weeksOut }) => (
               <tr key={person.id + checkedout}>
                 <td>
-                  <Link to={`/people/${person.id}`}>
+                  <PersonLink id={person.id}>
                     {person.firstName} {person.lastName}
-                  </Link>
+                  </PersonLink>
                 </td>
                 <td>{formatDate(checkedout)}</td>
                 <td>{returned && formatDate(returned)}</td>

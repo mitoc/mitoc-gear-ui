@@ -26,7 +26,7 @@ export interface GearItem extends GearSummary {
 
 export interface GearRental {
   person: {
-    id: number;
+    id: string;
     firstName: string;
     lastName: string;
   };

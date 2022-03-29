@@ -16,10 +16,6 @@ export function AllGearPage() {
 
   const { gearList, nbPage } = useGearList({ query, page });
 
-  if (gearList == null) {
-    return null;
-  }
-
   const myColumns = [
     { key: "id", header: "Serial Number", renderer: IDCell, className: "" },
     { key: "type.typeName", header: "Type" },
@@ -39,9 +35,13 @@ export function AllGearPage() {
           }}
         />
       </Form.Group>
-      <TablePagination setPage={setPage} page={page} nbPage={nbPage} />
 
-      <DataGrid columns={myColumns} data={gearList} rowWrapper={LinkRow} />
+      {gearList && (
+        <>
+          <TablePagination setPage={setPage} page={page} nbPage={nbPage} />
+          <DataGrid columns={myColumns} data={gearList} rowWrapper={LinkRow} />
+        </>
+      )}
     </>
   );
 }

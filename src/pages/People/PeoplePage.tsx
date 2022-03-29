@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo } from "react";
-import { Link } from "react-router-dom";
 
 import Form from "react-bootstrap/Form";
 import { debounce } from "lodash";
@@ -8,6 +7,7 @@ import styled from "styled-components";
 import { getPersonList, PersonSummary } from "apiClient/people";
 import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
+import { PersonLink } from "components/PersonLink";
 
 type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
   name: string;
@@ -36,11 +36,7 @@ export function PeoplePage() {
     fetch(query.trim(), page);
   }, [query, page, fetch]);
 
-  if (people == null) {
-    return null;
-  }
-
-  const peopleData = people.map(({ firstName, lastName, ...other }) => ({
+  const peopleData = people?.map(({ firstName, lastName, ...other }) => ({
     name: `${firstName} ${lastName}`,
     ...other,
   }));
@@ -63,9 +59,17 @@ export function PeoplePage() {
           }}
         />
       </Form.Group>
-      <TablePagination setPage={setPage} page={page} nbPage={nbPage} />
 
-      <DataGrid columns={myColumns} data={peopleData} rowWrapper={LinkRow} />
+      {peopleData && (
+        <>
+          <TablePagination setPage={setPage} page={page} nbPage={nbPage} />
+          <DataGrid
+            columns={myColumns}
+            data={peopleData}
+            rowWrapper={LinkRow}
+          />
+        </>
+      )}
     </>
   );
 }
@@ -79,7 +83,7 @@ function LinkRow({
 }) {
   const { id } = person;
   const href = `/people/${id}`;
-  return <Link to={href}>{children}</Link>;
+  return <PersonLink id={id}>{children}</PersonLink>;
 }
 
 function RentalCell({ item: person }: { item: TablePerson }) {

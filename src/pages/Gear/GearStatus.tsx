@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
-
 import { GearSummary } from "apiClient/gear";
 import { formatDate, formatDateTime } from "lib/fmtDate";
+import { PersonLink } from "components/PersonLink";
 
 type Props = {
   gearItem: GearSummary;
@@ -47,7 +46,7 @@ export function GearStatus({
       <div className={className}>
         Checked out to{" "}
         {renderLinks ? (
-          <Link to={"/people/" + renter.id}>{renderedRenter}</Link>
+          <PersonLink id={renter.id}>{renderedRenter}</PersonLink>
         ) : (
           renderedRenter
         )}{" "}
