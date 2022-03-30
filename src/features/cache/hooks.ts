@@ -10,6 +10,7 @@ import {
   fetchPerson,
   fetchPersonList,
   fetchGearList,
+  fetchGear,
 } from "./cacheSlice";
 
 import { PaginatedQueryState, CacheState } from "./types";
@@ -48,6 +49,18 @@ export function usePerson(id: string) {
     dispatch(fetchPerson(id));
   }, [dispatch]);
   return person;
+}
+
+export function useGearItem(id: string) {
+  const dispatch = useAppDispatch();
+  const gear = useAppSelector((state) => state.cache.gear[id]?.value);
+  useEffect(() => {
+    if (gear != null) {
+      return;
+    }
+    dispatch(fetchGear(id));
+  }, [dispatch]);
+  return gear;
 }
 
 function useItemList<T, Arg extends { page?: number }>(

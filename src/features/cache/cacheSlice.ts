@@ -34,7 +34,10 @@ export const fetchPersonList = createAsyncThunk(
   getPersonList
 );
 
-export const fetchGearList = createAsyncThunk("cache/getGearList", getGearList);
+export const fetchGearList = createAsyncThunk(
+  "cache/fetchGearList",
+  getGearList
+);
 
 export const fetchAffiliations = createAsyncThunk(
   "cache/fetchAffiliations",
