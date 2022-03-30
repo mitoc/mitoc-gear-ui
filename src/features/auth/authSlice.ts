@@ -35,6 +35,14 @@ const authSlice = createSlice({
         state.loggedIn = action.payload.loggedIn;
         state.user = action.payload.user;
       })
+      .addCase(checkLoggedIn.rejected, (state) => {
+        state.loadingStatus = "idle";
+        state.error = {
+          msg:
+            "Unable to reach API server. Please try again later and/or contact mitoc-webmaster@mit.edu",
+          err: "unavailableServer",
+        };
+      })
       .addCase(logIn.pending, (state) => {
         state.loadingStatus = "loading";
       })
