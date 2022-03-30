@@ -1,3 +1,5 @@
+import { ApiError as SerializedApiError } from "./types";
+
 type Data = { [key: string]: any };
 
 const API_HOST = "http://127.0.0.1:8000/api/v1";
@@ -29,26 +31,26 @@ export async function request(
     await refreshCsrfToken();
     return request(path, method, data, maxRetry - 1);
   }
-  if (!response.ok) {
-    throw Error(await parseResponse(response));
-  }
-  try {
-    return parseResponse(response);
-  } catch (e) {
+  const jsonResponse = await parseJson(response);
+  if (!jsonResponse) {
     return;
+  }
+  if (!response.ok) {
+    throw new APIError(jsonResponse);
+  }
+  return jsonResponse;
+}
+
+async function parseJson(response: Response) {
+  try {
+    return await response.json();
+  } catch {
+    return null;
   }
 }
 
 function getQueryParams(data?: Record<string, any>) {
   return new URLSearchParams(data);
-}
-
-async function parseResponse(response: Response) {
-  try {
-    return await response.json();
-  } catch (e) {
-    return;
-  }
 }
 
 let _csrfToken: any = null;
@@ -66,4 +68,13 @@ async function refreshCsrfToken() {
   });
   const data = await response.json();
   _csrfToken = data.csrfToken;
+}
+
+export class APIError extends Error {
+  error: SerializedApiError;
+
+  constructor(error: SerializedApiError) {
+    super(JSON.stringify(error));
+    this.error = error;
+  }
 }

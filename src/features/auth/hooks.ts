@@ -19,5 +19,6 @@ export function useCurrentUser() {
       state.auth.loadingStatus === "blank",
     loggedIn: state.auth.loggedIn,
     user: state.auth.user,
+    error: state.auth.error,
   }));
 }
