@@ -6,6 +6,7 @@ import Nav from "react-bootstrap/Nav";
 
 import { useCurrentUser, logOut } from "features/auth";
 import { useAppDispatch } from "app/hooks";
+import { PersonLink } from "components/PersonLink";
 
 export function Header() {
   const { user } = useCurrentUser();
@@ -42,6 +43,9 @@ export function Header() {
               <NavDropdown.Item onClick={() => dispatch(logOut())}>
                 Log out
               </NavDropdown.Item>
+              <PersonLink className="dropdown-item" id={user.id}>
+                My profile
+              </PersonLink>
               <NavDropdown.Item href="http://goo.gl/nPMjmc" target="_blank">
                 Request desk credit
               </NavDropdown.Item>
