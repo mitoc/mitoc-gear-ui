@@ -5,6 +5,7 @@ import { GearSummary } from "apiClient/gear";
 import { checkoutGear, Person } from "apiClient/people";
 import { GearLink } from "components/GearLink";
 import { fmtAmount } from "lib/fmtNumber";
+import { RemoveButton } from "components/Buttons";
 
 type Props = {
   person: Person;
@@ -20,7 +21,6 @@ export function CheckoutStaging({
   onCheckout: onCheckoutCB,
 }: Props) {
   const totalDeposit = sum(map(gearToCheckout, "depositAmount"));
-  const totalDailyFee = sum(map(gearToCheckout, "dailyFee"));
   const gearIDs = map(gearToCheckout, "id");
 
   const onCheckout = () => {
@@ -30,27 +30,20 @@ export function CheckoutStaging({
   return (
     <div className="border rounded-2 p-2 mb-3 bg-light">
       <h3>Gear to check out</h3>
+      <hr />
+      <h5>
+        Deposit due:{" "}
+        {hasFFCheck(person) ? (
+          <>
+            <strong style={{ color: "var(--bs-teal)" }}>{fmtAmount(0)}</strong>
+             (Frequent Flyer)
+          </>
+        ) : (
+          <strong className="text-warning">{fmtAmount(totalDeposit)}</strong>
+        )}
+      </h5>
       {gearToCheckout && (
         <>
-          <Table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>Items</th>
-                <th>Total deposit due</th>
-                <th>Total daily fee</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td></td>
-                <td>{gearToCheckout.length}</td>
-                <td>{fmtAmount(totalDeposit)}</td>
-                <td>{fmtAmount(totalDailyFee)}</td>
-              </tr>
-            </tbody>
-          </Table>
-
           <Table>
             <thead>
               <tr>
@@ -70,13 +63,8 @@ export function CheckoutStaging({
                   <td>{type.typeName}</td>
                   <td>{fmtAmount(depositAmount)}</td>
                   <td>{fmtAmount(dailyFee)}</td>
-                  <td>
-                    <button
-                      className="btn btn-outline-secondary"
-                      onClick={() => onRemove(id)}
-                    >
-                      X
-                    </button>
+                  <td className="text-end align-middle">
+                    <RemoveButton onClick={() => onRemove(id)} />
                   </td>
                 </tr>
               ))}
@@ -90,5 +78,13 @@ export function CheckoutStaging({
         </button>
       </div>
     </div>
+  );
+}
+
+function hasFFCheck(person: Person) {
+  const today = new Date().toISOString().split("T")[0];
+  return (
+    person.frequentFlyerCheck != null &&
+    today <= person.frequentFlyerCheck.expires
   );
 }

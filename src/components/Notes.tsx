@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { formatDateTime } from "lib/fmtDate";
 import type { Person } from "apiClient/people";
 import { TextArea } from "components/Inputs/TextArea";
+import { ToggleExpandButton, ArchiveButton } from "components/Buttons";
 
 type Props = {
   notes: Person["notes"];
@@ -15,15 +16,13 @@ export function Notes({ notes, onAdd, onArchive }: Props) {
   const [newNote, setNewNote] = useState<string>("");
 
   return (
-    <div className="border rounded-2 p-2 mb-3 bg-light">
+    <div className="border rounded-2 p-2 pe-3 mb-3 bg-light">
       <div className="d-flex justify-content-between">
         <h4>Notes</h4>
-        <button
-          className="btn btn-outline-secondary"
-          onClick={() => setShowForm((current) => !current)}
-        >
-          {showForm ? "-" : "+"}
-        </button>
+        <ToggleExpandButton
+          isOpen={showForm}
+          onClick={() => setShowForm((s) => !s)}
+        />
       </div>
       {showForm && (
         <form>
@@ -55,7 +54,7 @@ export function Notes({ notes, onAdd, onArchive }: Props) {
         return (
           <React.Fragment key={note.dateInserted}>
             <hr />
-            <div className="d-flex justify-content-between">
+            <div className="d-flex justify-content-between align-items-center">
               <div>
                 {formatDateTime(note.dateInserted)}, {note.author.firstName}{" "}
                 {note.author.lastName}:
@@ -64,12 +63,7 @@ export function Notes({ notes, onAdd, onArchive }: Props) {
                 </blockquote>
               </div>
               {onArchive && (
-                <button
-                  className="btn btn-outline-secondary"
-                  onClick={() => onArchive(note.id)}
-                >
-                  ⬇
-                </button>
+                <ArchiveButton onClick={() => onArchive(note.id)} />
               )}
             </div>
           </React.Fragment>

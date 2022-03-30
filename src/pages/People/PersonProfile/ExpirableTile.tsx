@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { formatDate } from "lib/fmtDate";
 
 import type { Expireable, Person } from "apiClient/people";
+import { ToggleExpandButton } from "components/Buttons";
 
 export function ExpirableTile({
   title,
@@ -35,12 +36,10 @@ export function ExpirableTile({
             {exp == null ? "No record" : formatDate(exp.expires)}
           </span>
         </div>
-        <button
-          className="btn btn-outline-secondary"
+        <ToggleExpandButton
           onClick={() => setShowForm((current) => !current)}
-        >
-          {showForm ? "-" : "+"}
-        </button>
+          isOpen={showForm}
+        />
       </div>
       {showForm && AddForm && (
         <AddForm person={person} onClose={() => setShowForm(false)} />

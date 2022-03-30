@@ -10,6 +10,7 @@ import { GearLink } from "components/GearLink";
 import { fmtAmount } from "lib/fmtNumber";
 
 import type { ItemToPurchase } from "./types";
+import { RemoveButton } from "components/Buttons";
 
 type Props = {
   person: Person;
@@ -77,7 +78,10 @@ export function ReturnStaging({
   return (
     <div className="border rounded-2 p-2 mb-3 bg-light">
       <h3>{title}</h3>
-      <h4>Payment due: {fmtAmount(paymentDue)}</h4>
+      <hr />
+      <h5>
+        Payment due: <strong>{fmtAmount(paymentDue)}</strong>
+      </h5>
       {person.mitocCredit > 0 && totalDue > 0 && (
         <div>
           <Checkbox
@@ -87,6 +91,7 @@ export function ReturnStaging({
           Use {fmtAmount(creditToSpent)} of MITOC credit
         </div>
       )}
+      <hr />
 
       {!isEmpty(rentalsToReturn) && (
         <>
@@ -139,13 +144,8 @@ export function ReturnStaging({
                     Daily fee: {fmtAmount(type.rentalAmount)}
                     <br />
                   </td>
-                  <td>
-                    <button
-                      className="btn btn-outline-secondary"
-                      onClick={() => onRemove(id)}
-                    >
-                      X
-                    </button>
+                  <td className="text-end align-middle">
+                    <RemoveButton onClick={() => onRemove(id)} />
                   </td>
                 </tr>
               ))}
@@ -170,13 +170,8 @@ export function ReturnStaging({
                 <tr key={id}>
                   <td>{name}</td>
                   <td>{fmtAmount(price)}</td>
-                  <td>
-                    <button
-                      className="btn btn-outline-secondary"
-                      onClick={() => onRemovePurchasable(id)}
-                    >
-                      X
-                    </button>
+                  <td className="text-end align-middle">
+                    <RemoveButton onClick={() => onRemovePurchasable(id)} />
                   </td>
                 </tr>
               ))}
