@@ -62,7 +62,7 @@ export function PersonPage() {
 
   return (
     <div className="row">
-      <div className="col-5 p-2">
+      <div className="col-12 col-md-5 p-2">
         <PersonProfile person={person} refreshPerson={refreshPerson} />
         <Notes
           notes={person.notes}
@@ -92,7 +92,7 @@ export function PersonPage() {
           />
         )}
       </div>
-      <div className="col-7 p-2">
+      <div className="col-12 col-md-7 p-2">
         <PersonTabsSelector activeTab={tab} updateTab={setTab} />
         {tab === PersonPageTabs.gearOut && (
           <PersonRentals

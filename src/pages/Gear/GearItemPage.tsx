@@ -21,14 +21,14 @@ export function GearItemPage() {
   }
   return (
     <div className="row">
-      <div className="col-5 p-2">
+      <div className="col-12 col-md-5 p-2">
         <GearInfoPanel gearItem={gearItem} refreshGear={refreshGear} />
         <Notes
           notes={gearItem.notes}
           onAdd={(note) => addNote(gearId, note).then(refreshGear)}
         />
       </div>
-      <div className="col-7 p-2">
+      <div className="col-12 col-md-7 p-2">
         <GearRentalsHistory gearId={gearId} />
       </div>
     </div>
