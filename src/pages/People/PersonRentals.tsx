@@ -25,6 +25,15 @@ export function PersonRentals({ rentals, onReturn, rentalsToReturn }: Props) {
 
               return (
                 <tr key={id}>
+                  <td className="align-middle">
+                    <Button
+                      className="w-100 h-100 btn"
+                      variant="outline-primary"
+                      onClick={() => onReturn(rental)}
+                    >
+                      Return
+                    </Button>
+                  </td>
                   <td>
                     <GearLink id={id}>{id}</GearLink>
                     <br />
@@ -38,15 +47,6 @@ export function PersonRentals({ rentals, onReturn, rentalsToReturn }: Props) {
                     <span>Weekends out: {weeksOut}</span>
                     <br />
                     <span>Total amount: {fmtAmount(totalAmount)}</span>
-                  </td>
-                  <td className="align-middle">
-                    <Button
-                      className="w-100 h-100 btn-lg"
-                      variant="outline-primary"
-                      onClick={() => onReturn(rental)}
-                    >
-                      Return
-                    </Button>
                   </td>
                 </tr>
               );
