@@ -6,6 +6,7 @@ import { TablePagination } from "components/TablePagination";
 import { GearSummary } from "apiClient/gear";
 import { GearLink } from "components/GearLink";
 import { TextField } from "components/Inputs/TextField";
+import { fmtAmount } from "lib/fmtNumber";
 
 type Props = {
   onAddGear: (item: GearSummary) => void;
@@ -105,8 +106,8 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
                         {specification}
                       </>
                     </td>
-                    <td>{depositAmount}</td>
-                    <td>{dailyFee}</td>
+                    <td>{fmtAmount(depositAmount)}</td>
+                    <td>{fmtAmount(dailyFee)}</td>
                   </tr>
                 );
               })}

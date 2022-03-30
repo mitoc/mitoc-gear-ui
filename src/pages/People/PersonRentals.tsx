@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import type { Person, Rental } from "apiClient/people";
 import { formatDate } from "lib/fmtDate";
 import { GearLink } from "components/GearLink";
+import { fmtAmount } from "lib/fmtNumber";
 
 type Props = {
   rentals: Person["rentals"];
@@ -29,14 +30,14 @@ export function PersonRentals({ rentals, onReturn, rentalsToReturn }: Props) {
                     <br />
                     <span>{type.typeName}</span>
                     <br />
-                    <span>Daily fee: ${type.rentalAmount}</span>
+                    <span>Daily fee: {fmtAmount(type.rentalAmount)}</span>
                   </td>
                   <td>
                     Checked out on {formatDate(checkedout)}
                     <br />
                     <span>Weekends out: {weeksOut}</span>
                     <br />
-                    <span>Total amount: {totalAmount}</span>
+                    <span>Total amount: {fmtAmount(totalAmount)}</span>
                   </td>
                   <td className="align-middle">
                     <Button

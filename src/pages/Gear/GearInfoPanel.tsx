@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { GearSummary } from "apiClient/gear";
+
+import type { GearSummary } from "apiClient/gear";
+import { fmtAmount } from "lib/fmtNumber";
 
 import { GearStatus } from "./GearStatus";
 import { GearStatusForm, GearStatusFormType } from "./GearStatusForm";
@@ -44,8 +46,8 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
       <Field value={gearItem.specification} title="Specification" />
       <Field value={gearItem.description} title="Description" />
       <Field value={gearItem.size} title="Size" />
-      <Field value={formatNumber(gearItem.depositAmount)} title="Deposit" />
-      <Field value={formatNumber(gearItem.dailyFee)} title="Daily Fee" />
+      <Field value={fmtAmount(gearItem.depositAmount)} title="Deposit" />
+      <Field value={fmtAmount(gearItem.dailyFee)} title="Daily Fee" />
       <div className="mt-2">
         <button
           className="btn btn-outline-secondary me-1"
@@ -89,13 +91,4 @@ function Field({ title, value }: { title: string; value?: string }) {
       <strong>{title}</strong>: {value}
     </div>
   );
-}
-
-const formatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
-
-function formatNumber(value: number): string {
-  return formatter.format(value);
 }

@@ -7,6 +7,7 @@ import { Person, Rental, returnGear } from "apiClient/people";
 import { Checkbox } from "components/Inputs/Checkbox";
 import { NumberField } from "components/Inputs/NumberField";
 import { GearLink } from "components/GearLink";
+import { fmtAmount } from "lib/fmtNumber";
 
 import type { ItemToPurchase } from "./types";
 
@@ -76,14 +77,14 @@ export function ReturnStaging({
   return (
     <div className="border rounded-2 p-2 mb-3 bg-light">
       <h3>{title}</h3>
-      <h4>Payment due: {paymentDue}</h4>
+      <h4>Payment due: {fmtAmount(paymentDue)}</h4>
       {person.mitocCredit > 0 && totalDue > 0 && (
         <div>
           <Checkbox
             value={shouldUseMitocCredit}
             onChange={setShouldUseMitocCredit}
           />{" "}
-          Use ${creditToSpent} of MITOC credit
+          Use {fmtAmount(creditToSpent)} of MITOC credit
         </div>
       )}
 
@@ -135,7 +136,7 @@ export function ReturnStaging({
                     <br />
                     {type.typeName}
                     <br />
-                    Daily fee: {type.rentalAmount}
+                    Daily fee: {fmtAmount(type.rentalAmount)}
                     <br />
                   </td>
                   <td>
@@ -168,7 +169,7 @@ export function ReturnStaging({
               {gearToBuy.map(({ id, item: { name, price } }) => (
                 <tr key={id}>
                   <td>{name}</td>
-                  <td>{price}</td>
+                  <td>{fmtAmount(price)}</td>
                   <td>
                     <button
                       className="btn btn-outline-secondary"

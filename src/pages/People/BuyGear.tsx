@@ -1,4 +1,5 @@
 import { usePurchasableItems } from "features/cache/hooks";
+import { fmtAmount } from "lib/fmtNumber";
 import { uniqueID } from "lib/uniqueID";
 
 import type { ItemToPurchase } from "./types";
@@ -33,7 +34,7 @@ export function BuyGear({ onAdd }: Props) {
                   </button>
                 </td>
                 <td>{name}</td>
-                <td>{price}</td>
+                <td>{fmtAmount(price)}</td>
               </tr>
             );
           })}

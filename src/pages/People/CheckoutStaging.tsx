@@ -4,6 +4,7 @@ import Table from "react-bootstrap/Table";
 import { GearSummary } from "apiClient/gear";
 import { checkoutGear, Person } from "apiClient/people";
 import { GearLink } from "components/GearLink";
+import { fmtAmount } from "lib/fmtNumber";
 
 type Props = {
   person: Person;
@@ -44,8 +45,8 @@ export function CheckoutStaging({
               <tr>
                 <td></td>
                 <td>{gearToCheckout.length}</td>
-                <td>{totalDeposit}</td>
-                <td>{totalDailyFee}</td>
+                <td>{fmtAmount(totalDeposit)}</td>
+                <td>{fmtAmount(totalDailyFee)}</td>
               </tr>
             </tbody>
           </Table>
@@ -67,8 +68,8 @@ export function CheckoutStaging({
                     <GearLink id={id}>{id}</GearLink>
                   </td>
                   <td>{type.typeName}</td>
-                  <td>{depositAmount}</td>
-                  <td>{dailyFee}</td>
+                  <td>{fmtAmount(depositAmount)}</td>
+                  <td>{fmtAmount(dailyFee)}</td>
                   <td>
                     <button
                       className="btn btn-outline-secondary"
