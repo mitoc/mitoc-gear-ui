@@ -4,8 +4,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { useAppDispatch } from "app/hooks";
 import { addFFChecks, Person } from "apiClient/people";
-import { fetchPerson } from "features/cache/cacheSlice";
 import { getNextExpirationDate } from "./utils";
+import { useGetPersonQuery } from "features/api";
 
 type Props = {
   person: Person;
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export function FrequentFlyerForm({ person, onClose }: Props) {
-  const dispatch = useAppDispatch();
+  const { refetch: refreshPerson } = useGetPersonQuery(String(person.id));
   const initial = getNextExpirationDate();
   const [date, setDate] = useState<Date>(initial);
   const [checkNumber, setCheckNumber] = useState<string>("");
@@ -48,7 +48,7 @@ export function FrequentFlyerForm({ person, onClose }: Props) {
           onClick={(evt) => {
             evt.preventDefault();
             addFFChecks(person.id, date, checkNumber).then(() => {
-              dispatch(fetchPerson(person.id));
+              refreshPerson();
               onClose();
             });
           }}

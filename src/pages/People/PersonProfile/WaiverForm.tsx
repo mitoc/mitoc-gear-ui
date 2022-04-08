@@ -2,10 +2,9 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { useAppDispatch } from "app/hooks";
 import { addWaiver, Person } from "apiClient/people";
-import { fetchPerson } from "features/cache/cacheSlice";
 import { getNextExpirationDate } from "./utils";
+import { useGetPersonQuery } from "features/api";
 
 type Props = {
   person: Person;
@@ -13,7 +12,7 @@ type Props = {
 };
 
 export function WaiverForm({ person, onClose }: Props) {
-  const dispatch = useAppDispatch();
+  const { refetch: refreshPerson } = useGetPersonQuery(String(person.id));
   const initial = getNextExpirationDate();
   const [date, setDate] = useState<Date>(initial);
   return (
@@ -35,7 +34,7 @@ export function WaiverForm({ person, onClose }: Props) {
           onClick={(evt) => {
             evt.preventDefault();
             addWaiver(person.id, date).then(() => {
-              dispatch(fetchPerson(person.id));
+              refreshPerson();
               onClose();
             });
           }}

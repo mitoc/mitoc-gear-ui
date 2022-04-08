@@ -11,6 +11,7 @@ export function GearLink({ id, ...otherProps }: Props) {
     <PrefetchLink
       {...otherProps}
       id={id}
+      // @ts-expect-error
       fetchAction={fetchGear}
       to={`/gear/${id}/`}
     />

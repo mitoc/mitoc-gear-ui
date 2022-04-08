@@ -15,12 +15,6 @@ export interface CacheState {
     status: LoadingStatus;
     value?: Affiliation[];
   };
-  people: {
-    [id: string]: {
-      status: LoadingStatus;
-      value?: Person;
-    };
-  };
   gear: {
     [id: string]: {
       status: LoadingStatus;

@@ -1,17 +1,19 @@
 import { LinkProps } from "react-router-dom";
 
-import { fetchPerson } from "features/cache";
+import { gearDbApi } from "features/api";
 
 import { PrefetchLink } from "./PrefetchLink";
 
 type Props = { id: string } & Omit<LinkProps, "to">;
 
 export function PersonLink({ id, ...otherProps }: Props) {
+  const fetchPerson = gearDbApi.usePrefetch("getPerson");
   return (
     <PrefetchLink
       {...otherProps}
       id={id}
-      fetchAction={fetchPerson}
+      // TODO: id should be a string
+      fetchAction={() => fetchPerson(String(id))}
       to={`/people/${id}/`}
     />
   );

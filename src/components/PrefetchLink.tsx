@@ -8,7 +8,7 @@ import { useCallback } from "react";
 
 type Props = {
   id: string;
-  fetchAction: AsyncThunk<any, string, {}>;
+  fetchAction: () => any;
 } & LinkProps;
 
 const delay = 150;
@@ -19,8 +19,6 @@ export function PrefetchLink({
   fetchAction,
   ...otherProps
 }: Props) {
-  const dispatch = useAppDispatch();
-  const preload = useCallback(() => dispatch(fetchAction(id)), [id]);
   const handler = useRef<NodeJS.Timeout | null>(null);
   const clearHandler = useCallback(() => {
     if (handler.current == null) {
@@ -30,8 +28,8 @@ export function PrefetchLink({
   }, [handler]);
 
   const onMouseEnter = useCallback(() => {
-    handler.current = setTimeout(preload, delay);
-  }, [preload]);
+    handler.current = setTimeout(fetchAction, delay);
+  }, [fetchAction]);
 
   useEffect(() => {
     return clearHandler;

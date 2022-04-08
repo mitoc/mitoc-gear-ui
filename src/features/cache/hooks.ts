@@ -7,7 +7,6 @@ import { ListWrapper } from "apiClient/types";
 import {
   fetchPurchasableItems,
   fetchAffiliations,
-  fetchPerson,
   fetchPersonList,
   fetchGearList,
   fetchGear,
@@ -37,18 +36,6 @@ export function useAffiliations() {
     dispatch(fetchAffiliations());
   }, [dispatch]);
   return items ?? [];
-}
-
-export function usePerson(id: string) {
-  const dispatch = useAppDispatch();
-  const person = useAppSelector((state) => state.cache.people[id]?.value);
-  useEffect(() => {
-    if (person != null) {
-      return;
-    }
-    dispatch(fetchPerson(id));
-  }, [dispatch]);
-  return person;
 }
 
 export function useGearItem(id: string) {

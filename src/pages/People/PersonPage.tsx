@@ -6,7 +6,7 @@ import { useAppDispatch } from "app/hooks";
 import { Rental, addNote, archiveNote } from "apiClient/people";
 import { GearSummary } from "apiClient/gear";
 import { Notes } from "components/Notes";
-import { usePerson, fetchPerson } from "features/cache";
+import { useGetPersonQuery } from "features/api";
 
 import { PersonProfile } from "./PersonProfile";
 import { PersonRentals } from "./PersonRentals";
@@ -19,11 +19,11 @@ import { ReturnStaging } from "./ReturnStaging";
 import type { ItemToPurchase } from "./types";
 
 export function PersonPage() {
-  const dispatch = useAppDispatch();
   const [tab, setTab] = useState<PersonPageTabs>(PersonPageTabs.gearOut);
   const { personId } = useParams<{ personId: string }>();
-  const person = usePerson(personId);
-  const refreshPerson = () => dispatch(fetchPerson(personId));
+
+  const { data: person, refetch: refreshPerson } = useGetPersonQuery(personId);
+
   const {
     items: gearToCheckout,
     add: addToCheckout,
