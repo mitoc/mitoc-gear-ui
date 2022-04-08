@@ -1,4 +1,4 @@
-import { usePurchasableItems } from "features/cache/hooks";
+import { useGetPurchasablesQuery } from "features/api";
 import { fmtAmount } from "lib/fmtNumber";
 import { uniqueID } from "lib/uniqueID";
 
@@ -9,7 +9,7 @@ type Props = {
 };
 
 export function BuyGear({ onAdd }: Props) {
-  const items = usePurchasableItems();
+  const { data: items = [] } = useGetPurchasablesQuery();
   return (
     <div className="border rounded-2 p-2 bg-light">
       <table className="table">

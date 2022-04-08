@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { Person, PersonSummary } from "apiClient/people";
-import { GearItem, GearSummary } from "apiClient/gear";
+import { GearItem, GearSummary, PurchasableItem } from "apiClient/gear";
 import { ListWrapper } from "apiClient/types";
 
 export const gearDbApi = createApi({
@@ -49,6 +49,12 @@ export const gearDbApi = createApi({
         },
       }),
     }),
+    getPurchasables: builder.query<PurchasableItem[], void>({
+      query: () => "/purchasable/",
+    }),
+    getAffiliations: builder.query<PurchasableItem[], void>({
+      query: () => "/affiliations/",
+    }),
   }),
 });
 
@@ -57,6 +63,8 @@ export const {
   useGetPersonListQuery,
   useGetGearItemQuery,
   useGetGearListQuery,
+  useGetPurchasablesQuery,
+  useGetAffiliationsQuery,
 } = gearDbApi;
 
 export function useGearList({ q, page }: { q: string; page?: number }) {

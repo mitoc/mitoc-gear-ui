@@ -3,10 +3,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { addMembership, Person } from "apiClient/people";
-import { useAffiliations } from "features/cache";
 import { Select } from "components/Inputs/Select";
 import { getNextExpirationDate } from "./utils";
-import { useGetPersonQuery } from "features/api";
+import { useGetAffiliationsQuery, useGetPersonQuery } from "features/api";
 
 type Props = {
   person: Person;
@@ -15,7 +14,7 @@ type Props = {
 
 export function MembershipForm({ person, onClose }: Props) {
   const { refetch: refreshPerson } = useGetPersonQuery(String(person.id));
-  const affiliations = useAffiliations();
+  const { data: affiliations = [] } = useGetAffiliationsQuery();
   const affiliationOptions = affiliations.map(({ id, name }) => ({
     value: id,
     label: name,
@@ -25,7 +24,7 @@ export function MembershipForm({ person, onClose }: Props) {
   const [date, setDate] = useState<Date>(initial);
   const [membershipType, setMembershipType] = useState<string>("");
   useEffect(() => {
-    setMembershipType(lastAffiliation ?? affiliations?.[0].id);
+    setMembershipType(lastAffiliation ?? affiliations?.[0]?.id);
   }, [affiliations]);
   return (
     <div>

@@ -11,13 +11,10 @@ export function Select({ value, onChange, options }: Props) {
       onChange={(evt) => {
         onChange(evt.target.value);
       }}
+      value={value}
     >
       {options.map((option) => (
-        <option
-          key={option.value}
-          value={option.value}
-          selected={option.value === value}
-        >
+        <option key={option.value} value={option.value}>
           {option.label}
         </option>
       ))}
