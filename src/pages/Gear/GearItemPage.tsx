@@ -1,19 +1,15 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { useAppDispatch } from "app/hooks";
-import { getGearItem, GearItem, addNote } from "apiClient/gear";
+import { addNote } from "apiClient/gear";
 import { Notes } from "components/Notes";
-import { useGearItem, fetchGear } from "features/cache";
+import { useGetGearItemQuery } from "features/api";
 
 import { GearInfoPanel } from "./GearInfoPanel";
 import { GearRentalsHistory } from "./GearRentalsHistory";
 
 export function GearItemPage() {
-  const dispatch = useAppDispatch();
   const { gearId } = useParams<{ gearId: string }>();
-  const gearItem = useGearItem(gearId);
-  const refreshGear = () => dispatch(fetchGear(gearId));
+  const { data: gearItem, refetch: refreshGear } = useGetGearItemQuery(gearId);
 
   if (gearItem == null) {
     return null;

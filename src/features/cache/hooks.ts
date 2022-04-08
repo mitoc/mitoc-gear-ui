@@ -9,7 +9,6 @@ import {
   fetchAffiliations,
   fetchPersonList,
   fetchGearList,
-  fetchGear,
 } from "./cacheSlice";
 
 import { PaginatedQueryState, CacheState } from "./types";
@@ -36,18 +35,6 @@ export function useAffiliations() {
     dispatch(fetchAffiliations());
   }, [dispatch]);
   return items ?? [];
-}
-
-export function useGearItem(id: string) {
-  const dispatch = useAppDispatch();
-  const gear = useAppSelector((state) => state.cache.gear[id]?.value);
-  useEffect(() => {
-    if (gear != null) {
-      return;
-    }
-    dispatch(fetchGear(id));
-  }, [dispatch]);
-  return gear;
 }
 
 function useItemList<T, Arg extends { page?: number }>(

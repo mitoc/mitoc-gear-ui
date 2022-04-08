@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { Person } from "apiClient/people";
+import { GearItem } from "apiClient/gear";
 
 export const gearDbApi = createApi({
   reducerPath: "gearDbApi",
@@ -12,9 +13,10 @@ export const gearDbApi = createApi({
     getPerson: builder.query<Person, string>({
       query: (personID) => `people/${personID}/`,
     }),
+    getGearItem: builder.query<GearItem, string>({
+      query: (gearItemID) => `gear/${gearItemID}/`,
+    }),
   }),
 });
 
-export const { useGetPersonQuery } = gearDbApi;
-
-console.log({ gearDbApi });
+export const { useGetPersonQuery, useGetGearItemQuery } = gearDbApi;

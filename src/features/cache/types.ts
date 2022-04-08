@@ -15,12 +15,6 @@ export interface CacheState {
     status: LoadingStatus;
     value?: Affiliation[];
   };
-  gear: {
-    [id: string]: {
-      status: LoadingStatus;
-      value?: GearItem;
-    };
-  };
   peopleSets: PaginatedQueryState<PersonSummary>;
   gearSets: PaginatedQueryState<GearSummary>;
 }

@@ -14,7 +14,6 @@ import {
 const initialState: CacheState = {
   purchasableItems: { status: LoadingStatus.idle },
   affiliations: { status: LoadingStatus.idle },
-  gear: {},
   peopleSets: {},
   gearSets: {},
 };
@@ -23,8 +22,6 @@ export const fetchPurchasableItems = createAsyncThunk(
   "cache/fetchPurchasableItems",
   getPurchasableList
 );
-
-export const fetchGear = createAsyncThunk("cache/fetchGear", getGearItem);
 
 export const fetchPersonList = createAsyncThunk(
   "cache/fetchPersonList",
@@ -60,18 +57,6 @@ const authSlice = createSlice({
       .addCase(fetchAffiliations.fulfilled, (state, action) => {
         state.affiliations.status = LoadingStatus.idle;
         state.affiliations.value = action.payload;
-      })
-      .addCase(fetchGear.pending, (state, action) => {
-        state.gear[action.meta.arg] = {
-          ...(state.gear[action.meta.arg] ?? {}),
-          ...{ status: LoadingStatus.loading },
-        };
-      })
-      .addCase(fetchGear.fulfilled, (state, action) => {
-        state.gear[action.meta.arg] = {
-          ...(state.gear[action.meta.arg] ?? {}),
-          ...{ status: LoadingStatus.idle, value: action.payload },
-        };
       })
       .addCase(fetchPersonList.pending, (state, action) => {
         const { page, ...otherArgs } = action.meta.arg;
