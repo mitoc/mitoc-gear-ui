@@ -7,7 +7,7 @@ import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
 import { TextField } from "components/Inputs/TextField";
 import { PersonLink } from "components/PersonLink";
-import { useGetPersonListQuery } from "features/api";
+import { usePeopleList } from "features/api";
 
 type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
   name: string;
@@ -16,11 +16,7 @@ type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
 export function PeoplePage() {
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
-
-  const { data } = useGetPersonListQuery({ q: query?.trim(), page });
-  const personList = data?.results;
-  const nbPages =
-    data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
+  const { personList, nbPages } = usePeopleList({ q: query, page });
 
   const peopleData = personList?.map(({ firstName, lastName, ...other }) => ({
     name: `${firstName} ${lastName}`,

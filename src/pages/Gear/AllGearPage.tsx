@@ -6,7 +6,7 @@ import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
 import { TextField } from "components/Inputs/TextField";
 import { GearLink } from "components/GearLink";
-import { useGearList } from "features/cache";
+import { useGearList } from "features/api";
 
 import { GearStatus } from "./GearStatus";
 
@@ -14,7 +14,7 @@ export function AllGearPage() {
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
 
-  const { gearList, nbPages } = useGearList(query, page);
+  const { gearList, nbPages } = useGearList({ q: query, page });
 
   const myColumns = [
     { key: "id", header: "Serial Number", renderer: IDCell, className: "" },

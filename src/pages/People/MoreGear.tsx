@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import { useGearList } from "features/cache";
+import { useGearList } from "features/api";
 import { TablePagination } from "components/TablePagination";
 import { GearSummary } from "apiClient/gear";
 import { GearLink } from "components/GearLink";
@@ -17,7 +17,7 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
-  const { gearList, nbPages } = useGearList(query, page);
+  const { gearList, nbPages } = useGearList({ q: query, page });
 
   return (
     <div className="border rounded-2 p-2 bg-light">

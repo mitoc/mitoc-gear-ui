@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { Person, PersonSummary } from "apiClient/people";
-import { GearItem } from "apiClient/gear";
+import { GearItem, GearSummary } from "apiClient/gear";
 import { ListWrapper } from "apiClient/types";
 
 export const gearDbApi = createApi({
@@ -23,11 +23,31 @@ export const gearDbApi = createApi({
     >({
       query: ({ q, page }) => ({
         url: "people/",
-        params: { q, page },
+        params: {
+          ...(q && { q }),
+          ...(page && { page }),
+        },
       }),
     }),
     getGearItem: builder.query<GearItem, string>({
       query: (gearItemID) => `gear/${gearItemID}/`,
+    }),
+    getGearList: builder.query<
+      ListWrapper<GearSummary>,
+      {
+        q?: string;
+        page?: number;
+        includeRetired?: boolean;
+      }
+    >({
+      query: ({ q, page, includeRetired }) => ({
+        url: "gear/",
+        params: {
+          ...(q && { q }),
+          ...(page && { page }),
+          ...(!includeRetired && { retired: false }),
+        },
+      }),
     }),
   }),
 });
@@ -36,4 +56,23 @@ export const {
   useGetPersonQuery,
   useGetPersonListQuery,
   useGetGearItemQuery,
+  useGetGearListQuery,
 } = gearDbApi;
+
+export function useGearList({ q, page }: { q: string; page?: number }) {
+  const { data } = useGetGearListQuery({ q: q?.trim(), page });
+  const gearList = data?.results;
+  const nbPages =
+    data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
+
+  return { gearList, nbPages };
+}
+
+export function usePeopleList({ q, page }: { q: string; page?: number }) {
+  const { data } = useGetPersonListQuery({ q: q?.trim(), page });
+  const personList = data?.results;
+  const nbPages =
+    data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
+
+  return { personList, nbPages };
+}
