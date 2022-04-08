@@ -7,7 +7,6 @@ import { ListWrapper } from "apiClient/types";
 import {
   fetchPurchasableItems,
   fetchAffiliations,
-  fetchPersonList,
   fetchGearList,
 } from "./cacheSlice";
 
@@ -88,15 +87,6 @@ function useSmoothItemList<T, Arg extends { page?: number }>(
   }, [nbPages]);
 
   return { items: smoothItems, nbPages: smoothNbPages };
-}
-
-export function usePersonList(q?: string, page?: number) {
-  const { items: personList, nbPages } = useSmoothItemList(
-    (cache) => cache.peopleSets,
-    fetchPersonList,
-    { q: q?.trim() ?? "", page }
-  );
-  return { personList, nbPages };
 }
 
 export function useGearList(

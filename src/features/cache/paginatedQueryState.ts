@@ -37,16 +37,6 @@ function markPageFetched<T>(
   state[query].results[page].value = response.results;
 }
 
-export const markPeoplePageLoading = partial(
-  markPageLoading,
-  (cache) => cache.peopleSets
-);
-
-export const markPeoplePageFetched = partial(
-  markPageFetched,
-  (cache) => cache.peopleSets
-);
-
 export const markGearPageLoading = partial(
   markPageLoading,
   (cache) => cache.gearSets

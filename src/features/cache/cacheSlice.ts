@@ -1,12 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { getPurchasableList, getGearList, getGearItem } from "apiClient/gear";
-import { getAffiliations, getPerson, getPersonList } from "apiClient/people";
+import { getPurchasableList, getGearList } from "apiClient/gear";
+import { getAffiliations, getPersonList } from "apiClient/people";
 
 import { LoadingStatus, CacheState } from "./types";
 import {
-  markPeoplePageLoading,
-  markPeoplePageFetched,
   markGearPageLoading,
   markGearPageFetched,
 } from "./paginatedQueryState";
@@ -21,11 +19,6 @@ const initialState: CacheState = {
 export const fetchPurchasableItems = createAsyncThunk(
   "cache/fetchPurchasableItems",
   getPurchasableList
-);
-
-export const fetchPersonList = createAsyncThunk(
-  "cache/fetchPersonList",
-  getPersonList
 );
 
 export const fetchGearList = createAsyncThunk(
@@ -57,19 +50,6 @@ const authSlice = createSlice({
       .addCase(fetchAffiliations.fulfilled, (state, action) => {
         state.affiliations.status = LoadingStatus.idle;
         state.affiliations.value = action.payload;
-      })
-      .addCase(fetchPersonList.pending, (state, action) => {
-        const { page, ...otherArgs } = action.meta.arg;
-        markPeoplePageLoading(state, JSON.stringify(otherArgs), page ?? 1);
-      })
-      .addCase(fetchPersonList.fulfilled, (state, action) => {
-        const { page, ...otherArgs } = action.meta.arg;
-        markPeoplePageFetched(
-          state,
-          JSON.stringify(otherArgs),
-          page ?? 1,
-          action.payload
-        );
       })
       .addCase(fetchGearList.pending, (state, action) => {
         const { page, ...otherArgs } = action.meta.arg;
