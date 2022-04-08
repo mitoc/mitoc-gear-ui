@@ -48,23 +48,6 @@ export interface Affiliation {
   dues: number;
 }
 
-async function getPersonList({
-  q,
-  page,
-}: {
-  q?: string;
-  page?: number;
-}): Promise<ListWrapper<PersonSummary>> {
-  return request("/people/", "GET", {
-    ...(q && { q }),
-    ...(page && { page }),
-  });
-}
-
-async function getPerson(id: string): Promise<Person> {
-  return request(`/people/${id}/`, "GET");
-}
-
 async function addFFChecks(id: string, date: Date, checkNumber: string) {
   return request(`/people/${id}/frequent_flyer_check/`, "POST", {
     expires: dayjs(date).format("YYYY-MM-DD"),
@@ -121,10 +104,6 @@ async function returnGear(
   });
 }
 
-async function getAffiliations() {
-  return request(`/affiliations/`, "GET");
-}
-
 export {
   addFFChecks,
   addMembership,
@@ -132,9 +111,6 @@ export {
   addWaiver,
   archiveNote,
   checkoutGear,
-  getAffiliations,
-  getPerson,
-  getPersonList,
   getPersonRentalHistory,
   returnGear,
 };

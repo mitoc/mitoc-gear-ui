@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { isEmpty } from "lodash";
 
-import { useAppDispatch } from "app/hooks";
 import { Rental, addNote, archiveNote } from "apiClient/people";
 import { GearSummary } from "apiClient/gear";
 import { Notes } from "components/Notes";

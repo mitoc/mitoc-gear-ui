@@ -25,7 +25,7 @@ export function MembershipForm({ person, onClose }: Props) {
   const [membershipType, setMembershipType] = useState<string>("");
   useEffect(() => {
     setMembershipType(lastAffiliation ?? affiliations?.[0]?.id);
-  }, [affiliations]);
+  }, [lastAffiliation, affiliations]);
   return (
     <div>
       <form>

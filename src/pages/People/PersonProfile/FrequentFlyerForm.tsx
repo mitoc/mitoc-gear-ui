@@ -2,7 +2,6 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { useAppDispatch } from "app/hooks";
 import { addFFChecks, Person } from "apiClient/people";
 import { getNextExpirationDate } from "./utils";
 import { useGetPersonQuery } from "features/api";

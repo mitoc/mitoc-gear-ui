@@ -42,35 +42,11 @@ export interface PurchasableItem {
   name: string;
 }
 
-async function getGearList({
-  q,
-  page,
-  includeRetired,
-}: {
-  q?: string;
-  page?: number;
-  includeRetired?: boolean;
-}): Promise<ListWrapper<GearSummary>> {
-  return request("/gear/", "GET", {
-    ...(q && { q }),
-    ...(page && { page }),
-    ...(!includeRetired && { retired: false }),
-  });
-}
-
-async function getGearItem(id: string): Promise<GearItem> {
-  return request(`/gear/${id}/`, "GET");
-}
-
 async function getGearRentalHistory(
   id: string,
   page?: number
 ): Promise<ListWrapper<GearRental>> {
   return request(`/gear/${id}/rentals/`, "GET", { ...(page && { page }) });
-}
-
-async function getPurchasableList(): Promise<PurchasableItem[]> {
-  return request(`/purchasable/`, "GET");
 }
 
 async function addNote(id: string, note: string) {
@@ -112,10 +88,7 @@ async function markFound(id: string, note?: string) {
 
 export {
   addNote,
-  getGearItem,
-  getGearList,
   getGearRentalHistory,
-  getPurchasableList,
   markBroken,
   markFixed,
   markFound,
