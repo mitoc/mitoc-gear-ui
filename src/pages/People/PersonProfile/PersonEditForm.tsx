@@ -23,25 +23,27 @@ export function PersonEditForm({ person, closeForm, refreshPerson }: Props) {
       <label className="form-group w-100">
         Email: <TextField value={email} onChange={setEmail} />
       </label>
-      <button
-        type="button"
-        className="btn btn-outline-secondary"
-        onClick={closeForm}
-      >
-        Cancel
-      </button>
-      <button
-        type="button"
-        className="btn btn-outline-secondary"
-        onClick={() => {
-          editPerson(person.id, firstName, lastName, email).then(() => {
-            closeForm();
-            refreshPerson();
-          });
-        }}
-      >
-        Confirm
-      </button>
+      <div className="d-flex justify-content-between">
+        <button
+          type="button"
+          className="btn btn-outline-secondary"
+          onClick={closeForm}
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => {
+            editPerson(person.id, firstName, lastName, email).then(() => {
+              closeForm();
+              refreshPerson();
+            });
+          }}
+        >
+          Submit
+        </button>
+      </div>
     </form>
   );
 }
