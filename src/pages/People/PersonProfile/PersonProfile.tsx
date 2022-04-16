@@ -1,6 +1,6 @@
 import Badge from "react-bootstrap/Badge";
 
-import type { Person } from "apiClient/people";
+import { editPerson, Person } from "apiClient/people";
 
 import { ExpirableTile } from "./ExpirableTile";
 import { FrequentFlyerForm } from "./FrequentFlyerForm";
@@ -15,7 +15,7 @@ type Props = {
   refreshPerson: () => void;
 };
 
-export function PersonProfile({ person }: Props) {
+export function PersonProfile({ person, refreshPerson }: Props) {
   const [isEditing, setEditing] = useState<boolean>(false);
 
   const onEdit = () => {
@@ -41,7 +41,13 @@ export function PersonProfile({ person }: Props) {
         </>
       )}
 
-      {isEditing && <PersonEditForm />}
+      {isEditing && (
+        <PersonEditForm
+          person={person}
+          closeForm={() => setEditing(false)}
+          refreshPerson={refreshPerson}
+        />
+      )}
 
       <div>
         {person.groups.map((group) => (
