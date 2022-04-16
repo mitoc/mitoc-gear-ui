@@ -25,7 +25,7 @@ export async function request(
           }
         : { "Content-Type": "application/json" },
     credentials: "include",
-    ...(data != null && method === "POST" && { body: JSON.stringify(data) }),
+    ...(data != null && method !== "GET" && { body: JSON.stringify(data) }),
   });
   if (response.status === 403) {
     await refreshCsrfToken();

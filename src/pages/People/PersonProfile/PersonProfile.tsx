@@ -1,26 +1,53 @@
 import Badge from "react-bootstrap/Badge";
 
-import type { Person } from "apiClient/people";
+import { editPerson, Person } from "apiClient/people";
 
 import { ExpirableTile } from "./ExpirableTile";
 import { FrequentFlyerForm } from "./FrequentFlyerForm";
 import { WaiverForm } from "./WaiverForm";
 import { MembershipForm } from "./MembershipForm";
+import { useState } from "react";
+import { TextField } from "components/Inputs/TextField";
+import { PersonEditForm } from "./PersonEditForm";
 
 type Props = {
   person: Person;
   refreshPerson: () => void;
 };
 
-export function PersonProfile({ person }: Props) {
+export function PersonProfile({ person, refreshPerson }: Props) {
+  const [isEditing, setEditing] = useState<boolean>(false);
+
+  const onEdit = () => {
+    setEditing(true);
+  };
+
   return (
     <div className="border rounded-2 p-2 mb-3 bg-light">
-      <h3>
-        {person.firstName} {person.lastName}
-      </h3>
-      <div className="text-sm">{person.affiliation}</div>
+      {!isEditing && (
+        <>
+          <button
+            className="btn btn-outline-secondary"
+            style={{ float: "right" }}
+            onClick={onEdit}
+          >
+            Edit
+          </button>
+          <h3>
+            {person.firstName} {person.lastName}
+          </h3>
+          <div className="text-sm">{person.affiliation}</div>
+          <a href={`mailto:${person.email}`}>{person.email}</a>
+        </>
+      )}
 
-      <a href={`mailto:${person.email}`}>{person.email}</a>
+      {isEditing && (
+        <PersonEditForm
+          person={person}
+          closeForm={() => setEditing(false)}
+          refreshPerson={refreshPerson}
+        />
+      )}
 
       <div>
         {person.groups.map((group) => (

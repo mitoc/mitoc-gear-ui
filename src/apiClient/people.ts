@@ -104,6 +104,15 @@ async function returnGear(
   });
 }
 
+async function editPerson(
+  id: string,
+  firstName: string,
+  lastName: string,
+  email: string
+) {
+  return request(`/people/${id}/`, "PATCH", { firstName, lastName, email });
+}
+
 export {
   addFFChecks,
   addMembership,
@@ -113,4 +122,5 @@ export {
   checkoutGear,
   getPersonRentalHistory,
   returnGear,
+  editPerson,
 };
