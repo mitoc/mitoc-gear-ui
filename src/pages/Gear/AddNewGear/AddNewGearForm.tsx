@@ -1,15 +1,10 @@
-import { useEffect, useState, InputHTMLAttributes } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
-import {
-  useForm,
-  FieldPath,
-  FormProvider,
-  useFormContext,
-  RegisterOptions,
-} from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 
 import { useGetGearTypesQuery } from "features/api";
 import { CreateGearArgs, GearType } from "apiClient/gear";
+import { LabeledInput } from "components/Inputs/LabeledInput";
 
 export function AddNewGearForm({
   onSubmit,
@@ -138,56 +133,5 @@ export function AddNewGearForm({
         </div>
       </form>
     </FormProvider>
-  );
-}
-
-type InputProps = InputHTMLAttributes<HTMLInputElement>;
-
-function LabeledInput<TFieldValues>(
-  props: InputProps & {
-    as?: any;
-    name: FieldPath<TFieldValues>;
-    title: string;
-    options?: RegisterOptions<TFieldValues>;
-  }
-) {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
-  const {
-    as: Component = "input",
-    title,
-    options,
-    className,
-    ...otherProps
-  } = props;
-
-  const name = otherProps.name;
-  const error = errors[name];
-  const errorMsg =
-    error?.message ||
-    (error?.type === "required" ? "This field is required" : undefined);
-  const invalid = error != null;
-  const isCheckBox = otherProps.type === "checkbox";
-  const inputClassNames = [
-    isCheckBox ? "form-check-input" : "form-control",
-    invalid ? "is-invalid" : "",
-  ];
-  const labelClassNames = ["w-100", "mb-2", className];
-
-  return (
-    <>
-      <label className={labelClassNames.join(" ")}>
-        {!isCheckBox && title}
-        <Component
-          className={inputClassNames.join(" ")}
-          {...otherProps}
-          {...register(name, options)}
-        />
-        {isCheckBox && <span className="ps-2">{title}</span>}
-        <div className="invalid-feedback">{errorMsg}</div>
-      </label>
-    </>
   );
 }
