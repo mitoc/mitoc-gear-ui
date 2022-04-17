@@ -92,7 +92,7 @@ async function markFound(id: string, note?: string) {
   });
 }
 
-type CreateGearArgs = {
+export type CreateGearArgs = {
   type: string;
   idSuffix?: string;
   quantity: number;
