@@ -19,6 +19,13 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
       ? "alert-info"
       : "";
 
+  // can we reuse these?
+  const [isEditing, setEditing] = useState<boolean>(false);
+
+  const onEdit = () => {
+    setEditing(true);
+  };
+
   return (
     <div className="border rounded-2 p-2 mb-3 bg-light">
       <h4>
@@ -43,10 +50,31 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
           .
         </div>
       )}
-      <Field value={gearItem.specification} title="Specification" />
-      <Field value={gearItem.description} title="Description" />
-      <Field value={gearItem.size} title="Size" />
-      <Field value={fmtAmount(gearItem.depositAmount)} title="Deposit" />
+
+      {!isEditing && (
+        <>
+          <button
+            className="btn btn-outline-secondary"
+            style={{ float: "right" }}
+            onClick={onEdit}
+          >
+            Edit
+          </button>
+          <Field value={gearItem.specification} title="Specification" />
+          <Field value={gearItem.description} title="Description" />
+          <Field value={gearItem.size} title="Size" />
+          <Field value={fmtAmount(gearItem.depositAmount)} title="Deposit" />
+        </>
+      )}
+
+      {isEditing && (
+        <gearItemEditForm
+          gearItem={GearSummary}
+          closeForm={() => setEditing(false)}
+          refreshGearItem={refreshGearItem}
+        />
+      )}
+
       <Field value={fmtAmount(gearItem.dailyFee)} title="Daily Fee" />
       <div className="mt-2">
         <button
