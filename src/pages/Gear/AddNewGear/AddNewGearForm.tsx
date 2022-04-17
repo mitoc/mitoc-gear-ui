@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Select from "react-select";
-import { useForm, FormProvider, Controller } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 
 import { useGetGearTypesQuery } from "features/api";
 import { CreateGearArgs, GearType } from "apiClient/gear";
@@ -33,7 +33,7 @@ export function AddNewGearForm({
     },
   });
 
-  const { handleSubmit, watch, setValue, control } = formObject;
+  const { handleSubmit, watch, setValue } = formObject;
 
   const autoGenerateIds = watch("autoGenerateIds");
   const gearType = watch("gearType");
@@ -69,23 +69,33 @@ export function AddNewGearForm({
           });
         })}
       >
-        <label className="w-100 mb-2">
-          Gear type:
-          <Controller
-            control={control}
-            name="gearType"
-            rules={{ required: true }}
-            render={({ field: { onChange, onBlur, value, ref } }) => (
+        <LabeledInput
+          title="Gear type:"
+          name="gearType"
+          renderComponent={({ value, onChange, onBlur, invalid }: any) => {
+            return (
               <Select
                 options={options}
-                className="w-100"
+                className={`w-100 ${invalid ? "is-invalid" : ""}`}
+                styles={{
+                  control: (base, state) =>
+                    !invalid
+                      ? base
+                      : {
+                          ...base,
+                          ...invalidFormControlStyle,
+                        },
+                }}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
               />
-            )}
-          />
-        </label>
+            );
+          }}
+          options={{
+            required: true,
+          }}
+        />
         <LabeledInput
           title="Quantity to add:"
           type="number"
@@ -130,9 +140,24 @@ export function AddNewGearForm({
           }}
         />
 
-        <LabeledInput title="Specification:" type="text" name="specification" />
-        <LabeledInput title="Size:" type="text" name="size" />
-        <LabeledInput title="Description:" as="textarea" name="description" />
+        <LabeledInput
+          placeholder="Ex: MSR Elixir 2"
+          title="Specification:"
+          type="text"
+          name="specification"
+        />
+        <LabeledInput
+          placeholder="Ex: 2p"
+          title="Size:"
+          type="text"
+          name="size"
+        />
+        <LabeledInput
+          placeholder={exampleDescription}
+          title="Description:"
+          as="textarea"
+          name="description"
+        />
         <div className="d-flex justify-content-end w-100">
           <button type="submit" className="btn btn-primary">
             Submit
@@ -142,3 +167,17 @@ export function AddNewGearForm({
     </FormProvider>
   );
 }
+const exampleDescription = [
+  "Ex: Includes: tent body, rain fly, footprint, 2 poles, stakes, carrying case.",
+  "Tents must be set up and inspected when returned",
+].join("\n");
+
+// This is copy-pasted from bootstrap, since we can't set the inner class of React-Select
+const invalidFormControlStyle = {
+  borderColor: "#dc3545",
+  paddingRight: "calc(1.5em + .75rem)",
+  backgroundImage: `url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 12 12%27 width=%2712%27 height=%2712%27 fill=%27none%27 stroke=%27%23dc3545%27%3e%3ccircle cx=%276%27 cy=%276%27 r=%274.5%27/%3e%3cpath stroke-linejoin=%27round%27 d=%27M5.8 3.6h.4L6 6.5z%27/%3e%3ccircle cx=%276%27 cy=%278.2%27 r=%27.6%27 fill=%27%23dc3545%27 stroke=%27none%27/%3e%3c/svg%3e")`,
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "right calc(.375em + .1875rem) center",
+  backgroundSize: "calc(.75em + .375rem) calc(.75em + .375rem)",
+};

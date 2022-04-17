@@ -1,5 +1,11 @@
+import { get } from "lodash";
 import { InputHTMLAttributes } from "react";
-import { FieldPath, useFormContext, RegisterOptions } from "react-hook-form";
+import {
+  Path,
+  useFormContext,
+  RegisterOptions,
+  Controller,
+} from "react-hook-form";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
@@ -11,25 +17,28 @@ type InputProps = InputHTMLAttributes<HTMLInputElement>;
 export function LabeledInput<TFieldValues>(
   props: InputProps & {
     as?: any;
-    name: FieldPath<TFieldValues>;
+    renderComponent?: (arg: any) => React.ReactElement;
+    name: Path<TFieldValues>;
     title: string;
     options?: RegisterOptions<TFieldValues>;
   }
 ) {
   const {
     register,
+    control,
     formState: { errors },
-  } = useFormContext();
+  } = useFormContext<TFieldValues>();
+  const { name } = props;
   const {
     as: Component = "input",
     title,
     options,
     className,
+    renderComponent,
     ...otherProps
   } = props;
 
-  const name = otherProps.name;
-  const error = errors[name];
+  const error = get(errors, name);
   const errorMsg =
     error?.message ||
     (error?.type === "required" ? "This field is required" : undefined);
@@ -42,17 +51,27 @@ export function LabeledInput<TFieldValues>(
   const labelClassNames = ["w-100", "mb-2", className];
 
   return (
-    <>
-      <label className={labelClassNames.join(" ")}>
-        {!isCheckBox && title}
+    <label className={labelClassNames.join(" ")}>
+      {!isCheckBox && title}
+      {renderComponent != null ? (
+        <Controller
+          control={control}
+          name={name}
+          rules={options}
+          render={({ field: { onChange, onBlur, value, ref } }) => {
+            return renderComponent({ value, onBlur, onChange, ref, invalid });
+          }}
+        />
+      ) : (
         <Component
           className={inputClassNames.join(" ")}
           {...otherProps}
           {...register(name, options)}
         />
-        {isCheckBox && <span className="ps-2">{title}</span>}
-        <div className="invalid-feedback">{errorMsg}</div>
-      </label>
-    </>
+      )}
+
+      {isCheckBox && <span className="ps-2">{title}</span>}
+      <div className="invalid-feedback">{errorMsg}</div>
+    </label>
   );
 }
