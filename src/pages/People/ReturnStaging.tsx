@@ -125,6 +125,7 @@ export function ReturnStaging({
                           overrideDaysOut(id, value);
                         }}
                         integer={true}
+                        small={true}
                       />{" "}
                       days
                     </div>
@@ -180,7 +181,7 @@ export function ReturnStaging({
         </>
       )}
       <div className="d-flex justify-content-between">
-        <label className="form-group d-flex flex-row align-items-center">
+        <label className="d-flex flex-row align-items-center">
           <label className="pe-2">Check number:</label>
           <input
             type="text"

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { PersonSummary } from "apiClient/people";
 import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
-import { TextField } from "components/Inputs/TextField";
+import { SearchTextField } from "components/Inputs/TextField";
 import { PersonLink } from "components/PersonLink";
 import { usePeopleList } from "features/api";
 
@@ -31,7 +31,7 @@ export function PeoplePage() {
 
   return (
     <>
-      <TextField
+      <SearchTextField
         value={query}
         onChange={(newQuery) => {
           setPage(1);
@@ -39,6 +39,7 @@ export function PeoplePage() {
         }}
         placeholder="Search"
         debounceTime={300}
+        className="mb-3"
       />
 
       {nbPages != null && (
