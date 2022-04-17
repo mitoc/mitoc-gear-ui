@@ -12,6 +12,8 @@ import { createGear, GearSummary, GearType } from "apiClient/gear";
 import { isEmpty } from "lodash";
 import { GearLink } from "components/GearLink";
 import { Link } from "react-router-dom";
+import { APIError as APIErrorClass } from "apiClient/client";
+import { APIErrorType } from "apiClient/types";
 
 export function AddNewGear() {
   const { data: gearTypes } = useGetGearTypesQuery();
@@ -28,6 +30,7 @@ export function AddNewGear() {
   const [description, setDescription] = useState<string>("");
 
   const [gearCreated, setGearCreated] = useState<GearSummary[]>([]);
+  const [error, setError] = useState<APIErrorType | undefined>();
 
   useEffect(() => {
     if (!autoGenerateIds) {
@@ -45,7 +48,17 @@ export function AddNewGear() {
       idSuffix,
       specification: spec,
       size,
-    }).then(({ items }) => setGearCreated(items));
+    })
+      .then(({ items }) => {
+        setError(undefined);
+        setGearCreated(items);
+      })
+      .catch((err) => {
+        if (err instanceof APIErrorClass) {
+          setError(err.error);
+        }
+        throw err;
+      });
   };
   const options =
     gearTypes?.map((gearType) => ({
@@ -59,7 +72,9 @@ export function AddNewGear() {
       <div className="row">
         <div className="col-lg-8">
           <h1>Add new gear</h1>
-          <p className="mb-2">Success! The following items were created:</p>
+          <p className="mb-2 alert alert-success">
+            Success! The following items were created:
+          </p>
           <ul className="list-group mb-3">
             {gearCreated.map((item) => {
               return (
@@ -91,6 +106,7 @@ export function AddNewGear() {
     <div className="row">
       <div className="col-lg-8">
         <h1>Add new gear</h1>
+        <AddNewGearError err={error} />
         <form>
           <label className="w-100 mb-2">
             Gear type:
@@ -163,4 +179,35 @@ export function AddNewGear() {
       </div>
     </div>
   );
+}
+
+function AddNewGearError({ err }: { err?: APIErrorType }) {
+  if (err == null) {
+    return null;
+  }
+  if (err.err === "gearIdAlreadyExists") {
+    const gearItems = err.args!.gearItems as string[];
+    console.log(gearItems);
+    console.log(err.msg);
+    return (
+      <div className="alert alert-danger">
+        Gear creation failed.
+        <br />
+        {err.msg}:
+        <ul className="list-group alert-danger list-group-flush">
+          {gearItems.map((itemID) => {
+            return (
+              <li
+                className="list-group-item list-group-item-danger"
+                key={itemID}
+              >
+                {itemID}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
+  return <div className="alert alert-danger">{err.msg}</div>;
 }

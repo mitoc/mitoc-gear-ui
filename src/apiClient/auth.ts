@@ -1,5 +1,5 @@
 import { request } from "./client";
-import type { ApiError, User } from "./types";
+import type { APIErrorType, User } from "./types";
 
 interface LoggedInResponse {
   loggedIn: boolean;
@@ -15,7 +15,7 @@ async function loggedIn(): Promise<LoggedInResponse> {
   return request("/auth/logged_in/", "GET");
 }
 
-async function logIn(query: LogInQuery): Promise<User | ApiError> {
+async function logIn(query: LogInQuery): Promise<User | APIErrorType> {
   return request("/auth/login/", "POST", query);
 }
 
