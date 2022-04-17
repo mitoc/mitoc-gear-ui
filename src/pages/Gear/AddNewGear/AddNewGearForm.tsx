@@ -93,14 +93,12 @@ export function AddNewGearForm({
             valueAsNumber: true,
           }}
         />
-        <label className="mb-2 form-switch">
-          <input
-            type="checkbox"
-            className={`form-check-input ${""}`}
-            {...register("autoGenerateIds")}
-          />{" "}
-          Automatically generate new ids
-        </label>
+        <LabeledInput
+          className="form-switch"
+          title="Automatically generate new ids"
+          type="checkbox"
+          name="autoGenerateIds"
+        />
         {!autoGenerateIds && (
           <LabeledInput
             title="First ID:"
@@ -157,32 +155,37 @@ function LabeledInput<TFieldValues>(
     register,
     formState: { errors },
   } = useFormContext();
-  const { as: Component = "input", title, options, ...otherProps } = props;
-  const name = otherProps.name;
+  const {
+    as: Component = "input",
+    title,
+    options,
+    className,
+    ...otherProps
+  } = props;
 
+  const name = otherProps.name;
   const error = errors[name];
   const errorMsg =
     error?.message ||
     (error?.type === "required" ? "This field is required" : undefined);
-
   const invalid = error != null;
-  const { className: parentClassName, ...other } = props;
-  const classNames = [
-    other.type === "checkbox" ? "form-check-input" : "form-control",
+  const isCheckBox = otherProps.type === "checkbox";
+  const inputClassNames = [
+    isCheckBox ? "form-check-input" : "form-control",
     invalid ? "is-invalid" : "",
-    parentClassName,
   ];
+  const labelClassNames = ["w-100", "mb-2", className];
 
-  const className = classNames.join(" ");
   return (
     <>
-      <label className="w-100 mb-2">
-        {title}
+      <label className={labelClassNames.join(" ")}>
+        {!isCheckBox && title}
         <Component
-          className={className}
+          className={inputClassNames.join(" ")}
           {...otherProps}
           {...register(name, options)}
         />
+        {isCheckBox && <span className="ps-2">{title}</span>}
         <div className="invalid-feedback">{errorMsg}</div>
       </label>
     </>
