@@ -19,7 +19,7 @@ export function FrequentFlyerForm({ person, onClose }: Props) {
   return (
     <div>
       <form>
-        <label className="form-group w-100 mb-2">
+        <label className="w-100 mb-2">
           Expires:
           <DatePicker
             selected={date}
@@ -28,7 +28,7 @@ export function FrequentFlyerForm({ person, onClose }: Props) {
           />
         </label>
         <br />
-        <label className="form-group w-50 mb-2">
+        <label className="w-50 mb-2">
           Check number:
           <input
             type="text"

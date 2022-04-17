@@ -4,13 +4,27 @@ type Props = {
   value: number | null;
   onChange: (value: number | null) => void;
   integer?: boolean;
+  className?: string;
+  small?: boolean;
 };
 
-export function NumberField({ value, onChange, integer }: Props) {
+export function NumberField({
+  value,
+  onChange,
+  integer,
+  small,
+  className,
+}: Props) {
+  const Component = small
+    ? SmallNumberInput
+    : integer
+    ? InputWithArrows
+    : ArrowLessInput;
+  const actualClassName = `form-control ${className ?? ""} ${small && "sm"}`;
   return (
-    <SmallNumberInput
+    <Component
       type="number"
-      className="form-control sm"
+      className={actualClassName}
       value={value ?? ""}
       onChange={(evt) => {
         const rawValue = evt.target.value;
@@ -21,11 +35,13 @@ export function NumberField({ value, onChange, integer }: Props) {
         const value = integer ? Math.round(valueAsNumber) : valueAsNumber;
         onChange(value);
       }}
-    ></SmallNumberInput>
+    />
   );
 }
 
-const ArrowLessNumberInput = styled.input`
+const InputWithArrows = styled.input``;
+
+const ArrowLessInput = styled.input`
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -34,7 +50,7 @@ const ArrowLessNumberInput = styled.input`
   -moz-appearance: textfield;
 `;
 
-const SmallNumberInput = styled(ArrowLessNumberInput)`
+const SmallNumberInput = styled(ArrowLessInput)`
   width: 2.5rem;
   display: inline;
   padding: 0.2rem;

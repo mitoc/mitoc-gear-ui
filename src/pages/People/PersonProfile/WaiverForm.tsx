@@ -18,7 +18,7 @@ export function WaiverForm({ person, onClose }: Props) {
   return (
     <div>
       <form>
-        <label className="form-group w-100 mb-2">
+        <label className="w-100 mb-2">
           Expires:
           <DatePicker
             selected={date}

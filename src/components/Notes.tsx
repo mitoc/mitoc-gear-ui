@@ -26,7 +26,7 @@ export function Notes({ notes, onAdd, onArchive }: Props) {
       </div>
       {showForm && (
         <form>
-          <label className="form-group w-100 mb-2">
+          <label className="w-100 mb-2">
             New note:
             <TextArea
               className="w-100"

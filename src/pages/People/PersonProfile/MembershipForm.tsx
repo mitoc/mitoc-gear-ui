@@ -29,7 +29,7 @@ export function MembershipForm({ person, onClose }: Props) {
   return (
     <div>
       <form>
-        <label className="form-group w-100 mb-2">
+        <label className="w-100 mb-2">
           Expires:
           <DatePicker
             selected={date}
@@ -38,7 +38,7 @@ export function MembershipForm({ person, onClose }: Props) {
           />
         </label>
         <br />
-        <label className="form-group w-100 mb-2">
+        <label className="w-100 mb-2">
           Membership Type:
           <Select
             options={affiliationOptions}

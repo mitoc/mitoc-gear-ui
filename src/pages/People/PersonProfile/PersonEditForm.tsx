@@ -14,13 +14,13 @@ export function PersonEditForm({ person, closeForm, refreshPerson }: Props) {
   const [email, setEmail] = useState<string>(person.email);
   return (
     <form>
-      <label className="form-group w-100">
+      <label className="mb-3 w-100">
         First name: <TextField value={firstName} onChange={setFirstName} />
       </label>
-      <label className="form-group w-100">
+      <label className="mb-3 w-100">
         Last name: <TextField value={lastName} onChange={setLastName} />
       </label>
-      <label className="form-group w-100">
+      <label className="mb-3 w-100">
         Email: <TextField value={email} onChange={setEmail} />
       </label>
       <div className="d-flex justify-content-between">

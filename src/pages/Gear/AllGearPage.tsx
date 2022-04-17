@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { GearSummary } from "apiClient/gear";
 import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
-import { TextField } from "components/Inputs/TextField";
+import { SearchTextField } from "components/Inputs/TextField";
 import { GearLink } from "components/GearLink";
 import { useGearList } from "features/api";
 
@@ -25,12 +25,13 @@ export function AllGearPage() {
 
   return (
     <>
-      <TextField
+      <SearchTextField
         value={query}
         onChange={(newQuery) => {
           setPage(1);
           setQuery(newQuery);
         }}
+        className="mb-3"
         placeholder="Search"
         debounceTime={300}
       />

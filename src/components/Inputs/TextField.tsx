@@ -1,21 +1,34 @@
 import { debounce } from "lodash";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Props = {
   value: string;
   onChange: (value: string) => void;
-  debounceTime?: number;
   placeholder?: string;
   className?: string;
 };
 
-export function TextField({
-  value,
-  onChange,
-  debounceTime,
-  placeholder,
-  className,
-}: Props) {
+export function TextField({ value, onChange, placeholder, className }: Props) {
+  return (
+    <div className={className ?? "w-100"}>
+      <input
+        type="text"
+        className="form-control"
+        placeholder={placeholder}
+        value={value}
+        onChange={(evt) => {
+          const newValue = evt.target.value;
+          onChange(newValue);
+        }}
+      />
+    </div>
+  );
+}
+
+type SearchTextFieldProps = Props & { debounceTime: number };
+
+export function SearchTextField(props: SearchTextFieldProps) {
+  const { value, debounceTime, onChange, ...otherProps } = props;
   const [localValue, setLocalValue] = useState<string>(value);
 
   const debouncedOnChange = useMemo(() => {
@@ -26,18 +39,13 @@ export function TextField({
   }, [onChange, debounceTime]);
 
   return (
-    <div className={`form-group mb-3 ${className ?? "w-100"}`}>
-      <input
-        type="text"
-        className="form-control"
-        placeholder={placeholder}
-        value={localValue}
-        onChange={(evt) => {
-          const newValue = evt.target.value;
-          setLocalValue(newValue);
-          debouncedOnChange(newValue);
-        }}
-      />
-    </div>
+    <TextField
+      value={localValue}
+      onChange={(newValue) => {
+        setLocalValue(newValue);
+        debouncedOnChange(newValue);
+      }}
+      {...otherProps}
+    />
   );
 }

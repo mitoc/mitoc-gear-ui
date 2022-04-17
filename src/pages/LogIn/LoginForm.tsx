@@ -35,7 +35,7 @@ export function LoginForm() {
     <div className="row">
       <div className="col-sm-6">
         <form className={formClass}>
-          <label className="form-group w-100 mb-2">
+          <label className="w-100 mb-2">
             Email:
             <input
               className={`form-control ${emailError ? "is-invalid" : ""}`}
@@ -49,7 +49,7 @@ export function LoginForm() {
             {emailError && <div className="invalid-feedback">{emailError}</div>}
           </label>
           <br />
-          <label className="form-group w-100 mb-2">
+          <label className="w-100 mb-2">
             Password:
             <input
               type="password"
