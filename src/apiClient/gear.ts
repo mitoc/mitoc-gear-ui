@@ -42,10 +42,10 @@ export interface PurchasableItem {
   name: string;
 }
 
-export interface GearTypes {
+export interface GearType {
   id: string;
   typeName: string;
-  rentalAmount: number;
+  shorthand: string;
 }
 
 async function getGearRentalHistory(

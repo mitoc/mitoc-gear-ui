@@ -1,6 +1,6 @@
 import Select from "react-select";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useGetGearTypesQuery } from "features/api";
 
@@ -8,7 +8,7 @@ import { Checkbox } from "components/Inputs/Checkbox";
 import { NumberField } from "components/Inputs/NumberField";
 import { TextField } from "components/Inputs/TextField";
 import { TextArea } from "components/Inputs/TextArea";
-import { createGear, GearSummary } from "apiClient/gear";
+import { createGear, GearSummary, GearType } from "apiClient/gear";
 import { isEmpty } from "lodash";
 import { GearLink } from "components/GearLink";
 import { Link } from "react-router-dom";
@@ -16,7 +16,9 @@ import { Link } from "react-router-dom";
 export function AddNewGear() {
   const { data: gearTypes } = useGetGearTypesQuery();
 
-  const [gearType, setGearType] = useState<{ value: string } | null>(null);
+  const [gearType, setGearType] = useState<
+    (GearType & { value: string; label: string }) | null
+  >(null);
   const [quantity, setQuantity] = useState<number | null>(1);
   const [depositAmount, setDepositAmount] = useState<number | null>(null);
   const [autoGenerateIds, setAutoGenerateIds] = useState<boolean>(true);
@@ -26,6 +28,12 @@ export function AddNewGear() {
   const [description, setDescription] = useState<string>("");
 
   const [gearCreated, setGearCreated] = useState<GearSummary[]>([]);
+
+  useEffect(() => {
+    if (!autoGenerateIds) {
+      setIdSuffix("");
+    }
+  }, [autoGenerateIds]);
 
   const onSubmit = () => {
     if (gearType == null || !quantity) {
@@ -40,9 +48,10 @@ export function AddNewGear() {
     }).then(({ items }) => setGearCreated(items));
   };
   const options =
-    gearTypes?.map(({ id, typeName }) => ({
-      value: id,
-      label: typeName,
+    gearTypes?.map((gearType) => ({
+      value: gearType.id,
+      label: gearType.typeName,
+      ...gearType,
     })) ?? [];
 
   if (!isEmpty(gearCreated)) {
@@ -109,7 +118,7 @@ export function AddNewGear() {
               First ID:
               {/* TODO: Validate this */}
               <TextField
-                value={"AA-" + idSuffix}
+                value={gearType ? gearType?.shorthand + "-" + idSuffix : ""}
                 onChange={(val) => {
                   const suffix = val.slice(3);
                   setIdSuffix(suffix);
