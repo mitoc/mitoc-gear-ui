@@ -29,13 +29,7 @@ export function AddNewGearForm({
     },
   });
 
-  const {
-    register,
-    handleSubmit: handleSubmit2,
-    watch,
-    setValue,
-    formState: { errors },
-  } = formObject;
+  const { handleSubmit, watch, setValue } = formObject;
 
   const autoGenerateIds = watch("autoGenerateIds");
   useEffect(() => {
@@ -49,17 +43,6 @@ export function AddNewGearForm({
     }
   }, [autoGenerateIds, gearType]);
 
-  const handleSubmit = (args: any) => {
-    console.log(args);
-    // return onSubmit({
-    //   type: gearType.value,
-    //   quantity,
-    //   idSuffix,
-    //   specification: spec,
-    //   size,
-    // });
-  };
-
   const options =
     gearTypes?.map((gearType) => ({
       value: gearType.id,
@@ -69,7 +52,17 @@ export function AddNewGearForm({
 
   return (
     <FormProvider {...formObject}>
-      <form onSubmit={handleSubmit2(handleSubmit)}>
+      <form
+        onSubmit={handleSubmit((formValues) => {
+          if (gearType == null) {
+            return null;
+          }
+          onSubmit({
+            ...formValues,
+            type: gearType.value,
+          });
+        })}
+      >
         <label className="w-100 mb-2">
           Gear type:
           <Select
@@ -107,7 +100,7 @@ export function AddNewGearForm({
                 message:
                   "ID must follow the pattern " +
                   (gearType?.shorthand ?? "XX") +
-                  "-NN-NN",
+                  "-22-01",
               },
             }}
           />
