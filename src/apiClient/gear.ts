@@ -42,6 +42,12 @@ export interface PurchasableItem {
   name: string;
 }
 
+export interface GearTypes {
+  id: string;
+  typeName: string;
+  rentalAmount: number;
+}
+
 async function getGearRentalHistory(
   id: string,
   page?: number
