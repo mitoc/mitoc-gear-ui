@@ -11,6 +11,7 @@ import { TextArea } from "components/Inputs/TextArea";
 import { createGear, GearSummary } from "apiClient/gear";
 import { isEmpty } from "lodash";
 import { GearLink } from "components/GearLink";
+import { Link } from "react-router-dom";
 
 export function AddNewGear() {
   const { data: gearTypes } = useGetGearTypesQuery();
@@ -49,12 +50,30 @@ export function AddNewGear() {
       <div className="row">
         <div className="col-lg-8">
           <h1>Add new gear</h1>
-          Created the following items:
-          <ul>
+          <p className="mb-2">Success! The following items were created:</p>
+          <ul className="list-group mb-3">
             {gearCreated.map((item) => {
-              return <GearLink id={item.id} />;
+              return (
+                <li key={item.id} className="list-group-item">
+                  <GearLink id={item.id}>{item.id}</GearLink>
+                </li>
+              );
             })}
           </ul>
+          <div className="d-flex justify-content-between">
+            <Link to="/gear">
+              <button type="button" className="btn btn-outline-secondary">
+                Back to gear list
+              </button>
+            </Link>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => setGearCreated([])}
+            >
+              Add more gear
+            </button>
+          </div>
         </div>
       </div>
     );
