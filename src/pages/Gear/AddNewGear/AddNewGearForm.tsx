@@ -130,13 +130,9 @@ export function AddNewGearForm({
           }}
         />
 
-        <LabeledInput title="Specification:" name="specification" />
-        <LabeledInput title="Size:" name="size" />
-
-        <label className="mb-2 w-100">
-          Description:
-          <textarea className="form-control" {...register("description")} />
-        </label>
+        <LabeledInput title="Specification:" type="text" name="specification" />
+        <LabeledInput title="Size:" type="text" name="size" />
+        <LabeledInput title="Description:" as="textarea" name="description" />
         <div className="d-flex justify-content-end w-100">
           <button type="submit" className="btn btn-primary">
             Submit
@@ -151,6 +147,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
 function LabeledInput<TFieldValues>(
   props: InputProps & {
+    as?: any;
     name: FieldPath<TFieldValues>;
     title: string;
     options?: RegisterOptions<TFieldValues>;
@@ -160,7 +157,7 @@ function LabeledInput<TFieldValues>(
     register,
     formState: { errors },
   } = useFormContext();
-  const { title, options, ...otherProps } = props;
+  const { as: Component = "input", title, options, ...otherProps } = props;
   const name = otherProps.name;
 
   const error = errors[name];
@@ -181,7 +178,7 @@ function LabeledInput<TFieldValues>(
     <>
       <label className="w-100 mb-2">
         {title}
-        <input
+        <Component
           className={className}
           {...otherProps}
           {...register(name, options)}
