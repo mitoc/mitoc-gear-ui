@@ -37,7 +37,6 @@ export function AddNewGearForm({
 
   const autoGenerateIds = watch("autoGenerateIds");
   const gearType = watch("gearType");
-  console.log({ gearType });
   useEffect(() => {
     if (autoGenerateIds) {
       setValue("firstId", "");
@@ -65,7 +64,7 @@ export function AddNewGearForm({
           }
           onSubmit({
             ...formValues,
-            idSuffix: formValues.firstId.slice(3),
+            id: formValues.firstId,
             type: gearType.value,
           });
         })}

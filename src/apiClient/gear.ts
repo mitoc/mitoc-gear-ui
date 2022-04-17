@@ -94,7 +94,7 @@ async function markFound(id: string, note?: string) {
 
 export type CreateGearArgs = {
   type: string;
-  idSuffix?: string;
+  id?: string;
   quantity: number;
   size?: string;
   specification?: string;
