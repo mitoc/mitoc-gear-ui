@@ -2,7 +2,9 @@ import { APIErrorType } from "apiClient/types";
 
 export function AddNewGearError({ err }: { err: APIErrorType }) {
   if (err.err !== "gearIdAlreadyExists") {
-    return <div className="alert alert-danger">{err.msg}</div>;
+    return (
+      <div className="alert alert-danger">Gear creation failed:{err.msg}</div>
+    );
   }
   const gearItems = err.args!.gearItems as string[];
   return (

@@ -1,10 +1,23 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, Controller } from "react-hook-form";
 
 import { useGetGearTypesQuery } from "features/api";
 import { CreateGearArgs, GearType } from "apiClient/gear";
 import { LabeledInput } from "components/Inputs/LabeledInput";
+
+type GearTypeOption = GearType & { value: string; label: string };
+
+type FormValues = {
+  gearType: GearTypeOption | null;
+  specification: string;
+  size: string;
+  description: string;
+  firstId: string;
+  autoGenerateIds: boolean;
+  depositAmount: number | null;
+  quantity: number;
+};
 
 export function AddNewGearForm({
   onSubmit,
@@ -13,33 +26,26 @@ export function AddNewGearForm({
 }) {
   const { data: gearTypes } = useGetGearTypesQuery();
 
-  const [gearType, setGearType] = useState<
-    (GearType & { value: string; label: string }) | null
-  >(null);
-
-  const formObject = useForm({
+  const formObject = useForm<FormValues>({
     defaultValues: {
-      specification: "",
-      size: "",
-      description: "",
-      idSuffix: "",
       autoGenerateIds: true,
-      depositAmount: null,
       quantity: 1,
     },
   });
 
-  const { handleSubmit, watch, setValue } = formObject;
+  const { handleSubmit, watch, setValue, control } = formObject;
 
   const autoGenerateIds = watch("autoGenerateIds");
+  const gearType = watch("gearType");
+  console.log({ gearType });
   useEffect(() => {
     if (autoGenerateIds) {
-      setValue("idSuffix", "");
+      setValue("firstId", "");
     }
   }, [autoGenerateIds]);
   useEffect(() => {
     if (!autoGenerateIds && gearType) {
-      setValue("idSuffix", gearType.shorthand + "-");
+      setValue("firstId", gearType.shorthand + "-");
     }
   }, [autoGenerateIds, gearType]);
 
@@ -59,17 +65,26 @@ export function AddNewGearForm({
           }
           onSubmit({
             ...formValues,
+            idSuffix: formValues.firstId.slice(3),
             type: gearType.value,
           });
         })}
       >
         <label className="w-100 mb-2">
           Gear type:
-          <Select
-            options={options}
-            className="w-100"
-            value={gearType}
-            onChange={setGearType}
+          <Controller
+            control={control}
+            name="gearType"
+            rules={{ required: true }}
+            render={({ field: { onChange, onBlur, value, ref } }) => (
+              <Select
+                options={options}
+                className="w-100"
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+            )}
           />
         </label>
         <LabeledInput
@@ -90,7 +105,7 @@ export function AddNewGearForm({
         {!autoGenerateIds && (
           <LabeledInput
             title="First ID:"
-            name="idSuffix"
+            name="firstId"
             options={{
               required: true,
               pattern: {
