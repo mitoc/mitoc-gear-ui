@@ -1,6 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, InputHTMLAttributes } from "react";
 import Select from "react-select";
-import { useForm } from "react-hook-form";
+import {
+  useForm,
+  FieldPath,
+  FormProvider,
+  useFormContext,
+  RegisterOptions,
+} from "react-hook-form";
 
 import { useGetGearTypesQuery } from "features/api";
 import { CreateGearArgs, GearType } from "apiClient/gear";
@@ -16,7 +22,7 @@ export function AddNewGearForm({
     (GearType & { value: string; label: string }) | null
   >(null);
 
-  const { register, handleSubmit: handleSubmit2, watch, setValue } = useForm({
+  const formObject = useForm({
     defaultValues: {
       specification: "",
       size: "",
@@ -27,6 +33,14 @@ export function AddNewGearForm({
       quantity: 1,
     },
   });
+
+  const {
+    register,
+    handleSubmit: handleSubmit2,
+    watch,
+    setValue,
+    formState: { errors },
+  } = formObject;
 
   const autoGenerateIds = watch("autoGenerateIds");
   useEffect(() => {
@@ -59,75 +73,121 @@ export function AddNewGearForm({
     })) ?? [];
 
   return (
-    <form onSubmit={handleSubmit2(handleSubmit)}>
-      <label className="w-100 mb-2">
-        Gear type:
-        <Select
-          options={options}
-          className="w-100"
-          value={gearType}
-          onChange={setGearType}
-        />
-      </label>
-      <label className="w-100 mb-2">
-        Quantity to add:
-        <input
-          type="number"
-          className="form-control"
-          {...register("quantity", { required: true, valueAsNumber: true })}
-        />
-      </label>
-      <label className="mb-2 form-switch">
-        <input
-          type="checkbox"
-          className="form-check-input"
-          {...register("autoGenerateIds")}
-        />{" "}
-        Automatically generate new ids
-      </label>
-      {!autoGenerateIds && (
-        <label className="mb-2 w-100">
-          First ID:
-          <input
-            type="text"
-            className="form-control"
-            {...register("idSuffix")}
+    <FormProvider {...formObject}>
+      <form onSubmit={handleSubmit2(handleSubmit)}>
+        <label className="w-100 mb-2">
+          Gear type:
+          <Select
+            options={options}
+            className="w-100"
+            value={gearType}
+            onChange={setGearType}
           />
         </label>
-      )}
-      <label className="mb-2 w-100">
-        Deposit amount:
-        <input
+        <LabeledInput
+          title="Quantity to add:"
           type="number"
-          step={0.5}
-          className="form-control"
-          {...register("depositAmount", {
+          name="quantity"
+          options={{
             required: true,
             valueAsNumber: true,
-          })}
+          }}
         />
-      </label>
-      <label className="mb-2 w-100">
-        Specification:
+        <label className="mb-2 form-switch">
+          <input
+            type="checkbox"
+            className={`form-check-input ${""}`}
+            {...register("autoGenerateIds")}
+          />{" "}
+          Automatically generate new ids
+        </label>
+        {!autoGenerateIds && (
+          <LabeledInput
+            title="First ID:"
+            name="idSuffix"
+            options={{
+              required: true,
+              pattern: {
+                value: new RegExp(
+                  "^" + (gearType?.shorthand ?? "[A-Z]{2}") + "-\\d{2}-\\d\\d+"
+                ),
+                message:
+                  "ID must follow the pattern " +
+                  (gearType?.shorthand ?? "XX") +
+                  "-NN-NN",
+              },
+            }}
+          />
+        )}
+        <LabeledInput
+          title="Deposit amount:"
+          type="number"
+          step={0.5}
+          name="deposit"
+          options={{
+            required: true,
+            valueAsNumber: true,
+          }}
+        />
+
+        <LabeledInput title="Specification:" name="specification" />
+        <LabeledInput title="Size:" name="size" />
+
+        <label className="mb-2 w-100">
+          Description:
+          <textarea className="form-control" {...register("description")} />
+        </label>
+        <div className="d-flex justify-content-end w-100">
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </div>
+      </form>
+    </FormProvider>
+  );
+}
+
+type InputProps = InputHTMLAttributes<HTMLInputElement>;
+
+function LabeledInput<TFieldValues>(
+  props: InputProps & {
+    name: FieldPath<TFieldValues>;
+    title: string;
+    options?: RegisterOptions<TFieldValues>;
+  }
+) {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+  const { title, options, ...otherProps } = props;
+  const name = otherProps.name;
+
+  const error = errors[name];
+  const errorMsg =
+    error?.message ||
+    (error?.type === "required" ? "This field is required" : undefined);
+
+  const invalid = error != null;
+  const { className: parentClassName, ...other } = props;
+  const classNames = [
+    other.type === "checkbox" ? "form-check-input" : "form-control",
+    invalid ? "is-invalid" : "",
+    parentClassName,
+  ];
+
+  const className = classNames.join(" ");
+  return (
+    <>
+      <label className="w-100 mb-2">
+        {title}
         <input
-          type="text"
-          className="form-control"
-          {...register("specification")}
+          className={className}
+          {...otherProps}
+          {...register(name, options)}
         />
+        <div className="invalid-feedback">{errorMsg}</div>
       </label>
-      <label className="mb-2 w-100">
-        Size:
-        <input type="text" className="form-control" {...register("size")} />
-      </label>
-      <label className="mb-2 w-100">
-        Description:
-        <textarea className="form-control" {...register("description")} />
-      </label>
-      <div className="d-flex justify-content-end w-100">
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
-      </div>
-    </form>
+    </>
   );
 }
