@@ -92,8 +92,25 @@ async function markFound(id: string, note?: string) {
   });
 }
 
+type CreateGearArgs = {
+  type: string;
+  idSuffix?: string;
+  quantity: number;
+  size?: string;
+  specification?: string;
+  deposit_amount?: number;
+  description?: string;
+};
+
+async function createGear(
+  args: CreateGearArgs
+): Promise<{ items: GearSummary[] }> {
+  return request(`/gear/`, "POST", args);
+}
+
 export {
   addNote,
+  createGear,
   getGearRentalHistory,
   markBroken,
   markFixed,

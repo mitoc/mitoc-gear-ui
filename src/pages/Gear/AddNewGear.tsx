@@ -8,9 +8,14 @@ import { Checkbox } from "components/Inputs/Checkbox";
 import { NumberField } from "components/Inputs/NumberField";
 import { TextField } from "components/Inputs/TextField";
 import { TextArea } from "components/Inputs/TextArea";
+import { createGear, GearSummary } from "apiClient/gear";
+import { isEmpty } from "lodash";
+import { GearLink } from "components/GearLink";
 
 export function AddNewGear() {
-  const [gearType, setGearType] = useState<any | null>(null);
+  const { data: gearTypes } = useGetGearTypesQuery();
+
+  const [gearType, setGearType] = useState<{ value: string } | null>(null);
   const [quantity, setQuantity] = useState<number | null>(1);
   const [depositAmount, setDepositAmount] = useState<number | null>(null);
   const [autoGenerateIds, setAutoGenerateIds] = useState<boolean>(true);
@@ -18,12 +23,42 @@ export function AddNewGear() {
   const [spec, setSpec] = useState<string>("");
   const [size, setSize] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const { data: gearTypes } = useGetGearTypesQuery();
+
+  const [gearCreated, setGearCreated] = useState<GearSummary[]>([]);
+
+  const onSubmit = () => {
+    if (gearType == null || !quantity) {
+      return;
+    }
+    createGear({
+      type: gearType.value,
+      quantity,
+      idSuffix,
+      specification: spec,
+      size,
+    }).then(({ items }) => setGearCreated(items));
+  };
   const options =
     gearTypes?.map(({ id, typeName }) => ({
       value: id,
       label: typeName,
     })) ?? [];
+
+  if (!isEmpty(gearCreated)) {
+    return (
+      <div className="row">
+        <div className="col-lg-8">
+          <h1>Add new gear</h1>
+          Created the following items:
+          <ul>
+            {gearCreated.map((item) => {
+              return <GearLink id={item.id} />;
+            })}
+          </ul>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="row">
       <div className="col-lg-8">
@@ -91,7 +126,7 @@ export function AddNewGear() {
             <button
               type="button"
               className="btn btn-primary"
-              onClick={() => {}}
+              onClick={onSubmit}
             >
               Submit
             </button>
