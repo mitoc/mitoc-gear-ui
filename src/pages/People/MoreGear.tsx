@@ -5,7 +5,7 @@ import { useGearList } from "features/api";
 import { TablePagination } from "components/TablePagination";
 import { GearSummary } from "apiClient/gear";
 import { GearLink } from "components/GearLink";
-import { TextField } from "components/Inputs/TextField";
+import { SearchTextField } from "components/Inputs/TextField";
 import { fmtAmount } from "lib/fmtNumber";
 
 type Props = {
@@ -27,8 +27,8 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
           <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
         )}
       </div>
-      <label className="form-group w-100 mb-2 d-flex flex-row align-items-center">
-        <TextField
+      <label className="w-100 mb-2 d-flex flex-row align-items-center">
+        <SearchTextField
           value={query}
           onChange={(newQuery) => {
             setPage(1);
@@ -36,7 +36,7 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
           }}
           placeholder="Search"
           debounceTime={300}
-          className="w-50"
+          className="w-50 mb-3"
         />
       </label>
 

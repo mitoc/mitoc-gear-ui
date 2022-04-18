@@ -1,7 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { Person, PersonSummary } from "apiClient/people";
-import { GearItem, GearSummary, PurchasableItem } from "apiClient/gear";
+import type {
+  GearItem,
+  GearSummary,
+  GearType,
+  PurchasableItem,
+} from "apiClient/gear";
 import { ListWrapper } from "apiClient/types";
 
 export const gearDbApi = createApi({
@@ -19,13 +24,15 @@ export const gearDbApi = createApi({
       {
         q?: string;
         page?: number;
+        openRentals?: boolean;
       }
     >({
-      query: ({ q, page }) => ({
+      query: ({ q, page, openRentals }) => ({
         url: "people/",
         params: {
           ...(q && { q }),
           ...(page && { page }),
+          ...(openRentals && { openRentals }),
         },
       }),
     }),
@@ -55,6 +62,9 @@ export const gearDbApi = createApi({
     getAffiliations: builder.query<PurchasableItem[], void>({
       query: () => "/affiliations/",
     }),
+    getGearTypes: builder.query<GearType[], void>({
+      query: () => "/gear-types/",
+    }),
   }),
 });
 
@@ -65,6 +75,7 @@ export const {
   useGetGearListQuery,
   useGetPurchasablesQuery,
   useGetAffiliationsQuery,
+  useGetGearTypesQuery,
 } = gearDbApi;
 
 export function useGearList({ q, page }: { q: string; page?: number }) {
@@ -76,8 +87,16 @@ export function useGearList({ q, page }: { q: string; page?: number }) {
   return { gearList, nbPages };
 }
 
-export function usePeopleList({ q, page }: { q: string; page?: number }) {
-  const { data } = useGetPersonListQuery({ q: q?.trim(), page });
+export function usePeopleList({
+  q,
+  page,
+  openRentals,
+}: {
+  q: string;
+  page?: number;
+  openRentals?: boolean;
+}) {
+  const { data } = useGetPersonListQuery({ q: q?.trim(), page, openRentals });
   const personList = data?.results;
   const nbPages =
     data?.count != null ? Math.ceil(data?.count / 50) : data?.count;

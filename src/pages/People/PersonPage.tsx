@@ -47,6 +47,8 @@ export function PersonPage() {
     return null;
   }
 
+  const isOverdue = person.rentals.some((rental) => rental.weeksOut >= 7);
+
   const onCheckout = () => {
     clearCheckout();
     refreshPerson();
@@ -61,6 +63,11 @@ export function PersonPage() {
 
   return (
     <div className="row">
+      {isOverdue && (
+        <div className="alert alert-danger" role="alert">
+          Please remind renter to return overdue gear!
+        </div>
+      )}
       <div className="col-12 col-md-5 p-2">
         <PersonProfile person={person} refreshPerson={refreshPerson} />
         <Notes

@@ -1,12 +1,14 @@
 import { useState } from "react";
 
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 import { PersonSummary } from "apiClient/people";
 import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
-import { TextField } from "components/Inputs/TextField";
+import { SearchTextField } from "components/Inputs/TextField";
 import { PersonLink } from "components/PersonLink";
+import { Checkbox } from "components/Inputs/Checkbox";
 import { usePeopleList } from "features/api";
 
 type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
@@ -16,7 +18,13 @@ type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
 export function PeoplePage() {
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
-  const { personList, nbPages } = usePeopleList({ q: query, page });
+  const [openRentals, setOpenRentals] = useState<boolean>(false);
+  const [showFilters, setShowFilters] = useState<boolean>(false);
+  const { personList, nbPages } = usePeopleList({
+    q: query,
+    page,
+    openRentals,
+  });
 
   const peopleData = personList?.map(({ firstName, lastName, ...other }) => ({
     name: `${firstName} ${lastName}`,
@@ -31,7 +39,7 @@ export function PeoplePage() {
 
   return (
     <>
-      <TextField
+      <SearchTextField
         value={query}
         onChange={(newQuery) => {
           setPage(1);
@@ -39,10 +47,37 @@ export function PeoplePage() {
         }}
         placeholder="Search"
         debounceTime={300}
+        className="mb-3"
       />
 
       {nbPages != null && (
-        <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+        <div className="d-flex justify-content-between">
+          <div className="d-flex flew-row">
+            <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+            <button
+              className="btn btn-outline-primary mb-3 ms-3"
+              onClick={() => setShowFilters((v) => !v)}
+            >
+              ▽ Filters
+            </button>
+          </div>
+          <Link to="/add-person">
+            <button className="btn btn-outline-primary mb-3">
+              ＋ Add person
+            </button>
+          </Link>
+        </div>
+      )}
+
+      {showFilters && (
+        <div className="form-switch mb-3">
+          <Checkbox
+            value={openRentals}
+            className="me-3"
+            onChange={() => setOpenRentals((v) => !v)}
+          />
+          Open Rentals only
+        </div>
       )}
 
       {peopleData && (
@@ -66,9 +101,9 @@ function LinkRow({
 function RentalCell({ item: person }: { item: TablePerson }) {
   return (
     <List>
-      {person.rentals.map(({ id, type }) => (
+      {person.rentals.map(({ id, type, weeksOut }) => (
         <li key={id}>
-          {id} — {type.typeName}
+          {id} — {type.typeName} ({weeksOut} weeks)
         </li>
       ))}
     </List>

@@ -30,7 +30,7 @@ export function Header() {
               href="https://docs.google.com/spreadsheets/d/1CW3j4K4_HmXlDbO1vPRvIW76SI41EYNbaZKKrqmrgTk/edit?hl=en&hl=en#gid=1019012678"
               target="_blank"
             >
-              Restricted gear doc
+              Restricted gear
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
@@ -40,14 +40,14 @@ export function Header() {
               title={`${user.firstName} ${user.lastName[0]}.`}
               id="nav-profile-dropdown"
             >
-              <NavDropdown.Item onClick={() => dispatch(logOut())}>
-                Log out
-              </NavDropdown.Item>
               <PersonLink className="dropdown-item" id={user.id}>
                 My profile
               </PersonLink>
               <NavDropdown.Item href="http://goo.gl/nPMjmc" target="_blank">
                 Request desk credit
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => dispatch(logOut())}>
+                Log out
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>

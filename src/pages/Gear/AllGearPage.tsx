@@ -4,11 +4,12 @@ import styled from "styled-components";
 import { GearSummary } from "apiClient/gear";
 import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
-import { TextField } from "components/Inputs/TextField";
+import { SearchTextField } from "components/Inputs/TextField";
 import { GearLink } from "components/GearLink";
 import { useGearList } from "features/api";
 
 import { GearStatus } from "./GearStatus";
+import { Link } from "react-router-dom";
 
 export function AllGearPage() {
   const [page, setPage] = useState<number>(1);
@@ -25,18 +26,26 @@ export function AllGearPage() {
 
   return (
     <>
-      <TextField
+      <SearchTextField
         value={query}
         onChange={(newQuery) => {
           setPage(1);
           setQuery(newQuery);
         }}
+        className="mb-3"
         placeholder="Search"
         debounceTime={300}
       />
 
       {nbPages != null && (
-        <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+        <div className="d-flex justify-content-between">
+          <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+          <Link to="/add-gear">
+            <button className="btn btn-outline-primary mb-3">
+              ＋ Add new gear
+            </button>
+          </Link>
+        </div>
       )}
 
       {gearList && (

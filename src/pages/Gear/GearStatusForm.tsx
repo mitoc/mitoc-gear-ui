@@ -30,7 +30,7 @@ export function GearStatusForm({ formType, gearItem, onChange }: Props) {
     formType === GearStatusFormType.broken && !gearItem.broken;
   return (
     <form className="mt-2">
-      <label className="form-group w-100 mb-2">
+      <label className="w-100 mb-2">
         {getLabel(formType, gearItem)}
         <TextArea
           className="w-100"

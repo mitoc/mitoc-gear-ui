@@ -11,11 +11,13 @@ export interface User {
   lastName: string;
   email: string;
   isDeskworker: boolean;
+  groups: { groupName: string; id: number }[];
 }
 
-export interface ApiError {
+export interface APIErrorType {
   msg: string;
   err: string;
+  args?: Record<string, any>;
 }
 
 export interface Note {

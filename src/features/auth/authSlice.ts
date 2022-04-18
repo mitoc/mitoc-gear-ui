@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { authClient } from "apiClient/auth";
-import type { User, ApiError } from "apiClient/types";
+import type { User, APIErrorType } from "apiClient/types";
 
 import { createCustomAsyncThunk } from "./../tools";
 export interface AuthState {
   loadingStatus: "loading" | "idle" | "blank";
   loggedIn?: boolean;
   user?: User;
-  error?: ApiError;
+  error?: APIErrorType;
 }
 
 const initialState: AuthState = { loadingStatus: "blank" };
@@ -54,7 +54,7 @@ const authSlice = createSlice({
       })
       .addCase(logIn.rejected, (state, action) => {
         state.loadingStatus = "idle";
-        state.error = action.payload as ApiError;
+        state.error = action.payload as APIErrorType;
       })
       .addCase(logOut.pending, (state) => {
         state.loadingStatus = "loading";

@@ -1,4 +1,4 @@
-import { ApiError as SerializedApiError } from "./types";
+import { APIErrorType as SerializedApiError } from "./types";
 
 type Data = { [key: string]: any };
 
