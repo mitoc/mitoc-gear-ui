@@ -1,4 +1,4 @@
-import { GearItem, GearSummary } from "apiClient/gear";
+import { editGearItem, GearSummary } from "apiClient/gear";
 import { NumberField } from "components/Inputs/NumberField";
 import { TextArea } from "components/Inputs/TextArea";
 import { TextField } from "components/Inputs/TextField";
@@ -7,20 +7,18 @@ import { useState } from "react";
 type Props = {
   gearItem: GearSummary;
   closeForm: () => void;
-  refreshGearItem: () => void;
+  refreshGear: () => void;
 };
 
-export function gearItemEditForm({
-  gearItem,
-  closeForm,
-  refreshGearItem,
-}: Props) {
+export function GearItemEditForm({ gearItem, closeForm, refreshGear }: Props) {
   const [specification, setSpecification] = useState<string>(
-    gearItem.specification
+    gearItem.specification ?? ""
   );
-  const [description, setDescription] = useState<string>(gearItem.description);
-  const [size, setSize] = useState<string>(gearItem.size);
-  const [deposit, setDeposit] = useState<number>(gearItem.depositAmount);
+  const [description, setDescription] = useState<string>(
+    gearItem.description ?? ""
+  );
+  const [size, setSize] = useState<string>(gearItem.size ?? "");
+  const [deposit, setDeposit] = useState<number | null>(gearItem.depositAmount);
   return (
     <form>
       <label className="form-group w-100">
@@ -34,27 +32,36 @@ export function gearItemEditForm({
         Size: <TextField value={size} onChange={setSize} />
       </label>
       <label className="form-group w-100">
-        Deposit: <NumberField number={deposit} onChange={setDeposit} />
+        Deposit: <NumberField value={deposit} onChange={setDeposit} />
       </label>
-      {/* <button
-        type="button"
-        className="btn btn-outline-secondary"
-        onClick={closeForm}
-      >
-        Cancel
-      </button>
-      <button
-        type="button"
-        className="btn btn-outline-secondary"
-        onClick={() => {
-          editPerson(person.id, firstName, lastName, email).then(() => {
-            closeForm();
-            refreshPerson();
-          });
-        }}
-      >
-        Confirm
-      </button> */}
+
+      <div className="d-flex justify-content-between">
+        <button
+          type="button"
+          className="btn btn-outline-secondary"
+          onClick={closeForm}
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => {
+            editGearItem(
+              gearItem.id,
+              specification,
+              description,
+              size,
+              deposit
+            ).then(() => {
+              closeForm();
+              refreshGear();
+            });
+          }}
+        >
+          Submit
+        </button>
+      </div>
     </form>
   );
 }

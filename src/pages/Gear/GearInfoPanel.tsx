@@ -5,6 +5,7 @@ import { fmtAmount } from "lib/fmtNumber";
 
 import { GearStatus } from "./GearStatus";
 import { GearStatusForm, GearStatusFormType } from "./GearStatusForm";
+import { GearItemEditForm } from "./GearItemEditForm";
 
 type Props = { gearItem: GearSummary; refreshGear: () => void };
 
@@ -68,10 +69,10 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
       )}
 
       {isEditing && (
-        <gearItemEditForm
-          gearItem={GearSummary}
+        <GearItemEditForm
+          gearItem={gearItem}
           closeForm={() => setEditing(false)}
-          refreshGearItem={refreshGearItem}
+          refreshGear={refreshGear}
         />
       )}
 

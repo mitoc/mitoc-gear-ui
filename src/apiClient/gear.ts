@@ -86,6 +86,21 @@ async function markFound(id: string, note?: string) {
   });
 }
 
+async function editGearItem(
+  id: string,
+  specification: string,
+  description: string,
+  size: string,
+  deposit: number | null
+) {
+  return request(`/gear/${id}/`, "PATCH", {
+    specification,
+    description,
+    size,
+    deposit,
+  });
+}
+
 export {
   addNote,
   getGearRentalHistory,
@@ -95,4 +110,5 @@ export {
   markMissing,
   markRetired,
   markUnretired,
+  editGearItem,
 };
