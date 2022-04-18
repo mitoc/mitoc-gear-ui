@@ -30,16 +30,8 @@ export function Header() {
               href="https://docs.google.com/spreadsheets/d/1CW3j4K4_HmXlDbO1vPRvIW76SI41EYNbaZKKrqmrgTk/edit?hl=en&hl=en#gid=1019012678"
               target="_blank"
             >
-              Restricted gear doc
+              Restricted gear
             </Nav.Link>
-            <NavDropdown title="Manage Desk">
-              <Link className="dropdown-item" to="/add-gear">
-                Add new gear
-              </Link>
-              <Link className="dropdown-item" to="/add-person">
-                Add person
-              </Link>
-            </NavDropdown>
           </Nav>
         </Navbar.Collapse>
         {user != null && (

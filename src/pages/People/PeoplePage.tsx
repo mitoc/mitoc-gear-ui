@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 import { PersonSummary } from "apiClient/people";
 import { DataGrid } from "components/DataGrid";
@@ -43,7 +44,14 @@ export function PeoplePage() {
       />
 
       {nbPages != null && (
-        <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+        <div className="d-flex justify-content-between">
+          <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+          <Link to="/add-person">
+            <button className="btn btn-outline-primary mb-3">
+              ＋ Add person
+            </button>
+          </Link>
+        </div>
       )}
 
       {peopleData && (

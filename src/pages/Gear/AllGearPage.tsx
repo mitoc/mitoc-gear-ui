@@ -9,6 +9,7 @@ import { GearLink } from "components/GearLink";
 import { useGearList } from "features/api";
 
 import { GearStatus } from "./GearStatus";
+import { Link } from "react-router-dom";
 
 export function AllGearPage() {
   const [page, setPage] = useState<number>(1);
@@ -37,7 +38,14 @@ export function AllGearPage() {
       />
 
       {nbPages != null && (
-        <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+        <div className="d-flex justify-content-between">
+          <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+          <Link to="/add-gear">
+            <button className="btn btn-outline-primary mb-3">
+              ＋ Add new gear
+            </button>
+          </Link>
+        </div>
       )}
 
       {gearList && (
