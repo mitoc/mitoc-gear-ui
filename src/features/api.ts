@@ -24,13 +24,15 @@ export const gearDbApi = createApi({
       {
         q?: string;
         page?: number;
+        openRentals?: boolean;
       }
     >({
-      query: ({ q, page }) => ({
+      query: ({ q, page, openRentals }) => ({
         url: "people/",
         params: {
           ...(q && { q }),
           ...(page && { page }),
+          ...(openRentals && { openRentals }),
         },
       }),
     }),
@@ -85,8 +87,16 @@ export function useGearList({ q, page }: { q: string; page?: number }) {
   return { gearList, nbPages };
 }
 
-export function usePeopleList({ q, page }: { q: string; page?: number }) {
-  const { data } = useGetPersonListQuery({ q: q?.trim(), page });
+export function usePeopleList({
+  q,
+  page,
+  openRentals,
+}: {
+  q: string;
+  page?: number;
+  openRentals?: boolean;
+}) {
+  const { data } = useGetPersonListQuery({ q: q?.trim(), page, openRentals });
   const personList = data?.results;
   const nbPages =
     data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
