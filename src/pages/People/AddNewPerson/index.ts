@@ -1,0 +1,1 @@
+export { AddNewPerson } from "./AddNewPerson";

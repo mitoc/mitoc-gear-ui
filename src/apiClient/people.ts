@@ -48,6 +48,16 @@ export interface Affiliation {
   dues: number;
 }
 
+export type CreatePersonArgs = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};
+
+async function createPerson(args: CreatePersonArgs): Promise<PersonSummary> {
+  return request(`/people/`, "POST", args);
+}
+
 async function addFFChecks(id: string, date: Date, checkNumber: string) {
   return request(`/people/${id}/frequent_flyer_check/`, "POST", {
     expires: dayjs(date).format("YYYY-MM-DD"),
@@ -120,7 +130,8 @@ export {
   addWaiver,
   archiveNote,
   checkoutGear,
+  createPerson,
+  editPerson,
   getPersonRentalHistory,
   returnGear,
-  editPerson,
 };

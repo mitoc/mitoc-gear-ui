@@ -36,6 +36,9 @@ export function Header() {
               <Link className="dropdown-item" to="/add-gear">
                 Add new gear
               </Link>
+              <Link className="dropdown-item" to="/add-person">
+                Add person
+              </Link>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
@@ -45,14 +48,14 @@ export function Header() {
               title={`${user.firstName} ${user.lastName[0]}.`}
               id="nav-profile-dropdown"
             >
-              <NavDropdown.Item onClick={() => dispatch(logOut())}>
-                Log out
-              </NavDropdown.Item>
               <PersonLink className="dropdown-item" id={user.id}>
                 My profile
               </PersonLink>
               <NavDropdown.Item href="http://goo.gl/nPMjmc" target="_blank">
                 Request desk credit
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => dispatch(logOut())}>
+                Log out
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>

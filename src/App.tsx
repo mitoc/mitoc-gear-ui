@@ -12,6 +12,7 @@ import LoginPage from "./pages/LogIn";
 import { PeoplePage, PersonPage } from "./pages/People";
 import { AllGearPage, GearItemPage } from "./pages/Gear";
 import { AddNewGear } from "./pages/Gear/AddNewGear";
+import { AddNewPerson } from "./pages/People/AddNewPerson";
 
 import "./App.css";
 
@@ -31,6 +32,9 @@ function App() {
           </Route>
           <Route path="/people/:personId">
             <PersonPage />
+          </Route>
+          <Route exact path="/add-person">
+            <AddNewPerson />
           </Route>
           <Route exact path="/add-gear">
             <AddNewGear />
