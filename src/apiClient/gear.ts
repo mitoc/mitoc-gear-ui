@@ -91,13 +91,13 @@ async function editGearItem(
   specification: string,
   description: string,
   size: string,
-  deposit: number | null
+  depositAmount: number | null
 ) {
   return request(`/gear/${id}/`, "PATCH", {
     specification,
     description,
     size,
-    deposit,
+    depositAmount,
   });
 }
 
