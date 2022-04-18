@@ -32,6 +32,11 @@ export function Header() {
             >
               Restricted gear doc
             </Nav.Link>
+            <NavDropdown title="Manage Desk">
+              <Link className="dropdown-item" to="/add-gear">
+                Add new gear
+              </Link>
+            </NavDropdown>
           </Nav>
         </Navbar.Collapse>
         {user != null && (

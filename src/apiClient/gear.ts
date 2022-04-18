@@ -42,6 +42,12 @@ export interface PurchasableItem {
   name: string;
 }
 
+export interface GearType {
+  id: string;
+  typeName: string;
+  shorthand: string;
+}
+
 async function getGearRentalHistory(
   id: string,
   page?: number
@@ -86,8 +92,25 @@ async function markFound(id: string, note?: string) {
   });
 }
 
+export type CreateGearArgs = {
+  type: string;
+  id?: string;
+  quantity: number;
+  size?: string;
+  specification?: string;
+  deposit_amount?: number;
+  description?: string;
+};
+
+async function createGear(
+  args: CreateGearArgs
+): Promise<{ items: GearSummary[] }> {
+  return request(`/gear/`, "POST", args);
+}
+
 export {
   addNote,
+  createGear,
   getGearRentalHistory,
   markBroken,
   markFixed,

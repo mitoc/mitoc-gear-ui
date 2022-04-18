@@ -13,9 +13,10 @@ export interface User {
   isDeskworker: boolean;
 }
 
-export interface ApiError {
+export interface APIErrorType {
   msg: string;
   err: string;
+  args?: Record<string, any>;
 }
 
 export interface Note {
