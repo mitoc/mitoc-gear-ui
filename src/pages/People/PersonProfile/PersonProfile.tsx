@@ -1,14 +1,16 @@
 import Badge from "react-bootstrap/Badge";
 
-import { editPerson, Person } from "apiClient/people";
+import { Person } from "apiClient/people";
+import { ToggleExpandButton } from "components/Buttons";
 
-import { ExpirableTile } from "./ExpirableTile";
+import { ColoredTile, ExpirableTile } from "./ExpirableTile";
 import { FrequentFlyerForm } from "./FrequentFlyerForm";
 import { WaiverForm } from "./WaiverForm";
 import { MembershipForm } from "./MembershipForm";
 import { useState } from "react";
-import { TextField } from "components/Inputs/TextField";
 import { PersonEditForm } from "./PersonEditForm";
+import { MitocCreditForm } from "./MitocCreditForm";
+import { usePermissions } from "features/auth";
 
 type Props = {
   person: Person;
@@ -17,6 +19,8 @@ type Props = {
 
 export function PersonProfile({ person, refreshPerson }: Props) {
   const [isEditing, setEditing] = useState<boolean>(false);
+  const [showDeskCreditForm, setShowDeskCreditForm] = useState<boolean>(false);
+  const { isOfficer } = usePermissions();
 
   const onEdit = () => {
     setEditing(true);
@@ -76,9 +80,26 @@ export function PersonProfile({ person, refreshPerson }: Props) {
         exp={person.frequentFlyerCheck}
         AddForm={FrequentFlyerForm}
       />
-      <div>
-        <strong>Mitoc credit:</strong> ${person.mitocCredit}
-      </div>
+      <ColoredTile className="p-2 mb-2 mt-2">
+        <div className="d-flex justify-content-between align-items-center">
+          <div>
+            <strong>Mitoc credit:</strong> ${person.mitocCredit}
+          </div>
+          {isOfficer && (
+            <ToggleExpandButton
+              onClick={() => setShowDeskCreditForm((current) => !current)}
+              isOpen={showDeskCreditForm}
+            />
+          )}
+        </div>
+
+        {showDeskCreditForm && (
+          <MitocCreditForm
+            person={person}
+            onClose={() => setShowDeskCreditForm(false)}
+          />
+        )}
+      </ColoredTile>
     </div>
   );
 }

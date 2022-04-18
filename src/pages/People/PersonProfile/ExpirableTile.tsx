@@ -48,7 +48,7 @@ export function ExpirableTile({
   );
 }
 
-const ColoredTile = styled.div<{ color?: string }>`
+export const ColoredTile = styled.div<{ color?: string }>`
   border: 1px solid #e9ecef;
   border-left-width: 0.25rem;
   border-radius: 0.25rem;

@@ -123,9 +123,14 @@ async function editPerson(
   return request(`/people/${id}/`, "PATCH", { firstName, lastName, email });
 }
 
+async function addMitocCredit(id: string, amount: number) {
+  return request(`/people/${id}/credit/add/`, "PATCH", { amount });
+}
+
 export {
   addFFChecks,
   addMembership,
+  addMitocCredit,
   addNote,
   addWaiver,
   archiveNote,
