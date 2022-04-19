@@ -1,6 +1,7 @@
 import Badge from "react-bootstrap/Badge";
 import Select from "react-select";
 import { useState } from "react";
+import { isEmpty } from "lodash";
 
 import { PeopleGroup, Person, updatePersonGroups } from "apiClient/people";
 import { useGetGroupsQuery } from "features/api";
@@ -20,18 +21,28 @@ export default function PeopleGroups({ person, refreshPerson }: Props) {
   const [showGroupsForm, setShowGroupForms] = useState<boolean>(false);
   const { isOfficer } = usePermissions();
 
+  const noGroups = isEmpty(person.groups);
+
+  const containerClassName = [
+    "mt-2",
+    ...(noGroups ? ["d-flex", "justify-content-end"] : []),
+  ].join(" ");
+
   if (!showGroupsForm) {
     return (
-      <div className="mt-2">
+      <div className={containerClassName}>
         {isOfficer && (
           <Badge
             as="button"
             bg="secondary"
             className="mt-1"
             onClick={() => setShowGroupForms((v) => !v)}
-            style={{ float: "right", border: "none" }}
+            style={{
+              float: noGroups ? undefined : "right",
+              border: "none",
+            }}
           >
-            ± Edit groups
+            {noGroups ? "+ Add groups" : "± Edit groups"}
           </Badge>
         )}
         <div>
@@ -87,7 +98,7 @@ function PeopleGroupsForm({
           onClick={closeForm}
           style={{ border: "none" }}
         >
-          ± Edit groups
+          {isEmpty(person.groups) ? "+ Add groups" : "± Edit groups"}
         </Badge>
       </div>
       <Select
