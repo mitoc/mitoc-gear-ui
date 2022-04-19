@@ -5,6 +5,7 @@ import { fmtAmount } from "lib/fmtNumber";
 
 import { GearStatus } from "./GearStatus";
 import { GearStatusForm, GearStatusFormType } from "./GearStatusForm";
+import { GearItemEditForm } from "./GearItemEditForm";
 
 type Props = { gearItem: GearSummary; refreshGear: () => void };
 
@@ -18,6 +19,12 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
       : gearItem.checkedOutTo
       ? "alert-info"
       : "";
+
+  const [isEditing, setEditing] = useState<boolean>(false);
+
+  const onEdit = () => {
+    setEditing(true);
+  };
 
   return (
     <div className="border rounded-2 p-2 mb-3 bg-light">
@@ -43,10 +50,31 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
           .
         </div>
       )}
-      <Field value={gearItem.specification} title="Specification" />
-      <Field value={gearItem.description} title="Description" />
-      <Field value={gearItem.size} title="Size" />
-      <Field value={fmtAmount(gearItem.depositAmount)} title="Deposit" />
+
+      {!isEditing && (
+        <>
+          <button
+            className="btn btn-outline-secondary"
+            style={{ float: "right" }}
+            onClick={onEdit}
+          >
+            Edit
+          </button>
+          <Field value={gearItem.specification} title="Specification" />
+          <Field value={gearItem.description} title="Description" />
+          <Field value={gearItem.size} title="Size" />
+          <Field value={fmtAmount(gearItem.depositAmount)} title="Deposit" />
+        </>
+      )}
+
+      {isEditing && (
+        <GearItemEditForm
+          gearItem={gearItem}
+          closeForm={() => setEditing(false)}
+          refreshGear={refreshGear}
+        />
+      )}
+
       <Field value={fmtAmount(gearItem.dailyFee)} title="Daily Fee" />
       <div className="mt-2">
         <button

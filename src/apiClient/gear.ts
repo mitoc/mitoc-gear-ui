@@ -108,6 +108,21 @@ async function createGear(
   return request(`/gear/`, "POST", args);
 }
 
+async function editGearItem(
+  id: string,
+  specification: string,
+  description: string,
+  size: string,
+  depositAmount: number | null
+) {
+  return request(`/gear/${id}/`, "PATCH", {
+    specification,
+    description,
+    size,
+    depositAmount,
+  });
+}
+
 export {
   addNote,
   createGear,
@@ -118,4 +133,5 @@ export {
   markMissing,
   markRetired,
   markUnretired,
+  editGearItem,
 };
