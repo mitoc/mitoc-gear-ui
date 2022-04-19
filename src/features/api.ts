@@ -1,13 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { Person, PersonSummary } from "apiClient/people";
+import { Person, PersonSummary, PeopleGroup } from "apiClient/people";
 import type {
   GearItem,
   GearSummary,
   GearType,
   PurchasableItem,
 } from "apiClient/gear";
-import { ListWrapper } from "apiClient/types";
+import { Affiliations, ListWrapper } from "apiClient/types";
 
 export const gearDbApi = createApi({
   reducerPath: "gearDbApi",
@@ -59,8 +59,11 @@ export const gearDbApi = createApi({
     getPurchasables: builder.query<PurchasableItem[], void>({
       query: () => "/purchasable/",
     }),
-    getAffiliations: builder.query<PurchasableItem[], void>({
+    getAffiliations: builder.query<Affiliations[], void>({
       query: () => "/affiliations/",
+    }),
+    getGroups: builder.query<PeopleGroup[], void>({
+      query: (personID) => `people/${personID}/`,
     }),
     getGearTypes: builder.query<GearType[], void>({
       query: () => "/gear-types/",
@@ -75,6 +78,7 @@ export const {
   useGetGearListQuery,
   useGetPurchasablesQuery,
   useGetAffiliationsQuery,
+  useGetGroupsQuery,
   useGetGearTypesQuery,
 } = gearDbApi;
 

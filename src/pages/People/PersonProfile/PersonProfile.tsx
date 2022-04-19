@@ -1,5 +1,3 @@
-import Badge from "react-bootstrap/Badge";
-
 import { Person } from "apiClient/people";
 import { ToggleExpandButton } from "components/Buttons";
 
@@ -11,6 +9,8 @@ import { useState } from "react";
 import { PersonEditForm } from "./PersonEditForm";
 import { MitocCreditForm } from "./MitocCreditForm";
 import { usePermissions } from "features/auth";
+
+import PeopleGroups from "./PeopleGroups";
 
 type Props = {
   person: Person;
@@ -53,13 +53,7 @@ export function PersonProfile({ person, refreshPerson }: Props) {
         />
       )}
 
-      <div>
-        {person.groups.map((group) => (
-          <Badge key={group.id} className="me-1" bg="secondary">
-            {group.groupName}
-          </Badge>
-        ))}
-      </div>
+      <PeopleGroups person={person} refreshPerson={refreshPerson} />
       <ExpirableTile
         title="Membership"
         person={person}

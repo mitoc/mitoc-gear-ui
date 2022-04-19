@@ -15,12 +15,17 @@ export interface Expireable {
   expires: string;
 }
 
+export interface PeopleGroup {
+  groupName: string;
+  id: number;
+}
+
 export interface Person extends PersonSummary {
   affiliation: string;
   membership?: Expireable & { membershipType: string };
   waiver?: Expireable;
   frequentFlyerCheck?: Expireable;
-  groups: { groupName: string; id: string }[];
+  groups: PeopleGroup[];
   notes: Note[];
   mitocCredit: number;
 }
