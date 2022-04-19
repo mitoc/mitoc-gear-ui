@@ -1,3 +1,5 @@
+import { PeopleGroup } from "./people";
+
 export interface ListWrapper<T> {
   count: number;
   previous: string | null;
@@ -11,7 +13,7 @@ export interface User {
   lastName: string;
   email: string;
   isDeskworker: boolean;
-  groups: { groupName: string; id: number }[];
+  groups: PeopleGroup[];
 }
 
 export interface APIErrorType {
@@ -25,4 +27,10 @@ export interface Note {
   note: string;
   dateInserted: string;
   author: { firstName: string; lastName: string };
+}
+
+export interface Affiliations {
+  id: string;
+  name: string;
+  dues: number;
 }

@@ -75,6 +75,7 @@ export function AddNewGearForm({
           renderComponent={({ value, onChange, onBlur, invalid }: any) => {
             return (
               <Select
+                isLoading={!gearTypes}
                 options={options}
                 className={`w-100 ${invalid ? "is-invalid" : ""}`}
                 styles={{

@@ -15,12 +15,17 @@ export interface Expireable {
   expires: string;
 }
 
+export interface PeopleGroup {
+  groupName: string;
+  id: number;
+}
+
 export interface Person extends PersonSummary {
   affiliation: string;
   membership?: Expireable & { membershipType: string };
   waiver?: Expireable;
   frequentFlyerCheck?: Expireable;
-  groups: { groupName: string; id: string }[];
+  groups: PeopleGroup[];
   notes: Note[];
   mitocCredit: number;
 }
@@ -123,6 +128,10 @@ async function editPerson(
   return request(`/people/${id}/`, "PATCH", { firstName, lastName, email });
 }
 
+async function updatePersonGroups(id: string, groups: number[]) {
+  return request(`/people/${id}/groups/`, "PUT", { groups });
+}
+
 async function addMitocCredit(id: string, amount: number) {
   return request(`/people/${id}/credit/add/`, "PATCH", { amount });
 }
@@ -139,4 +148,5 @@ export {
   editPerson,
   getPersonRentalHistory,
   returnGear,
+  updatePersonGroups,
 };
