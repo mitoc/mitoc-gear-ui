@@ -19,20 +19,22 @@ export function Header() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to="/people">
-              People
-            </Nav.Link>
-            <Nav.Link as={Link} to="/gear">
-              Gear
-            </Nav.Link>
-            <Nav.Link
-              href="https://docs.google.com/spreadsheets/d/1CW3j4K4_HmXlDbO1vPRvIW76SI41EYNbaZKKrqmrgTk/edit?hl=en&hl=en#gid=1019012678"
-              target="_blank"
-            >
-              Restricted gear
-            </Nav.Link>
-          </Nav>
+          {user && (
+            <Nav className="me-auto">
+              <Nav.Link as={Link} to="/people">
+                People
+              </Nav.Link>
+              <Nav.Link as={Link} to="/gear">
+                Gear
+              </Nav.Link>
+              <Nav.Link
+                href="https://docs.google.com/spreadsheets/d/1CW3j4K4_HmXlDbO1vPRvIW76SI41EYNbaZKKrqmrgTk/edit?hl=en&hl=en#gid=1019012678"
+                target="_blank"
+              >
+                Restricted gear
+              </Nav.Link>
+            </Nav>
+          )}
         </Navbar.Collapse>
         {user != null && (
           <Nav className="justify-content-end me-2">
@@ -50,6 +52,13 @@ export function Header() {
                 Log out
               </NavDropdown.Item>
             </NavDropdown>
+          </Nav>
+        )}
+        {!user && (
+          <Nav className="me-auto">
+            <Nav.Link as={Link} to="/login">
+              Log in
+            </Nav.Link>
           </Nav>
         )}
       </Container>
