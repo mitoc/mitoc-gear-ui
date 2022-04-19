@@ -37,6 +37,7 @@ export function DataGrid<T extends Item>(props: Props<T>) {
             key={col.key}
             role="columnheader"
             aria-colindex={idx + 1}
+            style={{ gridColumnStart: 1 + idx }}
             className="p-2 d-flex align-items-center"
           >
             {col.header}
@@ -77,8 +78,9 @@ function Row<T extends Item>({
             role="gridcell"
             aria-colindex={1 + colIdx}
             key={col.key}
+            style={{ gridColumnStart: 1 + colIdx }}
           >
-            {renderValue(col, item)}
+            <div>{renderValue(col, item)}</div>
           </div>
         );
       })}
@@ -122,8 +124,14 @@ const DataGridWrapper = styled.div<{ colCount: number }>`
   }
 
   [role="gridcell"] {
+    overflow: hidden;
     border-bottom: 1px solid #ddd;
     border-right: 1px solid #ddd;
+  }
+
+  [role="gridcell"] > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   > a {
