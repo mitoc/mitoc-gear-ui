@@ -22,7 +22,18 @@ export default function PeopleGroups({ person, refreshPerson }: Props) {
 
   if (!showGroupsForm) {
     return (
-      <div className="mt-2 d-flex justify-content-between">
+      <div className="mt-2">
+        {isOfficer && (
+          <Badge
+            as="button"
+            bg="secondary"
+            className="mt-1"
+            onClick={() => setShowGroupForms((v) => !v)}
+            style={{ float: "right", border: "none" }}
+          >
+            ± Edit groups
+          </Badge>
+        )}
         <div>
           {person.groups.map((group) => (
             <Badge key={group.id} className="me-1" bg="secondary">
@@ -30,17 +41,6 @@ export default function PeopleGroups({ person, refreshPerson }: Props) {
             </Badge>
           ))}
         </div>
-        {isOfficer && (
-          <div className="ms-3 d-flex flex-column justify-content-between">
-            <Badge
-              as="button"
-              bg="secondary"
-              onClick={() => setShowGroupForms((v) => !v)}
-            >
-              ± Edit groups
-            </Badge>
-          </div>
-        )}
       </div>
     );
   }
@@ -80,7 +80,13 @@ function PeopleGroupsForm({
     <div className="mt-2">
       <div className="d-flex justify-content-between mb-2">
         <label>New groups:</label>
-        <Badge as="button" bg="secondary" onClick={closeForm}>
+        <Badge
+          as="button"
+          bg="secondary"
+          className="mt-1"
+          onClick={closeForm}
+          style={{ border: "none" }}
+        >
           ± Edit groups
         </Badge>
       </div>
