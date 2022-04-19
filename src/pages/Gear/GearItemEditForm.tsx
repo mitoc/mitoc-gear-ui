@@ -19,6 +19,20 @@ export function GearItemEditForm({ gearItem, closeForm, refreshGear }: Props) {
   );
   const [size, setSize] = useState<string>(gearItem.size ?? "");
   const [deposit, setDeposit] = useState<number | null>(gearItem.depositAmount);
+  const [submitted, setSubmitted] = useState<boolean>(false);
+
+  const onSubmit = () => {
+    setSubmitted(true);
+    if (deposit == null) {
+      return;
+    }
+    editGearItem(gearItem.id, specification, description, size, deposit).then(
+      () => {
+        closeForm();
+        refreshGear();
+      }
+    );
+  };
   return (
     <form>
       <label className="form-group w-100 mb-2">
@@ -37,7 +51,13 @@ export function GearItemEditForm({ gearItem, closeForm, refreshGear }: Props) {
         Size: <TextField value={size} onChange={setSize} />
       </label>
       <label className="form-group w-100 mb-2">
-        Deposit: <NumberField value={deposit} onChange={setDeposit} />
+        Deposit:{" "}
+        <NumberField
+          value={deposit}
+          onChange={setDeposit}
+          className={deposit == null && submitted ? "is-invalid" : ""}
+        />
+        <div className="invalid-feedback">This field is required</div>
       </label>
 
       <div className="d-flex justify-content-between mb-3">
@@ -48,22 +68,7 @@ export function GearItemEditForm({ gearItem, closeForm, refreshGear }: Props) {
         >
           Cancel
         </button>
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => {
-            editGearItem(
-              gearItem.id,
-              specification,
-              description,
-              size,
-              deposit
-            ).then(() => {
-              closeForm();
-              refreshGear();
-            });
-          }}
-        >
+        <button type="button" className="btn btn-primary" onClick={onSubmit}>
           Submit
         </button>
       </div>
