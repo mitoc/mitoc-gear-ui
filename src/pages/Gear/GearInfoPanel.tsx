@@ -20,7 +20,6 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
       ? "alert-info"
       : "";
 
-  // can we reuse these?
   const [isEditing, setEditing] = useState<boolean>(false);
 
   const onEdit = () => {
