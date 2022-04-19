@@ -1,27 +1,32 @@
 import { debounce } from "lodash";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState, InputHTMLAttributes } from "react";
+
+type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
 type Props = {
   value: string;
   onChange: (value: string) => void;
-  placeholder?: string;
-  className?: string;
-};
+} & Omit<InputProps, "value" | "onChange">;
 
-export function TextField({ value, onChange, placeholder, className }: Props) {
+export function TextField({
+  value,
+  onChange,
+  placeholder,
+  className,
+  ...otherProps
+}: Props) {
+  const inputClassName = ["form-control", className ?? "w-100"].join(" ");
   return (
-    <div className={className ?? "w-100"}>
-      <input
-        type="text"
-        className="form-control"
-        placeholder={placeholder}
-        value={value}
-        onChange={(evt) => {
-          const newValue = evt.target.value;
-          onChange(newValue);
-        }}
-      />
-    </div>
+    <input
+      type="text"
+      className={inputClassName}
+      value={value}
+      onChange={(evt) => {
+        const newValue = evt.target.value;
+        onChange(newValue);
+      }}
+      {...otherProps}
+    />
   );
 }
 
