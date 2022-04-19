@@ -21,21 +21,26 @@ export function GearItemEditForm({ gearItem, closeForm, refreshGear }: Props) {
   const [deposit, setDeposit] = useState<number | null>(gearItem.depositAmount);
   return (
     <form>
-      <label className="form-group w-100">
+      <label className="form-group w-100 mb-2">
         Specification:{" "}
         <TextField value={specification} onChange={setSpecification} />
       </label>
-      <label className="form-group w-100">
-        Description: <TextArea value={description} onChange={setDescription} />
+      <label className="form-group w-100 mb-2">
+        Description:{" "}
+        <TextArea
+          className="w-100"
+          value={description}
+          onChange={setDescription}
+        />
       </label>
-      <label className="form-group w-100">
+      <label className="form-group w-100 mb-2">
         Size: <TextField value={size} onChange={setSize} />
       </label>
-      <label className="form-group w-100">
+      <label className="form-group w-100 mb-2">
         Deposit: <NumberField value={deposit} onChange={setDeposit} />
       </label>
 
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-between mb-3">
         <button
           type="button"
           className="btn btn-outline-secondary"

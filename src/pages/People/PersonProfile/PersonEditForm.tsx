@@ -23,7 +23,7 @@ export function PersonEditForm({ person, closeForm, refreshPerson }: Props) {
       <label className="mb-2 w-100">
         Email: <TextField value={email} onChange={setEmail} />
       </label>
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-between mb-3">
         <button
           type="button"
           className="btn btn-outline-secondary"
