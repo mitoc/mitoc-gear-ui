@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 import { GearSummary } from "apiClient/gear";
 import { DataGrid } from "components/DataGrid";
@@ -7,11 +8,12 @@ import { TablePagination } from "components/TablePagination";
 import { SearchTextField } from "components/Inputs/TextField";
 import { GearLink } from "components/GearLink";
 import { useGearList } from "features/api";
+import { useSetPageTitle } from "hooks";
 
 import { GearStatus } from "./GearStatus";
-import { Link } from "react-router-dom";
 
 export function AllGearPage() {
+  useSetPageTitle("Gear");
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
 

@@ -10,12 +10,14 @@ import { SearchTextField } from "components/Inputs/TextField";
 import { PersonLink } from "components/PersonLink";
 import { Checkbox } from "components/Inputs/Checkbox";
 import { usePeopleList } from "features/api";
+import { useSetPageTitle } from "hooks";
 
 type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
   name: string;
 };
 
 export function PeoplePage() {
+  useSetPageTitle("People");
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
   const [openRentals, setOpenRentals] = useState<boolean>(false);

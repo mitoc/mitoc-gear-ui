@@ -16,12 +16,15 @@ import { PersonRentalsHistory } from "./PersonRentalsHistory";
 import { CheckoutStaging } from "./CheckoutStaging";
 import { ReturnStaging } from "./ReturnStaging";
 import type { ItemToPurchase } from "./types";
+import { useSetPageTitle } from "hooks";
 
 export function PersonPage() {
   const [tab, setTab] = useState<PersonPageTabs>(PersonPageTabs.gearOut);
   const { personId } = useParams<{ personId: string }>();
 
   const { data: person, refetch: refreshPerson } = useGetPersonQuery(personId);
+
+  useSetPageTitle(person ? `${person.firstName} ${person.lastName} ` : "");
 
   const {
     items: gearToCheckout,

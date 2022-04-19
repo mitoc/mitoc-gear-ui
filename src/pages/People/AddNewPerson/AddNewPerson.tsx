@@ -5,11 +5,12 @@ import { useHistory } from "react-router-dom";
 import { APIError as APIErrorClass } from "apiClient/client";
 import { APIErrorType } from "apiClient/types";
 import { validateEmail } from "lib/validation";
-
-import { AddNewPersonError } from "./AddNewPersonError";
 import { LabeledInput } from "components/Inputs/LabeledInput";
 import { Form } from "components/Inputs/Form";
 import { createPerson, CreatePersonArgs } from "apiClient/people";
+import { useSetPageTitle } from "hooks";
+
+import { AddNewPersonError } from "./AddNewPersonError";
 
 type FormValues = {
   firstName: string;
@@ -18,6 +19,7 @@ type FormValues = {
 };
 
 export function AddNewPerson() {
+  useSetPageTitle("Add New Person");
   const [error, setError] = useState<APIErrorType | undefined>();
   const history = useHistory();
 

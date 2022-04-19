@@ -4,12 +4,14 @@ import { useState } from "react";
 import { createGear, CreateGearArgs, GearSummary } from "apiClient/gear";
 import { APIError as APIErrorClass } from "apiClient/client";
 import { APIErrorType } from "apiClient/types";
+import { useSetPageTitle } from "hooks";
 
 import { AddNewGearForm } from "./AddNewGearForm";
 import { AddNewGearError } from "./AddNewGearError";
 import { AddNewGearResults } from "./AddNewGearResults";
 
 export function AddNewGear() {
+  useSetPageTitle("Add New Gear");
   const [gearCreated, setGearCreated] = useState<GearSummary[]>([]);
   const [error, setError] = useState<APIErrorType | undefined>();
 

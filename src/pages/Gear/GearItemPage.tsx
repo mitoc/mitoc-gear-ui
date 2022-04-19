@@ -3,12 +3,14 @@ import { useParams } from "react-router-dom";
 import { addNote } from "apiClient/gear";
 import { Notes } from "components/Notes";
 import { useGetGearItemQuery } from "features/api";
+import { useSetPageTitle } from "hooks";
 
 import { GearInfoPanel } from "./GearInfoPanel";
 import { GearRentalsHistory } from "./GearRentalsHistory";
 
 export function GearItemPage() {
   const { gearId } = useParams<{ gearId: string }>();
+  useSetPageTitle(gearId);
   const { data: gearItem, refetch: refreshGear } = useGetGearItemQuery(gearId);
 
   if (gearItem == null) {
