@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { isEmpty } from "lodash";
 
-import { useAppDispatch } from "app/hooks";
-import { logIn } from "features/auth/authSlice";
 import { validateEmail } from "lib/validation";
-import { Link } from "react-router-dom";
 import { authClient } from "apiClient/auth";
+import { useLocation } from "react-router-dom";
 
 export function RequestPasswordReset() {
-  const [email, setEmail] = useState<string>("");
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const emailParam = params.get("email");
+  const [email, setEmail] = useState<string>(emailParam ?? "");
   const [success, setSuccess] = useState<boolean>(false);
   const [wasValidated, setWasValidated] = useState<boolean>();
 
