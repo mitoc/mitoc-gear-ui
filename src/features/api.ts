@@ -63,7 +63,7 @@ export const gearDbApi = createApi({
       query: () => "/affiliations/",
     }),
     getGroups: builder.query<PeopleGroup[], void>({
-      query: (personID) => `people/${personID}/`,
+      query: (personID) => `/people-groups/`,
     }),
     getGearTypes: builder.query<GearType[], void>({
       query: () => "/gear-types/",

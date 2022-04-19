@@ -128,6 +128,10 @@ async function editPerson(
   return request(`/people/${id}/`, "PATCH", { firstName, lastName, email });
 }
 
+async function updatePersonGroups(id: string, groups: number[]) {
+  return request(`/people/${id}/groups/`, "PUT", { groups });
+}
+
 async function addMitocCredit(id: string, amount: number) {
   return request(`/people/${id}/credit/add/`, "PATCH", { amount });
 }
@@ -144,4 +148,5 @@ export {
   editPerson,
   getPersonRentalHistory,
   returnGear,
+  updatePersonGroups,
 };

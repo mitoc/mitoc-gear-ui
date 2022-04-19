@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { addMitocCredit, addWaiver, Person } from "apiClient/people";
+import { addMitocCredit, Person } from "apiClient/people";
 import { useGetPersonQuery } from "features/api";
 import { NumberField } from "components/Inputs/NumberField";
 

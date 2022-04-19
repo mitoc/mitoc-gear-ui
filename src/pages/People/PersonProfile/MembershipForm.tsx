@@ -66,7 +66,7 @@ export function MembershipForm({ person, onClose }: Props) {
             });
           }}
         >
-          Add waiver
+          Add membership
         </button>
         <br />
       </form>
