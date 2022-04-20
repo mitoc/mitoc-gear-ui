@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import { APIError as APIErrorClass } from "apiClient/client";
 import { APIErrorType } from "apiClient/types";
@@ -67,7 +67,12 @@ export function AddNewPerson() {
               },
             }}
           />
-          <div className="d-flex justify-content-end w-100">
+          <div className="d-flex justify-content-between mb-3">
+            <Link to="/people">
+              <button type="button" className="btn btn-outline-secondary">
+                Cancel
+              </button>
+            </Link>
             <button type="submit" className="btn btn-primary">
               Submit
             </button>

@@ -5,12 +5,14 @@ import { useForm } from "react-hook-form";
 import { authClient } from "apiClient/auth";
 import { Form } from "components/Inputs/Form";
 import { LabeledInput } from "components/Inputs/LabeledInput";
+import { useSetPageTitle } from "hooks";
 
 type FormValues = {
   password: string;
 };
 
 export function RequestPasswordConfirm() {
+  useSetPageTitle("Reset password");
   const [tokenVerified, setTokenVerified] = useState<boolean | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
@@ -51,7 +53,7 @@ export function RequestPasswordConfirm() {
         {tokenVerified === false && (
           <div className="alert alert-danger">
             Invalid token. The link you're using might have expired. Please
-            request a new one <Link to="./request">here</Link>
+            request a new one <Link to="/reset-password/request/">here</Link>
           </div>
         )}
         {success && (

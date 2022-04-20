@@ -4,7 +4,10 @@ import { validateEmail } from "lib/validation";
 import { authClient } from "apiClient/auth";
 import { useLocation } from "react-router-dom";
 
+import { useSetPageTitle } from "hooks";
+
 export function RequestPasswordReset() {
+  useSetPageTitle("Reset password");
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const emailParam = params.get("email");

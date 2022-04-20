@@ -5,6 +5,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { useGetGearTypesQuery } from "features/api";
 import { CreateGearArgs, GearType } from "apiClient/gear";
 import { LabeledInput } from "components/Inputs/LabeledInput";
+import { Link } from "react-router-dom";
 
 type GearTypeOption = GearType & { value: string; label: string };
 
@@ -41,12 +42,12 @@ export function AddNewGearForm({
     if (autoGenerateIds) {
       setValue("firstId", "");
     }
-  }, [autoGenerateIds]);
+  }, [setValue, autoGenerateIds]);
   useEffect(() => {
     if (!autoGenerateIds && gearType) {
       setValue("firstId", gearType.shorthand + "-");
     }
-  }, [autoGenerateIds, gearType]);
+  }, [setValue, autoGenerateIds, gearType]);
 
   const options =
     gearTypes?.map((gearType) => ({
@@ -159,7 +160,12 @@ export function AddNewGearForm({
           as="textarea"
           name="description"
         />
-        <div className="d-flex justify-content-end w-100">
+        <div className="d-flex justify-content-between mb-3">
+          <Link to="/gear">
+            <button type="button" className="btn btn-outline-secondary">
+              Cancel
+            </button>
+          </Link>
           <button type="submit" className="btn btn-primary">
             Submit
           </button>
