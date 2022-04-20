@@ -1,4 +1,4 @@
-import { APIErrorType as SerializedApiError } from "./types";
+import { APIErrorType } from "./types";
 
 type Data = { [key: string]: any };
 
@@ -32,12 +32,19 @@ export async function request(
     return request(path, method, data, maxRetry - 1);
   }
   const jsonResponse = await parseJson(response);
+  if (!response.ok) {
+    if (jsonResponse) {
+      throw new APIError(jsonResponse);
+    }
+    throw new APIError({
+      err: "unexpectedServerResponse",
+      msg: "Unexpected error response from the server.",
+    });
+  }
   if (!jsonResponse) {
     return;
   }
-  if (!response.ok) {
-    throw new APIError(jsonResponse);
-  }
+
   return jsonResponse;
 }
 
@@ -71,9 +78,9 @@ async function refreshCsrfToken() {
 }
 
 export class APIError extends Error {
-  error: SerializedApiError;
+  error: APIErrorType;
 
-  constructor(error: SerializedApiError) {
+  constructor(error: APIErrorType) {
     super(JSON.stringify(error));
     this.error = error;
   }

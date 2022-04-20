@@ -4,6 +4,7 @@ import { isEmpty } from "lodash";
 import { useAppDispatch } from "app/hooks";
 import { logIn } from "features/auth/authSlice";
 import { validateEmail } from "lib/validation";
+import { Link } from "react-router-dom";
 
 export function LoginForm() {
   const dispatch = useAppDispatch();
@@ -65,16 +66,19 @@ export function LoginForm() {
             )}
           </label>
           <br />
-          <button
-            className="btn btn-primary"
-            type="submit"
-            onClick={(evt) => {
-              evt.preventDefault();
-              onSubmit();
-            }}
-          >
-            Log in
-          </button>
+          <div className="d-flex justify-content-between align-items-center">
+            <button
+              className="btn btn-primary"
+              type="submit"
+              onClick={(evt) => {
+                evt.preventDefault();
+                onSubmit();
+              }}
+            >
+              Log in
+            </button>
+            <Link to="/reset-password/request/">Forgot your password?</Link>
+          </div>
           <br />
         </form>
       </div>
