@@ -48,7 +48,7 @@ export function RequestPasswordConfirm() {
 
   return (
     <div className="row">
-      <div className="col-sm-6">
+      <div className="col-md-6">
         <h1>Reset password</h1>
         {tokenVerified === false && (
           <div className="alert alert-danger">

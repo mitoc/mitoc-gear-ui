@@ -34,7 +34,7 @@ export function LoginForm() {
   const formClass = false ? "was-validated" : "";
   return (
     <div className="row">
-      <div className="col-sm-6">
+      <div className="col-md-6">
         <form className={formClass}>
           <label className="w-100 mb-2">
             Email:

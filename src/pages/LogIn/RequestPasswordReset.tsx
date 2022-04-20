@@ -29,7 +29,7 @@ export function RequestPasswordReset() {
   const formClass = false ? "was-validated" : "";
   return (
     <div className="row">
-      <div className="col-sm-6">
+      <div className="col-md-6">
         <h1>Reset password</h1>
         {success && (
           <div className="alert alert-success">
