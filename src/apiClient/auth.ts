@@ -12,7 +12,7 @@ export interface LogInQuery {
 }
 
 async function loggedIn(): Promise<LoggedInResponse> {
-  return request("/auth/logged_in/", "GET");
+  return request("/auth/logged-in/", "GET");
 }
 
 async function logIn(query: LogInQuery): Promise<User | APIErrorType> {
