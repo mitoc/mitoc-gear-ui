@@ -22,8 +22,8 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
   return (
     <div className="border rounded-2 p-2 bg-light">
       <div className="d-flex justify-content-between">
-        <h3>More gear</h3>
-        {nbPages != null && nbPages > 1 && (
+        <h3 className="mb-4">More gear</h3>
+        {query && nbPages != null && nbPages > 1 && (
           <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
         )}
       </div>
