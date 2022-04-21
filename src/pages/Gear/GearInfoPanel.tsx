@@ -76,21 +76,21 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
       )}
 
       <Field value={fmtAmount(gearItem.dailyFee)} title="Daily Fee" />
-      <div className="mt-2">
+      <div className="mt-2 d-flex gap-2 flex-wrap">
         <button
-          className="btn btn-outline-secondary me-1"
+          className="btn btn-outline-secondary"
           onClick={() => setFormToShow(GearStatusFormType.broken)}
         >
           {!gearItem.broken ? "Mark broken" : "Mark fixed"}
         </button>
         <button
-          className="btn btn-outline-secondary me-1 ms-1"
+          className="btn btn-outline-secondary"
           onClick={() => setFormToShow(GearStatusFormType.missing)}
         >
           {!gearItem.missing ? "Mark missing" : "Mark found"}
         </button>
         <button
-          className="btn btn-outline-secondary ms-1"
+          className="btn btn-outline-secondary"
           onClick={() => setFormToShow(GearStatusFormType.retired)}
         >
           {!gearItem.retired ? "Mark retired" : "Mark unretired"}
