@@ -180,16 +180,18 @@ export function ReturnStaging({
           </Table>
         </>
       )}
-      <div className="d-flex justify-content-between">
-        <label className="d-flex flex-row align-items-center">
-          <label className="pe-2">Check number:</label>
+      <label className="d-flex flex-row align-items-center mb-2">
+        <span className="pe-2">Check number:</span>
+        <div className="flex-grow-1 flex-shrink-0">
           <input
             type="text"
-            className="form-control sm w-50"
+            className="form-control sm"
             value={checkNumber}
             onChange={(evt) => setCheckNumber(evt.target.value)}
           ></input>
-        </label>
+        </div>
+      </label>
+      <div className="d-flex justify-content-end">
         <button className="btn btn-primary btn-lg" onClick={onReturn}>
           {purchaseOnly ? "Purchase" : "Return"}
         </button>
