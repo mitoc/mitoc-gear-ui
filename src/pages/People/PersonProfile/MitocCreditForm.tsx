@@ -26,7 +26,7 @@ export function MitocCreditForm({ person, onClose }: Props) {
           });
         }}
       >
-        <label className="w-50 mb-2">
+        <label className="mb-2">
           Credit to add ($):
           <NumberField value={amount} onChange={setAmount} />
         </label>

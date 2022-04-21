@@ -36,7 +36,7 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
           }}
           placeholder="Search"
           debounceTime={300}
-          className="w-50 mb-3"
+          className="mb-3"
         />
       </label>
 
