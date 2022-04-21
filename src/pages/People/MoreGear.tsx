@@ -20,7 +20,7 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
   const { gearList, nbPages } = useGearList({ q: query, page });
 
   return (
-    <div className="border rounded-2 p-2 bg-light">
+    <StyledDiv className="border rounded-2 p-2 bg-light">
       <div className="d-flex justify-content-between">
         <h3 className="mb-4">More gear</h3>
         {query && nbPages != null && nbPages > 1 && (
@@ -114,9 +114,16 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
           </tbody>
         </Table>
       )}
-    </div>
+    </StyledDiv>
   );
 }
+
+const StyledDiv = styled.div`
+  input {
+    width: 250px;
+    max-width: 100%;
+  }
+`;
 
 const AddButton = styled.button`
   min-width: 100px;
