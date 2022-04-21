@@ -40,13 +40,17 @@ export function AllGearPage() {
       />
 
       {nbPages != null && (
-        <div className="d-flex justify-content-between">
-          <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
-          <Link to="/add-gear">
-            <button className="btn btn-outline-primary mb-3">
-              ＋ Add new gear
-            </button>
-          </Link>
+        <div className="row">
+          <div className="col-sm-auto">
+            <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+          </div>
+          <div className="col-sm d-flex flex-grow-1 justify-content-end ">
+            <Link to="/add-gear">
+              <button className="btn btn-outline-primary mb-3">
+                ＋ Add new gear
+              </button>
+            </Link>
+          </div>
         </div>
       )}
 

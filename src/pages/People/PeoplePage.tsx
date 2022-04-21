@@ -53,21 +53,23 @@ export function PeoplePage() {
       />
 
       {nbPages != null && (
-        <div className="d-flex justify-content-between">
-          <div className="d-flex flew-row">
+        <div className="row">
+          <div className="col-md-auto">
             <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+          </div>
+          <div className="col-md d-flex flex-grow-1 justify-content-between">
             <button
-              className="btn btn-outline-primary mb-3 ms-3"
+              className="btn btn-outline-primary mb-3 ms-md-3"
               onClick={() => setShowFilters((v) => !v)}
             >
               ▽ Filters
             </button>
+            <Link to="/add-person">
+              <button className="btn btn-outline-primary mb-3">
+                ＋ Add person
+              </button>
+            </Link>
           </div>
-          <Link to="/add-person">
-            <button className="btn btn-outline-primary mb-3">
-              ＋ Add person
-            </button>
-          </Link>
         </div>
       )}
 
