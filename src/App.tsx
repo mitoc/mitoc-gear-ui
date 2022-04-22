@@ -16,8 +16,6 @@ import { AddNewPerson } from "./pages/People/AddNewPerson";
 import { RequestPasswordReset } from "./pages/LogIn/RequestPasswordReset";
 import { RequestPasswordConfirm } from "./pages/LogIn/RequestPasswordConfirm";
 
-import "./App.css";
-
 function App() {
   const { loggedIn, isLoading } = useLoadCurrentUser();
 
