@@ -1,3 +1,4 @@
+import { isEmpty, max } from "lodash";
 import { useState } from "react";
 
 import styled from "styled-components";
@@ -103,14 +104,24 @@ function LinkRow({
 }
 
 function RentalCell({ item: person }: { item: TablePerson }) {
+  const oldestRental = max(person.rentals.map((r) => r.weeksOut));
   return (
-    <List>
-      {person.rentals.map(({ id, type, weeksOut }) => (
-        <li key={id}>
-          {id} — {type.typeName} ({weeksOut} weeks)
-        </li>
-      ))}
-    </List>
+    <>
+      <List className="d-none d-md-block">
+        {person.rentals.map(({ id, type, weeksOut }) => (
+          <li key={id}>
+            {id} — {type.typeName} ({weeksOut} week{weeksOut > 1 ? "s" : ""})
+          </li>
+        ))}
+      </List>
+      {!isEmpty(person.rentals) && (
+        <span className="d-md-none">
+          {person.rentals.length} rental{person.rentals.length > 1 ? "s" : ""}
+          <br />
+          {oldestRental} week{oldestRental! > 1 ? "s" : ""}
+        </span>
+      )}
+    </>
   );
 }
 
