@@ -12,6 +12,7 @@ type Column<T extends Item> = {
   header: string;
   renderer?: React.ComponentType<{ item: T }>;
   className?: string;
+  hideOnMobile?: boolean;
 };
 
 type Props<T extends Item> = {
@@ -32,17 +33,23 @@ export function DataGrid<T extends Item>(props: Props<T>) {
       aria-colcount={colCount}
     >
       <div role="row" aria-rowindex={1}>
-        {props.columns.map((col, idx) => (
-          <div
-            key={col.key}
-            role="columnheader"
-            aria-colindex={idx + 1}
-            style={{ gridColumnStart: 1 + idx }}
-            className="p-2 d-flex align-items-center"
-          >
-            {col.header}
-          </div>
-        ))}
+        {props.columns.map((col, idx) => {
+          const className = [
+            "p-2 align-items-center",
+            col.hideOnMobile ? "d-none d-md-flex" : "d-flex",
+          ].join(" ");
+          return (
+            <div
+              key={col.key}
+              role="columnheader"
+              aria-colindex={idx + 1}
+              className={className}
+              style={{ gridRow: 1 }}
+            >
+              {col.header}
+            </div>
+          );
+        })}
       </div>
       {props.data.map((item, rowIdx) => (
         <Row
@@ -71,14 +78,20 @@ function Row<T extends Item>({
   const row = (
     <div role="row" aria-rowindex={1 + 1 + idx}>
       {columns.map((col, colIdx) => {
-        const { className } = col;
+        const { className: overrideClassName } = col;
+        const className =
+          overrideClassName ??
+          [
+            "p-2 align-items-center",
+            col.hideOnMobile ? "d-none d-md-flex" : "d-flex",
+          ].join(" ");
         return (
           <div
-            className={className ?? "p-2 d-flex align-items-center"}
+            className={className}
             role="gridcell"
             aria-colindex={1 + colIdx}
             key={col.key}
-            style={{ gridColumnStart: 1 + colIdx }}
+            style={{ gridRow: 1 }}
           >
             <div>{renderValue(col, item)}</div>
           </div>
@@ -112,7 +125,7 @@ const DataGridWrapper = styled.div<{ colCount: number }>`
 
   [role="row"] {
     display: grid;
-    grid-template-columns: repeat(${({ colCount }) => colCount}, 1fr);
+    grid-auto-columns: minmax(0, 1fr);
     min-height: 50px;
   }
 

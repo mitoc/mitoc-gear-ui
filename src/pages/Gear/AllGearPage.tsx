@@ -1,3 +1,4 @@
+import { compact } from "lodash";
 import { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
@@ -9,6 +10,7 @@ import { SearchTextField } from "components/Inputs/TextField";
 import { GearLink } from "components/GearLink";
 import { useGearList } from "features/api";
 import { useSetPageTitle } from "hooks";
+import { isMobile } from "lib/isMobile";
 
 import { GearStatus } from "./GearStatus";
 
@@ -19,12 +21,17 @@ export function AllGearPage() {
 
   const { gearList, nbPages } = useGearList({ q: query, page });
 
-  const myColumns = [
+  const myColumns = compact([
     { key: "id", header: "Serial Number", renderer: IDCell, className: "" },
-    { key: "type.typeName", header: "Type" },
-    { key: "description", header: "Description", renderer: DescriptionCell },
+    { key: "type.typeName", header: "Type", renderer: TypeCell },
+    {
+      key: "description",
+      header: "Description",
+      hideOnMobile: true,
+      renderer: DescriptionCell,
+    },
     { key: "status", header: "Status", renderer: StatusCell },
-  ];
+  ]);
 
   return (
     <>
@@ -86,12 +93,6 @@ function IDCell({ item: gearItem }: { item: GearSummary }) {
 function DescriptionCell({ item: gearItem }: { item: GearSummary }) {
   return (
     <>
-      {gearItem.restricted && (
-        <>
-          RESTRICTED
-          <br />
-        </>
-      )}
       {gearItem.specification}
       {gearItem.description && (
         <>
@@ -110,7 +111,21 @@ function DescriptionCell({ item: gearItem }: { item: GearSummary }) {
 }
 
 function StatusCell({ item: gearItem }: { item: GearSummary }) {
-  return <GearStatus gearItem={gearItem} />;
+  return <GearStatus gearItem={gearItem} short={true} />;
+}
+
+function TypeCell({ item: gearItem }: { item: GearSummary }) {
+  return (
+    <>
+      {gearItem.type.typeName}
+      {gearItem.restricted && (
+        <>
+          <br />
+          <strong className="text-warning">RESTRICTED</strong>
+        </>
+      )}
+    </>
+  );
 }
 
 const ColoredCell = styled.div<{ color?: string }>`

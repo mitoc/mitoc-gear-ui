@@ -6,9 +6,11 @@ type Props = {
   gearItem: GearSummary;
   renderLinks?: boolean;
   className?: string;
+  short?: boolean; // Keep message small on mobile if true
 };
 
 export function GearStatus({
+  short,
   gearItem,
   renderLinks = false,
   className,
@@ -16,21 +18,33 @@ export function GearStatus({
   if (gearItem.broken) {
     return (
       <div className={className}>
-        <strong>Broken</strong> since {formatDateTime(gearItem.broken)}
+        <strong>Broken</strong>
+        <span className={short ? "d-none d-md-inline" : ""}>
+          {" "}
+          since {formatDateTime(gearItem.broken)}
+        </span>
       </div>
     );
   }
   if (gearItem.missing) {
     return (
       <div className={className}>
-        <strong>Missing</strong> since {formatDateTime(gearItem.missing)}
+        <strong>Missing</strong>
+        <span className={short ? "d-none d-md-inline" : ""}>
+          {" "}
+          since {formatDateTime(gearItem.missing)}
+        </span>
       </div>
     );
   }
   if (gearItem.retired) {
     return (
       <div className={className}>
-        <strong>Retired</strong> since {formatDateTime(gearItem.missing)}
+        <strong>Retired</strong>
+        <span className={short ? "d-none d-md-inline" : ""}>
+          {" "}
+          since {formatDateTime(gearItem.missing)}
+        </span>
       </div>
     );
   }
@@ -44,13 +58,17 @@ export function GearStatus({
     );
     return (
       <div className={className}>
-        Checked out to{" "}
-        {renderLinks ? (
-          <PersonLink id={renter.id}>{renderedRenter}</PersonLink>
-        ) : (
-          renderedRenter
-        )}{" "}
-        on {formatDate(rental.checkedout)} ({rental.weeksOut} weeks ago).
+        <strong>Checked out</strong>
+        <span className={short ? "d-none d-md-inline" : ""}>
+          {" "}
+          to{" "}
+          {renderLinks ? (
+            <PersonLink id={renter.id}>{renderedRenter}</PersonLink>
+          ) : (
+            renderedRenter
+          )}{" "}
+          on {formatDate(rental.checkedout)} ({rental.weeksOut} weeks ago).
+        </span>
       </div>
     );
   }
