@@ -61,20 +61,28 @@ export function CheckoutStaging({
               </tr>
             </thead>
             <tbody>
-              {gearToCheckout.map(({ id, type, dailyFee, depositAmount }) => (
-                <tr key={id}>
-                  <td>
-                    <GearLink id={id}>{id}</GearLink>
-                    <br />
-                    {type.typeName}
-                  </td>
-                  <td>{fmtAmount(depositAmount)}</td>
-                  <td>{fmtAmount(dailyFee)}</td>
-                  <td className="text-end align-middle">
-                    <RemoveButton onClick={() => onRemove(id)} />
-                  </td>
-                </tr>
-              ))}
+              {gearToCheckout.map(
+                ({ id, type, dailyFee, depositAmount, restricted }) => (
+                  <tr key={id}>
+                    <td>
+                      <GearLink id={id}>{id}</GearLink>
+                      <br />
+                      {type.typeName}
+                      {restricted && (
+                        <>
+                          <br />
+                          <strong className="text-warning">RESTRICTED</strong>
+                        </>
+                      )}
+                    </td>
+                    <td>{fmtAmount(depositAmount)}</td>
+                    <td>{fmtAmount(dailyFee)}</td>
+                    <td className="text-end align-middle">
+                      <RemoveButton onClick={() => onRemove(id)} />
+                    </td>
+                  </tr>
+                )
+              )}
             </tbody>
           </table>
         </>
