@@ -10,7 +10,6 @@ import { SearchTextField } from "components/Inputs/TextField";
 import { GearLink } from "components/GearLink";
 import { useGearList } from "features/api";
 import { useSetPageTitle } from "hooks";
-import { isMobile } from "lib/isMobile";
 
 import { GearStatus } from "./GearStatus";
 

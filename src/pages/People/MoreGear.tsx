@@ -41,7 +41,7 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
       </label>
 
       {gearList && query && (
-        <table className="table">
+        <Table className="table">
           <thead>
             <tr>
               <th>Add</th>
@@ -116,7 +116,7 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
                 );
               })}
           </tbody>
-        </table>
+        </Table>
       )}
     </StyledDiv>
   );

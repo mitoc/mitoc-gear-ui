@@ -4,7 +4,7 @@ type Props = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export function SquareButton(props: Props) {
   const { className, ...otherProps } = props;
-  const btnClassName = "btn btn-outline-secondary" + " " + className ?? "";
+  const btnClassName = "btn btn-outline-secondary " + className ?? "";
   return <StyledButton className={btnClassName} {...otherProps} />;
 }
 
