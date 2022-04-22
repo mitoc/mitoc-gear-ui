@@ -45,10 +45,10 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
           <thead>
             <tr>
               <th>Add</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Deposit</th>
-              <th>Fee</th>
+              <th>Gear</th>
+              <th className="d-none d-md-table-cell">Description</th>
+              <th className="d-none d-md-table-cell">Deposit</th>
+              <th className="d-none d-md-table-cell">Fee</th>
             </tr>
           </thead>
           <tbody>
@@ -93,21 +93,25 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
                       )}
                     </td>
                     <td className="mw-40">
-                      {type.typeName} (<GearLink id={id}>{id}</GearLink>)
+                      <GearLink id={id}>{id}</GearLink>
+                      <br />
+                      <span>{type.typeName}</span>
+                      {restricted && (
+                        <>
+                          <br />
+                          <strong className="text-warning">RESTRICTED</strong>
+                        </>
+                      )}
                     </td>
-                    <td>
-                      <>
-                        {restricted && (
-                          <>
-                            RESTRICTED
-                            <br />
-                          </>
-                        )}
-                        {specification}
-                      </>
+                    <td className="d-none d-md-table-cell">
+                      <>{specification}</>
                     </td>
-                    <td>{fmtAmount(depositAmount)}</td>
-                    <td>{fmtAmount(dailyFee)}</td>
+                    <td className="d-none d-md-table-cell">
+                      {fmtAmount(depositAmount)}
+                    </td>
+                    <td className="d-none d-md-table-cell">
+                      {fmtAmount(dailyFee)}
+                    </td>
                   </tr>
                 );
               })}
