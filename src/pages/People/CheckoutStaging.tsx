@@ -47,11 +47,18 @@ export function CheckoutStaging({
           <Table>
             <thead>
               <tr>
-                <th>Serial N.</th>
-                <th>Type</th>
-                <th>Deposit</th>
-                <th>Daily fee</th>
-                <th>Remove</th>
+                <th>Gear</th>
+                <th>
+                  <span className="d-none d-md-inline">Deposit</span>
+                  <span className="d-md-none">Dep.</span>
+                </th>
+                <th>
+                  <span className="d-none d-md-inline">Daily fee</span>
+                  <span className="d-md-none">Fee</span>
+                </th>
+                <th>
+                  <span className="d-none d-md-inline">Remove</span>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -59,8 +66,9 @@ export function CheckoutStaging({
                 <tr key={id}>
                   <td>
                     <GearLink id={id}>{id}</GearLink>
+                    <br />
+                    {type.typeName}
                   </td>
-                  <td>{type.typeName}</td>
                   <td>{fmtAmount(depositAmount)}</td>
                   <td>{fmtAmount(dailyFee)}</td>
                   <td className="text-end align-middle">
