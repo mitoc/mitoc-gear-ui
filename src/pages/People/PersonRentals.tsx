@@ -22,7 +22,25 @@ export function PersonRentals({ rentals, onReturn, rentalsToReturn }: Props) {
 
               return (
                 <tr key={id}>
-                  <td className="align-middle">
+                  <td className="d-md-none">
+                    <GearLink id={id}>{id}</GearLink> - {type.typeName}
+                    <br />
+                    <span>Fee: {fmtAmount(type.rentalAmount)} / day</span>
+                    <br />
+                    Checked out on {formatDate(checkedout)}
+                    <br />
+                    <span>Weekends out: {weeksOut}</span>
+                    <br />
+                    <div className="d-flex justify-content-end">
+                      <button
+                        className="btn btn-outline-primary"
+                        onClick={() => onReturn(rental)}
+                      >
+                        Return
+                      </button>
+                    </div>
+                  </td>
+                  <td className="d-none d-md-table-cell align-middle">
                     <button
                       className="w-100 h-100 btn btn-outline-primary"
                       onClick={() => onReturn(rental)}
@@ -30,14 +48,14 @@ export function PersonRentals({ rentals, onReturn, rentalsToReturn }: Props) {
                       Return
                     </button>
                   </td>
-                  <td>
+                  <td className="d-none d-md-table-cell ">
                     <GearLink id={id}>{id}</GearLink>
                     <br />
                     <span>{type.typeName}</span>
                     <br />
                     <span>Daily fee: {fmtAmount(type.rentalAmount)}</span>
                   </td>
-                  <td>
+                  <td className="d-none d-md-table-cell ">
                     Checked out on {formatDate(checkedout)}
                     <br />
                     <span>Weekends out: {weeksOut}</span>
