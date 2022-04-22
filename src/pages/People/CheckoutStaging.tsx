@@ -1,5 +1,4 @@
 import { sum, map } from "lodash";
-import Table from "react-bootstrap/Table";
 
 import { GearSummary } from "apiClient/gear";
 import { checkoutGear, Person } from "apiClient/people";
@@ -44,7 +43,7 @@ export function CheckoutStaging({
       </h5>
       {gearToCheckout && (
         <>
-          <Table>
+          <table className="table">
             <thead>
               <tr>
                 <th>Gear</th>
@@ -77,7 +76,7 @@ export function CheckoutStaging({
                 </tr>
               ))}
             </tbody>
-          </Table>
+          </table>
         </>
       )}
       <div className="text-end">

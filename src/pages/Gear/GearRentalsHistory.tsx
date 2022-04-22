@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
 
 import { formatDate } from "lib/fmtDate";
 import { GearRental, getGearRentalHistory } from "apiClient/gear";
@@ -31,7 +30,7 @@ export function GearRentalsHistory({ gearId }: Props) {
         )}
       </div>
 
-      <Table>
+      <table className="table">
         <thead>
           <tr>
             <th>Renter</th>
@@ -55,7 +54,7 @@ export function GearRentalsHistory({ gearId }: Props) {
               </tr>
             ))}
         </tbody>
-      </Table>
+      </table>
     </div>
   );
 }

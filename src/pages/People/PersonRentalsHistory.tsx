@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
 
 import { formatDate } from "lib/fmtDate";
 import { Rental, getPersonRentalHistory } from "apiClient/people";
@@ -32,7 +31,7 @@ export function PersonRentalsHistory({ personId }: Props) {
       </div>
 
       {rentals && (
-        <Table>
+        <table className="table">
           <thead>
             <tr>
               <th>Serial N.</th>
@@ -55,7 +54,7 @@ export function PersonRentalsHistory({ personId }: Props) {
               </tr>
             ))}
           </tbody>
-        </Table>
+        </table>
       )}
     </div>
   );

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { sum, map, mapValues, keyBy, flow, isEmpty } from "lodash";
-import Table from "react-bootstrap/Table";
 import { formatDate } from "lib/fmtDate";
 
 import { Person, Rental, returnGear } from "apiClient/people";
@@ -98,7 +97,7 @@ export function ReturnStaging({
         <>
           {!returnOnly && <h4>Returns</h4>}
 
-          <Table>
+          <table className="table">
             <thead>
               <tr>
                 <th>Gear</th>
@@ -167,14 +166,14 @@ export function ReturnStaging({
                 </tr>
               ))}
             </tbody>
-          </Table>
+          </table>
         </>
       )}
       {!isEmpty(gearToBuy) && (
         <>
           {!purchaseOnly && <h4>Purchases</h4>}
 
-          <Table>
+          <table className="table">
             <thead>
               <tr>
                 <th>Item</th>
@@ -193,7 +192,7 @@ export function ReturnStaging({
                 </tr>
               ))}
             </tbody>
-          </Table>
+          </table>
         </>
       )}
       <label className="d-flex flex-row align-items-center mb-2">

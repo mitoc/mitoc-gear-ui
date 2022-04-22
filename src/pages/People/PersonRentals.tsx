@@ -1,6 +1,3 @@
-import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
-
 import type { Person, Rental } from "apiClient/people";
 import { formatDate } from "lib/fmtDate";
 import { GearLink } from "components/GearLink";
@@ -16,7 +13,7 @@ export function PersonRentals({ rentals, onReturn, rentalsToReturn }: Props) {
   return (
     <div className="border rounded-2 p-2 bg-light">
       <h3>Gear out</h3>
-      <Table>
+      <table className="table">
         <tbody>
           {rentals
             .filter((item) => !rentalsToReturn.some((r) => r.id === item.id))
@@ -26,13 +23,12 @@ export function PersonRentals({ rentals, onReturn, rentalsToReturn }: Props) {
               return (
                 <tr key={id}>
                   <td className="align-middle">
-                    <Button
-                      className="w-100 h-100 btn"
-                      variant="outline-primary"
+                    <button
+                      className="w-100 h-100 btn btn-outline-primary"
                       onClick={() => onReturn(rental)}
                     >
                       Return
-                    </Button>
+                    </button>
                   </td>
                   <td>
                     <GearLink id={id}>{id}</GearLink>
@@ -52,7 +48,7 @@ export function PersonRentals({ rentals, onReturn, rentalsToReturn }: Props) {
               );
             })}
         </tbody>
-      </Table>
+      </table>
     </div>
   );
 }
