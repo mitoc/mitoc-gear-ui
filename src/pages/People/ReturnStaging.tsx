@@ -11,6 +11,7 @@ import { fmtAmount } from "lib/fmtNumber";
 
 import type { ItemToPurchase } from "./types";
 import { RemoveButton } from "components/Buttons";
+import styled from "styled-components";
 
 type Props = {
   person: Person;
@@ -100,44 +101,17 @@ export function ReturnStaging({
           <Table>
             <thead>
               <tr>
-                <th>Rental</th>
                 <th>Gear</th>
-                <th>Remove</th>
+                <th className="d-none d-md-table-cell">Rental</th>
+                <th>
+                  <span className="d-none d-md-table-cell">Remove</span>
+                </th>
               </tr>
             </thead>
             <tbody>
               {rentalsToReturn.map(({ id, type, checkedout, weeksOut }) => (
                 <tr key={id}>
-                  <td>
-                    Checked on: {formatDate(checkedout)}
-                    <br />
-                    Weeks out: {weeksOut}
-                    <br />
-                    <div>
-                      Charge for:{" "}
-                      <NumberField
-                        value={
-                          rentals[id].daysOutOverride !== undefined
-                            ? rentals[id].daysOutOverride
-                            : weeksOut
-                        }
-                        onChange={(value) => {
-                          overrideDaysOut(id, value);
-                        }}
-                        integer={true}
-                        small={true}
-                      />{" "}
-                      days
-                    </div>
-                    Waive fee{" "}
-                    <Checkbox
-                      value={rentals[id].waived}
-                      onChange={(value) => {
-                        toggleWaiveFee(id, value);
-                      }}
-                    />
-                  </td>
-                  <td>
+                  <td className="d-none d-md-table-cell">
                     <GearLink id={id}>{id}</GearLink>
                     <br />
                     {type.typeName}
@@ -145,7 +119,49 @@ export function ReturnStaging({
                     Daily fee: {fmtAmount(type.rentalAmount)}
                     <br />
                   </td>
-                  <td className="text-end align-middle">
+                  <td className="pe-0">
+                    <StyledItemToReturn>
+                      <dt className="d-md-none">
+                        <GearLink id={id}>{id}</GearLink>
+                      </dt>
+                      <dd className="d-md-none">{type.typeName}</dd>
+                      <dt>Checked on:</dt>
+                      <dd>{formatDate(checkedout)}</dd>
+                      <dt>Weeks out:</dt>
+                      <dd>{weeksOut}</dd>
+                      <dt className="d-md-none">Daily fee:</dt>
+                      <dd className="d-md-none">
+                        {fmtAmount(type.rentalAmount)}
+                      </dd>
+                      <dt>Charge for:</dt>
+                      <dd>
+                        <NumberField
+                          value={
+                            rentals[id].daysOutOverride !== undefined
+                              ? rentals[id].daysOutOverride
+                              : weeksOut
+                          }
+                          onChange={(value) => {
+                            overrideDaysOut(id, value);
+                          }}
+                          integer={true}
+                          small={true}
+                        />{" "}
+                        days
+                      </dd>
+                      <dt>Waive fee:</dt>
+                      <dd>
+                        <Checkbox
+                          value={rentals[id].waived}
+                          onChange={(value) => {
+                            toggleWaiveFee(id, value);
+                          }}
+                        />
+                      </dd>
+                    </StyledItemToReturn>
+                  </td>
+
+                  <td className="text-end align-middle ps-0">
                     <RemoveButton onClick={() => onRemove(id)} />
                   </td>
                 </tr>
@@ -199,6 +215,19 @@ export function ReturnStaging({
     </div>
   );
 }
+const StyledItemToReturn = styled.div`
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 1rem;
+
+  dd {
+    margin-bottom: 0;
+  }
+
+  dt {
+    font-weight: inherit;
+  }
+`;
 
 type ReturnState = Record<
   string,
