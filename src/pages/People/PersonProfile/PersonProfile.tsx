@@ -11,6 +11,7 @@ import { MitocCreditForm } from "./MitocCreditForm";
 import { usePermissions } from "features/auth";
 
 import PeopleGroups from "./PeopleGroups";
+import styled from "styled-components";
 
 type Props = {
   person: Person;
@@ -27,7 +28,7 @@ export function PersonProfile({ person, refreshPerson }: Props) {
   };
 
   return (
-    <div className="border rounded-2 p-2 mb-3 bg-light">
+    <StyledDiv className="border rounded-2 p-2 mb-3 bg-light">
       {!isEditing && (
         <>
           <button
@@ -94,6 +95,14 @@ export function PersonProfile({ person, refreshPerson }: Props) {
           />
         )}
       </ColoredTile>
-    </div>
+    </StyledDiv>
   );
 }
+
+const StyledDiv = styled.div`
+  input,
+  select {
+    width: 250px;
+    max-width: 100%;
+  }
+`;

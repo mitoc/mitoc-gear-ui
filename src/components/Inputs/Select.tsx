@@ -7,7 +7,7 @@ type Props = {
 export function Select({ value, onChange, options }: Props) {
   return (
     <select
-      className="form-control w-50"
+      className="form-control"
       onChange={(evt) => {
         onChange(evt.target.value);
       }}

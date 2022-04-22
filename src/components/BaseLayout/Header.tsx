@@ -79,7 +79,6 @@ export function Header() {
                 <div className="nav-item dropdown">
                   <a
                     className="nav-link dropdown-toggle me-5"
-                    href="#"
                     id="navbarDropdownMenuLink"
                     role="button"
                     data-bs-toggle="dropdown"
