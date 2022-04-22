@@ -34,23 +34,44 @@ export function PersonRentalsHistory({ personId }: Props) {
         <table className="table">
           <thead>
             <tr>
-              <th>Serial N.</th>
-              <th>Type</th>
-              <th>Checked out</th>
-              <th>Returned</th>
-              <th>Weeks out</th>
+              <th className="d-none d-md-table-cell">Serial N.</th>
+              <th className="d-none d-md-table-cell">Type</th>
+              <th className="d-none d-md-table-cell">Checked out</th>
+              <th className="d-none d-md-table-cell">Returned</th>
+              <th className="d-none d-md-table-cell">Weeks out</th>
+              <th className="d-md-none">Gear</th>
+              <th className="d-md-none">Rental</th>
             </tr>
           </thead>
           <tbody>
             {rentals.map(({ id, type, checkedout, returned, weeksOut }) => (
               <tr key={id + checkedout}>
-                <td>
+                <td className="d-none d-md-table-cell">
                   <GearLink id={id}>{id}</GearLink>
                 </td>
-                <td>{type.typeName}</td>
-                <td>{formatDate(checkedout)}</td>
-                <td>{returned && formatDate(returned)}</td>
-                <td>{weeksOut}</td>
+                <td className="d-none d-md-table-cell">{type.typeName}</td>
+                <td className="d-none d-md-table-cell">
+                  {formatDate(checkedout)}
+                </td>
+                <td className="d-none d-md-table-cell">
+                  {returned && formatDate(returned)}
+                </td>
+                <td className="d-none d-md-table-cell">{weeksOut}</td>
+                <td className="d-md-none">
+                  <GearLink id={id}>{id}</GearLink>
+                  <br />
+                  {type.typeName}
+                </td>
+                <td className="d-md-none">
+                  {!returned ? (
+                    <span>{formatDate(checkedout)} → now (still out)</span>
+                  ) : (
+                    <span>
+                      {formatDate(checkedout)} → {formatDate(returned)} (
+                      {weeksOut} weeks)
+                    </span>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
