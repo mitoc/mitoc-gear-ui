@@ -68,7 +68,7 @@ export function PersonRentalsHistory({ personId }: Props) {
                   ) : (
                     <span>
                       {formatDate(checkedout)} → {formatDate(returned)} (
-                      {weeksOut} weeks)
+                      {weeksOut} week{weeksOut > 1 ? "s" : ""})
                     </span>
                   )}
                 </td>

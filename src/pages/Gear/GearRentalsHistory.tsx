@@ -34,9 +34,10 @@ export function GearRentalsHistory({ gearId }: Props) {
         <thead>
           <tr>
             <th>Renter</th>
-            <th>Checked out</th>
-            <th>Returned</th>
-            <th>Weeks out</th>
+            <th className="d-none d-md-table-cell">Checked out</th>
+            <th className="d-none d-md-table-cell">Returned</th>
+            <th className="d-none d-md-table-cell">Weeks out</th>
+            <th className="d-md-none">Rental</th>
           </tr>
         </thead>
         <tbody>
@@ -48,9 +49,23 @@ export function GearRentalsHistory({ gearId }: Props) {
                     {person.firstName} {person.lastName}
                   </PersonLink>
                 </td>
-                <td>{formatDate(checkedout)}</td>
-                <td>{returned && formatDate(returned)}</td>
-                <td>{weeksOut}</td>
+                <td className="d-none d-md-table-cell">
+                  {formatDate(checkedout)}
+                </td>
+                <td className="d-none d-md-table-cell">
+                  {returned && formatDate(returned)}
+                </td>
+                <td className="d-none d-md-table-cell">{weeksOut}</td>
+                <td className="d-md-none">
+                  {!returned ? (
+                    <span>{formatDate(checkedout)} → now (still out)</span>
+                  ) : (
+                    <span>
+                      {formatDate(checkedout)} → {formatDate(returned)} (
+                      {weeksOut} week{weeksOut > 1 ? "s" : ""})
+                    </span>
+                  )}
+                </td>
               </tr>
             ))}
         </tbody>
