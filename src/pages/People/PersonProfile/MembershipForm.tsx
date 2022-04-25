@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { addMembership, Person } from "apiClient/people";
 import { Select } from "components/Inputs/Select";
 import { getNextExpirationDate } from "./utils";
-import { useGetAffiliationsQuery, useGetPersonQuery } from "features/api";
+import { useGetAffiliationsQuery, useGetPersonQuery } from "redux/api";
 
 type Props = {
   person: Person;

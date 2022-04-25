@@ -8,7 +8,7 @@ import { MembershipForm } from "./MembershipForm";
 import { useState } from "react";
 import { PersonEditForm } from "./PersonEditForm";
 import { MitocCreditForm } from "./MitocCreditForm";
-import { usePermissions } from "features/auth";
+import { usePermissions } from "redux/auth";
 
 import PeopleGroups from "./PeopleGroups";
 import styled from "styled-components";

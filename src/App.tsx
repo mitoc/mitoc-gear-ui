@@ -7,7 +7,7 @@ import {
 
 import BaseLayout from "components/BaseLayout";
 
-import { useLoadCurrentUser } from "./features/auth";
+import { useLoadCurrentUser } from "./redux/auth";
 import LoginPage from "./pages/LogIn";
 import { PeoplePage, PersonPage } from "./pages/People";
 import { AllGearPage, GearItemPage } from "./pages/Gear";

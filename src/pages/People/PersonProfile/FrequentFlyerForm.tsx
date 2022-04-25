@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { addFFChecks, Person } from "apiClient/people";
 import { getNextExpirationDate } from "./utils";
-import { useGetPersonQuery } from "features/api";
+import { useGetPersonQuery } from "redux/api";
 
 type Props = {
   person: Person;

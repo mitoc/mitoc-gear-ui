@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Select from "react-select";
 import { useForm, FormProvider } from "react-hook-form";
 
-import { useGetGearTypesQuery } from "features/api";
+import { useGetGearTypesQuery } from "redux/api";
 import { CreateGearArgs, GearType } from "apiClient/gear";
 import { LabeledInput } from "components/Inputs/LabeledInput";
 import { Link } from "react-router-dom";

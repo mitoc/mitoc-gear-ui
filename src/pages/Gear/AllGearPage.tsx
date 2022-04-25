@@ -8,7 +8,7 @@ import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
 import { SearchTextField } from "components/Inputs/TextField";
 import { GearLink } from "components/GearLink";
-import { useGearList } from "features/api";
+import { useGearList } from "redux/api";
 import { useSetPageTitle } from "hooks";
 
 import { GearStatus } from "./GearStatus";

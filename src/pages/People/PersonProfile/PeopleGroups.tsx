@@ -3,8 +3,8 @@ import { useState } from "react";
 import { isEmpty } from "lodash";
 
 import { PeopleGroup, Person, updatePersonGroups } from "apiClient/people";
-import { useGetGroupsQuery } from "features/api";
-import { usePermissions } from "features/auth";
+import { useGetGroupsQuery } from "redux/api";
+import { usePermissions } from "redux/auth";
 
 type Props = {
   person: Person;

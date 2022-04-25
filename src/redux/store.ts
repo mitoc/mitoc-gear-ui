@@ -1,7 +1,7 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 
-import authReducer from "../features/auth/authSlice";
-import { gearDbApi } from "../features/api";
+import authReducer from "./auth/authSlice";
+import { gearDbApi } from "./api";
 
 export const store = configureStore({
   reducer: {

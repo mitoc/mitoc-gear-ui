@@ -1,7 +1,7 @@
 import { Link, useHistory } from "react-router-dom";
 
-import { useCurrentUser, logOut } from "features/auth";
-import { useAppDispatch } from "app/hooks";
+import { useCurrentUser, logOut } from "redux/auth";
+import { useAppDispatch } from "redux/hooks";
 import { PersonLink } from "components/PersonLink";
 import styled from "styled-components";
 import { useEffect } from "react";

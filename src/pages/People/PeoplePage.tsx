@@ -10,7 +10,7 @@ import { TablePagination } from "components/TablePagination";
 import { SearchTextField } from "components/Inputs/TextField";
 import { PersonLink } from "components/PersonLink";
 import { Checkbox } from "components/Inputs/Checkbox";
-import { usePeopleList } from "features/api";
+import { usePeopleList } from "redux/api";
 import { useSetPageTitle } from "hooks";
 
 type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {

@@ -1,4 +1,4 @@
-import { useGetPurchasablesQuery } from "features/api";
+import { useGetPurchasablesQuery } from "redux/api";
 import { fmtAmount } from "lib/fmtNumber";
 import { uniqueID } from "lib/uniqueID";
 
