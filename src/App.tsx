@@ -54,6 +54,9 @@ function App() {
           <Route exact path="/">
             {!isLoading && loggedIn && <Redirect to="/people" />}
           </Route>
+          <Route path="*">
+            <Redirect to="/people" />
+          </Route>
         </Switch>
       </BaseLayout>
     </Router>
