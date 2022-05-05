@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { APIError as APIErrorClass } from "apiClient/client";
 
 import { authClient } from "apiClient/auth";
 import type { User, APIErrorType } from "apiClient/types";
@@ -13,7 +14,7 @@ export interface AuthState {
 
 const initialState: AuthState = { loadingStatus: "blank" };
 
-export const checkLoggedIn = createAsyncThunk(
+export const checkLoggedIn = createCustomAsyncThunk(
   "auth/checkLoggedIn",
   authClient.loggedIn
 );
@@ -35,8 +36,20 @@ const authSlice = createSlice({
         state.loggedIn = action.payload.loggedIn;
         state.user = action.payload.user;
       })
-      .addCase(checkLoggedIn.rejected, (state) => {
+      .addCase(checkLoggedIn.rejected, (state, action) => {
+        console.log({ action, payload: action.payload });
         state.loadingStatus = "idle";
+        if ((action.payload.err = "userDoesNotMatchPerson")) {
+          state.error = {
+            msg:
+              "Your user account is not associated with a desk worker person. Please contact mitoc-desk@mit.edu to fix the issue.",
+            err: action.payload.err,
+          };
+          return;
+        }
+        if (action.payload != null) {
+          state.error = action.payload;
+        }
         state.error = {
           msg:
             "Unable to reach API server. Please try again later and/or contact mitoc-webmaster@mit.edu",
