@@ -12,7 +12,6 @@ import { usePermissions } from "redux/auth";
 
 import PeopleGroups from "./PeopleGroups";
 import styled from "styled-components";
-import { isEmpty } from "lodash";
 
 type Props = {
   person: Person;
