@@ -37,24 +37,27 @@ const authSlice = createSlice({
         state.user = action.payload.user;
       })
       .addCase(checkLoggedIn.rejected, (state, action) => {
-        console.log({ action, payload: action.payload });
         state.loadingStatus = "idle";
-        if ((action.payload.err = "userDoesNotMatchPerson")) {
+        if (action.payload == null) {
           state.error = {
             msg:
-              "Your user account is not associated with a desk worker person. Please contact mitoc-desk@mit.edu to fix the issue.",
-            err: action.payload.err,
+              "Unable to reach API server. Please try again later and/or contact mitoc-webmaster@mit.edu",
+            err: "unavailableServer",
           };
           return;
         }
-        if (action.payload != null) {
-          state.error = action.payload;
+        const payload = action.payload as APIErrorType;
+        if ((payload.err = "userDoesNotMatchPerson")) {
+          state.error = {
+            msg:
+              "This user account is not associated with a desk worker person. Please contact mitoc-desk@mit.edu to fix the issue.",
+            err: payload.err,
+          };
+          return;
         }
-        state.error = {
-          msg:
-            "Unable to reach API server. Please try again later and/or contact mitoc-webmaster@mit.edu",
-          err: "unavailableServer",
-        };
+        if (payload != null) {
+          state.error = payload;
+        }
       })
       .addCase(logIn.pending, (state) => {
         state.loadingStatus = "loading";
