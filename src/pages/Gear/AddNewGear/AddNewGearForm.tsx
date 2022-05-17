@@ -16,7 +16,7 @@ type FormValues = {
   description: string;
   firstId: string;
   autoGenerateIds: boolean;
-  depositAmount: number | null;
+  depositAmount?: number;
   quantity: number;
 };
 
@@ -135,7 +135,7 @@ export function AddNewGearForm({
           title="Deposit amount:"
           type="number"
           step={0.5}
-          name="deposit"
+          name="depositAmount"
           options={{
             required: true,
             valueAsNumber: true,

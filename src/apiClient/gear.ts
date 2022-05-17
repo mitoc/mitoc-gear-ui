@@ -98,7 +98,7 @@ export type CreateGearArgs = {
   quantity: number;
   size?: string;
   specification?: string;
-  deposit_amount?: number;
+  depositAmount?: number;
   description?: string;
 };
 
