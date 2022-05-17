@@ -38,7 +38,7 @@ export function PersonEditForm({ person, closeForm, refreshPerson }: Props) {
 
   const onSubmit = (values: FormValues) => {
     const { firstName, lastName, email, altEmails: rawAltEmails } = values;
-    const altEmails = map(rawAltEmails, "value");
+    const altEmails = map(rawAltEmails, "value").filter((v) => !isEmpty(v));
     editPerson(person.id, firstName, lastName, email, altEmails).then(() => {
       closeForm();
       refreshPerson();

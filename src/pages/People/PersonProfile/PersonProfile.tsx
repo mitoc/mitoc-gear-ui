@@ -12,6 +12,7 @@ import { usePermissions } from "redux/auth";
 
 import PeopleGroups from "./PeopleGroups";
 import styled from "styled-components";
+import { isEmpty } from "lodash";
 
 type Props = {
   person: Person;
@@ -42,7 +43,18 @@ export function PersonProfile({ person, refreshPerson }: Props) {
             {person.firstName} {person.lastName}
           </h3>
           <div className="text-sm">{person.affiliation}</div>
-          <a href={`mailto:${person.email}`}>{person.email}</a>
+          <div>
+            <a href={`mailto:${person.email}`}>{person.email}</a>
+          </div>
+          {person.alternateEmails.map((altEmail) => {
+            return (
+              <div>
+                <DiscreetLink href={`mailto:${altEmail}`}>
+                  {altEmail}
+                </DiscreetLink>
+              </div>
+            );
+          })}
         </>
       )}
 
@@ -105,4 +117,8 @@ const StyledDiv = styled.div`
     width: 250px;
     max-width: 100%;
   }
+`;
+
+const DiscreetLink = styled.a`
+  color: #6c757d;
 `;
