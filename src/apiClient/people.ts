@@ -28,6 +28,7 @@ export interface Person extends PersonSummary {
   groups: PeopleGroup[];
   notes: Note[];
   mitocCredit: number;
+  alternateEmails: string[];
 }
 
 export interface Rental {
@@ -123,9 +124,15 @@ async function editPerson(
   id: string,
   firstName: string,
   lastName: string,
-  email: string
+  email: string,
+  altEmails: string[]
 ) {
-  return request(`/people/${id}/`, "PATCH", { firstName, lastName, email });
+  return request(`/people/${id}/`, "PATCH", {
+    firstName,
+    lastName,
+    email,
+    alternateEmails: altEmails,
+  });
 }
 
 async function updatePersonGroups(id: string, groups: number[]) {
