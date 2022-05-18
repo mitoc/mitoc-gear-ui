@@ -38,6 +38,13 @@ async function confirmResetPassword(query: {
   return request("/auth/reset-password/confirm/", "POST", query);
 }
 
+async function changePassword(query: {
+  oldPassword: string;
+  newPassword: string;
+}): Promise<{}> {
+  return request("/auth/change-password/", "POST", query);
+}
+
 async function logOut(): Promise<void> {
   return request("/auth/logout/", "POST");
 }
@@ -49,4 +56,5 @@ export const authClient = {
   loggedIn,
   logIn,
   logOut,
+  changePassword,
 };

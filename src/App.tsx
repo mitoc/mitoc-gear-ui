@@ -15,6 +15,7 @@ import { AddNewGear } from "./pages/Gear/AddNewGear";
 import { AddNewPerson } from "./pages/People/AddNewPerson";
 import { RequestPasswordReset } from "./pages/LogIn/RequestPasswordReset";
 import { RequestPasswordConfirm } from "./pages/LogIn/RequestPasswordConfirm";
+import { ChangePassword } from "pages/People/PersonProfile/PersonChangePassword";
 
 function App() {
   const { loggedIn, isLoading } = useLoadCurrentUser();
@@ -31,6 +32,9 @@ function App() {
           </Route>
           <Route exact path="/reset-password/confirm/">
             <RequestPasswordConfirm />
+          </Route>
+          <Route exact path="/change-password/">
+            <ChangePassword />
           </Route>
           {!isLoading && !loggedIn && <Redirect to="/login" />}
           <Route exact path="/people">
