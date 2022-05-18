@@ -97,6 +97,11 @@ export function Header() {
                       </PersonLink>
                     </li>
                     <li>
+                      <Link className="dropdown-item" to="/change-password">
+                        Change password
+                      </Link>
+                    </li>
+                    <li>
                       <a
                         className="dropdown-item"
                         href="http://goo.gl/nPMjmc"

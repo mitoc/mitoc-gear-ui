@@ -78,8 +78,8 @@ export function RequestPasswordConfirm() {
             options={{
               required: true,
               minLength: {
-                value: 6,
-                message: "Your password needs to have at least 6 characters",
+                value: 8,
+                message: "Your password needs to have at least 8 characters",
               },
             }}
           />
