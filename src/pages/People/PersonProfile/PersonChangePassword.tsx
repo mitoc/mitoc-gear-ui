@@ -1,3 +1,6 @@
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+
 import { authClient } from "apiClient/auth";
 import { APIError } from "apiClient/client";
 import { useAppDispatch } from "app/hooks";
@@ -6,8 +9,6 @@ import { LabeledInput } from "components/Inputs/LabeledInput";
 import { logIn } from "features/auth";
 import { useCurrentUser } from "features/auth/hooks";
 import { useSetPageTitle } from "hooks";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 
 type FormValues = {
   oldPassword: string;
@@ -68,7 +69,7 @@ export function ChangePassword() {
             autoComplete="username"
           />
           <LabeledInput
-            title="Old password:"
+            title="Current password:"
             name="oldPassword"
             type="password"
             autoComplete="current-password"
