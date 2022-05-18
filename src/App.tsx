@@ -7,7 +7,7 @@ import {
 
 import BaseLayout from "components/BaseLayout";
 
-import { useLoadCurrentUser } from "./features/auth";
+import { useLoadCurrentUser } from "./redux/auth";
 import LoginPage from "./pages/LogIn";
 import { PeoplePage, PersonPage } from "./pages/People";
 import { AllGearPage, GearItemPage } from "./pages/Gear";
@@ -15,8 +15,6 @@ import { AddNewGear } from "./pages/Gear/AddNewGear";
 import { AddNewPerson } from "./pages/People/AddNewPerson";
 import { RequestPasswordReset } from "./pages/LogIn/RequestPasswordReset";
 import { RequestPasswordConfirm } from "./pages/LogIn/RequestPasswordConfirm";
-
-import "./App.css";
 import { ChangePassword } from "pages/People/PersonProfile/PersonChangePassword";
 
 function App() {
@@ -59,6 +57,9 @@ function App() {
           </Route>
           <Route exact path="/">
             {!isLoading && loggedIn && <Redirect to="/people" />}
+          </Route>
+          <Route path="*">
+            <Redirect to="/people" />
           </Route>
         </Switch>
       </BaseLayout>

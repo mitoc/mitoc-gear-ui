@@ -1,4 +1,4 @@
-import { gearDbApi } from "features/api";
+import { gearDbApi } from "redux/api";
 import { LinkProps } from "react-router-dom";
 
 import { PrefetchLink } from "./PrefetchLink";

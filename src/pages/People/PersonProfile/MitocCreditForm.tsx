@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { addMitocCredit, Person } from "apiClient/people";
-import { useGetPersonQuery } from "features/api";
+import { useGetPersonQuery } from "redux/api";
 import { NumberField } from "components/Inputs/NumberField";
 
 type Props = {
@@ -26,7 +26,7 @@ export function MitocCreditForm({ person, onClose }: Props) {
           });
         }}
       >
-        <label className="w-50 mb-2">
+        <label className="mb-2">
           Credit to add ($):
           <NumberField value={amount} onChange={setAmount} />
         </label>

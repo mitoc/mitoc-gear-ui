@@ -1,11 +1,10 @@
-import Badge from "react-bootstrap/Badge";
 import Select from "react-select";
 import { useState } from "react";
 import { isEmpty } from "lodash";
 
 import { PeopleGroup, Person, updatePersonGroups } from "apiClient/people";
-import { useGetGroupsQuery } from "features/api";
-import { usePermissions } from "features/auth";
+import { useGetGroupsQuery } from "redux/api";
+import { usePermissions } from "redux/auth";
 
 type Props = {
   person: Person;
@@ -32,10 +31,8 @@ export default function PeopleGroups({ person, refreshPerson }: Props) {
     return (
       <div className={containerClassName}>
         {isOfficer && (
-          <Badge
-            as="button"
-            bg="secondary"
-            className="mt-1"
+          <button
+            className="mt-1 badge bg-secondary"
             onClick={() => setShowGroupForms((v) => !v)}
             style={{
               float: noGroups ? undefined : "right",
@@ -43,13 +40,13 @@ export default function PeopleGroups({ person, refreshPerson }: Props) {
             }}
           >
             {noGroups ? "+ Add groups" : "± Edit groups"}
-          </Badge>
+          </button>
         )}
         <div>
           {person.groups.map((group) => (
-            <Badge key={group.id} className="me-1" bg="secondary">
+            <span key={group.id} className="me-1 badge bg-secondary">
               {group.groupName}
-            </Badge>
+            </span>
           ))}
         </div>
       </div>
@@ -91,15 +88,13 @@ function PeopleGroupsForm({
     <div className="mt-2">
       <div className="d-flex justify-content-between mb-2">
         <label>New groups:</label>
-        <Badge
-          as="button"
-          bg="secondary"
-          className="mt-1"
+        <button
+          className="mt-1 badge bg-secondary"
           onClick={closeForm}
           style={{ border: "none" }}
         >
           {isEmpty(person.groups) ? "+ Add groups" : "± Edit groups"}
-        </Badge>
+        </button>
       </div>
       <Select
         className="flex-grow-1"

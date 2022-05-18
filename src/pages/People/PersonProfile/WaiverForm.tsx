@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { addWaiver, Person } from "apiClient/people";
 import { getNextExpirationDate } from "./utils";
-import { useGetPersonQuery } from "features/api";
+import { useGetPersonQuery } from "redux/api";
 
 type Props = {
   person: Person;
@@ -18,12 +18,12 @@ export function WaiverForm({ person, onClose }: Props) {
   return (
     <div>
       <form>
-        <label className="w-100 mb-2">
+        <label className="mb-2">
           Expires:
           <DatePicker
             selected={date}
             onChange={(date: Date) => setDate(date)}
-            className="w-50 form-control"
+            className="form-control"
           />
         </label>
         <br />

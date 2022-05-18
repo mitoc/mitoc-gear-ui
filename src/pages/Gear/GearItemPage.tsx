@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 
 import { addNote } from "apiClient/gear";
 import { Notes } from "components/Notes";
-import { useGetGearItemQuery } from "features/api";
+import { useGetGearItemQuery } from "redux/api";
 import { useSetPageTitle } from "hooks";
 
 import { GearInfoPanel } from "./GearInfoPanel";

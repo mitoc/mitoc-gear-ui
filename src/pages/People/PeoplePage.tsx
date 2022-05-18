@@ -1,3 +1,4 @@
+import { isEmpty, max } from "lodash";
 import { useState } from "react";
 
 import styled from "styled-components";
@@ -9,7 +10,7 @@ import { TablePagination } from "components/TablePagination";
 import { SearchTextField } from "components/Inputs/TextField";
 import { PersonLink } from "components/PersonLink";
 import { Checkbox } from "components/Inputs/Checkbox";
-import { usePeopleList } from "features/api";
+import { usePeopleList } from "redux/api";
 import { useSetPageTitle } from "hooks";
 
 type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
@@ -53,21 +54,23 @@ export function PeoplePage() {
       />
 
       {nbPages != null && (
-        <div className="d-flex justify-content-between">
-          <div className="d-flex flew-row">
+        <div className="row">
+          <div className="col-md-auto">
             <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+          </div>
+          <div className="col-md d-flex flex-grow-1 justify-content-between">
             <button
-              className="btn btn-outline-primary mb-3 ms-3"
+              className="btn btn-outline-primary mb-3 ms-md-3"
               onClick={() => setShowFilters((v) => !v)}
             >
               ▽ Filters
             </button>
+            <Link to="/add-person">
+              <button className="btn btn-outline-primary mb-3">
+                ＋ Add person
+              </button>
+            </Link>
           </div>
-          <Link to="/add-person">
-            <button className="btn btn-outline-primary mb-3">
-              ＋ Add person
-            </button>
-          </Link>
         </div>
       )}
 
@@ -101,14 +104,24 @@ function LinkRow({
 }
 
 function RentalCell({ item: person }: { item: TablePerson }) {
+  const oldestRental = max(person.rentals.map((r) => r.weeksOut));
   return (
-    <List>
-      {person.rentals.map(({ id, type, weeksOut }) => (
-        <li key={id}>
-          {id} — {type.typeName} ({weeksOut} weeks)
-        </li>
-      ))}
-    </List>
+    <>
+      <List className="d-none d-md-block">
+        {person.rentals.map(({ id, type, weeksOut }) => (
+          <li key={id}>
+            {id} — {type.typeName} ({weeksOut} week{weeksOut > 1 ? "s" : ""})
+          </li>
+        ))}
+      </List>
+      {!isEmpty(person.rentals) && (
+        <span className="d-md-none">
+          {person.rentals.length} rental{person.rentals.length > 1 ? "s" : ""}
+          <br />
+          {oldestRental} week{oldestRental! > 1 ? "s" : ""}
+        </span>
+      )}
+    </>
   );
 }
 

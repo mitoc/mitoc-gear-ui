@@ -6,7 +6,7 @@ import "bootstrap/js/dist/dropdown";
 
 import "./index.css";
 import App from "./App";
-import { store } from "./app/store";
+import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 

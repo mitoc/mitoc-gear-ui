@@ -12,9 +12,13 @@ export enum PersonPageTabs {
 
 const tabs = [
   { name: PersonPageTabs.gearOut, label: "Gear out" },
-  { name: PersonPageTabs.moreGear, label: "Rent Gear" },
-  { name: PersonPageTabs.buyGear, label: "Buy Gear" },
-  { name: PersonPageTabs.rentalHistory, label: "Rental History" },
+  { name: PersonPageTabs.moreGear, label: "Rent Gear", shortLabel: "Rent" },
+  { name: PersonPageTabs.buyGear, label: "Buy Gear", shortLabel: "Buy" },
+  {
+    name: PersonPageTabs.rentalHistory,
+    label: "Rental History",
+    shortLabel: "Hist.",
+  },
 ];
 
 export function PersonTabsSelector({ activeTab, updateTab }: Props) {
@@ -26,7 +30,8 @@ export function PersonTabsSelector({ activeTab, updateTab }: Props) {
             className={`nav-link ${tab.name === activeTab ? "active" : ""}`}
             onClick={() => updateTab(tab.name)}
           >
-            {tab.label}
+            <span className="d-none d-md-inline">{tab.label}</span>
+            <span className="d-md-none">{tab.shortLabel ?? tab.label}</span>
           </button>
         </li>
       ))}
