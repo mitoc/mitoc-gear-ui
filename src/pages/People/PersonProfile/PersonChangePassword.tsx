@@ -1,7 +1,9 @@
 import { authClient } from "apiClient/auth";
 import { APIError } from "apiClient/client";
+import { useAppDispatch } from "app/hooks";
 import { Form } from "components/Inputs/Form";
 import { LabeledInput } from "components/Inputs/LabeledInput";
+import { logIn } from "features/auth";
 import { useCurrentUser } from "features/auth/hooks";
 import { useSetPageTitle } from "hooks";
 import { useState } from "react";
@@ -14,6 +16,7 @@ type FormValues = {
 
 export function ChangePassword() {
   useSetPageTitle("Change password");
+  const dispatch = useAppDispatch();
   const { user } = useCurrentUser();
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -29,6 +32,12 @@ export function ChangePassword() {
       .then(() => {
         setSuccess(true);
         setError("");
+        dispatch(
+          logIn({
+            username: user!.email,
+            password: newPassword,
+          })
+        );
       })
       .catch((err) => {
         setSuccess(false);
