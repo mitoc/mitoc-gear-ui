@@ -5,7 +5,7 @@ import { isEmpty } from "lodash";
 import { Rental, addNote, archiveNote } from "apiClient/people";
 import { GearSummary } from "apiClient/gear";
 import { Notes } from "components/Notes";
-import { useGetPersonQuery } from "features/api";
+import { useGetPersonQuery } from "redux/api";
 
 import { PersonProfile } from "./PersonProfile";
 import { PersonRentals } from "./PersonRentals";

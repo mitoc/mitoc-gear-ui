@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { isEmpty } from "lodash";
 
-import { useAppDispatch } from "app/hooks";
-import { logIn } from "features/auth/authSlice";
+import { useAppDispatch } from "redux/hooks";
+import { logIn } from "redux/auth/authSlice";
 import { validateEmail } from "lib/validation";
 import { Link } from "react-router-dom";
 

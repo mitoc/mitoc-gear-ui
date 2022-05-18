@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { authClient } from "apiClient/auth";
 import type { User, APIErrorType } from "apiClient/types";
 
-import { createCustomAsyncThunk } from "./../tools";
+import { createCustomAsyncThunk } from "../tools";
 export interface AuthState {
   loadingStatus: "loading" | "idle" | "blank";
   loggedIn?: boolean;

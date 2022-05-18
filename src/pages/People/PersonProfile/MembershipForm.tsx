@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { addMembership, Person } from "apiClient/people";
 import { Select } from "components/Inputs/Select";
 import { getNextExpirationDate } from "./utils";
-import { useGetAffiliationsQuery, useGetPersonQuery } from "features/api";
+import { useGetAffiliationsQuery, useGetPersonQuery } from "redux/api";
 
 type Props = {
   person: Person;
@@ -29,16 +29,16 @@ export function MembershipForm({ person, onClose }: Props) {
   return (
     <div>
       <form>
-        <label className="w-100 mb-2">
+        <label className="mb-2">
           Expires:
           <DatePicker
             selected={date}
             onChange={(date: Date) => setDate(date)}
-            className="w-50 form-control"
+            className="form-control"
           />
         </label>
         <br />
-        <label className="w-100 mb-2">
+        <label className="mb-2">
           Membership Type:
           <Select
             options={affiliationOptions}

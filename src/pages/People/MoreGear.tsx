@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import { useGearList } from "features/api";
+import { useGearList } from "redux/api";
 import { TablePagination } from "components/TablePagination";
 import { GearSummary } from "apiClient/gear";
 import { GearLink } from "components/GearLink";
@@ -20,10 +20,10 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
   const { gearList, nbPages } = useGearList({ q: query, page });
 
   return (
-    <div className="border rounded-2 p-2 bg-light">
+    <StyledDiv className="border rounded-2 p-2 bg-light">
       <div className="d-flex justify-content-between">
-        <h3>More gear</h3>
-        {nbPages != null && nbPages > 1 && (
+        <h3 className="mb-4">More gear</h3>
+        {query && nbPages != null && nbPages > 1 && (
           <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
         )}
       </div>
@@ -36,7 +36,7 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
           }}
           placeholder="Search"
           debounceTime={300}
-          className="w-50 mb-3"
+          className="mb-3"
         />
       </label>
 
@@ -45,10 +45,10 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
           <thead>
             <tr>
               <th>Add</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Deposit</th>
-              <th>Fee</th>
+              <th>Gear</th>
+              <th className="d-none d-md-table-cell">Description</th>
+              <th className="d-none d-md-table-cell">Deposit</th>
+              <th className="d-none d-md-table-cell">Fee</th>
             </tr>
           </thead>
           <tbody>
@@ -93,30 +93,41 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
                       )}
                     </td>
                     <td className="mw-40">
-                      {type.typeName} (<GearLink id={id}>{id}</GearLink>)
+                      <GearLink id={id}>{id}</GearLink>
+                      <br />
+                      <span>{type.typeName}</span>
+                      {restricted && (
+                        <>
+                          <br />
+                          <strong className="text-warning">RESTRICTED</strong>
+                        </>
+                      )}
                     </td>
-                    <td>
-                      <>
-                        {restricted && (
-                          <>
-                            RESTRICTED
-                            <br />
-                          </>
-                        )}
-                        {specification}
-                      </>
+                    <td className="d-none d-md-table-cell">
+                      <>{specification}</>
                     </td>
-                    <td>{fmtAmount(depositAmount)}</td>
-                    <td>{fmtAmount(dailyFee)}</td>
+                    <td className="d-none d-md-table-cell">
+                      {fmtAmount(depositAmount)}
+                    </td>
+                    <td className="d-none d-md-table-cell">
+                      {fmtAmount(dailyFee)}
+                    </td>
                   </tr>
                 );
               })}
           </tbody>
         </Table>
       )}
-    </div>
+    </StyledDiv>
   );
 }
+
+const StyledDiv = styled.div`
+  input {
+    width: 250px;
+    max-width: 100%;
+  }
+`;
 
 const AddButton = styled.button`
   min-width: 100px;

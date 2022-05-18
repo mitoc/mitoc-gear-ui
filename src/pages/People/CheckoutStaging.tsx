@@ -1,5 +1,4 @@
 import { sum, map } from "lodash";
-import Table from "react-bootstrap/Table";
 
 import { GearSummary } from "apiClient/gear";
 import { checkoutGear, Person } from "apiClient/people";
@@ -44,32 +43,48 @@ export function CheckoutStaging({
       </h5>
       {gearToCheckout && (
         <>
-          <Table>
+          <table className="table">
             <thead>
               <tr>
-                <th>Serial N.</th>
-                <th>Type</th>
-                <th>Deposit</th>
-                <th>Daily fee</th>
-                <th>Remove</th>
+                <th>Gear</th>
+                <th>
+                  <span className="d-none d-md-inline">Deposit</span>
+                  <span className="d-md-none">Dep.</span>
+                </th>
+                <th>
+                  <span className="d-none d-md-inline">Daily fee</span>
+                  <span className="d-md-none">Fee</span>
+                </th>
+                <th>
+                  <span className="d-none d-md-inline">Remove</span>
+                </th>
               </tr>
             </thead>
             <tbody>
-              {gearToCheckout.map(({ id, type, dailyFee, depositAmount }) => (
-                <tr key={id}>
-                  <td>
-                    <GearLink id={id}>{id}</GearLink>
-                  </td>
-                  <td>{type.typeName}</td>
-                  <td>{fmtAmount(depositAmount)}</td>
-                  <td>{fmtAmount(dailyFee)}</td>
-                  <td className="text-end align-middle">
-                    <RemoveButton onClick={() => onRemove(id)} />
-                  </td>
-                </tr>
-              ))}
+              {gearToCheckout.map(
+                ({ id, type, dailyFee, depositAmount, restricted }) => (
+                  <tr key={id}>
+                    <td>
+                      <GearLink id={id}>{id}</GearLink>
+                      <br />
+                      {type.typeName}
+                      {restricted && (
+                        <>
+                          <br />
+                          <strong className="text-warning">RESTRICTED</strong>
+                        </>
+                      )}
+                    </td>
+                    <td>{fmtAmount(depositAmount)}</td>
+                    <td>{fmtAmount(dailyFee)}</td>
+                    <td className="text-end align-middle">
+                      <RemoveButton onClick={() => onRemove(id)} />
+                    </td>
+                  </tr>
+                )
+              )}
             </tbody>
-          </Table>
+          </table>
         </>
       )}
       <div className="text-end">

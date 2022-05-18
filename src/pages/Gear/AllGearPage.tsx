@@ -1,3 +1,4 @@
+import { compact } from "lodash";
 import { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
@@ -7,7 +8,7 @@ import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
 import { SearchTextField } from "components/Inputs/TextField";
 import { GearLink } from "components/GearLink";
-import { useGearList } from "features/api";
+import { useGearList } from "redux/api";
 import { useSetPageTitle } from "hooks";
 
 import { GearStatus } from "./GearStatus";
@@ -19,12 +20,17 @@ export function AllGearPage() {
 
   const { gearList, nbPages } = useGearList({ q: query, page });
 
-  const myColumns = [
+  const myColumns = compact([
     { key: "id", header: "Serial Number", renderer: IDCell, className: "" },
-    { key: "type.typeName", header: "Type" },
-    { key: "description", header: "Description", renderer: DescriptionCell },
+    { key: "type.typeName", header: "Type", renderer: TypeCell },
+    {
+      key: "description",
+      header: "Description",
+      hideOnMobile: true,
+      renderer: DescriptionCell,
+    },
     { key: "status", header: "Status", renderer: StatusCell },
-  ];
+  ]);
 
   return (
     <>
@@ -40,13 +46,17 @@ export function AllGearPage() {
       />
 
       {nbPages != null && (
-        <div className="d-flex justify-content-between">
-          <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
-          <Link to="/add-gear">
-            <button className="btn btn-outline-primary mb-3">
-              ＋ Add new gear
-            </button>
-          </Link>
+        <div className="row">
+          <div className="col-sm-auto">
+            <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+          </div>
+          <div className="col-sm d-flex flex-grow-1 justify-content-end ">
+            <Link to="/add-gear">
+              <button className="btn btn-outline-primary mb-3">
+                ＋ Add new gear
+              </button>
+            </Link>
+          </div>
         </div>
       )}
 
@@ -82,12 +92,6 @@ function IDCell({ item: gearItem }: { item: GearSummary }) {
 function DescriptionCell({ item: gearItem }: { item: GearSummary }) {
   return (
     <>
-      {gearItem.restricted && (
-        <>
-          RESTRICTED
-          <br />
-        </>
-      )}
       {gearItem.specification}
       {gearItem.description && (
         <>
@@ -106,7 +110,21 @@ function DescriptionCell({ item: gearItem }: { item: GearSummary }) {
 }
 
 function StatusCell({ item: gearItem }: { item: GearSummary }) {
-  return <GearStatus gearItem={gearItem} />;
+  return <GearStatus gearItem={gearItem} short={true} />;
+}
+
+function TypeCell({ item: gearItem }: { item: GearSummary }) {
+  return (
+    <>
+      {gearItem.type.typeName}
+      {gearItem.restricted && (
+        <>
+          <br />
+          <strong className="text-warning">RESTRICTED</strong>
+        </>
+      )}
+    </>
+  );
 }
 
 const ColoredCell = styled.div<{ color?: string }>`

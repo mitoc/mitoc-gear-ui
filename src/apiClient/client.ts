@@ -2,7 +2,9 @@ import { APIErrorType } from "./types";
 
 type Data = { [key: string]: any };
 
-const API_HOST = "http://127.0.0.1:8000/api/v1";
+const API_BASE = process.env.REACT_APP_API_URL || "";
+
+export const API_HOST = API_BASE + "/api/v1";
 
 export async function request(
   path: string,

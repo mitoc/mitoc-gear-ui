@@ -11,7 +11,6 @@ type Props = {
 export function TextField({
   value,
   onChange,
-  placeholder,
   className,
   ...otherProps
 }: Props) {

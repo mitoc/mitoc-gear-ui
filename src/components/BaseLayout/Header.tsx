@@ -1,7 +1,7 @@
 import { Link, useHistory } from "react-router-dom";
 
-import { useCurrentUser, logOut } from "features/auth";
-import { useAppDispatch } from "app/hooks";
+import { useCurrentUser, logOut } from "redux/auth";
+import { useAppDispatch } from "redux/hooks";
 import { PersonLink } from "components/PersonLink";
 import styled from "styled-components";
 import { useEffect } from "react";
@@ -79,7 +79,6 @@ export function Header() {
                 <div className="nav-item dropdown">
                   <a
                     className="nav-link dropdown-toggle me-5"
-                    href="#"
                     id="navbarDropdownMenuLink"
                     role="button"
                     data-bs-toggle="dropdown"

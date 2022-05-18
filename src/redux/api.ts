@@ -8,11 +8,12 @@ import type {
   PurchasableItem,
 } from "apiClient/gear";
 import { Affiliations, ListWrapper } from "apiClient/types";
+import { API_HOST } from "apiClient/client";
 
 export const gearDbApi = createApi({
   reducerPath: "gearDbApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:8000/api/v1",
+    baseUrl: API_HOST,
     credentials: "include",
   }),
   endpoints: (builder) => ({
