@@ -29,7 +29,7 @@ jobs:
     - name: Install production-level yarn dependencies
       uses: Borales/actions-yarn@v2.3.0
       with:
-          cmd: install --production
+          cmd: install --frozen-lockfile --production
     - name: Build output for prod
       uses: Borales/actions-yarn@v2.3.0
       with:
