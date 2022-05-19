@@ -71,21 +71,22 @@ export function Header() {
                   className="nav-link"
                   href="https://docs.google.com/spreadsheets/d/1CW3j4K4_HmXlDbO1vPRvIW76SI41EYNbaZKKrqmrgTk/edit?hl=en&hl=en#gid=1019012678"
                   target="_blank"
+                  rel="noreferrer"
                 >
                   Restricted gear
                 </a>
               </div>
               <div className="navbar-nav ms-auto">
                 <div className="nav-item dropdown">
-                  <a
+                  <LinkButton
                     className="nav-link dropdown-toggle me-5"
                     id="navbarDropdownMenuLink"
-                    role="button"
+                    role="list-box"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
                     {user.firstName} {user.lastName[0]}.
-                  </a>
+                  </LinkButton>
                   <ul
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdownMenuLink"
@@ -105,6 +106,7 @@ export function Header() {
                         className="dropdown-item"
                         href="http://goo.gl/nPMjmc"
                         target="_blank"
+                        rel="noreferrer"
                       >
                         Request desk credit
                       </a>
@@ -127,6 +129,11 @@ export function Header() {
     </StyledNavBar>
   );
 }
+
+const LinkButton = styled.button`
+  background: none;
+  border: none;
+`;
 
 const StyledNavBar = styled.nav`
   @media (max-width: 767px) {
