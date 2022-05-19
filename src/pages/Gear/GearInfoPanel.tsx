@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import type { GearSummary } from "apiClient/gear";
 import { fmtAmount } from "lib/fmtNumber";
+import { restrictedGearDoc } from "lib/constants";
 
 import { GearStatus } from "./GearStatus";
 import { GearStatusForm, GearStatusFormType } from "./GearStatusForm";
@@ -40,11 +41,7 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
         <div className="alert alert-warning p-2">
           ⚠️ This item is restricted! Check the{" "}
           <strong>
-            <a
-              href="https://docs.google.com/spreadsheets/d/1CW3j4K4_HmXlDbO1vPRvIW76SI41EYNbaZKKrqmrgTk/edit?hl=en&hl=en#gid=1019012678"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href={restrictedGearDoc} target="_blank" rel="noreferrer">
               Restricted gear doc
             </a>
           </strong>

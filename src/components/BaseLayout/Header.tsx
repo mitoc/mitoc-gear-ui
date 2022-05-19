@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
+import styled from "styled-components";
 
 import { useCurrentUser, logOut } from "redux/auth";
 import { useAppDispatch } from "redux/hooks";
 import { PersonLink } from "components/PersonLink";
-import styled from "styled-components";
-import { useEffect } from "react";
+import { restrictedGearDoc } from "lib/constants";
 
 export function Header() {
   const { user } = useCurrentUser();
@@ -69,7 +70,7 @@ export function Header() {
                 </Link>
                 <a
                   className="nav-link"
-                  href="https://docs.google.com/spreadsheets/d/1CW3j4K4_HmXlDbO1vPRvIW76SI41EYNbaZKKrqmrgTk/edit?hl=en&hl=en#gid=1019012678"
+                  href={restrictedGearDoc}
                   target="_blank"
                   rel="noreferrer"
                 >
