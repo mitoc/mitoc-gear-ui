@@ -3,11 +3,11 @@ import { useState } from "react";
 
 import { authClient } from "apiClient/auth";
 import { APIError } from "apiClient/client";
-import { useAppDispatch } from "app/hooks";
+import { useAppDispatch } from "redux/hooks";
 import { Form } from "components/Inputs/Form";
 import { LabeledInput } from "components/Inputs/LabeledInput";
-import { logIn } from "features/auth";
-import { useCurrentUser } from "features/auth/hooks";
+import { logIn } from "redux/auth";
+import { useCurrentUser } from "redux/auth/hooks";
 import { useSetPageTitle } from "hooks";
 
 type FormValues = {
