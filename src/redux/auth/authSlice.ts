@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { APIError as APIErrorClass } from "apiClient/client";
 
 import { authClient } from "apiClient/auth";
 import type { User, APIErrorType } from "apiClient/types";
