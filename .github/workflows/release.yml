@@ -12,10 +12,11 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    # do all the steps from the CI workflow
+    uses: ./.github/workflows/yarn-ci
+
+    # now do the CD-specific steps
     steps:
-      # do all the steps from the CI workflow
-    - uses: ./.github/workflows/yarn-ci
-      # now do the CD-specific steps
     - name: Set variables for tag generation
       id: vars
       run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
