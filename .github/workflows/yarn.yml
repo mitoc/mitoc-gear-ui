@@ -34,10 +34,9 @@ jobs:
       uses: Borales/actions-yarn@v2.3.0
       with:
           cmd: build
-    - name: Save build artifact
-      uses: actions/upload-artifact@v3.1.0
+    - name: Generate release
+      uses: ncipollo/release-action@v1
       with:
-          name: output
-          path: build/
-          # default retention settings set in repository settings
-          retention-days: 0
+        allowUpdates: false
+        artifacts: "build/*"
+        token: ${{ secrets.GITHUB_TOKEN }}
