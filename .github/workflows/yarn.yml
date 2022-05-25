@@ -34,9 +34,14 @@ jobs:
       uses: Borales/actions-yarn@v2.3.0
       with:
           cmd: build
+    - name: Set variables for tag generation
+      id: vars
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
     - name: Generate release
       uses: ncipollo/release-action@v1
       with:
         allowUpdates: false
         artifacts: "build/*"
+        # don't use {{ github.sha }} here since that's the full SHA
+        tag: 1.0.0-${{ steps.vars.outputs.sha_short }}
         token: ${{ secrets.GITHUB_TOKEN }}
