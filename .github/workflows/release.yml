@@ -4,18 +4,13 @@
 name: Release
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
 
 jobs:
   release:
 
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
       # do all the steps from the CI workflow
