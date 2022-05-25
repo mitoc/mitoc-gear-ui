@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # do all the steps from the CI workflow
-    uses: ./.github/workflows/yarn-ci
+    uses: ./.github/workflows/yarn-ci.yml
 
     # now do the CD-specific steps
     steps:
