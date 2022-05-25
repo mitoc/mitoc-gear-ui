@@ -1,0 +1,34 @@
+# Release a new build on push to main.
+# This will also get triggered after each PR is merged against main
+
+name: Release
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  release:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      # do all the steps from the CI workflow
+    - uses: ./.github/workflows/yarn-ci
+      # now do the CD-specific steps
+    - name: Set variables for tag generation
+      id: vars
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+    - name: Generate release
+      uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: false
+        artifacts: "build/*"
+        # don't use {{ github.sha }} here since that's the full SHA
+        tag: 1.0.0-${{ steps.vars.outputs.sha_short }}
+        token: ${{ secrets.GITHUB_TOKEN }}

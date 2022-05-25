@@ -4,10 +4,11 @@
 name: Node.js CI
 
 on:
-  push:
-    branches: [ main ]
+  # runs on all pull requests against main
   pull_request:
     branches: [ main ]
+  # this is a reusable workflow that is called from the release workflow
+  workflow_call:
 
 jobs:
   build:
