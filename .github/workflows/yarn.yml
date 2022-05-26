@@ -65,10 +65,13 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: build
+        path: output
     - name: Generate release
       uses: ncipollo/release-action@v1
       with:
         allowUpdates: false
+        artifactErrorsFailBuild: true
+        artifacts: "output/*"
         # don't use {{ github.sha }} here since that's the full SHA
         tag: 1.0.0-${{ needs.build.outputs.sha_short }}
         token: ${{ secrets.GITHUB_TOKEN }}
