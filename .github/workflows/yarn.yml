@@ -66,7 +66,7 @@ jobs:
     - name: Download artifact from build
       uses: actions/download-artifact@v3
       with:
-        name: build.tar
+        name: build
     - name: Generate release
       uses: ncipollo/release-action@v1
       with:
