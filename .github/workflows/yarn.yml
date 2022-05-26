@@ -69,8 +69,6 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         allowUpdates: false
-        artifactErrorsFailBuild: true
-        artifacts: "build"
         # don't use {{ github.sha }} here since that's the full SHA
         tag: 1.0.0-${{ needs.build.outputs.sha_short }}
         token: ${{ secrets.GITHUB_TOKEN }}
