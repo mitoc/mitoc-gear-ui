@@ -13,8 +13,6 @@ on:
       release:
         required: false
         type: boolean
-        # by default, don't run the release workflow
-        default: false
 
 jobs:
   build:
@@ -42,7 +40,7 @@ jobs:
 
   # CD-specific job
   release:
-    if: ${{ inputs.release == "true" }}
+    if: ${{ inputs.release }}
     needs: build
 
     runs-on: ubuntu-latest
