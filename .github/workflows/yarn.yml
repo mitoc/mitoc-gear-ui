@@ -22,6 +22,10 @@ jobs:
       matrix:
         node-version: [16.x]
 
+    outputs:
+      # define the short-SHA here as an output of the build step
+      short-sha: ${{ steps.vars.outputs.sha_short }}
+
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
@@ -37,6 +41,14 @@ jobs:
       uses: Borales/actions-yarn@v2.3.0
       with:
           cmd: build
+    - name: Upload artifact for release
+      uses: actions/upload-artifact@v3
+      with:
+        name: builddir
+        path: build/*
+    - name: Set variables for tag generation
+      id: vars
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
   # CD-specific job
   release:
@@ -49,14 +61,15 @@ jobs:
         node-version: [16.x]
 
     steps:
-      - name: Set variables for tag generation
-        id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-      - name: Generate release
-        uses: ncipollo/release-action@v1
-        with:
-          allowUpdates: false
-          artifacts: "build/*"
-          # don't use {{ github.sha }} here since that's the full SHA
-          tag: 1.0.0-${{ steps.vars.outputs.sha_short }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Download artifact from build
+      uses: actions/download-artifact@v3
+      with:
+        name: builddir
+    - name: Generate release
+      uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: false
+        artifacts: "build/*"
+        # don't use {{ github.sha }} here since that's the full SHA
+        tag: 1.0.0-${{ needs.build.outputs.sha_short }}
+        token: ${{ secrets.GITHUB_TOKEN }}
