@@ -56,7 +56,7 @@ export function AddNewGearForm({
     if (gearType && !hasTouchedDeposit) {
       setValue("depositAmount", gearType.defaultDeposit);
     }
-  }, [setValue, gearType]);
+  }, [getFieldState, setValue, gearType]);
   const options =
     gearTypes?.map((gearType) => ({
       value: gearType.id,
@@ -148,7 +148,7 @@ export function AddNewGearForm({
             valueAsNumber: true,
           }}
         />
-        {gearType != null && deposit != gearType.defaultDeposit && (
+        {gearType != null && deposit !== gearType.defaultDeposit && (
           <div className="alert alert-warning p-1">
             You are about to override the deposit for this item. The default
             deposit for "{gearType.typeName}" is{" "}
