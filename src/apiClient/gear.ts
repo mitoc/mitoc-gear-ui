@@ -46,6 +46,7 @@ export interface GearType {
   id: string;
   typeName: string;
   shorthand: string;
+  defaultDeposit: number;
 }
 
 async function getGearRentalHistory(
