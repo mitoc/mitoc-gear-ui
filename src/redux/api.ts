@@ -9,6 +9,7 @@ import type {
 } from "apiClient/gear";
 import { Affiliations, ListWrapper } from "apiClient/types";
 import { API_HOST } from "apiClient/client";
+import { isEmpty } from "lodash";
 
 export const gearDbApi = createApi({
   reducerPath: "gearDbApi",
@@ -26,14 +27,16 @@ export const gearDbApi = createApi({
         q?: string;
         page?: number;
         openRentals?: boolean;
+        groups?: number[];
       }
     >({
-      query: ({ q, page, openRentals }) => ({
+      query: ({ q, page, openRentals, groups }) => ({
         url: "people/",
         params: {
           ...(q && { q }),
           ...(page && { page }),
           ...(openRentals && { openRentals }),
+          ...(!isEmpty(groups) && { groups }),
         },
       }),
     }),
@@ -96,12 +99,19 @@ export function usePeopleList({
   q,
   page,
   openRentals,
+  groups,
 }: {
   q: string;
   page?: number;
   openRentals?: boolean;
+  groups?: number[];
 }) {
-  const { data } = useGetPersonListQuery({ q: q?.trim(), page, openRentals });
+  const { data } = useGetPersonListQuery({
+    q: q?.trim(),
+    page,
+    openRentals,
+    groups,
+  });
   const personList = data?.results;
   const nbPages =
     data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
