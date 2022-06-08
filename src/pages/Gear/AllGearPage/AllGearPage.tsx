@@ -20,12 +20,13 @@ export function AllGearPage() {
   const [query, setQuery] = useState<string>("");
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const [filters, setFilters] = useState<Filters>({});
-  const { gearTypes } = filters;
+  const { gearTypes, broken } = filters;
 
   const { gearList, nbPages } = useGearList({
     q: query,
     page,
     gearTypes: map(gearTypes, "id"),
+    broken,
   });
 
   const myColumns = compact([
