@@ -7,16 +7,20 @@ import { useState } from "react";
 export type Filters = {
   gearTypes?: GearType[];
   broken?: boolean;
+  retired?: boolean;
+  missing?: boolean;
 };
 
 type Props = {
   filters: Filters;
-  setFilters: (filters: Filters) => void;
+  setFilters: (
+    filters: Filters | ((previousFilters: Filters) => Filters)
+  ) => void;
 };
 
 export function GearFilters({ filters, setFilters }: Props) {
   const update = (updater: Partial<Filters>) =>
-    setFilters({ ...filters, ...updater });
+    setFilters((filters) => ({ ...filters, ...updater }));
 
   return (
     <div className="form mb-3 col-lg-6">
@@ -27,20 +31,27 @@ export function GearFilters({ filters, setFilters }: Props) {
           onChange={(gearTypes) => update({ gearTypes })}
         />
       </div>
-      <Select
-        options={gearStatusOptions}
-        onChange={(option) => {
-          update({
-            broken: optionToGearStatusFilter(option as GearStatusFilter),
-          });
-        }}
-        value={gearStatusFilterToOption(filters.broken)}
-        style={{ display: "inline", width: "unset" }}
-      />{" "}
-      broken gear
+
+      {gearStatus.map((status) => (
+        <div className="mb-1">
+          <Select
+            options={gearStatusOptions}
+            onChange={(option) => {
+              update({
+                [status]: optionToGearStatusFilter(option as GearStatusFilter),
+              });
+            }}
+            value={gearStatusFilterToOption(filters[status])}
+            style={{ display: "inline", width: "unset" }}
+          />{" "}
+          {status} gear
+        </div>
+      ))}
     </div>
   );
 }
+
+const gearStatus = ["broken", "missing", "retired"] as const;
 
 enum GearStatusFilter {
   include = "include",
