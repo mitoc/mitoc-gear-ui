@@ -49,14 +49,16 @@ export const gearDbApi = createApi({
         q?: string;
         page?: number;
         includeRetired?: boolean;
+        gearTypes?: number[];
       }
     >({
-      query: ({ q, page, includeRetired }) => ({
+      query: ({ q, page, includeRetired, gearTypes }) => ({
         url: "gear/",
         params: {
           ...(q && { q }),
           ...(page && { page }),
           ...(!includeRetired && { retired: false }),
+          ...(!isEmpty(gearTypes) && { gearTypes }),
         },
       }),
     }),
@@ -86,8 +88,16 @@ export const {
   useGetGearTypesQuery,
 } = gearDbApi;
 
-export function useGearList({ q, page }: { q: string; page?: number }) {
-  const { data } = useGetGearListQuery({ q: q?.trim(), page });
+export function useGearList({
+  q,
+  page,
+  gearTypes,
+}: {
+  q: string;
+  page?: number;
+  gearTypes?: number[];
+}) {
+  const { data } = useGetGearListQuery({ q: q?.trim(), page, gearTypes });
   const gearList = data?.results;
   const nbPages =
     data?.count != null ? Math.ceil(data?.count / 50) : data?.count;

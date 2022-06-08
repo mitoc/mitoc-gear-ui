@@ -1,4 +1,4 @@
-import { compact } from "lodash";
+import { compact, map } from "lodash";
 import { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
@@ -20,8 +20,13 @@ export function AllGearPage() {
   const [query, setQuery] = useState<string>("");
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const [filters, setFilters] = useState<Filters>({});
+  const { gearTypes } = filters;
 
-  const { gearList, nbPages } = useGearList({ q: query, page });
+  const { gearList, nbPages } = useGearList({
+    q: query,
+    page,
+    gearTypes: map(gearTypes, "id"),
+  });
 
   const myColumns = compact([
     { key: "id", header: "Serial Number", renderer: IDCell, className: "" },
