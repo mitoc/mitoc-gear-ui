@@ -11,7 +11,7 @@ import { GearLink } from "components/GearLink";
 import { useGearList } from "redux/api";
 import { useSetPageTitle } from "hooks";
 
-import { GearStatus } from "./GearStatus";
+import { GearStatus } from "../GearStatus";
 
 export function AllGearPage() {
   useSetPageTitle("Gear");
