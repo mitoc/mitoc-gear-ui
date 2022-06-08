@@ -12,11 +12,14 @@ import { useGearList } from "redux/api";
 import { useSetPageTitle } from "hooks";
 
 import { GearStatus } from "../GearStatus";
+import { GearFilters, Filters } from "./GearFilters";
 
 export function AllGearPage() {
   useSetPageTitle("Gear");
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
+  const [showFilters, setShowFilters] = useState<boolean>(false);
+  const [filters, setFilters] = useState<Filters>({});
 
   const { gearList, nbPages } = useGearList({ q: query, page });
 
@@ -50,8 +53,14 @@ export function AllGearPage() {
           <div className="col-sm-auto">
             <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
           </div>
-          <div className="col-sm d-flex flex-grow-1 justify-content-end ">
-            <Link to="/add-gear">
+          <div className="col-md d-flex flex-grow-1 justify-content-between">
+            <button
+              className="btn btn-outline-primary mb-3 ms-md-3"
+              onClick={() => setShowFilters((v) => !v)}
+            >
+              ▽ Filters
+            </button>
+            <Link to="/add-person">
               <button className="btn btn-outline-primary mb-3">
                 ＋ Add new gear
               </button>
@@ -59,6 +68,8 @@ export function AllGearPage() {
           </div>
         </div>
       )}
+
+      {showFilters && <GearFilters filters={filters} setFilters={setFilters} />}
 
       {gearList && (
         <DataGrid columns={myColumns} data={gearList} rowWrapper={LinkRow} />
