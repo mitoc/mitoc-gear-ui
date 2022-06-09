@@ -10,7 +10,7 @@ type GearTypeOption = GearType & {
 };
 
 type Props = {
-  gearTypes: GearType[];
+  gearTypes: number[];
   onChange: (groups: GearType[]) => void;
 };
 
@@ -22,11 +22,16 @@ export function GearTypeSelect({ gearTypes, onChange: onChangeProps }: Props) {
       label: gearType.typeName,
       ...gearType,
     })) ?? [];
-  const values = gearTypes.map(makeOption);
+  const values =
+    gearTypeOptions == null
+      ? null
+      : (gearTypes
+          .map((id) => gearTypeOptions.find((opt) => opt.id === id))
+          .filter((opt) => opt != null) as GearTypeOption[]);
   const onChange = useCallback(
     (options: MultiValue<GearTypeOption>) =>
       onChangeProps(options.map(parseOption)),
-    []
+    [onChangeProps]
   );
 
   return (
@@ -38,14 +43,6 @@ export function GearTypeSelect({ gearTypes, onChange: onChangeProps }: Props) {
       onChange={onChange}
     />
   );
-}
-
-function makeOption(g: GearType): GearTypeOption {
-  return {
-    ...g,
-    value: g.id,
-    label: g.typeName,
-  };
 }
 
 function parseOption(o: GearTypeOption): GearType {

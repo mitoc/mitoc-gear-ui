@@ -1,11 +1,9 @@
-import { GearType } from "apiClient/gear";
-import { useGetGearTypesQuery } from "redux/api";
 import { GearTypeSelect } from "components/GearTypeSelect";
 import { Select } from "components/Inputs/Select";
-import { useState } from "react";
+import { map } from "lodash";
 
 export type Filters = {
-  gearTypes?: GearType[];
+  gearTypes?: number[];
   broken?: boolean;
   retired?: boolean;
   missing?: boolean;
@@ -13,9 +11,7 @@ export type Filters = {
 
 type Props = {
   filters: Filters;
-  setFilters: (
-    filters: Filters | ((previousFilters: Filters) => Filters)
-  ) => void;
+  setFilters: (updater: (previousFilters: Filters) => Filters) => void;
 };
 
 export function GearFilters({ filters, setFilters }: Props) {
@@ -28,12 +24,12 @@ export function GearFilters({ filters, setFilters }: Props) {
         <label>Gear Types:</label>
         <GearTypeSelect
           gearTypes={filters.gearTypes ?? []}
-          onChange={(gearTypes) => update({ gearTypes })}
+          onChange={(gearTypes) => update({ gearTypes: map(gearTypes, "id") })}
         />
       </div>
 
       {gearStatus.map((status) => (
-        <div className="mb-1">
+        <div className="mb-1" key={status}>
           <Select
             options={gearStatusOptions}
             onChange={(option) => {

@@ -1,4 +1,4 @@
-import { compact, map } from "lodash";
+import { compact, isEqual } from "lodash";
 import { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
@@ -12,20 +12,23 @@ import { useGearList } from "redux/api";
 import { useSetPageTitle } from "hooks";
 
 import { GearStatus } from "../GearStatus";
-import { GearFilters, Filters } from "./GearFilters";
+import { GearFilters } from "./GearFilters";
+import { useGearFilters } from "./useGearFilter";
 
 export function AllGearPage() {
   useSetPageTitle("Gear");
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
-  const [showFilters, setShowFilters] = useState<boolean>(false);
-  const [filters, setFilters] = useState<Filters>({ retired: false });
+  const { filters, setFilters } = useGearFilters();
+  const [showFilters, setShowFilters] = useState<boolean>(
+    !isEqual(filters, { retired: false }) // Open the panel if filters are not the default
+  );
   const { gearTypes, broken, missing, retired } = filters;
 
   const { gearList, nbPages } = useGearList({
     q: query,
     page,
-    gearTypes: map(gearTypes, "id"),
+    gearTypes: gearTypes,
     broken,
     missing,
     retired,
