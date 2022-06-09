@@ -71,7 +71,7 @@ export function AllGearPage() {
             >
               ▽ Filters
             </button>
-            <Link to="/add-person">
+            <Link to="/add-gear">
               <button className="btn btn-outline-primary mb-3">
                 ＋ Add new gear
               </button>
