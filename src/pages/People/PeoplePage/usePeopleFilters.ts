@@ -1,5 +1,6 @@
 import { isEmpty } from "lodash";
-import { useHistory, useLocation } from "react-router";
+
+import { useQueryParamFilters } from "hooks/useQueryParamFilters";
 
 import type { Filters } from "./PeopleFilters";
 
@@ -10,22 +11,7 @@ type ReturnType = {
 };
 
 export function usePeopleFilters(): ReturnType {
-  const history = useHistory();
-  const location = useLocation();
-
-  const getFilters = () => {
-    const params = new URLSearchParams(location.search);
-    return parse(params);
-  };
-
-  const setFilters = (updater: Updater) => {
-    const newFilters = updater(getFilters());
-    const serialized = serialize(newFilters);
-    const params = new URLSearchParams(serialized);
-    history.replace({ pathname: location.pathname, search: params.toString() });
-  };
-
-  return { filters: getFilters(), setFilters };
+  return useQueryParamFilters({ parse, serialize });
 }
 
 function serialize({ openRentals, groups }: Filters): Record<string, string> {
