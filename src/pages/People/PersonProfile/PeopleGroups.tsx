@@ -1,9 +1,7 @@
-import Select from "react-select";
 import { useState } from "react";
-import { isEmpty } from "lodash";
+import { isEmpty, map } from "lodash";
 
 import { PeopleGroup, Person, updatePersonGroups } from "apiClient/people";
-import { useGetGroupsQuery } from "redux/api";
 import { usePermissions } from "redux/auth";
 import { GroupSelect } from "components/GroupSelect";
 
@@ -65,8 +63,6 @@ function PeopleGroupsForm({
 }: Props & { closeForm: () => void }) {
   const [groups, setGroups] = useState<readonly PeopleGroup[]>(person.groups);
 
-  const { data: allGroups } = useGetGroupsQuery();
-
   const onSubmit = () =>
     updatePersonGroups(
       person.id,
@@ -88,7 +84,7 @@ function PeopleGroupsForm({
           {isEmpty(person.groups) ? "+ Add groups" : "± Edit groups"}
         </button>
       </div>
-      <GroupSelect groups={person.groups} onChange={setGroups} />
+      <GroupSelect groupIds={map(groups, "id")} onChange={setGroups} />
 
       <div className="ms-3 d-flex justify-content-end">
         <button className="btn btn-primary mt-3" onClick={onSubmit}>

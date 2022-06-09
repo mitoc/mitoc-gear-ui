@@ -10,18 +10,24 @@ type GroupOption = PeopleGroup & {
 };
 
 type Props = {
-  groups: PeopleGroup[];
+  groupIds: number[];
   onChange: (groups: PeopleGroup[]) => void;
 };
 
-export function GroupSelect({ groups, onChange: onChangeProps }: Props) {
+export function GroupSelect({ groupIds, onChange: onChangeProps }: Props) {
   const { data: allGroups } = useGetGroupsQuery();
   const options = allGroups?.map(makeOption);
-  const values = groups.map(makeOption);
+  const values =
+    options == null
+      ? null
+      : (groupIds
+          .map((groupdId) => options.find((opt) => opt.id === groupdId))
+          .filter((opt) => opt != null) as GroupOption[]);
+
   const onChange = useCallback(
     (options: MultiValue<GroupOption>) =>
       onChangeProps(options.map(parseOption)),
-    []
+    [onChangeProps]
   );
 
   return (

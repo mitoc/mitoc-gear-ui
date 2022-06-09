@@ -1,4 +1,4 @@
-import { isEmpty, map, max } from "lodash";
+import { isEmpty, max } from "lodash";
 import { useState } from "react";
 
 import styled from "styled-components";
@@ -12,7 +12,8 @@ import { PersonLink } from "components/PersonLink";
 import { usePeopleList } from "redux/api";
 import { useSetPageTitle } from "hooks";
 
-import { PeopleFilters, Filters } from "./PeopleFilters";
+import { PeopleFilters } from "./PeopleFilters";
+import { usePeopleFilters } from "./usePeopleFilters";
 
 type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
   name: string;
@@ -23,13 +24,13 @@ export function PeoplePage() {
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
   const [showFilters, setShowFilters] = useState<boolean>(false);
-  const [filters, setFilters] = useState<Filters>({});
+  const { filters, setFilters } = usePeopleFilters();
   const { openRentals, groups } = filters;
   const { personList, nbPages } = usePeopleList({
     q: query,
     page,
     openRentals,
-    groups: map(groups, "id"),
+    groups,
   });
 
   const peopleData = personList?.map(({ firstName, lastName, ...other }) => ({

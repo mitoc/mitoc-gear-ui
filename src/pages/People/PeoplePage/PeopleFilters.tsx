@@ -1,20 +1,21 @@
+import { map } from "lodash";
+
 import { Checkbox } from "components/Inputs/Checkbox";
 import { GroupSelect } from "components/GroupSelect";
-import { PeopleGroup } from "apiClient/people";
 
 export type Filters = {
   openRentals?: boolean;
-  groups?: PeopleGroup[];
+  groups?: number[];
 };
 
 type Props = {
   filters: Filters;
-  setFilters: (filters: Filters) => void;
+  setFilters: (updater: (previousFilters: Filters) => Filters) => void;
 };
 
 export function PeopleFilters({ filters, setFilters }: Props) {
   const update = (updater: Partial<Filters>) =>
-    setFilters({ ...filters, ...updater });
+    setFilters((filters) => ({ ...filters, ...updater }));
 
   return (
     <div className="form mb-3 col-lg-6">
@@ -28,8 +29,8 @@ export function PeopleFilters({ filters, setFilters }: Props) {
       </div>
       <label>Groups:</label>
       <GroupSelect
-        groups={filters.groups ?? []}
-        onChange={(groups) => update({ groups })}
+        groupIds={filters.groups ?? []}
+        onChange={(groups) => update({ groups: map(groups, "id") })}
       />
     </div>
   );
