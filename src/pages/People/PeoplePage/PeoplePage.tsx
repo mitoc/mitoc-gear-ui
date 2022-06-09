@@ -23,8 +23,8 @@ export function PeoplePage() {
   useSetPageTitle("People");
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
-  const [showFilters, setShowFilters] = useState<boolean>(false);
   const { filters, setFilters } = usePeopleFilters();
+  const [showFilters, setShowFilters] = useState<boolean>(!isEmpty(filters));
   const { openRentals, groups } = filters;
   const { personList, nbPages } = usePeopleList({
     q: query,
