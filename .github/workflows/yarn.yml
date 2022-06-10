@@ -32,11 +32,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: Install production-level yarn dependencies
-      uses: Borales/actions-yarn@v2.3.0
+      uses: Borales/actions-yarn@v3.0.0
       with:
           cmd: install --frozen-lockfile --production
     - name: Build output for prod
-      uses: Borales/actions-yarn@v2.3.0
+      uses: Borales/actions-yarn@v3.0.0
       with:
           cmd: build
     - name: tar files together before artifact creation
