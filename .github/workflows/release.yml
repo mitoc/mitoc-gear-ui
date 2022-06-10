@@ -1,0 +1,16 @@
+# Release a new build on push to main.
+# This will also get triggered after each PR is merged against main
+
+name: Release
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  release:
+    # do all the steps from the CI workflow
+    # but also do the release step
+    uses: ./.github/workflows/yarn.yml
+    with:
+      release: true

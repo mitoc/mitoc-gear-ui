@@ -1,23 +1,28 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Node.js CI
+name: Yarn CI & CD
 
 on:
-  push:
-    branches: [ main ]
+  # runs on all pull requests against main
   pull_request:
     branches: [ main ]
+  workflow_call:
+    inputs:
+      release:
+        required: false
+        type: boolean
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    outputs:
+      sha_short: ${{ steps.vars.outputs.sha_short }}
 
     steps:
     - uses: actions/checkout@v3
@@ -27,10 +32,45 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: Install production-level yarn dependencies
-      uses: Borales/actions-yarn@v2.3.0
+      uses: Borales/actions-yarn@v3.0.0
       with:
           cmd: install --frozen-lockfile --production
     - name: Build output for prod
-      uses: Borales/actions-yarn@v2.3.0
+      uses: Borales/actions-yarn@v3.0.0
       with:
           cmd: build
+    - name: tar files together before artifact creation
+      run: tar -cvf build.tar build/
+    - name: Upload build.zip artifact for release
+      uses: actions/upload-artifact@v3
+      with:
+        name: build
+        path: build.tar
+    - name: Set variables for tag generation
+      id: vars
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+  # CD-specific job
+  release:
+    if: ${{ inputs.release }}
+    needs: build
+
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - name: Download artifact from build
+      uses: actions/download-artifact@v3
+      with:
+        name: build
+    - name: Generate release
+      uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: false
+        artifactErrorsFailBuild: true
+        artifacts: "build.tar"
+        # don't use {{ github.sha }} here since that's the full SHA
+        tag: 1.0.0-${{ needs.build.outputs.sha_short }}
+        token: ${{ secrets.GITHUB_TOKEN }}
