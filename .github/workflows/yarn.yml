@@ -7,7 +7,6 @@ on:
   # runs on all pull requests against main
   pull_request:
     branches: [ main ]
-  # this is a reusable workflow that is called from the release workflow
   workflow_call:
     inputs:
       release:
@@ -23,7 +22,6 @@ jobs:
         node-version: [16.x]
 
     outputs:
-      # define the short-SHA here as an output of the build step
       sha_short: ${{ steps.vars.outputs.sha_short }}
 
     steps:
