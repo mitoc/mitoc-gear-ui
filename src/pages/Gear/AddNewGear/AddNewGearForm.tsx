@@ -6,6 +6,7 @@ import { useGetGearTypesQuery } from "redux/api";
 import { CreateGearArgs, GearType } from "apiClient/gear";
 import { LabeledInput } from "components/Inputs/LabeledInput";
 import { Link } from "react-router-dom";
+import { fmtAmount } from "lib/fmtNumber";
 
 type GearTypeOption = GearType & { value: string; label: string };
 
@@ -16,7 +17,7 @@ type FormValues = {
   description: string;
   firstId: string;
   autoGenerateIds: boolean;
-  depositAmount: number | null;
+  depositAmount?: number;
   quantity: number;
 };
 
@@ -34,10 +35,11 @@ export function AddNewGearForm({
     },
   });
 
-  const { handleSubmit, watch, setValue } = formObject;
+  const { handleSubmit, watch, setValue, getFieldState } = formObject;
 
   const autoGenerateIds = watch("autoGenerateIds");
   const gearType = watch("gearType");
+  const deposit = watch("depositAmount");
   useEffect(() => {
     if (autoGenerateIds) {
       setValue("firstId", "");
@@ -49,6 +51,12 @@ export function AddNewGearForm({
     }
   }, [setValue, autoGenerateIds, gearType]);
 
+  useEffect(() => {
+    const hasTouchedDeposit = getFieldState("depositAmount").isDirty;
+    if (gearType && !hasTouchedDeposit) {
+      setValue("depositAmount", gearType.defaultDeposit);
+    }
+  }, [getFieldState, setValue, gearType]);
   const options =
     gearTypes?.map((gearType) => ({
       value: gearType.id,
@@ -135,12 +143,21 @@ export function AddNewGearForm({
           title="Deposit amount:"
           type="number"
           step={0.5}
-          name="deposit"
+          name="depositAmount"
           options={{
-            required: true,
             valueAsNumber: true,
           }}
         />
+        {gearType != null && deposit !== gearType.defaultDeposit && (
+          <div className="alert alert-warning p-1">
+            You are about to override the deposit for this item. The default
+            deposit for "{gearType.typeName}" is{" "}
+            {fmtAmount(gearType.defaultDeposit)}. You can proceed if you think
+            this item deserves a specific deposit, but keep in mind that it can
+            confuse renters: this item's deposit will not match the one posted
+            on the MITOC website.
+          </div>
+        )}
 
         <LabeledInput
           placeholder="Ex: MSR Elixir 2"

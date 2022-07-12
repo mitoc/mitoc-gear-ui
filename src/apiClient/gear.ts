@@ -46,6 +46,7 @@ export interface GearType {
   id: string;
   typeName: string;
   shorthand: string;
+  defaultDeposit: number;
 }
 
 async function getGearRentalHistory(
@@ -98,7 +99,7 @@ export type CreateGearArgs = {
   quantity: number;
   size?: string;
   specification?: string;
-  deposit_amount?: number;
+  depositAmount?: number;
   description?: string;
 };
 

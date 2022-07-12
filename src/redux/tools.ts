@@ -3,23 +3,23 @@ import { AsyncThunkPayloadCreator, createAsyncThunk } from "@reduxjs/toolkit";
 import { APIError as APIErrorClass } from "apiClient/client";
 
 function wrapper<R, Arg>(
-  fn: (arg: Arg) => Promise<R>
+  fn: AsyncThunkPayloadCreator<R, Arg, {}>
 ): AsyncThunkPayloadCreator<R, Arg> {
-  return async (arg: Arg, { rejectWithValue }) => {
+  return async (arg: Arg, api) => {
     try {
-      return await fn(arg);
+      return await fn(arg, api);
     } catch (err) {
       if (err instanceof APIErrorClass) {
-        return rejectWithValue(err.error);
+        return api.rejectWithValue(err.error);
       }
       throw err;
     }
   };
 }
 
-export function createCustomAsyncThunk<R, Arg>(
+export function createCustomAsyncThunk<R, Arg = void>(
   actionName: string,
-  fn: (arg: Arg) => Promise<R>
+  fn: AsyncThunkPayloadCreator<R, Arg, {}>
 ) {
   return createAsyncThunk(actionName, wrapper(fn));
 }
