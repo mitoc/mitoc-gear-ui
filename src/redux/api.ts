@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import queryString from "query-string";
 
 import { Person, PersonSummary, PeopleGroup } from "apiClient/people";
 import type {
@@ -16,6 +17,8 @@ export const gearDbApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: API_HOST,
     credentials: "include",
+    paramsSerializer: (params) =>
+      queryString.stringify(params, { arrayFormat: "none" }),
   }),
   endpoints: (builder) => ({
     getPerson: builder.query<Person, string>({
