@@ -9,9 +9,11 @@ import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
 import { SearchTextField } from "components/Inputs/TextField";
 import { PersonLink } from "components/PersonLink";
-import { Checkbox } from "components/Inputs/Checkbox";
 import { usePeopleList } from "redux/api";
 import { useSetPageTitle } from "hooks";
+
+import { PeopleFilters } from "./PeopleFilters";
+import { usePeopleFilters } from "./usePeopleFilters";
 
 type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
   name: string;
@@ -21,12 +23,14 @@ export function PeoplePage() {
   useSetPageTitle("People");
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
-  const [openRentals, setOpenRentals] = useState<boolean>(false);
-  const [showFilters, setShowFilters] = useState<boolean>(false);
+  const { filters, setFilters } = usePeopleFilters();
+  const [showFilters, setShowFilters] = useState<boolean>(!isEmpty(filters));
+  const { openRentals, groups } = filters;
   const { personList, nbPages } = usePeopleList({
     q: query,
     page,
     openRentals,
+    groups,
   });
 
   const peopleData = personList?.map(({ firstName, lastName, ...other }) => ({
@@ -75,14 +79,7 @@ export function PeoplePage() {
       )}
 
       {showFilters && (
-        <div className="form-switch mb-3">
-          <Checkbox
-            value={openRentals}
-            className="me-3"
-            onChange={() => setOpenRentals((v) => !v)}
-          />
-          Open Rentals only
-        </div>
+        <PeopleFilters filters={filters} setFilters={setFilters} />
       )}
 
       {peopleData && (

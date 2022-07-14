@@ -1,19 +1,13 @@
-import Select from "react-select";
 import { useState } from "react";
-import { isEmpty } from "lodash";
+import { isEmpty, map } from "lodash";
 
 import { PeopleGroup, Person, updatePersonGroups } from "apiClient/people";
-import { useGetGroupsQuery } from "redux/api";
 import { usePermissions } from "redux/auth";
+import { GroupSelect } from "components/GroupSelect";
 
 type Props = {
   person: Person;
   refreshPerson: () => void;
-};
-
-type GroupOption = PeopleGroup & {
-  value: number;
-  label: string;
 };
 
 export default function PeopleGroups({ person, refreshPerson }: Props) {
@@ -67,23 +61,17 @@ function PeopleGroupsForm({
   refreshPerson,
   closeForm,
 }: Props & { closeForm: () => void }) {
-  const initialValues = person.groups.map(makeOption);
-  const [personGroups, setGroups] = useState<readonly GroupOption[]>(
-    initialValues
-  );
-
-  const { data: allGroups } = useGetGroupsQuery();
+  const [groups, setGroups] = useState<readonly PeopleGroup[]>(person.groups);
 
   const onSubmit = () =>
     updatePersonGroups(
       person.id,
-      personGroups.map((g) => g.id)
+      groups.map((g) => g.id)
     ).then(() => {
       refreshPerson();
       closeForm();
     });
 
-  const options = allGroups?.map(makeOption);
   return (
     <div className="mt-2">
       <div className="d-flex justify-content-between mb-2">
@@ -96,13 +84,8 @@ function PeopleGroupsForm({
           {isEmpty(person.groups) ? "+ Add groups" : "± Edit groups"}
         </button>
       </div>
-      <Select
-        className="flex-grow-1"
-        isMulti={true}
-        options={options}
-        value={personGroups}
-        onChange={setGroups}
-      />
+      <GroupSelect groupIds={map(groups, "id")} onChange={setGroups} />
+
       <div className="ms-3 d-flex justify-content-end">
         <button className="btn btn-primary mt-3" onClick={onSubmit}>
           Submit
@@ -110,12 +93,4 @@ function PeopleGroupsForm({
       </div>
     </div>
   );
-}
-
-function makeOption(g: PeopleGroup): GroupOption {
-  return {
-    ...g,
-    value: g.id,
-    label: g.groupName,
-  };
 }

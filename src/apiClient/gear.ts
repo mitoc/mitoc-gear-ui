@@ -43,7 +43,7 @@ export interface PurchasableItem {
 }
 
 export interface GearType {
-  id: string;
+  id: number;
   typeName: string;
   shorthand: string;
   defaultDeposit: number;

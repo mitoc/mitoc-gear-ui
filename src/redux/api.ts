@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import queryString from "query-string";
 
 import { Person, PersonSummary, PeopleGroup } from "apiClient/people";
 import type {
@@ -9,12 +10,15 @@ import type {
 } from "apiClient/gear";
 import { Affiliations, ListWrapper } from "apiClient/types";
 import { API_HOST } from "apiClient/client";
+import { isEmpty } from "lodash";
 
 export const gearDbApi = createApi({
   reducerPath: "gearDbApi",
   baseQuery: fetchBaseQuery({
     baseUrl: API_HOST,
     credentials: "include",
+    paramsSerializer: (params) =>
+      queryString.stringify(params, { arrayFormat: "none" }),
   }),
   endpoints: (builder) => ({
     getPerson: builder.query<Person, string>({
@@ -26,14 +30,16 @@ export const gearDbApi = createApi({
         q?: string;
         page?: number;
         openRentals?: boolean;
+        groups?: number[];
       }
     >({
-      query: ({ q, page, openRentals }) => ({
+      query: ({ q, page, openRentals, groups }) => ({
         url: "people/",
         params: {
           ...(q && { q }),
           ...(page && { page }),
           ...(openRentals && { openRentals }),
+          ...(!isEmpty(groups) && { groups }),
         },
       }),
     }),
@@ -45,15 +51,21 @@ export const gearDbApi = createApi({
       {
         q?: string;
         page?: number;
-        includeRetired?: boolean;
+        broken?: boolean;
+        missing?: boolean;
+        retired?: boolean;
+        gearTypes?: number[];
       }
     >({
-      query: ({ q, page, includeRetired }) => ({
+      query: ({ q, page, gearTypes, broken, missing, retired }) => ({
         url: "gear/",
         params: {
           ...(q && { q }),
           ...(page && { page }),
-          ...(!includeRetired && { retired: false }),
+          ...(broken != null && { broken }),
+          ...(missing != null && { missing }),
+          ...(retired != null && { retired }),
+          ...(!isEmpty(gearTypes) && { gearTypes }),
         },
       }),
     }),
@@ -83,8 +95,29 @@ export const {
   useGetGearTypesQuery,
 } = gearDbApi;
 
-export function useGearList({ q, page }: { q: string; page?: number }) {
-  const { data } = useGetGearListQuery({ q: q?.trim(), page });
+export function useGearList({
+  q,
+  page,
+  gearTypes,
+  broken,
+  missing,
+  retired,
+}: {
+  q: string;
+  page?: number;
+  gearTypes?: number[];
+  broken?: boolean;
+  missing?: boolean;
+  retired?: boolean;
+}) {
+  const { data } = useGetGearListQuery({
+    q: q?.trim(),
+    page,
+    gearTypes,
+    broken,
+    missing,
+    retired,
+  });
   const gearList = data?.results;
   const nbPages =
     data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
@@ -96,12 +129,19 @@ export function usePeopleList({
   q,
   page,
   openRentals,
+  groups,
 }: {
   q: string;
   page?: number;
   openRentals?: boolean;
+  groups?: number[];
 }) {
-  const { data } = useGetPersonListQuery({ q: q?.trim(), page, openRentals });
+  const { data } = useGetPersonListQuery({
+    q: q?.trim(),
+    page,
+    openRentals,
+    groups,
+  });
   const personList = data?.results;
   const nbPages =
     data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
