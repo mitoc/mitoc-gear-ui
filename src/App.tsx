@@ -19,7 +19,7 @@ import { ChangePassword } from "pages/People/PersonProfile/PersonChangePassword"
 
 function App() {
   const { loggedIn, isLoading } = useLoadCurrentUser();
-
+  const { pathname, search } = window.location;
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <BaseLayout>
@@ -36,7 +36,14 @@ function App() {
           <Route exact path="/change-password/">
             <ChangePassword />
           </Route>
-          {!isLoading && !loggedIn && <Redirect to="/login" />}
+          {!isLoading && !loggedIn && (
+            <Redirect
+              to={{
+                pathname: "/login",
+                search: `redirectTo=${encodeURIComponent(pathname + search)}`,
+              }}
+            />
+          )}
           <Route exact path="/people">
             <PeoplePage />
           </Route>
