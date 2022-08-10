@@ -22,16 +22,16 @@ type TablePerson = Omit<PersonSummary, "firstName" | "lastName"> & {
 export function PeoplePage() {
   useSetPageTitle("People");
   const [page, setPage] = useState<number>(1);
-  const [query, setQuery] = useState<string>("");
   const { filters, setFilters } = usePeopleFilters();
   const [showFilters, setShowFilters] = useState<boolean>(!isEmpty(filters));
-  const { openRentals, groups } = filters;
+  const { openRentals, groups, q: query } = filters;
   const { personList, nbPages } = usePeopleList({
     q: query,
     page,
     openRentals,
     groups,
   });
+  const setQuery = (q: string) => setFilters((filters) => ({ ...filters, q }));
 
   const peopleData = personList?.map(({ firstName, lastName, ...other }) => ({
     name: `${firstName} ${lastName}`,

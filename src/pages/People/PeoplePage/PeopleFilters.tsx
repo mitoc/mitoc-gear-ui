@@ -4,6 +4,7 @@ import { Checkbox } from "components/Inputs/Checkbox";
 import { GroupSelect } from "components/GroupSelect";
 
 export type Filters = {
+  q: string;
   openRentals?: boolean;
   groups?: number[];
 };
