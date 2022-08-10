@@ -18,12 +18,12 @@ import { useGearFilters } from "./useGearFilter";
 export function AllGearPage() {
   useSetPageTitle("Gear");
   const [page, setPage] = useState<number>(1);
-  const [query, setQuery] = useState<string>("");
   const { filters, setFilters } = useGearFilters();
   const [showFilters, setShowFilters] = useState<boolean>(
     !isEqual(filters, { retired: false }) // Open the panel if filters are not the default
   );
-  const { gearTypes, broken, missing, retired } = filters;
+  const { gearTypes, broken, missing, retired, q: query } = filters;
+  const setQuery = (q: string) => setFilters((filters) => ({ ...filters, q }));
 
   const { gearList, nbPages } = useGearList({
     q: query,

@@ -15,12 +15,14 @@ export function useGearFilters(): ReturnType {
 }
 
 function serialize({
+  q,
   gearTypes,
   broken,
   missing,
   retired,
 }: Filters): Record<string, string> {
   return {
+    ...(q && { q }),
     ...(broken != null && { broken: String(broken) }),
     ...(missing != null && { missing: String(missing) }),
     ...(retired === true && { retired: "true" }),
@@ -34,7 +36,10 @@ function parse(params: URLSearchParams): Filters {
   // By default, don't show retired items
   const retired = parseBooleanStrict(params.get("retired")) ?? false;
   const broken = parseBooleanStrict(params.get("broken"));
+  const q = params.get("q") ?? "";
+
   return {
+    q,
     retired,
     ...(broken != null && { broken }),
     ...(missing != null && { missing }),

@@ -14,8 +14,13 @@ export function usePeopleFilters(): ReturnType {
   return useQueryParamFilters({ parse, serialize });
 }
 
-function serialize({ openRentals, groups }: Filters): Record<string, string> {
+function serialize({
+  openRentals,
+  groups,
+  q,
+}: Filters): Record<string, string> {
   return {
+    ...(q && { q }),
     ...(openRentals && { openRentals: "true" }),
     ...(!isEmpty(groups) && { groups: groups!.map(String).join(",") }),
   };
@@ -24,7 +29,9 @@ function serialize({ openRentals, groups }: Filters): Record<string, string> {
 function parse(params: URLSearchParams): Filters {
   const openRentals = params.get("openRentals");
   const groups = params.get("groups");
+  const q = params.get("q") ?? "";
   return {
+    q,
     ...(openRentals === "true" && { openRentals: true }),
     ...(!isEmpty(groups) && { groups: groups!.split(",").map(Number) }),
   };
