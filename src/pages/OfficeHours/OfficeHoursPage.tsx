@@ -1,16 +1,21 @@
+import styled from "styled-components";
 import dayjs from "dayjs";
 import weekOfYears from "dayjs/plugin/weekOfYear";
 
+import { signUp } from "apiClient/officeHours";
+import { PersonLink } from "components/PersonLink";
 import { useSetPageTitle } from "hooks";
 import { groupBy, isEmpty, map } from "lodash";
 import { useGetOfficeHoursQuery } from "redux/api";
-import styled from "styled-components";
+import { useCurrentUser } from "redux/auth";
 
 dayjs.extend(weekOfYears);
 
 export function OfficeHoursPage() {
   useSetPageTitle("Office Hours");
-  const { data: officeHours } = useGetOfficeHoursQuery();
+  const { data: officeHours, refetch } = useGetOfficeHoursQuery();
+  const { user } = useCurrentUser();
+
   const now = dayjs();
   const officeHoursByWeek = groupBy(officeHours, ({ startTime }) =>
     dayjs(startTime).week()
@@ -36,7 +41,7 @@ export function OfficeHoursPage() {
             <div>
               {weekTitle && <h3>{weekTitle}</h3>}
               <WeekBlock>
-                {officeHours.map(({ startTime, signups }) => {
+                {officeHours.map(({ startTime, signups, googleId }) => {
                   const weekDelta = dayjs(startTime).diff(now, "week");
                   const alertClass =
                     Number(weekDelta) >= 1
@@ -49,31 +54,49 @@ export function OfficeHoursPage() {
                   const buttonClass = ["danger", "warning"].includes(alertClass)
                     ? "primary"
                     : "outline-primary";
-                  // const dayDelta = dayjs(startTime).day -
+                  const isUserSignedUp = signups.some(
+                    ({ deskWorker }) => deskWorker.id === user!.id
+                  );
                   return (
                     <div className={`alert alert-${alertClass}`}>
                       <div>
                         <strong>{formatDateTime(startTime)}</strong>
                       </div>
-                      {isEmpty(signups) ? (
+                      {!isEmpty(signups) ? (
                         <div>
-                          <em>No one signed up yet!</em>
+                          Signed up:{" "}
+                          {signups.map((signup, i) => (
+                            <>
+                              {i > 0 && ", "}
+                              <PersonLink id={signup.deskWorker.id}>
+                                {signup.deskWorker.firstName}
+                              </PersonLink>
+                            </>
+                          ))}
+                          <br />
+                          {!isUserSignedUp && signups.length === 1 && (
+                            <em>We could use more help!</em>
+                          )}
+                          {isUserSignedUp && (
+                            <em>You're signed up, thank you!</em>
+                          )}
                         </div>
                       ) : (
                         <div>
-                          {signups
-                            .map((signup) => signup.deskWorker.firstName)
-                            .join(", ")}
+                          <em>No one signed up yet!</em>
                         </div>
                       )}
-                      <div className="btn-container">
-                        <button
-                          className={`btn btn-${buttonClass} btn-m`}
-                          type="button"
-                        >
-                          Signup
-                        </button>
-                      </div>
+                      {!isUserSignedUp && (
+                        <div className="btn-container">
+                          <button
+                            className={`btn btn-${buttonClass} btn-m`}
+                            type="button"
+                            onClick={() => signUp(googleId).then(refetch)}
+                          >
+                            Signup
+                          </button>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
@@ -93,6 +116,10 @@ function formatDateTime(date: string) {
 const WeekBlock = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
 
   .btn-container {
     display: flex;

@@ -36,12 +36,12 @@ export interface Affiliations {
 }
 
 export interface OfficeHour {
-  google_id: string;
+  googleId: string;
   title: string;
   startTime: string;
   endTime: string;
   signups: {
-    id: number;
-    deskWorker: { id: number; firstName: string; lastName: string };
+    id: string;
+    deskWorker: { id: string; firstName: string; lastName: string };
   }[];
 }
