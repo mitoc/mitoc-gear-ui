@@ -11,6 +11,7 @@ import { useLoadCurrentUser } from "./redux/auth";
 import LoginPage from "./pages/LogIn";
 import { PeoplePage, PersonPage } from "./pages/People";
 import { AllGearPage, GearItemPage } from "./pages/Gear";
+import { OfficeHoursPage } from "./pages/OfficeHours";
 import { AddNewGear } from "./pages/Gear/AddNewGear";
 import { AddNewPerson } from "./pages/People/AddNewPerson";
 import { RequestPasswordReset } from "./pages/LogIn/RequestPasswordReset";
@@ -61,6 +62,9 @@ function App() {
           </Route>
           <Route path="/gear/:gearId">
             <GearItemPage />
+          </Route>
+          <Route exact path="/office-hours">
+            <OfficeHoursPage />
           </Route>
           <Route exact path="/">
             {!isLoading && loggedIn && <Redirect to="/people" />}

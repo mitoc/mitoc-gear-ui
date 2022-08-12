@@ -76,6 +76,9 @@ export function Header() {
                 >
                   Restricted gear
                 </a>
+                <Link className="nav-link" to="/office-hours">
+                  Office Hours
+                </Link>
               </div>
               <div className="navbar-nav ms-auto">
                 <div className="nav-item dropdown">

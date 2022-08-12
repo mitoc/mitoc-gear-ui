@@ -34,3 +34,14 @@ export interface Affiliations {
   name: string;
   dues: number;
 }
+
+export interface OfficeHour {
+  google_id: string;
+  title: string;
+  startTime: string;
+  endTime: string;
+  signups: {
+    id: number;
+    deskWorker: { id: number; firstName: string; lastName: string };
+  }[];
+}
