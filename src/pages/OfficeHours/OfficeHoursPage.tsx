@@ -2,7 +2,7 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 import weekOfYears from "dayjs/plugin/weekOfYear";
 
-import { signUp } from "apiClient/officeHours";
+import { cancelSignUp, signUp } from "apiClient/officeHours";
 import { PersonLink } from "components/PersonLink";
 import { useSetPageTitle } from "hooks";
 import { groupBy, isEmpty, map } from "lodash";
@@ -54,7 +54,7 @@ export function OfficeHoursPage() {
                   const buttonClass = ["danger", "warning"].includes(alertClass)
                     ? "primary"
                     : "outline-primary";
-                  const isUserSignedUp = signups.some(
+                  const userSignUp = signups.find(
                     ({ deskWorker }) => deskWorker.id === user!.id
                   );
                   return (
@@ -74,20 +74,18 @@ export function OfficeHoursPage() {
                             </>
                           ))}
                           <br />
-                          {!isUserSignedUp && signups.length === 1 && (
+                          {!userSignUp && signups.length === 1 && (
                             <em>We could use more help!</em>
                           )}
-                          {isUserSignedUp && (
-                            <em>You're signed up, thank you!</em>
-                          )}
+                          {userSignUp && <em>You're signed up, thank you!</em>}
                         </div>
                       ) : (
                         <div>
                           <em>No one signed up yet!</em>
                         </div>
                       )}
-                      {!isUserSignedUp && (
-                        <div className="btn-container">
+                      <div className="btn-container">
+                        {!userSignUp ? (
                           <button
                             className={`btn btn-${buttonClass} btn-m`}
                             type="button"
@@ -95,8 +93,20 @@ export function OfficeHoursPage() {
                           >
                             Signup
                           </button>
-                        </div>
-                      )}
+                        ) : (
+                          <button
+                            className={`btn btn-outline-danger btn-m`}
+                            type="button"
+                            onClick={() =>
+                              cancelSignUp(googleId, userSignUp.id).then(
+                                refetch
+                              )
+                            }
+                          >
+                            Cancel
+                          </button>
+                        )}
+                      </div>
                     </div>
                   );
                 })}
