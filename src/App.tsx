@@ -17,6 +17,7 @@ import { AddNewPerson } from "./pages/People/AddNewPerson";
 import { RequestPasswordReset } from "./pages/LogIn/RequestPasswordReset";
 import { RequestPasswordConfirm } from "./pages/LogIn/RequestPasswordConfirm";
 import { ChangePassword } from "pages/People/PersonProfile/PersonChangePassword";
+import { RequestDeskCreditPage } from "pages/OfficeHours/RequestDeskCreditPage";
 
 function App() {
   const { loggedIn, isLoading } = useLoadCurrentUser();
@@ -65,6 +66,9 @@ function App() {
           </Route>
           <Route exact path="/office-hours">
             <OfficeHoursPage />
+          </Route>
+          <Route exact path="/request-desk-credit">
+            <RequestDeskCreditPage />
           </Route>
           <Route exact path="/">
             {!isLoading && loggedIn && <Redirect to="/people" />}

@@ -106,14 +106,9 @@ export function Header() {
                       </Link>
                     </li>
                     <li>
-                      <a
-                        className="dropdown-item"
-                        href="http://goo.gl/nPMjmc"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <Link className="dropdown-item" to="/request-desk-credit">
                         Request desk credit
-                      </a>
+                      </Link>
                     </li>
                     <li>
                       <button
