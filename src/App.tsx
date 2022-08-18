@@ -67,15 +67,19 @@ function App() {
           <Route exact path="/office-hours">
             <OfficeHoursPage />
           </Route>
-          <Route exact path="/request-desk-credit">
-            <RequestDeskCreditPage />
-          </Route>
+          {loggedIn && (
+            <Route exact path="/request-desk-credit">
+              <RequestDeskCreditPage />
+            </Route>
+          )}
           <Route exact path="/">
-            {!isLoading && loggedIn && <Redirect to="/people" />}
-          </Route>
-          <Route path="*">
             <Redirect to="/people" />
           </Route>
+          {loggedIn && (
+            <Route path="*">
+              <Redirect to="/people" />
+            </Route>
+          )}
         </Switch>
       </BaseLayout>
     </Router>

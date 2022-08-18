@@ -8,7 +8,12 @@ import type {
   GearType,
   PurchasableItem,
 } from "apiClient/gear";
-import { Affiliations, ListWrapper, OfficeHour } from "apiClient/types";
+import {
+  Affiliations,
+  ListWrapper,
+  OfficeHour,
+  PersonSignup,
+} from "apiClient/types";
 import { API_HOST } from "apiClient/client";
 import { isEmpty } from "lodash";
 
@@ -84,6 +89,20 @@ export const gearDbApi = createApi({
     getOfficeHours: builder.query<OfficeHour[], void>({
       query: () => "/office-hours/",
     }),
+    getPersonSignups: builder.query<
+      ListWrapper<PersonSignup>,
+      {
+        personID: string;
+        approved?: boolean;
+      }
+    >({
+      query: ({ personID, approved }) => ({
+        url: `/people/${personID}/office-hours/`,
+        params: {
+          ...(approved && { approved }),
+        },
+      }),
+    }),
   }),
 });
 
@@ -97,6 +116,7 @@ export const {
   useGetGroupsQuery,
   useGetGearTypesQuery,
   useGetOfficeHoursQuery,
+  useGetPersonSignupsQuery,
 } = gearDbApi;
 
 export function useGearList({

@@ -55,7 +55,7 @@ export function OfficeHoursPage() {
                     ? "primary"
                     : "outline-primary";
                   const userSignUp = signups.find(
-                    ({ deskWorker }) => deskWorker.id === user!.id
+                    ({ deskWorker }) => deskWorker.id === user?.id
                   );
                   return (
                     <div className={`alert alert-${alertClass}`}>

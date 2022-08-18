@@ -45,3 +45,9 @@ export interface OfficeHour {
     deskWorker: { id: string; firstName: string; lastName: string };
   }[];
 }
+
+export interface PersonSignup {
+  creditRequested?: string;
+  date: string;
+  id: number;
+}
