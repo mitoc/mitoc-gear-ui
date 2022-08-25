@@ -6,9 +6,12 @@ import { LabeledInput } from "components/Inputs/LabeledInput";
 import { FormProvider, useForm } from "react-hook-form";
 import { formatDate } from "lib/fmtDate";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 
 type FormValues = {
-  signupId: number;
+  signup: { value: number; label: string };
+  duration: string;
+  note?: string;
 };
 
 export function RequestDeskCreditPage() {
@@ -17,9 +20,6 @@ export function RequestDeskCreditPage() {
   const { data } = useGetPersonSignupsQuery({
     personID: user!.id,
     approved: false,
-  });
-  const formObject = useForm<FormValues>({
-    defaultValues: {},
   });
   const today = dayjs().format("YYYY-MM-DD");
 
@@ -34,30 +34,66 @@ export function RequestDeskCreditPage() {
     label: formatDate(date),
   }));
 
+  const formObject = useForm<FormValues>({
+    defaultValues: { duration: "01:00" },
+  });
+
+  const { handleSubmit, watch, setValue } = formObject;
+  const signup = watch("signup");
+
+  useEffect(() => {
+    // Initialize the office hour to the first one once they have loaded
+    if (signup == null && signupOptions != null) {
+      setValue("signup", signupOptions[0]);
+    }
+  }, [setValue, signupOptions, signup]);
+
   return (
     <div className="row">
       <div className="col-lg-8">
         <FormProvider {...formObject}>
           <h1>Request desk credit</h1>
-          <LabeledInput
-            title="Office hour:"
-            name="signupId"
-            renderComponent={({ value, onChange, onBlur, invalid }: any) => {
-              return (
-                <Select
-                  isLoading={!awaitingRequests}
-                  options={signupOptions}
-                  className={`w-100 ${invalid ? "is-invalid" : ""}`}
-                  value={value}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                />
-              );
-            }}
-            options={{
-              required: true,
-            }}
-          />
+          <form onSubmit={handleSubmit((formValues) => {})}>
+            <LabeledInput
+              title="Office hour:"
+              name="signup"
+              renderComponent={({ value, onChange, onBlur, invalid }: any) => {
+                return (
+                  <Select
+                    isLoading={!awaitingRequests}
+                    options={signupOptions}
+                    className={`w-100 ${invalid ? "is-invalid" : ""}`}
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                  />
+                );
+              }}
+              options={{
+                required: true,
+              }}
+            />
+            <LabeledInput
+              title="How long did you stay:"
+              type="text"
+              required
+              pattern="[0-9]{2}:[0-9]{2}"
+              name="duration"
+              options={{
+                required: true,
+                pattern: {
+                  value: /^[0-9]{2}:[0-9]{2}$/,
+                  message: "This must follow the hh:mm pattern.",
+                },
+              }}
+            />
+            <LabeledInput title="Notes:" as="textarea" name="notes" />
+            <div className="d-flex justify-content-end mb-3">
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </div>
+          </form>
         </FormProvider>
       </div>
     </div>
