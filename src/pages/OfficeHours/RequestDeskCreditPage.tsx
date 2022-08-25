@@ -1,3 +1,5 @@
+import { useEffect, useMemo } from "react";
+
 import { useSetPageTitle } from "hooks";
 import { useGetPersonSignupsQuery } from "redux/api";
 import { useCurrentUser } from "redux/auth";
@@ -6,7 +8,7 @@ import { LabeledInput } from "components/Inputs/LabeledInput";
 import { FormProvider, useForm } from "react-hook-form";
 import { formatDate } from "lib/fmtDate";
 import dayjs from "dayjs";
-import { useEffect } from "react";
+import { requestCredit } from "apiClient/officeHours";
 
 type FormValues = {
   signup: { value: number; label: string };
@@ -17,23 +19,26 @@ type FormValues = {
 export function RequestDeskCreditPage() {
   useSetPageTitle("Request desk credit");
   const { user } = useCurrentUser();
-  const { data } = useGetPersonSignupsQuery({
+  const { data, refetch } = useGetPersonSignupsQuery({
     personID: user!.id,
     approved: false,
   });
   const today = dayjs().format("YYYY-MM-DD");
 
   const pendingSignups = data?.results;
-  const awaitingRequests = pendingSignups?.filter(
-    ({ creditRequested, date }) => {
-      return creditRequested == null && date <= today;
-    }
-  );
-  const signupOptions = awaitingRequests?.map(({ id, date }) => ({
-    value: id,
-    label: formatDate(date),
-  }));
 
+  const signupOptions = useMemo(
+    () =>
+      pendingSignups
+        ?.filter(({ creditRequested, date }) => {
+          return creditRequested == null && date <= today;
+        })
+        ?.map(({ id, date }) => ({
+          value: id,
+          label: formatDate(date),
+        })),
+    [pendingSignups, today]
+  );
   const formObject = useForm<FormValues>({
     defaultValues: { duration: "01:00" },
   });
@@ -46,21 +51,30 @@ export function RequestDeskCreditPage() {
     if (signup == null && signupOptions != null) {
       setValue("signup", signupOptions[0]);
     }
-  }, [setValue, signupOptions, signup]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setValue, signupOptions]);
 
   return (
     <div className="row">
       <div className="col-lg-8">
         <FormProvider {...formObject}>
           <h1>Request desk credit</h1>
-          <form onSubmit={handleSubmit((formValues) => {})}>
+          <form
+            onSubmit={handleSubmit((formValues) => {
+              requestCredit(
+                formValues.signup.value,
+                formValues.duration,
+                formValues.note
+              ).then(refetch);
+            })}
+          >
             <LabeledInput
               title="Office hour:"
               name="signup"
               renderComponent={({ value, onChange, onBlur, invalid }: any) => {
                 return (
                   <Select
-                    isLoading={!awaitingRequests}
+                    isLoading={!signupOptions}
                     options={signupOptions}
                     className={`w-100 ${invalid ? "is-invalid" : ""}`}
                     value={value}

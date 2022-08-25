@@ -97,6 +97,7 @@ export const gearDbApi = createApi({
       }
     >({
       query: ({ personID, approved }) => ({
+        // TODO: Rename to office-hour-signups/
         url: `/people/${personID}/office-hours/`,
         params: {
           ...(approved && { approved }),
