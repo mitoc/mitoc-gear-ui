@@ -13,6 +13,7 @@ import {
   ListWrapper,
   OfficeHour,
   PersonSignup,
+  Signup,
 } from "apiClient/types";
 import { API_HOST } from "apiClient/client";
 import { isEmpty } from "lodash";
@@ -97,10 +98,25 @@ export const gearDbApi = createApi({
       }
     >({
       query: ({ personID, approved }) => ({
-        // TODO: Rename to office-hour-signups/
         url: `/people/${personID}/office-hours/`,
         params: {
           ...(approved && { approved }),
+        },
+      }),
+    }),
+    getSignups: builder.query<
+      ListWrapper<Signup>,
+      {
+        approved?: boolean;
+        creditRequested?: boolean;
+      }
+    >({
+      query: ({ approved, creditRequested }) => ({
+        url: `/office-hour-signups/`,
+        params: {
+          ...(approved != null && { approved }),
+
+          ...(creditRequested != null && { credit_requested: creditRequested }),
         },
       }),
     }),
@@ -118,6 +134,7 @@ export const {
   useGetGearTypesQuery,
   useGetOfficeHoursQuery,
   useGetPersonSignupsQuery,
+  useGetSignupsQuery,
 } = gearDbApi;
 
 export function useGearList({

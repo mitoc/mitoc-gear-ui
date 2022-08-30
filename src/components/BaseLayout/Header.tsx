@@ -2,13 +2,14 @@ import { useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-import { useCurrentUser, logOut } from "redux/auth";
+import { useCurrentUser, logOut, usePermissions } from "redux/auth";
 import { useAppDispatch } from "redux/hooks";
 import { PersonLink } from "components/PersonLink";
 import { restrictedGearDoc } from "lib/constants";
 
 export function Header() {
   const { user } = useCurrentUser();
+  const { isDeskManager } = usePermissions();
   const dispatch = useAppDispatch();
 
   const { listen } = useHistory();
@@ -110,6 +111,16 @@ export function Header() {
                         Request desk credit
                       </Link>
                     </li>
+                    {isDeskManager && (
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          to="/approve-desk-credit"
+                        >
+                          Approve desk credit
+                        </Link>
+                      </li>
+                    )}
                     <li>
                       <button
                         className="dropdown-item"

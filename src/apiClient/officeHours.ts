@@ -1,7 +1,7 @@
 import { request } from "./client";
 
 export async function signUp(officeHourId: string) {
-  return request(`/office-hours/${officeHourId}/signup/`, "POST");
+  return request(`/office-hour-signups/`, "POST", { officeHour: officeHourId });
 }
 
 export async function cancelSignUp(signupId: string) {
@@ -17,5 +17,17 @@ export async function requestCredit(
   return request(`/office-hour-signups/${signupId}/request-credit/`, "POST", {
     duration: formattedDuration,
     note,
+  });
+}
+
+export async function approveCredit(
+  signupId: number,
+  duration: string,
+  credit: number
+) {
+  const formattedDuration = duration + ":00";
+  return request(`/office-hour-signups/${signupId}/approve/`, "POST", {
+    duration: formattedDuration,
+    credit,
   });
 }

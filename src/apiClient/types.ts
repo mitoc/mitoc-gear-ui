@@ -52,4 +52,9 @@ export interface PersonSignup {
   duration?: string;
   date: string;
   id: number;
+  note?: string;
+}
+
+export interface Signup extends PersonSignup {
+  deskWorker: { id: string; firstName: string; lastName: string };
 }

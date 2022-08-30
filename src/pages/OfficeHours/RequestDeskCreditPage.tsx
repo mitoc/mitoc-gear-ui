@@ -9,6 +9,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { formatDate, formatDateTime } from "lib/fmtDate";
 import dayjs from "dayjs";
 import { requestCredit } from "apiClient/officeHours";
+import { isEmpty } from "lodash";
+import { Link } from "react-router-dom";
 
 type FormValues = {
   signup: { value: number; label: string };
@@ -64,6 +66,13 @@ export function RequestDeskCreditPage() {
       <div className="col-lg-8">
         <FormProvider {...formObject}>
           <h1>Request desk credit</h1>
+          {data != null && isEmpty(signupOptions) && (
+            <div className="alert alert-warning">
+              No signup found. You can signup for today's office hours on{" "}
+              <Link to="/office-hours">this page</Link>. If you forgot to signup
+              for past office hours, please contact mitoc-desk@mit.edu.
+            </div>
+          )}
           <form
             onSubmit={handleSubmit((formValues) => {
               requestCredit(
@@ -111,13 +120,17 @@ export function RequestDeskCreditPage() {
             />
             <LabeledInput title="Notes:" as="textarea" name="note" />
             <div className="d-flex justify-content-end mb-3">
-              <button type="submit" className="btn btn-primary">
+              <button
+                type="submit"
+                disabled={isEmpty(signupOptions)}
+                className="btn btn-primary"
+              >
                 Submit
               </button>
             </div>
           </form>
         </FormProvider>
-        <h2>Pending approval from desk captain</h2>
+        <h2>Pending approval from the desk captain</h2>
         <>
           {pendingApproval?.map(({ date, duration, creditRequested }) => {
             return (
@@ -131,6 +144,9 @@ export function RequestDeskCreditPage() {
             );
           })}
         </>
+        {data != null && isEmpty(pendingApproval) && (
+          <p>No office hours pending approval</p>
+        )}
       </div>
     </div>
   );
