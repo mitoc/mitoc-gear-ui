@@ -4,9 +4,8 @@ export async function signUp(officeHourId: string) {
   return request(`/office-hours/${officeHourId}/signup/`, "POST");
 }
 
-// TODO: Change this endpoint
-export async function cancelSignUp(officeHourId: string, signupId: string) {
-  return request(`/office-hours/${officeHourId}/signup/${signupId}/`, "DELETE");
+export async function cancelSignUp(signupId: string) {
+  return request(`/office-hour-signups/${signupId}/`, "DELETE");
 }
 
 export async function requestCredit(
@@ -14,8 +13,9 @@ export async function requestCredit(
   duration: string,
   note?: string
 ) {
+  const formattedDuration = duration + ":00";
   return request(`/office-hour-signups/${signupId}/request-credit/`, "POST", {
-    duration,
+    duration: formattedDuration,
     note,
   });
 }

@@ -6,7 +6,7 @@ import { useCurrentUser } from "redux/auth";
 import Select from "react-select";
 import { LabeledInput } from "components/Inputs/LabeledInput";
 import { FormProvider, useForm } from "react-hook-form";
-import { formatDate } from "lib/fmtDate";
+import { formatDate, formatDateTime } from "lib/fmtDate";
 import dayjs from "dayjs";
 import { requestCredit } from "apiClient/officeHours";
 
@@ -39,19 +39,24 @@ export function RequestDeskCreditPage() {
         })),
     [pendingSignups, today]
   );
+  const pendingApproval = useMemo(
+    () =>
+      pendingSignups?.filter(({ creditRequested, approved }) => {
+        return creditRequested != null && approved == null;
+      }),
+    [pendingSignups]
+  );
   const formObject = useForm<FormValues>({
-    defaultValues: { duration: "01:00" },
+    defaultValues: { duration: "01:00", note: "" },
   });
 
-  const { handleSubmit, watch, setValue } = formObject;
-  const signup = watch("signup");
+  const { handleSubmit, reset, setValue } = formObject;
 
   useEffect(() => {
     // Initialize the office hour to the first one once they have loaded
-    if (signup == null && signupOptions != null) {
+    if (signupOptions != null) {
       setValue("signup", signupOptions[0]);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue, signupOptions]);
 
   return (
@@ -65,7 +70,10 @@ export function RequestDeskCreditPage() {
                 formValues.signup.value,
                 formValues.duration,
                 formValues.note
-              ).then(refetch);
+              ).then(() => {
+                refetch();
+                reset();
+              });
             })}
           >
             <LabeledInput
@@ -88,7 +96,7 @@ export function RequestDeskCreditPage() {
               }}
             />
             <LabeledInput
-              title="How long did you stay:"
+              title="How long did you stay: (hh:mm)"
               type="text"
               required
               pattern="[0-9]{2}:[0-9]{2}"
@@ -101,7 +109,7 @@ export function RequestDeskCreditPage() {
                 },
               }}
             />
-            <LabeledInput title="Notes:" as="textarea" name="notes" />
+            <LabeledInput title="Notes:" as="textarea" name="note" />
             <div className="d-flex justify-content-end mb-3">
               <button type="submit" className="btn btn-primary">
                 Submit
@@ -109,6 +117,20 @@ export function RequestDeskCreditPage() {
             </div>
           </form>
         </FormProvider>
+        <h2>Pending approval from desk captain</h2>
+        <>
+          {pendingApproval?.map(({ date, duration, creditRequested }) => {
+            return (
+              <div className="alert alert-secondary" key={date}>
+                {formatDate(date)} - {duration}
+                <br />
+                <small>
+                  Credit requested on {formatDateTime(creditRequested!)}
+                </small>
+              </div>
+            );
+          })}
+        </>
       </div>
     </div>
   );

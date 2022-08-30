@@ -48,6 +48,8 @@ export interface OfficeHour {
 
 export interface PersonSignup {
   creditRequested?: string;
+  approved?: string;
+  duration?: string;
   date: string;
   id: number;
 }

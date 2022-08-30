@@ -38,7 +38,7 @@ export function OfficeHoursPage() {
               : null;
 
           return (
-            <div>
+            <div key={weekStr}>
               {weekTitle && <h3>{weekTitle}</h3>}
               <WeekBlock>
                 {officeHours.map(({ startTime, signups, googleId }) => {
@@ -58,7 +58,7 @@ export function OfficeHoursPage() {
                     ({ deskWorker }) => deskWorker.id === user?.id
                   );
                   return (
-                    <div className={`alert alert-${alertClass}`}>
+                    <div className={`alert alert-${alertClass}`} key={googleId}>
                       <div>
                         <strong>{formatDateTime(startTime)}</strong>
                       </div>
@@ -68,7 +68,10 @@ export function OfficeHoursPage() {
                           {signups.map((signup, i) => (
                             <>
                               {i > 0 && ", "}
-                              <PersonLink id={signup.deskWorker.id}>
+                              <PersonLink
+                                id={signup.deskWorker.id}
+                                key={signup.deskWorker.id}
+                              >
                                 {signup.deskWorker.firstName}
                               </PersonLink>
                             </>
@@ -98,9 +101,7 @@ export function OfficeHoursPage() {
                             className={`btn btn-outline-danger btn-m`}
                             type="button"
                             onClick={() =>
-                              cancelSignUp(googleId, userSignUp.id).then(
-                                refetch
-                              )
+                              cancelSignUp(userSignUp.id).then(refetch)
                             }
                           >
                             Cancel
