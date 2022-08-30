@@ -3,7 +3,7 @@ import { Select } from "components/Inputs/Select";
 import { map } from "lodash";
 
 export type Filters = {
-  q: string;
+  q?: string;
   gearTypes?: number[];
   broken?: boolean;
   retired?: boolean;

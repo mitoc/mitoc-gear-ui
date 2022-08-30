@@ -39,7 +39,7 @@ function parse(params: URLSearchParams): Filters {
   const q = params.get("q") ?? "";
 
   return {
-    q,
+    ...(!isEmpty(q) && { q }),
     retired,
     ...(broken != null && { broken }),
     ...(missing != null && { missing }),
