@@ -31,7 +31,7 @@ function parse(params: URLSearchParams): Filters {
   const groups = params.get("groups");
   const q = params.get("q") ?? "";
   return {
-    q,
+    ...(!isEmpty(q) && { q }),
     ...(openRentals === "true" && { openRentals: true }),
     ...(!isEmpty(groups) && { groups: groups!.split(",").map(Number) }),
   };

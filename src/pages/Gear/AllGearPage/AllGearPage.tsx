@@ -22,7 +22,8 @@ export function AllGearPage() {
   const [showFilters, setShowFilters] = useState<boolean>(
     !isEqual(filters, { retired: false }) // Open the panel if filters are not the default
   );
-  const { gearTypes, broken, missing, retired, q: query } = filters;
+  const { gearTypes, broken, missing, retired, q } = filters;
+  const query = q ?? "";
   const setQuery = (q: string) => setFilters((filters) => ({ ...filters, q }));
 
   const { gearList, nbPages } = useGearList({
