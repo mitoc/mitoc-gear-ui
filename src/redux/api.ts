@@ -98,7 +98,7 @@ export const gearDbApi = createApi({
       }
     >({
       query: ({ personID, approved }) => ({
-        url: `/people/${personID}/office-hours/`,
+        url: `/people/${personID}/office-hour-signups/`,
         params: {
           ...(approved && { approved }),
         },
@@ -116,7 +116,7 @@ export const gearDbApi = createApi({
         params: {
           ...(approved != null && { approved }),
 
-          ...(creditRequested != null && { credit_requested: creditRequested }),
+          ...(creditRequested != null && { creditRequested }),
         },
       }),
     }),
