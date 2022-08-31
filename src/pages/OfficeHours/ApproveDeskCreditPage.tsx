@@ -50,7 +50,8 @@ function SignupToApprove({
   signup: Signup;
   onCreditApproved: () => void;
 }) {
-  const { date, duration, creditRequested, deskWorker, note } = signup;
+  const { date, duration, creditRequested, deskWorker, note, eventType } =
+    signup;
   const defaultDuration = formatDuration(duration ?? "01:00:00");
   const formObject = useForm<FormValues>({
     defaultValues: {
@@ -73,6 +74,8 @@ function SignupToApprove({
             {deskWorker.firstName} {deskWorker.lastName} - {formatDate(date)}
           </h4>
 
+          <strong>{eventType}</strong>
+          <br />
           <LabeledInput
             title="Duration (hh:mm):"
             type="text"
@@ -110,9 +113,7 @@ function SignupToApprove({
           />
           {note && (
             <>
-              <span>
-                <strong>Note:</strong> {note}
-              </span>
+              <span>Note:{note}</span>
               <br />
             </>
           )}

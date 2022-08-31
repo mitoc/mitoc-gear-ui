@@ -53,6 +53,7 @@ export interface PersonSignup {
   date: string;
   id: number;
   note?: string;
+  eventType: string;
 }
 
 export interface Signup extends PersonSignup {

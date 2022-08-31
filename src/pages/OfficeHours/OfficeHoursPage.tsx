@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import dayjs from "dayjs";
 import weekOfYears from "dayjs/plugin/weekOfYear";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
 import { cancelSignUp, signUp } from "apiClient/officeHours";
 import { PersonLink } from "components/PersonLink";
@@ -12,6 +13,7 @@ import { OfficeHour } from "apiClient/types";
 import React, { useEffect, useState } from "react";
 
 dayjs.extend(weekOfYears);
+dayjs.extend(customParseFormat);
 
 export function OfficeHoursPage() {
   useSetPageTitle("Office Hours");
