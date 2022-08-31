@@ -7,3 +7,7 @@ export function formatDate(date: string) {
 export function formatDateTime(date: string) {
   return dayjs(date).format("MMM D YYYY, hh:mma");
 }
+
+export function formatDuration(duration: string) {
+  return duration.split(":").slice(0, -1).join(":");
+}

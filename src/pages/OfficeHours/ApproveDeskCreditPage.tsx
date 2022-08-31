@@ -2,7 +2,7 @@ import { approveCredit } from "apiClient/officeHours";
 import { Signup } from "apiClient/types";
 import { LabeledInput } from "components/Inputs/LabeledInput";
 import { useSetPageTitle } from "hooks";
-import { formatDate, formatDateTime } from "lib/fmtDate";
+import { formatDate, formatDateTime, formatDuration } from "lib/fmtDate";
 import { isEmpty } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
 import { useGetSignupsQuery } from "redux/api";
@@ -51,7 +51,7 @@ function SignupToApprove({
   onCreditApproved: () => void;
 }) {
   const { date, duration, creditRequested, deskWorker, note } = signup;
-  const defaultDuration = parseDuration(duration ?? "01:00:00");
+  const defaultDuration = formatDuration(duration ?? "01:00:00");
   const formObject = useForm<FormValues>({
     defaultValues: {
       duration: defaultDuration,
@@ -69,11 +69,10 @@ function SignupToApprove({
         key={date}
       >
         <div>
-          <strong>
-            {deskWorker.firstName} {deskWorker.lastName}
-          </strong>{" "}
-          on <strong>{formatDate(date)}</strong>
-          <br />
+          <h4>
+            {deskWorker.firstName} {deskWorker.lastName} - {formatDate(date)}
+          </h4>
+
           <LabeledInput
             title="Duration (hh:mm):"
             type="text"
@@ -127,10 +126,6 @@ function SignupToApprove({
       </form>
     </FormProvider>
   );
-}
-
-function parseDuration(duration: string) {
-  return duration.split(":").slice(0, -1).join(":");
 }
 
 function getDefaultCreditForDuration(duration: string) {

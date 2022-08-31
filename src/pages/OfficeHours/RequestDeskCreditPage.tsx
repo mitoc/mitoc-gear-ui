@@ -6,7 +6,7 @@ import { useCurrentUser } from "redux/auth";
 import Select from "react-select";
 import { LabeledInput } from "components/Inputs/LabeledInput";
 import { FormProvider, useForm } from "react-hook-form";
-import { formatDate, formatDateTime } from "lib/fmtDate";
+import { formatDate, formatDateTime, formatDuration } from "lib/fmtDate";
 import dayjs from "dayjs";
 import { requestCredit } from "apiClient/officeHours";
 import { isEmpty } from "lodash";
@@ -132,11 +132,20 @@ export function RequestDeskCreditPage() {
         </FormProvider>
         <h2>Pending approval from the desk captain</h2>
         <>
-          {pendingApproval?.map(({ date, duration, creditRequested }) => {
+          {pendingApproval?.map(({ date, duration, creditRequested, note }) => {
             return (
               <div className="alert alert-secondary" key={date}>
-                {formatDate(date)} - {duration}
+                <h4>{formatDate(date)}</h4>
+                <strong>Duration:</strong> {formatDuration(duration!)}
                 <br />
+                {note && (
+                  <>
+                    <span>
+                      <strong>Note:</strong> {note}
+                    </span>
+                    <br />
+                  </>
+                )}
                 <small>
                   Credit requested on {formatDateTime(creditRequested!)}
                 </small>
