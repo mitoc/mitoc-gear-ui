@@ -21,6 +21,7 @@ export function LabeledInput<TFieldValues>(
     name: Path<TFieldValues>;
     title: string;
     options?: RegisterOptions<TFieldValues>;
+    inputStyle?: React.CSSProperties;
   }
 ) {
   const {
@@ -35,6 +36,7 @@ export function LabeledInput<TFieldValues>(
     options,
     className,
     renderComponent,
+    inputStyle,
     ...otherProps
   } = props;
 
@@ -65,6 +67,7 @@ export function LabeledInput<TFieldValues>(
       ) : (
         <Component
           className={inputClassNames.join(" ")}
+          style={inputStyle}
           {...otherProps}
           {...register(name, options)}
         />

@@ -2,13 +2,14 @@ import { useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-import { useCurrentUser, logOut } from "redux/auth";
+import { useCurrentUser, logOut, usePermissions } from "redux/auth";
 import { useAppDispatch } from "redux/hooks";
 import { PersonLink } from "components/PersonLink";
 import { restrictedGearDoc } from "lib/constants";
 
 export function Header() {
   const { user } = useCurrentUser();
+  const { isDeskManager } = usePermissions();
   const dispatch = useAppDispatch();
 
   const { listen } = useHistory();
@@ -76,6 +77,9 @@ export function Header() {
                 >
                   Restricted gear
                 </a>
+                <Link className="nav-link" to="/office-hours">
+                  Office Hours
+                </Link>
               </div>
               <div className="navbar-nav ms-auto">
                 <div className="nav-item dropdown">
@@ -103,15 +107,20 @@ export function Header() {
                       </Link>
                     </li>
                     <li>
-                      <a
-                        className="dropdown-item"
-                        href="http://goo.gl/nPMjmc"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <Link className="dropdown-item" to="/request-desk-credit">
                         Request desk credit
-                      </a>
+                      </Link>
                     </li>
+                    {isDeskManager && (
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          to="/approve-desk-credit"
+                        >
+                          Approve desk credit
+                        </Link>
+                      </li>
+                    )}
                     <li>
                       <button
                         className="dropdown-item"

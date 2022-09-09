@@ -4,8 +4,13 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { checkLoggedIn } from "./authSlice";
 
-// TODO: Ideally this should be an id rather than an arbitrary number
-const BOD_GROUP_ID = 1;
+// TODO: Ideally these should be ids rather than an arbitrary numbers
+enum Roles {
+  BOD = 1,
+  GEAR_MANAGER = 6,
+  DESK_CAPTAIN = 8,
+  ADMIN = 25,
+}
 
 export function useLoadCurrentUser() {
   const dispatch = useAppDispatch();
@@ -29,10 +34,13 @@ export function useCurrentUser() {
 export function usePermissions() {
   const user = useCurrentUser().user;
   if (user == null) {
-    return { isDeskWorker: false, isOfficer: false };
+    return { isDeskWorker: false, isOfficer: false, isDeskManager: false };
   }
   return {
-    isOfficer: user.groups.some((g) => g.id === BOD_GROUP_ID),
+    isOfficer: user.groups.some((g) => g.id === Roles.BOD),
+    isDeskManager: user.groups.some((g) =>
+      [Roles.DESK_CAPTAIN, Roles.GEAR_MANAGER, Roles.ADMIN].includes(g.id)
+    ),
     isDeskWorker: user.isDeskworker,
   };
 }

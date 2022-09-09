@@ -8,7 +8,13 @@ import type {
   GearType,
   PurchasableItem,
 } from "apiClient/gear";
-import { Affiliations, ListWrapper } from "apiClient/types";
+import {
+  Affiliations,
+  ListWrapper,
+  OfficeHour,
+  PersonSignup,
+  Signup,
+} from "apiClient/types";
 import { API_HOST } from "apiClient/client";
 import { isEmpty } from "lodash";
 
@@ -76,10 +82,43 @@ export const gearDbApi = createApi({
       query: () => "/affiliations/",
     }),
     getGroups: builder.query<PeopleGroup[], void>({
-      query: (personID) => `/people-groups/`,
+      query: () => `/people-groups/`,
     }),
     getGearTypes: builder.query<GearType[], void>({
       query: () => "/gear-types/",
+    }),
+    getOfficeHours: builder.query<OfficeHour[], void>({
+      query: () => "/office-hours/",
+    }),
+    getPersonSignups: builder.query<
+      ListWrapper<PersonSignup>,
+      {
+        personID: string;
+        approved?: boolean;
+      }
+    >({
+      query: ({ personID, approved }) => ({
+        url: `/people/${personID}/office-hour-signups/`,
+        params: {
+          ...(approved && { approved }),
+        },
+      }),
+    }),
+    getSignups: builder.query<
+      ListWrapper<Signup>,
+      {
+        approved?: boolean;
+        creditRequested?: boolean;
+      }
+    >({
+      query: ({ approved, creditRequested }) => ({
+        url: `/office-hour-signups/`,
+        params: {
+          ...(approved != null && { approved }),
+
+          ...(creditRequested != null && { creditRequested }),
+        },
+      }),
     }),
   }),
 });
@@ -93,6 +132,9 @@ export const {
   useGetAffiliationsQuery,
   useGetGroupsQuery,
   useGetGearTypesQuery,
+  useGetOfficeHoursQuery,
+  useGetPersonSignupsQuery,
+  useGetSignupsQuery,
 } = gearDbApi;
 
 export function useGearList({

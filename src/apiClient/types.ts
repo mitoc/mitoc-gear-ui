@@ -34,3 +34,28 @@ export interface Affiliations {
   name: string;
   dues: number;
 }
+
+export interface OfficeHour {
+  googleId: string;
+  title: string;
+  startTime: string;
+  endTime: string;
+  signups: {
+    id: string;
+    deskWorker: { id: string; firstName: string; lastName: string };
+  }[];
+}
+
+export interface PersonSignup {
+  creditRequested?: string;
+  approved?: string;
+  duration?: string;
+  date: string;
+  id: number;
+  note?: string;
+  eventType: string;
+}
+
+export interface Signup extends PersonSignup {
+  deskWorker: { id: string; firstName: string; lastName: string };
+}

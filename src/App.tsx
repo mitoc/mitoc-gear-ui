@@ -11,11 +11,14 @@ import { useLoadCurrentUser } from "./redux/auth";
 import LoginPage from "./pages/LogIn";
 import { PeoplePage, PersonPage } from "./pages/People";
 import { AllGearPage, GearItemPage } from "./pages/Gear";
+import { OfficeHoursPage } from "./pages/OfficeHours";
 import { AddNewGear } from "./pages/Gear/AddNewGear";
 import { AddNewPerson } from "./pages/People/AddNewPerson";
 import { RequestPasswordReset } from "./pages/LogIn/RequestPasswordReset";
 import { RequestPasswordConfirm } from "./pages/LogIn/RequestPasswordConfirm";
 import { ChangePassword } from "pages/People/PersonProfile/PersonChangePassword";
+import { RequestDeskCreditPage } from "pages/OfficeHours/RequestDeskCreditPage";
+import { ApproveDeskCreditPage } from "pages/OfficeHours/ApproveDeskCreditPage";
 
 function App() {
   const { loggedIn, isLoading } = useLoadCurrentUser();
@@ -62,12 +65,27 @@ function App() {
           <Route path="/gear/:gearId">
             <GearItemPage />
           </Route>
-          <Route exact path="/">
-            {!isLoading && loggedIn && <Redirect to="/people" />}
+          <Route exact path="/office-hours">
+            <OfficeHoursPage />
           </Route>
-          <Route path="*">
+          {loggedIn && (
+            <Route exact path="/request-desk-credit">
+              <RequestDeskCreditPage />
+            </Route>
+          )}
+          {loggedIn && (
+            <Route exact path="/approve-desk-credit">
+              <ApproveDeskCreditPage />
+            </Route>
+          )}
+          <Route exact path="/">
             <Redirect to="/people" />
           </Route>
+          {loggedIn && (
+            <Route path="*">
+              <Redirect to="/people" />
+            </Route>
+          )}
         </Switch>
       </BaseLayout>
     </Router>

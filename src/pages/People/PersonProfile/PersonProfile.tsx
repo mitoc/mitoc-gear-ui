@@ -47,7 +47,7 @@ export function PersonProfile({ person, refreshPerson }: Props) {
           </div>
           {person.alternateEmails.map((altEmail) => {
             return (
-              <div>
+              <div key={altEmail}>
                 <DiscreetLink href={`mailto:${altEmail}`}>
                   {altEmail}
                 </DiscreetLink>
