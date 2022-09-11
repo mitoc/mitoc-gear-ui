@@ -9,7 +9,7 @@ enum Roles {
   BOD = 1,
   GEAR_MANAGER = 6,
   DESK_CAPTAIN = 8,
-  ADMIN = 25,
+  ADMIN = 24,
 }
 
 export function useLoadCurrentUser() {
