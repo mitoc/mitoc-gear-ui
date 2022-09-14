@@ -134,7 +134,7 @@ function OfficeHourBlock({ officeHour }: { officeHour: OfficeHour }) {
               });
             }}
           >
-            Signup
+            Sign up
           </button>
         ) : (
           <button
