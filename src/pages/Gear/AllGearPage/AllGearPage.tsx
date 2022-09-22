@@ -13,7 +13,7 @@ import { useSetPageTitle } from "hooks";
 
 import { GearStatus } from "../GearStatus";
 import { GearFilters } from "./GearFilters";
-import { useGearFilters } from "./useGearFilter";
+import { useGearFilters, gearStatusToBoolean } from "./useGearFilter";
 
 export function AllGearPage() {
   useSetPageTitle("Gear");
@@ -30,9 +30,9 @@ export function AllGearPage() {
     q: query,
     page,
     gearTypes: gearTypes,
-    broken,
-    missing,
-    retired,
+    broken: gearStatusToBoolean(broken),
+    missing: gearStatusToBoolean(missing),
+    retired: gearStatusToBoolean(retired),
   });
 
   const myColumns = compact([
