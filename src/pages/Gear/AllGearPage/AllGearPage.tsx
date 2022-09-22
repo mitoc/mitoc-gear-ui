@@ -32,7 +32,7 @@ export function AllGearPage() {
     gearTypes: gearTypes,
     broken,
     missing,
-    retired,
+    retired: retired ?? undefined,
   });
 
   const myColumns = compact([

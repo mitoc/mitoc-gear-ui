@@ -25,7 +25,7 @@ function serialize({
     ...(q && { q }),
     ...(broken != null && { broken: String(broken) }),
     ...(missing != null && { missing: String(missing) }),
-    ...(retired === true && { retired: "true" }),
+    ...(retired !== undefined && { retired: String(retired) }),
     ...(!isEmpty(gearTypes) && { gearTypes: gearTypes!.map(String).join(",") }),
   };
 }
@@ -33,14 +33,15 @@ function serialize({
 function parse(params: URLSearchParams): Filters {
   const gearTypes = params.get("gearTypes");
   const missing = parseBooleanStrict(params.get("missing"));
+  const retiredParam = parseBooleanStrict(params.get("retired"));
   // By default, don't show retired items
-  const retired = parseBooleanStrict(params.get("retired")) ?? false;
+  const retired = retiredParam === undefined ? false : retiredParam;
   const broken = parseBooleanStrict(params.get("broken"));
   const q = params.get("q") ?? "";
 
   return {
     ...(!isEmpty(q) && { q }),
-    retired,
+    ...(retired !== undefined && { retired }),
     ...(broken != null && { broken }),
     ...(missing != null && { missing }),
     ...(!isEmpty(gearTypes) && {
@@ -55,7 +56,9 @@ function parseBooleanStrict(v: string | null) {
       return true;
     case "false":
       return false;
-    default:
+    case "null":
       return null;
+    default:
+      return undefined;
   }
 }

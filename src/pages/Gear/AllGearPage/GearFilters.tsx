@@ -6,7 +6,7 @@ export type Filters = {
   q?: string;
   gearTypes?: number[];
   broken?: boolean;
-  retired?: boolean;
+  retired?: boolean | null;
   missing?: boolean;
 };
 
@@ -62,9 +62,10 @@ const gearStatusOptions = [
   { value: GearStatusFilter.exclude, label: "Do not include" },
 ];
 
-function gearStatusFilterToOption(filter?: boolean) {
+function gearStatusFilterToOption(filter?: boolean | null) {
   switch (filter) {
     case undefined:
+    case null:
       return GearStatusFilter.include;
     case false:
       return GearStatusFilter.exclude;
@@ -76,7 +77,7 @@ function gearStatusFilterToOption(filter?: boolean) {
 function optionToGearStatusFilter(filter: GearStatusFilter) {
   switch (filter) {
     case GearStatusFilter.include:
-      return undefined;
+      return null;
     case GearStatusFilter.exclude:
       return false;
     case GearStatusFilter.onlyInclude:
