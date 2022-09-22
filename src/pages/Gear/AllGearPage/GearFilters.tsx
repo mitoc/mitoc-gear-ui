@@ -1,13 +1,20 @@
+import { map } from "lodash";
+
 import { GearTypeSelect } from "components/GearTypeSelect";
 import { Select } from "components/Inputs/Select";
-import { map } from "lodash";
+
+export enum GearStatusFilter {
+  include = "include",
+  onlyInclude = "onlyInclude",
+  exclude = "exclude",
+}
 
 export type Filters = {
   q?: string;
   gearTypes?: number[];
-  broken?: boolean;
-  retired?: boolean | null;
-  missing?: boolean;
+  broken?: GearStatusFilter;
+  retired?: GearStatusFilter;
+  missing?: GearStatusFilter;
 };
 
 type Props = {
@@ -35,10 +42,10 @@ export function GearFilters({ filters, setFilters }: Props) {
             options={gearStatusOptions}
             onChange={(option) => {
               update({
-                [status]: optionToGearStatusFilter(option as GearStatusFilter),
+                [status]: option as GearStatusFilter,
               });
             }}
-            value={gearStatusFilterToOption(filters[status])}
+            value={filters[status]}
             style={{ display: "inline", width: "unset" }}
           />{" "}
           {status} gear
@@ -50,37 +57,8 @@ export function GearFilters({ filters, setFilters }: Props) {
 
 const gearStatus = ["broken", "missing", "retired"] as const;
 
-enum GearStatusFilter {
-  include = "include",
-  onlyInclude = "onlyInclude",
-  exclude = "exclude",
-}
-
 const gearStatusOptions = [
   { value: GearStatusFilter.include, label: "Include" },
   { value: GearStatusFilter.onlyInclude, label: "Only include" },
   { value: GearStatusFilter.exclude, label: "Do not include" },
 ];
-
-function gearStatusFilterToOption(filter?: boolean | null) {
-  switch (filter) {
-    case undefined:
-    case null:
-      return GearStatusFilter.include;
-    case false:
-      return GearStatusFilter.exclude;
-    case true:
-      return GearStatusFilter.onlyInclude;
-  }
-}
-
-function optionToGearStatusFilter(filter: GearStatusFilter) {
-  switch (filter) {
-    case GearStatusFilter.include:
-      return null;
-    case GearStatusFilter.exclude:
-      return false;
-    case GearStatusFilter.onlyInclude:
-      return true;
-  }
-}

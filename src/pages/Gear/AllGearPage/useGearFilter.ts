@@ -2,7 +2,7 @@ import { isEmpty } from "lodash";
 
 import { useQueryParamFilters } from "hooks/useQueryParamFilters";
 
-import type { Filters } from "./GearFilters";
+import { Filters, GearStatusFilter } from "./GearFilters";
 
 type Updater = (previousFilters: Filters) => Filters;
 type ReturnType = {
@@ -25,23 +25,24 @@ function serialize({
     ...(q && { q }),
     ...(broken != null && { broken: String(broken) }),
     ...(missing != null && { missing: String(missing) }),
-    ...(retired !== undefined && { retired: String(retired) }),
+    ...(retired != null &&
+      retired !== GearStatusFilter.exclude && { retired: String(retired) }),
     ...(!isEmpty(gearTypes) && { gearTypes: gearTypes!.map(String).join(",") }),
   };
 }
 
 function parse(params: URLSearchParams): Filters {
   const gearTypes = params.get("gearTypes");
-  const missing = parseBooleanStrict(params.get("missing"));
-  const retiredParam = parseBooleanStrict(params.get("retired"));
+  const missing = parseStatus(params.get("missing"));
   // By default, don't show retired items
-  const retired = retiredParam === undefined ? false : retiredParam;
-  const broken = parseBooleanStrict(params.get("broken"));
+  const retired =
+    parseStatus(params.get("retired")) ?? GearStatusFilter.exclude;
+  const broken = parseStatus(params.get("broken"));
   const q = params.get("q") ?? "";
 
   return {
     ...(!isEmpty(q) && { q }),
-    ...(retired !== undefined && { retired }),
+    ...(retired !== null && { retired }),
     ...(broken != null && { broken }),
     ...(missing != null && { missing }),
     ...(!isEmpty(gearTypes) && {
@@ -50,14 +51,23 @@ function parse(params: URLSearchParams): Filters {
   };
 }
 
-function parseBooleanStrict(v: string | null) {
-  switch (v) {
-    case "true":
-      return true;
-    case "false":
+function parseStatus(v: string | null) {
+  if (v == null) {
+    return null;
+  }
+
+  return GearStatusFilter[v as GearStatusFilter] ?? null;
+}
+
+export function gearStatusToBoolean(
+  status?: GearStatusFilter
+): boolean | undefined {
+  switch (status) {
+    case GearStatusFilter.exclude:
       return false;
-    case "null":
-      return null;
+    case GearStatusFilter.onlyInclude:
+      return true;
+    case GearStatusFilter.include:
     default:
       return undefined;
   }
