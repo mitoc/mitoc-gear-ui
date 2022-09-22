@@ -43,7 +43,7 @@ export function GearStatus({
         <strong>Retired</strong>
         <span className={short ? "d-none d-md-inline" : ""}>
           {" "}
-          since {formatDateTime(gearItem.missing)}
+          since {formatDateTime(gearItem.retired)}
         </span>
       </div>
     );
