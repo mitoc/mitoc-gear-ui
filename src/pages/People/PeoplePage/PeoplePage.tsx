@@ -77,18 +77,11 @@ export function PeoplePage() {
                 </button>
               </Link>
               {personList && (
-                <button
+                <CopyButton
                   className="btn btn-outline-secondary mb-3"
-                  disabled={personList == null}
-                  onClick={() => {
-                    navigator.clipboard.writeText(
-                      personList!.map((p) => p.email).join(", ")
-                    );
-                  }}
-                >
-                  Export emails
-                  {/* Copy {personList.length} emails */}
-                </button>
+                  getText={() => personList!.map((p) => p.email).join(", ")}
+                  tooltip={`Copied ${personList.length} emails to clipboard`}
+                />
               )}
             </div>
           </div>
@@ -147,5 +140,68 @@ const List = styled.ul`
 
   li {
     line-height: unset;
+  }
+`;
+
+function CopyButton({
+  getText,
+  className,
+  tooltip,
+}: {
+  getText: () => string;
+  className?: string;
+  tooltip: string;
+}) {
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
+  return (
+    <TooltipButton
+      className={className}
+      onClick={() => {
+        navigator.clipboard.writeText(getText());
+        setShowTooltip(true);
+        setTimeout(() => setShowTooltip(false), 2000);
+      }}
+      type="button"
+    >
+      {showTooltip && <span className="tooltip-text">{tooltip}</span>}
+      Export emails
+    </TooltipButton>
+  );
+}
+
+const TooltipButton = styled.button`
+  position: relative;
+
+  & .tooltip-text {
+    visibility: hidden;
+    width: 140px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -75px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  & .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+
+  &:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
   }
 `;
