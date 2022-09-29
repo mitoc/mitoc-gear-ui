@@ -101,11 +101,7 @@ export function Header() {
                         My profile
                       </PersonLink>
                     </li>
-                    <li>
-                      <Link className="dropdown-item" to="/change-password">
-                        Change password
-                      </Link>
-                    </li>
+
                     <li>
                       <Link className="dropdown-item" to="/request-desk-credit">
                         Request desk credit
@@ -131,9 +127,14 @@ export function Header() {
                             Office hours history
                           </Link>
                         </li>
-                        <div className="dropdown-divider"></div>
                       </>
                     )}
+                    <div className="dropdown-divider"></div>
+                    <li>
+                      <Link className="dropdown-item" to="/change-password">
+                        Change password
+                      </Link>
+                    </li>
                     <li>
                       <button
                         className="dropdown-item"

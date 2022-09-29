@@ -9,9 +9,10 @@ import { TablePagination } from "components/TablePagination";
 import { useSetPageTitle } from "hooks";
 import { useGetSignupsQuery } from "redux/api";
 import { Checkbox } from "components/Inputs/Checkbox";
+import { formatDate, formatDuration } from "lib/fmtDate";
 
 export function OfficeHoursHistory() {
-  useSetPageTitle("Office Hour Signups History");
+  useSetPageTitle("Office Hours History");
   const [page, setPage] = useState<number>(1);
   const [showUpcoming, setShowUpcoming] = useState<boolean>(false);
   const today = dayjs().format("YYYY-MM-DD");
@@ -27,15 +28,16 @@ export function OfficeHoursHistory() {
   }, [showUpcoming]);
 
   const columns = [
-    { key: "date", header: "Date" },
+    { key: "date", header: "Date", renderer: DateCell },
     { key: "deskWorker", header: "Desk Worker", renderer: DeskWorkerCell },
     { key: "eventType", header: "Event Type" },
+    { key: "duration", header: "Duration", renderer: DurationCell },
     { key: "note", header: "Note" },
     { key: "status", header: "Status", renderer: StatusCell },
   ];
   return (
     <>
-      <h1>Office Hour Signups History</h1>
+      <h1>Office Hours History</h1>
       <div className="col-md-auto">
         {nbPages != null && (
           <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
@@ -56,6 +58,16 @@ export function OfficeHoursHistory() {
       )}
     </>
   );
+}
+
+function DateCell({ item: signup }: { item: Signup }) {
+  return <span>{formatDate(signup.date)}</span>;
+}
+
+function DurationCell({ item: signup }: { item: Signup }) {
+  return signup.duration ? (
+    <span>{formatDuration(signup.duration)}</span>
+  ) : null;
 }
 
 function DeskWorkerCell({ item: signup }: { item: Signup }) {
