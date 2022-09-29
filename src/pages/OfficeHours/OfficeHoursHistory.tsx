@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 
 import { useEffect, useState } from "react";
 
-import { DataGrid } from "components/DataGrid";
 import { TablePagination } from "components/TablePagination";
 import { useSetPageTitle } from "hooks";
 import { useGetSignupsQuery } from "redux/api";

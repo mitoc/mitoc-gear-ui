@@ -20,6 +20,7 @@ import { ChangePassword } from "pages/People/PersonProfile/PersonChangePassword"
 import { RequestDeskCreditPage } from "pages/OfficeHours/RequestDeskCreditPage";
 import { ApproveDeskCreditPage } from "pages/OfficeHours/ApproveDeskCreditPage";
 import { OfficeHoursHistory } from "pages/OfficeHours/OfficeHoursHistory";
+import { MyOfficeHoursHistory } from "pages/OfficeHours/MyOfficeHoursHistory";
 
 function App() {
   const { loggedIn, isLoading } = useLoadCurrentUser();
@@ -82,6 +83,11 @@ function App() {
           {loggedIn && (
             <Route exact path="/office-hours-history">
               <OfficeHoursHistory />
+            </Route>
+          )}
+          {loggedIn && (
+            <Route exact path="/volunteer-history">
+              <MyOfficeHoursHistory />
             </Route>
           )}
           <Route exact path="/">

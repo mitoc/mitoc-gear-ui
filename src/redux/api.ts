@@ -95,12 +95,16 @@ export const gearDbApi = createApi({
       {
         personID: string;
         approved?: boolean;
+        page?: number;
+        orderBy?: "date" | "-date";
       }
     >({
-      query: ({ personID, approved }) => ({
+      query: ({ personID, approved, page, orderBy }) => ({
         url: `/people/${personID}/office-hour-signups/`,
         params: {
           ...(approved && { approved }),
+          ...(page != null && { page }),
+          ...(orderBy != null && { orderBy }),
         },
       }),
     }),

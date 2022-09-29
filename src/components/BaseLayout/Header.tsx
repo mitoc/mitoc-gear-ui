@@ -107,6 +107,11 @@ export function Header() {
                         Request desk credit
                       </Link>
                     </li>
+                    <li>
+                      <Link className="dropdown-item" to="/volunteer-history">
+                        Volunteer history
+                      </Link>
+                    </li>
                     {isDeskManager && (
                       <>
                         <div className="dropdown-divider"></div>
