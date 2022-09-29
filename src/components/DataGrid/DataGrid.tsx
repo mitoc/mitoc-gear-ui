@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { isPlainObject, isArray, get } from "lodash";
 
 interface Item {
-  id: string;
+  id: string | number;
   [key: string]: any;
 }
 

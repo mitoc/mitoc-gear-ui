@@ -112,14 +112,27 @@ export function Header() {
                       </Link>
                     </li>
                     {isDeskManager && (
-                      <li>
-                        <Link
-                          className="dropdown-item"
-                          to="/approve-desk-credit"
-                        >
-                          Approve desk credit
-                        </Link>
-                      </li>
+                      <>
+                        <div className="dropdown-divider"></div>
+                        <h6 className="dropdown-header">Desk Captain</h6>
+                        <li>
+                          <Link
+                            className="dropdown-item"
+                            to="/approve-desk-credit"
+                          >
+                            Approve desk credit
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className="dropdown-item"
+                            to="/office-hours-history"
+                          >
+                            Office hours history
+                          </Link>
+                        </li>
+                        <div className="dropdown-divider"></div>
+                      </>
                     )}
                     <li>
                       <button
