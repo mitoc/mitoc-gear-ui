@@ -4,6 +4,7 @@ import { PersonSignup, Signup } from "apiClient/types";
 import { DataGrid } from "components/DataGrid";
 import { PersonLink } from "components/PersonLink";
 import { formatDate, formatDuration } from "lib/fmtDate";
+import { fmtAmount } from "lib/fmtNumber";
 
 type Props<T extends PersonSignup> = {
   signups: T[];
@@ -21,6 +22,7 @@ export function OfficeHoursSignupsTable<T extends PersonSignup>({
       : []),
     { key: "eventType", header: "Event Type" },
     { key: "duration", header: "Duration", renderer: DurationCell },
+    { key: "credit", header: "Credit", renderer: CreditCell },
     { key: "note", header: "Note" },
     { key: "status", header: "Status", renderer: StatusCell },
   ];
@@ -40,6 +42,10 @@ function DurationCell({ item: signup }: { item: PersonSignup }) {
   return signup.duration ? (
     <span>{formatDuration(signup.duration)}</span>
   ) : null;
+}
+
+function CreditCell({ item: signup }: { item: PersonSignup }) {
+  return signup.credit ? <span>{fmtAmount(signup.credit)}</span> : null;
 }
 
 function DeskWorkerCell({ item: signup }: { item: PersonSignup }) {
