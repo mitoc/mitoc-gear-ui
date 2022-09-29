@@ -1,15 +1,13 @@
 import dayjs from "dayjs";
 
-import { Signup } from "apiClient/types";
 import { useEffect, useState } from "react";
 
 import { DataGrid } from "components/DataGrid";
-import { PersonLink } from "components/PersonLink";
 import { TablePagination } from "components/TablePagination";
 import { useSetPageTitle } from "hooks";
 import { useGetSignupsQuery } from "redux/api";
 import { Checkbox } from "components/Inputs/Checkbox";
-import { formatDate, formatDuration } from "lib/fmtDate";
+import { OfficeHoursSignupsTable } from "./OfficeHoursSignupsTable";
 
 export function OfficeHoursHistory() {
   useSetPageTitle("Office Hours History");
@@ -27,14 +25,6 @@ export function OfficeHoursHistory() {
     setPage(1);
   }, [showUpcoming]);
 
-  const columns = [
-    { key: "date", header: "Date", renderer: DateCell },
-    { key: "deskWorker", header: "Desk Worker", renderer: DeskWorkerCell },
-    { key: "eventType", header: "Event Type" },
-    { key: "duration", header: "Duration", renderer: DurationCell },
-    { key: "note", header: "Note" },
-    { key: "status", header: "Status", renderer: StatusCell },
-  ];
   return (
     <>
       <h1>Office Hours History</h1>
@@ -52,42 +42,11 @@ export function OfficeHoursHistory() {
         Show future office hours
       </div>
       {data && (
-        <div className="mb-5">
-          <DataGrid columns={columns} data={data.results} />
-        </div>
+        <OfficeHoursSignupsTable
+          signups={data.results}
+          includeDeskWorker={true}
+        />
       )}
     </>
   );
-}
-
-function DateCell({ item: signup }: { item: Signup }) {
-  return <span>{formatDate(signup.date)}</span>;
-}
-
-function DurationCell({ item: signup }: { item: Signup }) {
-  return signup.duration ? (
-    <span>{formatDuration(signup.duration)}</span>
-  ) : null;
-}
-
-function DeskWorkerCell({ item: signup }: { item: Signup }) {
-  return (
-    <PersonLink id={signup.deskWorker.id}>
-      {signup.deskWorker.firstName} {signup.deskWorker.lastName}
-    </PersonLink>
-  );
-}
-
-function StatusCell({ item: signup }: { item: Signup }) {
-  const today = dayjs().format("YYYY-MM-DD");
-  if (signup.approved) {
-    return <strong className="text-success">Approved</strong>;
-  }
-  if (signup.creditRequested) {
-    return <strong className="text-warning">Credit requested</strong>;
-  }
-  if (signup.date >= today) {
-    return <strong className="text-secondary">Upcoming</strong>;
-  }
-  return <strong className="text-danger">No credit request</strong>;
 }
