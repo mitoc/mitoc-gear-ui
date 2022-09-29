@@ -70,11 +70,27 @@ export function PeoplePage() {
             >
               ▽ Filters
             </button>
-            <Link to="/add-person">
-              <button className="btn btn-outline-primary mb-3">
-                ＋ Add person
-              </button>
-            </Link>
+            <div>
+              <Link to="/add-person">
+                <button className="btn btn-outline-primary mb-3 me-3">
+                  ＋ Add person
+                </button>
+              </Link>
+              {personList && (
+                <button
+                  className="btn btn-outline-secondary mb-3"
+                  disabled={personList == null}
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      personList!.map((p) => p.email).join(", ")
+                    );
+                  }}
+                >
+                  Export emails
+                  {/* Copy {personList.length} emails */}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
