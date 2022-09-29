@@ -173,10 +173,9 @@ const TooltipButton = styled.button`
   position: relative;
 
   & .tooltip-text {
-    visibility: hidden;
     width: 140px;
-    background-color: #555;
-    color: #fff;
+    background-color: var(--bs-btn-hover-bg);
+    color: var(--bs-btn-hover-color);
     text-align: center;
     border-radius: 6px;
     padding: 5px;
@@ -185,23 +184,5 @@ const TooltipButton = styled.button`
     bottom: 150%;
     left: 50%;
     margin-left: -75px;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  & .tooltip-text::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #555 transparent transparent transparent;
-  }
-
-  &:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
   }
 `;
