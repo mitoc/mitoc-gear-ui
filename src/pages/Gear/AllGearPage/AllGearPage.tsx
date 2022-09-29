@@ -97,7 +97,11 @@ function LinkRow({
   item: GearSummary;
   children: React.ReactNode;
 }) {
-  return <GearLink id={gearItem.id}>{children}</GearLink>;
+  return (
+    <GearLink className="link-row" id={gearItem.id}>
+      {children}
+    </GearLink>
+  );
 }
 
 function IDCell({ item: gearItem }: { item: GearSummary }) {

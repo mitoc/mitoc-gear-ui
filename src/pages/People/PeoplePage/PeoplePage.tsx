@@ -98,7 +98,11 @@ function LinkRow({
   children: React.ReactNode;
 }) {
   const { id } = person;
-  return <PersonLink id={id}>{children}</PersonLink>;
+  return (
+    <PersonLink className="link-row" id={id}>
+      {children}
+    </PersonLink>
+  );
 }
 
 function RentalCell({ item: person }: { item: TablePerson }) {

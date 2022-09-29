@@ -110,14 +110,20 @@ export const gearDbApi = createApi({
         approved?: boolean;
         creditRequested?: boolean;
         page?: number;
+        before?: string;
+        after?: string;
+        orderBy?: "date" | "-date";
       }
     >({
-      query: ({ approved, creditRequested, page }) => ({
+      query: ({ approved, creditRequested, page, before, after, orderBy }) => ({
         url: `/office-hour-signups/`,
         params: {
           ...(approved != null && { approved }),
           ...(creditRequested != null && { creditRequested }),
           ...(page != null && { page }),
+          ...(before != null && { before }),
+          ...(after != null && { after }),
+          ...(orderBy != null && { orderBy }),
         },
       }),
     }),

@@ -1,23 +1,30 @@
 import dayjs from "dayjs";
 
 import { Signup } from "apiClient/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { DataGrid } from "components/DataGrid";
 import { PersonLink } from "components/PersonLink";
 import { TablePagination } from "components/TablePagination";
 import { useSetPageTitle } from "hooks";
 import { useGetSignupsQuery } from "redux/api";
-
-// TODO:
-// 1. Include toggle to hide future OH
+import { Checkbox } from "components/Inputs/Checkbox";
 
 export function OfficeHoursHistory() {
   useSetPageTitle("Office Hour Signups History");
   const [page, setPage] = useState<number>(1);
-  const { data } = useGetSignupsQuery({ page });
+  const [showUpcoming, setShowUpcoming] = useState<boolean>(false);
+  const today = dayjs().format("YYYY-MM-DD");
+  const { data } = useGetSignupsQuery({
+    page,
+    orderBy: "-date",
+    ...(!showUpcoming && { before: today }),
+  });
   const nbPages =
     data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
+  useEffect(() => {
+    setPage(1);
+  }, [showUpcoming]);
 
   const columns = [
     { key: "date", header: "Date" },
@@ -34,7 +41,19 @@ export function OfficeHoursHistory() {
           <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
         )}
       </div>
-      {data && <DataGrid columns={columns} data={data.results} />}
+      <div className="form-switch mb-2">
+        <Checkbox
+          value={showUpcoming}
+          className="me-3"
+          onChange={() => setShowUpcoming((v) => !v)}
+        />
+        Show future office hours
+      </div>
+      {data && (
+        <div className="mb-5">
+          <DataGrid columns={columns} data={data.results} />
+        </div>
+      )}
     </>
   );
 }

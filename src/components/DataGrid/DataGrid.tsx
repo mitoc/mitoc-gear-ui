@@ -154,7 +154,7 @@ const DataGridWrapper = styled.div<{ colCount: number }>`
     text-decoration: none;
   }
 
-  a:hover {
+  .link-row:hover {
     background-color: #f5f5f5;
   }
 `;
