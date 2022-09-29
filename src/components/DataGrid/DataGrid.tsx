@@ -12,7 +12,9 @@ type Column<T extends Item> = {
   header: string;
   renderer?: React.ComponentType<{ item: T }>;
   className?: string;
+  // TODO: hideOnMobile and width don't work well together
   hideOnMobile?: boolean;
+  width?: number;
 };
 
 type Props<T extends Item> = {
@@ -25,10 +27,13 @@ export function DataGrid<T extends Item>(props: Props<T>) {
   const colCount = props.columns.length;
   const rowCount = props.data.length + 1;
 
+  const widths = props.columns.map((col) => col.width ?? 1);
+
   return (
     <DataGridWrapper
       role="grid"
       colCount={colCount}
+      widths={widths}
       aria-rowcount={rowCount}
       aria-colcount={colCount}
     >
@@ -118,28 +123,27 @@ function renderValue<T extends Item>(col: Column<T>, item: T) {
   return value;
 }
 
-const DataGridWrapper = styled.div<{ colCount: number }>`
+const DataGridWrapper = styled.div<{ colCount: number; widths: number[] }>`
   display: grid;
   border-left: 1px solid #ddd;
   border-top: 1px solid #ddd;
 
   [role="row"] {
     display: grid;
-    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-columns: ${({ widths }) => widths.map((w) => `${w}fr`).join(" ")};
     min-height: 50px;
+  }
+
+  [role="columnheader"],
+  [role="gridcell"] {
+    overflow: hidden;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
   }
 
   [role="columnheader"] {
     font-weight: 700;
     background-color: #f9f9f9;
-    border-bottom: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-  }
-
-  [role="gridcell"] {
-    overflow: hidden;
-    border-bottom: 1px solid #ddd;
-    border-right: 1px solid #ddd;
   }
 
   [role="gridcell"] > div {

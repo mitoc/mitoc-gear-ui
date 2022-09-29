@@ -16,14 +16,19 @@ export function OfficeHoursSignupsTable<T extends PersonSignup>({
   includeDeskWorker,
 }: Props<T>) {
   const columns = [
-    { key: "date", header: "Date", renderer: DateCell },
+    { key: "date", header: "Date", renderer: DateCell, width: 1 },
     ...(includeDeskWorker
       ? [{ key: "deskWorker", header: "Desk Worker", renderer: DeskWorkerCell }]
       : []),
-    { key: "eventType", header: "Event Type" },
-    { key: "duration", header: "Duration", renderer: DurationCell },
-    { key: "credit", header: "Credit", renderer: CreditCell },
-    { key: "note", header: "Note" },
+    { key: "eventType", header: "Event Type", width: 1 },
+    { key: "duration", header: "Duration", renderer: DurationCell, width: 0.5 },
+    {
+      key: "credit",
+      header: "Credit",
+      renderer: CreditCell,
+      width: 0.5,
+    },
+    { key: "note", header: "Note", width: 1.5 },
     { key: "status", header: "Status", renderer: StatusCell },
   ];
 
