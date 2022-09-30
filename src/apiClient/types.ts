@@ -54,6 +54,7 @@ export interface PersonSignup {
   id: number;
   note?: string;
   eventType: string;
+  credit?: number;
 }
 
 export interface Signup extends PersonSignup {

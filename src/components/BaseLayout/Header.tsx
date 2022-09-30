@@ -101,26 +101,45 @@ export function Header() {
                         My profile
                       </PersonLink>
                     </li>
-                    <li>
-                      <Link className="dropdown-item" to="/change-password">
-                        Change password
-                      </Link>
-                    </li>
+
                     <li>
                       <Link className="dropdown-item" to="/request-desk-credit">
                         Request desk credit
                       </Link>
                     </li>
+                    <li>
+                      <Link className="dropdown-item" to="/volunteer-history">
+                        Volunteer history
+                      </Link>
+                    </li>
                     {isDeskManager && (
-                      <li>
-                        <Link
-                          className="dropdown-item"
-                          to="/approve-desk-credit"
-                        >
-                          Approve desk credit
-                        </Link>
-                      </li>
+                      <>
+                        <div className="dropdown-divider"></div>
+                        <h6 className="dropdown-header">Desk Captain</h6>
+                        <li>
+                          <Link
+                            className="dropdown-item"
+                            to="/approve-desk-credit"
+                          >
+                            Approve desk credit
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className="dropdown-item"
+                            to="/office-hours-history"
+                          >
+                            Office hours history
+                          </Link>
+                        </li>
+                      </>
                     )}
+                    <div className="dropdown-divider"></div>
+                    <li>
+                      <Link className="dropdown-item" to="/change-password">
+                        Change password
+                      </Link>
+                    </li>
                     <li>
                       <button
                         className="dropdown-item"
