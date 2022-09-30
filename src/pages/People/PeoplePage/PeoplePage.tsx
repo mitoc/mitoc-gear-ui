@@ -70,11 +70,20 @@ export function PeoplePage() {
             >
               ▽ Filters
             </button>
-            <Link to="/add-person">
-              <button className="btn btn-outline-primary mb-3">
-                ＋ Add person
-              </button>
-            </Link>
+            <div>
+              <Link to="/add-person">
+                <button className="btn btn-outline-primary mb-3 me-3">
+                  ＋ Add person
+                </button>
+              </Link>
+              {personList && (
+                <CopyButton
+                  className="btn btn-outline-secondary mb-3"
+                  getText={() => personList!.map((p) => p.email).join(", ")}
+                  tooltip={`Copied ${personList.length} emails to clipboard`}
+                />
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -135,5 +144,49 @@ const List = styled.ul`
 
   li {
     line-height: unset;
+  }
+`;
+
+function CopyButton({
+  getText,
+  className,
+  tooltip,
+}: {
+  getText: () => string;
+  className?: string;
+  tooltip: string;
+}) {
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
+  return (
+    <TooltipButton
+      className={className}
+      onClick={() => {
+        navigator.clipboard.writeText(getText());
+        setShowTooltip(true);
+        setTimeout(() => setShowTooltip(false), 2000);
+      }}
+      type="button"
+    >
+      {showTooltip && <span className="tooltip-text">{tooltip}</span>}
+      Export emails
+    </TooltipButton>
+  );
+}
+
+const TooltipButton = styled.button`
+  position: relative;
+
+  & .tooltip-text {
+    width: 140px;
+    background-color: var(--bs-btn-hover-bg);
+    color: var(--bs-btn-hover-color);
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -75px;
   }
 `;
