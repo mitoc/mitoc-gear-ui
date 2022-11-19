@@ -20,16 +20,20 @@ export function OfficeHoursPage() {
   const { data: officeHours } = useGetOfficeHoursQuery();
 
   const now = dayjs();
-  const officeHoursByWeek = groupBy(officeHours, ({ startTime }) =>
-    dayjs(startTime).week()
-  );
+  const officeHoursByWeek = groupBy(officeHours, ({ startTime }) => {
+    const time = dayjs(startTime);
+    const week = time.week();
+    const year = time.year();
+    return [year, week];
+  });
 
   return (
     <div className="row">
       <div className="col-lg-8">
         <h1>Upcoming office hours</h1>
 
-        {map(officeHoursByWeek, (officeHours, weekStr) => {
+        {map(officeHoursByWeek, (officeHours, yearWeekStr) => {
+          const weekStr = yearWeekStr.split(",")[1];
           const week = Number(weekStr);
           const weekTitle =
             week === now.week()
