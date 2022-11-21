@@ -17,7 +17,7 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
-  const { gearList, nbPages } = useGearList({ q: query, page });
+  const { gearList, nbPages } = useGearList({ q: query, page, retired: false });
 
   return (
     <StyledDiv className="border rounded-2 p-2 bg-light">
