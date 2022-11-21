@@ -37,7 +37,7 @@ export interface GearRental {
 }
 
 export interface PurchasableItem {
-  id: string;
+  id: number;
   price: number;
   name: string;
 }
