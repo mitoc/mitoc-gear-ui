@@ -58,7 +58,10 @@ export function Notes({ notes, onAdd, onArchive }: Props) {
               <div>
                 {formatDateTime(note.dateInserted)}, {note.author.firstName}{" "}
                 {note.author.lastName}:
-                <blockquote className="blockquote ps-3 fs-6">
+                <blockquote
+                  className="blockquote ps-3 fs-6"
+                  style={{ whiteSpace: "pre-line" }}
+                >
                   {note.note}
                 </blockquote>
               </div>
