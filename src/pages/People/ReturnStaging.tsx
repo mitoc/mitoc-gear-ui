@@ -38,22 +38,16 @@ export function ReturnStaging({
     person.groups.some((group) => group.groupName === "BOD")
   );
 
-  const [isWsTrip, setIsWsTrip] = useState(true);
-  // const isPayingTripFee = gearToBuy.some(({ item }) => item.id === 26);
-
-  const totalRentalsBeforeCap = sum(
-    map(rentals, (item) => {
-      return item.waived
-        ? 0
-        : item.daysOutOverride != null
-        ? item.daysOutOverride * item.type.rentalAmount
-        : item.totalAmount;
-    })
-  );
-  const totalDueRentals = isWsTrip
-    ? Math.min(totalRentalsBeforeCap, 15)
-    : totalRentalsBeforeCap;
-  const totalDue = totalDueRentals + sum(map(gearToBuy, "item.price"));
+  const totalDue =
+    sum(
+      map(rentals, (item) => {
+        return item.waived
+          ? 0
+          : item.daysOutOverride != null
+          ? item.daysOutOverride * item.type.rentalAmount
+          : item.totalAmount;
+      })
+    ) + sum(map(gearToBuy, "item.price"));
 
   const creditToSpent = shouldUseMitocCredit
     ? Math.min(person.mitocCredit, totalDue)
@@ -85,14 +79,6 @@ export function ReturnStaging({
     <div className="border rounded-2 p-2 mb-3 bg-light">
       <h3>{title}</h3>
       <hr />
-      <div className="form-switch mb-2">
-        <Checkbox
-          value={isWsTrip}
-          className="me-3"
-          onChange={() => setIsWsTrip((c) => !c)}
-        />
-        Gear rented for a Winter School trip
-      </div>
       <h5>
         Payment due: <strong>{fmtAmount(paymentDue)}</strong>
       </h5>

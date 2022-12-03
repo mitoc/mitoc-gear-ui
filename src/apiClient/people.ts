@@ -108,7 +108,7 @@ async function checkoutGear(personID: string, gearIDs: string[]) {
 async function returnGear(
   personID: string,
   gear: GearToReturn[],
-  purchases: number[] = [],
+  purchases: string[] = [],
   checkNumber: string = "",
   useMitocCredit?: number
 ) {
