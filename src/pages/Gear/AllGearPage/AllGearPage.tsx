@@ -12,7 +12,7 @@ import { useGearList } from "redux/api";
 import { useSetPageTitle } from "hooks";
 
 import { GearStatus } from "../GearStatus";
-import { GearFilters } from "./GearFilters";
+import { GearFilters, GearStatusFilter } from "./GearFilters";
 import { useGearFilters, gearStatusToBoolean } from "./useGearFilter";
 
 export function AllGearPage() {
@@ -20,7 +20,7 @@ export function AllGearPage() {
   const [page, setPage] = useState<number>(1);
   const { filters, setFilters } = useGearFilters();
   const [showFilters, setShowFilters] = useState<boolean>(
-    !isEqual(filters, { retired: false }) // Open the panel if filters are not the default
+    !isEqual(filters, { retired: GearStatusFilter.exclude }) // Open the panel if filters are not the default
   );
   const { gearTypes, broken, missing, retired, q } = filters;
   const query = q ?? "";
