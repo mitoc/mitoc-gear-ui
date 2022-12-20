@@ -25,7 +25,7 @@ export function LoginForm() {
     }
     dispatch(
       logIn({
-        username: email.trim(),
+        username: email,
         password,
       })
     );
