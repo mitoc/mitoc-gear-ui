@@ -12,13 +12,9 @@ import { usePermissions } from "redux/auth";
 
 import PeopleGroups from "./PeopleGroups";
 import styled from "styled-components";
+import { usePersonPageContext } from "../PeoplePage/PersonPageContext";
 
-type Props = {
-  person: Person;
-  refreshPerson: () => void;
-};
-
-export function PersonProfile({ person, refreshPerson }: Props) {
+export function PersonProfile() {
   const [isEditing, setEditing] = useState<boolean>(false);
   const [showDeskCreditForm, setShowDeskCreditForm] = useState<boolean>(false);
   const { isOfficer } = usePermissions();
@@ -26,6 +22,8 @@ export function PersonProfile({ person, refreshPerson }: Props) {
   const onEdit = () => {
     setEditing(true);
   };
+
+  const { person, refreshPerson } = usePersonPageContext();
 
   return (
     <StyledDiv className="border rounded-2 p-2 mb-3 bg-light">

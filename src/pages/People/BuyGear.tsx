@@ -1,15 +1,11 @@
 import { useGetPurchasablesQuery } from "redux/api";
 import { fmtAmount } from "lib/fmtNumber";
 import { uniqueID } from "lib/uniqueID";
+import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
-import type { ItemToPurchase } from "./types";
-
-type Props = {
-  onAdd: (item: ItemToPurchase) => void;
-};
-
-export function BuyGear({ onAdd }: Props) {
+export function BuyGear() {
   const { data: items = [] } = useGetPurchasablesQuery();
+  const { purchaseBasket } = usePersonPageContext();
   return (
     <div className="border rounded-2 p-2 bg-light">
       <table className="table">
@@ -28,7 +24,7 @@ export function BuyGear({ onAdd }: Props) {
                 <td className="text-center">
                   <button
                     className="btn btn-outline-primary w-100 h-100"
-                    onClick={() => onAdd({ id: uniqueID(), item })}
+                    onClick={() => purchaseBasket.add({ id: uniqueID(), item })}
                   >
                     Buy
                   </button>
