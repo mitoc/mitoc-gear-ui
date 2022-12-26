@@ -16,14 +16,12 @@ import {
 export function PaymentSummary() {
   const [editTotalRental, setEditTotalRental] = useState<boolean>(false);
   const {
-    person,
     purchaseBasket,
     returnBasket,
     payment: {
       creditToSpent,
       paymentDue,
       potentialCreditToSpend,
-      totalDue,
       totalPurchases,
       totalRentals,
       totalRentalsOverride,
@@ -35,13 +33,13 @@ export function PaymentSummary() {
 
   const hasRentals = !isEmpty(returnBasket.items);
   const hasPurchases = !isEmpty(purchaseBasket.items);
-  const isSpendingCredit = creditToSpent > 0;
+  const canSpendCredit = potentialCreditToSpend > 0;
 
   // In WS always show rentals to allow overriding the amount
   const showRentalDetails =
-    (isWinterSchool || hasPurchases || isSpendingCredit) && hasRentals;
+    (isWinterSchool || hasPurchases || canSpendCredit) && hasRentals;
   // Only show purchaseable details if there are other items to show
-  const showPurchaseDetails = hasPurchases && (hasRentals || isSpendingCredit);
+  const showPurchaseDetails = hasPurchases && (hasRentals || canSpendCredit);
 
   return (
     <>
@@ -49,7 +47,7 @@ export function PaymentSummary() {
         <tbody>
           {showRentalDetails && (
             <tr>
-              <th>Rentals</th>
+              <th>Rental fees</th>
               <td className="text-end">
                 {!editTotalRental ? (
                   <span>{fmtAmount(totalRentals)}</span>
@@ -61,34 +59,36 @@ export function PaymentSummary() {
                   />
                 )}
               </td>
-              {isWinterSchool && (
-                <td>
-                  <button
-                    className="btn"
-                    onClick={() => {
-                      if (totalRentalsOverride == null) {
-                        overrideTotalRentals(totalRentals);
-                      }
-                      setEditTotalRental((v) => !v);
-                    }}
-                    title="Override rentals total"
-                  >
-                    <FontAwesomeIcon icon={faEdit} />
-                  </button>
-                  {
+              <td>
+                {isWinterSchool && (
+                  <>
                     <button
                       className="btn"
-                      title="Reset rentals total to calculated fees"
                       onClick={() => {
-                        overrideTotalRentals(null);
-                        setEditTotalRental(false);
+                        if (totalRentalsOverride == null) {
+                          overrideTotalRentals(totalRentals);
+                        }
+                        setEditTotalRental((v) => !v);
                       }}
+                      title="Override rentals total"
                     >
-                      <FontAwesomeIcon icon={faRefresh} />
+                      <FontAwesomeIcon icon={faEdit} />
                     </button>
-                  }
-                </td>
-              )}
+                    {
+                      <button
+                        className="btn"
+                        title="Reset rentals total to calculated fees"
+                        onClick={() => {
+                          overrideTotalRentals(null);
+                          setEditTotalRental(false);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faRefresh} />
+                      </button>
+                    }
+                  </>
+                )}
+              </td>
             </tr>
           )}
           {showPurchaseDetails && (
@@ -100,13 +100,27 @@ export function PaymentSummary() {
               <td></td>
             </tr>
           )}
-          {isSpendingCredit && (
+          {canSpendCredit && (
             <tr>
               <th>MITOC Credit</th>
               <td className="text-end">
-                <span>{fmtAmount(-creditToSpent)}</span>
+                <span>
+                  {shouldUseMitocCredit ? (
+                    fmtAmount(-creditToSpent)
+                  ) : (
+                    <em>Not applied</em>
+                  )}
+                </span>
               </td>
-              <td></td>
+              <td>
+                <span className="form-switch ms-2">
+                  <Checkbox
+                    value={shouldUseMitocCredit}
+                    className="me-3"
+                    onChange={() => setShouldUseMitocCredit((v) => !v)}
+                  />
+                </span>
+              </td>
             </tr>
           )}
         </tbody>
@@ -114,15 +128,6 @@ export function PaymentSummary() {
       <h5>
         Payment due: <strong>{fmtAmount(paymentDue)} </strong>
       </h5>
-      {person.mitocCredit > 0 && totalDue > 0 && (
-        <div>
-          <Checkbox
-            value={shouldUseMitocCredit}
-            onChange={setShouldUseMitocCredit}
-          />{" "}
-          Use {fmtAmount(potentialCreditToSpend)} of MITOC credit
-        </div>
-      )}
     </>
   );
 }

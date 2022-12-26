@@ -37,7 +37,7 @@ export function usePersonPageContext() {
   const context = useContext(PersonPageContext);
   if (context == null) {
     throw new Error(
-      "No ReturnContext.Provider found when calling useReturnContext."
+      "No ReturnContext.Provider found when calling usePersonPageContext."
     );
   }
   return context;
@@ -119,7 +119,6 @@ function useMakePersonPageContext({ person, refreshPerson }: Props) {
       paymentDue,
       potentialCreditToSpend,
       shouldUseMitocCredit,
-      totalDue,
       totalPurchases,
       totalRentals,
       totalRentalsOverride,
