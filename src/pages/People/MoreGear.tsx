@@ -6,6 +6,7 @@ import { TablePagination } from "components/TablePagination";
 import { GearLink } from "components/GearLink";
 import { SearchTextField } from "components/Inputs/TextField";
 import { fmtAmount } from "lib/fmtNumber";
+
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
 export function MoreGear() {

@@ -1,11 +1,12 @@
 import React, { useContext, useState } from "react";
 
+import { flow, keyBy, map, mapValues, sum } from "lodash";
 import { checkoutGear, Person, Rental, returnGear } from "apiClient/people";
+import { GearSummary } from "apiClient/gear";
 
 import { ItemToPurchase } from "../types";
+
 import { useBasket } from "./useBasket";
-import { GearSummary } from "apiClient/gear";
-import { flow, keyBy, map, mapValues, sum } from "lodash";
 
 export const isWinterSchool = true; // TODO: This could be read from the database
 

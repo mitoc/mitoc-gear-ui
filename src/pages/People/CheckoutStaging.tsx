@@ -4,6 +4,7 @@ import type { Person } from "apiClient/people";
 import { GearLink } from "components/GearLink";
 import { fmtAmount } from "lib/fmtNumber";
 import { RemoveButton } from "components/Buttons";
+
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
 export function CheckoutStaging({ onCheckout }: { onCheckout: () => void }) {

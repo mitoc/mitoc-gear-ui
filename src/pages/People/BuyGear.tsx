@@ -1,6 +1,8 @@
 import { useGetPurchasablesQuery } from "redux/api";
+
 import { fmtAmount } from "lib/fmtNumber";
 import { uniqueID } from "lib/uniqueID";
+
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
 export function BuyGear() {
