@@ -9,7 +9,12 @@ import { RemoveButton } from "components/Buttons";
 import { fmtAmount } from "lib/fmtNumber";
 import { formatDate } from "lib/fmtDate";
 
-import { usePersonPageContext } from "../PeoplePage/PersonPageContext";
+import { WinterSchoolDisclaimer } from "./WinterSchoolDisclaimer";
+import {
+  isWinterSchool,
+  usePersonPageContext,
+} from "../PeoplePage/PersonPageContext";
+import { PaymentSummary } from "./PaymentSummary";
 
 export function ReturnStaging() {
   const { returnBasket, purchaseBasket } = usePersonPageContext();
@@ -28,6 +33,10 @@ export function ReturnStaging() {
     <div className="border rounded-2 p-2 mb-3 bg-light">
       <h3>{title}</h3>
       <hr />
+      {!isEmpty(returnBasket.items) && isWinterSchool && (
+        <WinterSchoolDisclaimer />
+      )}
+      <PaymentSummary />
 
       <hr />
 

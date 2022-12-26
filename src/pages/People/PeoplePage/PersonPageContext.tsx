@@ -7,6 +7,8 @@ import { useBasket } from "./useBasket";
 import { GearSummary } from "apiClient/gear";
 import { flow, keyBy, map, mapValues, sum } from "lodash";
 
+export const isWinterSchool = true; // TODO: This could be read from the database
+
 type PersonPageContextType = ReturnType<typeof useMakePersonPageContext>;
 
 type Props = {
@@ -47,6 +49,9 @@ function useMakePersonPageContext({ person, refreshPerson }: Props) {
   const [shouldUseMitocCredit, setShouldUseMitocCredit] = useState<boolean>(
     person.mitocCredit > 0
   );
+  const [totalRentalsOverride, overrideTotalRentals] = useState<number | null>(
+    null
+  );
 
   const {
     rentals: rentalsWithOverride,
@@ -57,12 +62,21 @@ function useMakePersonPageContext({ person, refreshPerson }: Props) {
     person.groups.some((group) => group.groupName === "BOD")
   );
 
-  const paymentData = getPaymentData(
-    rentalsWithOverride,
-    person,
-    purchaseBasket.items,
-    shouldUseMitocCredit
+  const calculatedTotalRentals = sum(
+    map(rentalsWithOverride, (item) => {
+      return item.waived
+        ? 0
+        : item.daysOutOverride != null
+        ? item.daysOutOverride * item.type.rentalAmount
+        : item.totalAmount;
+    })
   );
+  const totalRentals = totalRentalsOverride ?? calculatedTotalRentals;
+  const totalPurchases = sum(map(purchaseBasket.items, "item.price"));
+  const totalDue = totalRentals + totalPurchases;
+  const potentialCreditToSpend = Math.min(person.mitocCredit, totalDue);
+  const creditToSpent = shouldUseMitocCredit ? potentialCreditToSpend : 0;
+  const paymentDue = totalDue - creditToSpent;
 
   return {
     person,
@@ -81,7 +95,7 @@ function useMakePersonPageContext({ person, refreshPerson }: Props) {
           })),
           purchaseBasket.items.map((item) => item.item.id),
           checkNumber,
-          paymentData.creditToSpent
+          creditToSpent
         ).then(() => {
           returnBasketBase.clear();
           purchaseBasket.clear();
@@ -100,9 +114,16 @@ function useMakePersonPageContext({ person, refreshPerson }: Props) {
       },
     },
     payment: {
-      ...paymentData,
+      creditToSpent,
+      paymentDue,
+      potentialCreditToSpend,
       shouldUseMitocCredit,
+      totalDue,
+      totalPurchases,
+      totalRentals,
+      totalRentalsOverride,
       setShouldUseMitocCredit,
+      overrideTotalRentals,
     },
   };
 }
@@ -146,39 +167,4 @@ function useReturnState(rentalsToReturn: Rental[], waiveByDefault?: boolean) {
   };
 
   return { rentals, toggleWaiveFee, overrideDaysOut };
-}
-
-function getPaymentData(
-  rentalsWithOverride: ReturnType<typeof useReturnState>["rentals"],
-  person: Person,
-  itemsToPurchase: ItemToPurchase[],
-  shouldUseCredit: boolean
-) {
-  const totalRentals = sum(
-    map(rentalsWithOverride, (item) => {
-      return item.waived
-        ? 0
-        : item.daysOutOverride != null
-        ? item.daysOutOverride * item.type.rentalAmount
-        : item.totalAmount;
-    })
-  );
-
-  const totalPurchases = sum(map(itemsToPurchase, "item.price"));
-
-  const totalDue = totalRentals + totalPurchases;
-
-  const potentialCreditToSpend = Math.min(person.mitocCredit, totalDue);
-
-  const creditToSpent = shouldUseCredit ? potentialCreditToSpend : 0;
-  const paymentDue = totalDue - creditToSpent;
-
-  return {
-    totalRentals,
-    totalPurchases,
-    totalDue,
-    potentialCreditToSpend,
-    creditToSpent,
-    paymentDue,
-  };
 }

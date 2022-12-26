@@ -1,11 +1,24 @@
-import { fmtAmount } from "lib/fmtNumber";
+import styled from "styled-components";
+import { useState } from "react";
+import { isEmpty } from "lodash";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faRefresh } from "@fortawesome/free-solid-svg-icons";
 
-import { usePersonPageContext } from "../PeoplePage/PersonPageContext";
+import { fmtAmount } from "lib/fmtNumber";
+import { NumberField } from "components/Inputs/NumberField";
 import { Checkbox } from "components/Inputs/Checkbox";
 
+import {
+  isWinterSchool,
+  usePersonPageContext,
+} from "../PeoplePage/PersonPageContext";
+
 export function PaymentSummary() {
+  const [editTotalRental, setEditTotalRental] = useState<boolean>(false);
   const {
     person,
+    purchaseBasket,
+    returnBasket,
     payment: {
       creditToSpent,
       paymentDue,
@@ -13,58 +26,94 @@ export function PaymentSummary() {
       totalDue,
       totalPurchases,
       totalRentals,
+      totalRentalsOverride,
       shouldUseMitocCredit,
       setShouldUseMitocCredit,
+      overrideTotalRentals,
     },
   } = usePersonPageContext();
 
+  const hasRentals = !isEmpty(returnBasket.items);
+  const hasPurchases = !isEmpty(purchaseBasket.items);
+  const isSpendingCredit = creditToSpent > 0;
+
+  // In WS always show rentals to allow overriding the amount
+  const showRentalDetails =
+    (isWinterSchool || hasPurchases || isSpendingCredit) && hasRentals;
+  // Only show purchaseable details if there are other items to show
+  const showPurchaseDetails = hasPurchases && (hasRentals || isSpendingCredit);
+
   return (
     <>
-      <table className="table">
-        {totalRentals > 0 && totalRentals !== paymentDue && (
-          <tr>
-            <th>Rentals</th>
-            <td className="text-end">
-              <span>{fmtAmount(totalRentals)}</span>
-            </td>
-            <td>✏️</td>
-          </tr>
-        )}
-        {totalPurchases > 0 && totalPurchases !== paymentDue && (
-          <tr>
-            <th>Purchases</th>
-            <td className="text-end">
-              <span>{fmtAmount(totalPurchases)}</span>
-            </td>
-          </tr>
-        )}
-        {totalPurchases > 0 && totalRentals > 0 && potentialCreditToSpend > 0 && (
-          <tr>
-            <th>Total</th>
-            <td className="text-end">
-              <span>{fmtAmount(totalDue)}</span>
-            </td>
-          </tr>
-        )}
-        {potentialCreditToSpend > 0 && (
-          <tr>
-            <th>MITOC Credit</th>
-            <td className="text-end">
-              <span>{fmtAmount(-creditToSpent)}</span>
-            </td>
-          </tr>
-        )}
-        {/* <tr>
-          <th>Payment due</th>
-          <td className="text-end">
-            <strong>{fmtAmount(paymentDue)}</strong>
-          </td>
-        </tr> */}
-      </table>
+      <StyledTable className="table">
+        <tbody>
+          {showRentalDetails && (
+            <tr>
+              <th>Rentals</th>
+              <td className="text-end">
+                {!editTotalRental ? (
+                  <span>{fmtAmount(totalRentals)}</span>
+                ) : (
+                  <NumberField
+                    value={totalRentalsOverride}
+                    onChange={overrideTotalRentals}
+                    small={true}
+                  />
+                )}
+              </td>
+              {isWinterSchool && (
+                <td>
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      if (totalRentalsOverride == null) {
+                        overrideTotalRentals(totalRentals);
+                      }
+                      setEditTotalRental((v) => !v);
+                    }}
+                    title="Override rentals total"
+                  >
+                    <FontAwesomeIcon icon={faEdit} />
+                  </button>
+                  {
+                    <button
+                      className="btn"
+                      title="Reset rentals total to calculated fees"
+                      onClick={() => {
+                        overrideTotalRentals(null);
+                        setEditTotalRental(false);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faRefresh} />
+                    </button>
+                  }
+                </td>
+              )}
+            </tr>
+          )}
+          {showPurchaseDetails && (
+            <tr>
+              <th>Purchases</th>
+              <td className="text-end">
+                <span>{fmtAmount(totalPurchases)}</span>
+              </td>
+              <td></td>
+            </tr>
+          )}
+          {isSpendingCredit && (
+            <tr>
+              <th>MITOC Credit</th>
+              <td className="text-end">
+                <span>{fmtAmount(-creditToSpent)}</span>
+              </td>
+              <td></td>
+            </tr>
+          )}
+        </tbody>
+      </StyledTable>
       <h5>
-        Payment due: <strong>{fmtAmount(paymentDue)}</strong>
+        Payment due: <strong>{fmtAmount(paymentDue)} </strong>
       </h5>
-      {/* <NumberField value={paymentDue} onChange={(value) => {}} small={true} /> */}
       {person.mitocCredit > 0 && totalDue > 0 && (
         <div>
           <Checkbox
@@ -77,3 +126,14 @@ export function PaymentSummary() {
     </>
   );
 }
+
+const StyledTable = styled.table`
+  th,
+  td {
+    vertical-align: middle;
+  }
+  td:nth-of-type(2) {
+    white-space: nowrap;
+    width: 1%;
+  }
+`;
