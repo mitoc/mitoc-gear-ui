@@ -1,4 +1,3 @@
-import { Person } from "apiClient/people";
 import { ToggleExpandButton } from "components/Buttons";
 
 import { ColoredTile, ExpirableTile } from "./ExpirableTile";
