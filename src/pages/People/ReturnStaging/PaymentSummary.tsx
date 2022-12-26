@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { ButtonHTMLAttributes, useState } from "react";
 import { isEmpty } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faRefresh } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faRefresh, faPen } from "@fortawesome/free-solid-svg-icons";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 import { fmtAmount } from "lib/fmtNumber";
 import { NumberField } from "components/Inputs/NumberField";
@@ -62,30 +63,46 @@ export function PaymentSummary() {
               <td>
                 {isWinterSchool && (
                   <>
-                    <button
-                      className="btn"
+                    <ButtonWithTooltip
+                      className="btn btn-light"
+                      onClick={() => {
+                        overrideTotalRentals(15);
+                        setEditTotalRental(false);
+                      }}
+                      title="Set rentals fees to $15"
+                    >
+                      <FaLayer className="fa-layers fa-fw">
+                        <FontAwesomeIcon icon={faPen} size="xs" />
+                        <span
+                          className="fa-layers-text"
+                          data-fa-transform="shrink-8 down-3"
+                        >
+                          15
+                        </span>
+                      </FaLayer>
+                    </ButtonWithTooltip>
+                    <ButtonWithTooltip
+                      className="btn btn-light"
                       onClick={() => {
                         if (totalRentalsOverride == null) {
                           overrideTotalRentals(totalRentals);
                         }
                         setEditTotalRental((v) => !v);
                       }}
-                      title="Override rentals total"
+                      title="Manually set rental fees"
                     >
                       <FontAwesomeIcon icon={faEdit} />
-                    </button>
-                    {
-                      <button
-                        className="btn"
-                        title="Reset rentals total to calculated fees"
-                        onClick={() => {
-                          overrideTotalRentals(null);
-                          setEditTotalRental(false);
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faRefresh} />
-                      </button>
-                    }
+                    </ButtonWithTooltip>
+                    <ButtonWithTooltip
+                      className="btn btn-light"
+                      title="Reset rentals fees to default"
+                      onClick={() => {
+                        overrideTotalRentals(null);
+                        setEditTotalRental(false);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faRefresh} />
+                    </ButtonWithTooltip>
                   </>
                 )}
               </td>
@@ -142,3 +159,28 @@ const StyledTable = styled.table`
     width: 1%;
   }
 `;
+
+const FaLayer = styled.span`
+  .fa-layers-text {
+    transform: translate(-0.1em, 0);
+    font-size: 0.7em;
+    font-weight: 600;
+  }
+`;
+
+function ButtonWithTooltip(props: ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <OverlayTrigger placement="top" overlay={<Tooltip>{props.title}</Tooltip>}>
+      {({ ref, ...triggerHandler }) => (
+        <button
+          ref={ref}
+          type="button"
+          data-toggle="tooltip"
+          data-placement="top"
+          {...triggerHandler}
+          {...props}
+        />
+      )}
+    </OverlayTrigger>
+  );
+}
