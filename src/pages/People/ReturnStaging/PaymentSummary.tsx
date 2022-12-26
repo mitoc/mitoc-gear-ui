@@ -32,8 +32,6 @@ export function PaymentSummary() {
     },
   } = usePersonPageContext();
 
-  const tooltipRef = useRef();
-
   const hasRentals = !isEmpty(returnBasket.items);
   const hasPurchases = !isEmpty(purchaseBasket.items);
   const canSpendCredit = potentialCreditToSpend > 0;
