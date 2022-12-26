@@ -1,22 +1,17 @@
-import type { Person, Rental } from "apiClient/people";
 import { formatDate } from "lib/fmtDate";
 import { GearLink } from "components/GearLink";
 import { fmtAmount } from "lib/fmtNumber";
+import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
-type Props = {
-  rentals: Person["rentals"];
-  rentalsToReturn: Rental[];
-  onReturn: (rental: Rental) => void;
-};
-
-export function PersonRentals({ rentals, onReturn, rentalsToReturn }: Props) {
+export function PersonRentals() {
+  const { person, returnBasket } = usePersonPageContext();
   return (
     <div className="border rounded-2 p-2 bg-light">
       <h3>Gear out</h3>
       <table className="table">
         <tbody>
-          {rentals
-            .filter((item) => !rentalsToReturn.some((r) => r.id === item.id))
+          {person.rentals
+            .filter((item) => !returnBasket.items.some((r) => r.id === item.id))
             .map((rental) => {
               const { id, type, checkedout, weeksOut, totalAmount } = rental;
 
@@ -34,7 +29,7 @@ export function PersonRentals({ rentals, onReturn, rentalsToReturn }: Props) {
                     <div className="d-flex justify-content-end">
                       <button
                         className="btn btn-outline-primary"
-                        onClick={() => onReturn(rental)}
+                        onClick={() => returnBasket.add(rental)}
                       >
                         Return
                       </button>
@@ -43,7 +38,7 @@ export function PersonRentals({ rentals, onReturn, rentalsToReturn }: Props) {
                   <td className="d-none d-md-table-cell align-middle">
                     <button
                       className="w-100 h-100 btn btn-outline-primary"
-                      onClick={() => onReturn(rental)}
+                      onClick={() => returnBasket.add(rental)}
                     >
                       Return
                     </button>

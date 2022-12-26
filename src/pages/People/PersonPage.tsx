@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { isEmpty } from "lodash";
 
-import { Rental, addNote, archiveNote } from "apiClient/people";
-import { GearSummary } from "apiClient/gear";
+import { addNote, archiveNote } from "apiClient/people";
 import { Notes } from "components/Notes";
 import { useGetPersonQuery } from "redux/api";
+import { useSetPageTitle } from "hooks";
 
 import { PersonProfile } from "./PersonProfile";
 import { PersonRentals } from "./PersonRentals";
@@ -15,54 +15,38 @@ import { PersonTabsSelector, PersonPageTabs } from "./PersonTabs";
 import { PersonRentalsHistory } from "./PersonRentalsHistory";
 import { CheckoutStaging } from "./CheckoutStaging";
 import { ReturnStaging } from "./ReturnStaging";
-import type { ItemToPurchase } from "./types";
-import { useSetPageTitle } from "hooks";
+import {
+  PersonPageContextProvider,
+  usePersonPageContext,
+} from "./PeoplePage/PersonPageContext";
 
 export function PersonPage() {
-  const [tab, setTab] = useState<PersonPageTabs>(PersonPageTabs.gearOut);
   const { personId } = useParams<{ personId: string }>();
-
   const { data: person, refetch: refreshPerson } = useGetPersonQuery(personId);
-
-  useSetPageTitle(person ? `${person.firstName} ${person.lastName} ` : "");
-
-  const {
-    items: gearToCheckout,
-    add: addToCheckout,
-    clear: clearCheckout,
-    remove: removeFromCheckout,
-  } = useBasket<GearSummary>();
-  const {
-    items: rentalsToReturn,
-    add: addToReturn,
-    clear: clearReturn,
-    remove: removeFromReturn,
-  } = useBasket<Rental>();
-
-  const {
-    items: gearToBuy,
-    add: addGearToBuy,
-    remove: removeGearToBuy,
-    clear: clearPurchases,
-  } = useBasket<ItemToPurchase>();
-
   if (person == null) {
     return null;
   }
+  return (
+    <PersonPageContextProvider person={person} refreshPerson={refreshPerson}>
+      <PersonPageInner />
+    </PersonPageContextProvider>
+  );
+}
+
+function PersonPageInner() {
+  const [tab, setTab] = useState<PersonPageTabs>(PersonPageTabs.gearOut);
+
+  const {
+    person,
+    refreshPerson,
+    checkoutBasket,
+    returnBasket,
+    purchaseBasket,
+  } = usePersonPageContext();
+
+  useSetPageTitle(person ? `${person.firstName} ${person.lastName} ` : "");
 
   const isOverdue = person.rentals.some((rental) => rental.weeksOut >= 7);
-
-  const onCheckout = () => {
-    clearCheckout();
-    refreshPerson();
-    setTab(PersonPageTabs.gearOut);
-  };
-
-  const onReturn = () => {
-    clearReturn();
-    clearPurchases();
-    refreshPerson();
-  };
 
   return (
     <div className="row">
@@ -72,7 +56,7 @@ export function PersonPage() {
         </div>
       )}
       <div className="col-12 col-md-5 p-2">
-        <PersonProfile person={person} refreshPerson={refreshPerson} />
+        <PersonProfile />
         <Notes
           notes={person.notes}
           onAdd={(note) => {
@@ -82,59 +66,26 @@ export function PersonPage() {
             archiveNote(person.id, noteId).then(refreshPerson);
           }}
         />
-        {!isEmpty(gearToCheckout) && (
+        {!isEmpty(checkoutBasket.items) && (
           <CheckoutStaging
-            person={person}
-            gearToCheckout={gearToCheckout}
-            onRemove={removeFromCheckout}
-            onCheckout={onCheckout}
+            onCheckout={() => {
+              setTab(PersonPageTabs.gearOut);
+            }}
           />
         )}
-        {(!isEmpty(rentalsToReturn) || !isEmpty(gearToBuy)) && (
-          <ReturnStaging
-            person={person}
-            rentalsToReturn={rentalsToReturn}
-            gearToBuy={gearToBuy}
-            onRemovePurchasable={removeGearToBuy}
-            onRemove={removeFromReturn}
-            onReturn={onReturn}
-          />
+        {(!isEmpty(returnBasket.items) || !isEmpty(purchaseBasket.items)) && (
+          <ReturnStaging />
         )}
       </div>
       <div className="col-12 col-md-7 p-2">
         <PersonTabsSelector activeTab={tab} updateTab={setTab} />
-        {tab === PersonPageTabs.gearOut && (
-          <PersonRentals
-            rentals={person.rentals}
-            rentalsToReturn={rentalsToReturn}
-            onReturn={addToReturn}
-          />
-        )}
-        {tab === PersonPageTabs.moreGear && (
-          <MoreGear onAddGear={addToCheckout} gearToCheckout={gearToCheckout} />
-        )}
-        {tab === PersonPageTabs.buyGear && <BuyGear onAdd={addGearToBuy} />}
+        {tab === PersonPageTabs.gearOut && <PersonRentals />}
+        {tab === PersonPageTabs.moreGear && <MoreGear />}
+        {tab === PersonPageTabs.buyGear && <BuyGear />}
         {tab === PersonPageTabs.rentalHistory && (
-          <PersonRentalsHistory personId={personId} />
+          <PersonRentalsHistory personId={person.id} />
         )}
       </div>
     </div>
   );
-}
-
-function useBasket<T extends { id: string }>() {
-  const [items, setItems] = useState<T[]>([]);
-  const add = (item: T) => setItems((gear) => [...gear, item]);
-
-  const remove = (id: string) =>
-    setItems((gear) => gear.filter((i) => i.id !== id));
-
-  const clear = () => setItems([]);
-
-  return {
-    items,
-    add,
-    remove,
-    clear,
-  };
 }

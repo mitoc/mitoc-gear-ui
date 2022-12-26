@@ -3,17 +3,14 @@ import styled from "styled-components";
 
 import { useGearList } from "redux/api";
 import { TablePagination } from "components/TablePagination";
-import { GearSummary } from "apiClient/gear";
 import { GearLink } from "components/GearLink";
 import { SearchTextField } from "components/Inputs/TextField";
 import { fmtAmount } from "lib/fmtNumber";
 
-type Props = {
-  onAddGear: (item: GearSummary) => void;
-  gearToCheckout: GearSummary[];
-};
+import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
-export function MoreGear({ onAddGear, gearToCheckout }: Props) {
+export function MoreGear() {
+  const { checkoutBasket } = usePersonPageContext();
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
@@ -53,7 +50,9 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
           </thead>
           <tbody>
             {gearList
-              .filter((item) => !gearToCheckout.some((g) => g.id === item.id))
+              .filter(
+                (item) => !checkoutBasket.items.some((g) => g.id === item.id)
+              )
               .map((gearItem) => {
                 const {
                   id,
@@ -74,7 +73,7 @@ export function MoreGear({ onAddGear, gearToCheckout }: Props) {
                       {available ? (
                         <AddButton
                           className="btn btn-outline-primary w-100 h-100"
-                          onClick={() => onAddGear(gearItem)}
+                          onClick={() => checkoutBasket.add(gearItem)}
                         >
                           Add
                         </AddButton>

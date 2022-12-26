@@ -1,30 +1,16 @@
 import { sum, map } from "lodash";
 
-import { GearSummary } from "apiClient/gear";
-import { checkoutGear, Person } from "apiClient/people";
+import type { Person } from "apiClient/people";
 import { GearLink } from "components/GearLink";
 import { fmtAmount } from "lib/fmtNumber";
 import { RemoveButton } from "components/Buttons";
 
-type Props = {
-  person: Person;
-  gearToCheckout: GearSummary[];
-  onRemove: (id: string) => void;
-  onCheckout: () => void;
-};
+import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
-export function CheckoutStaging({
-  person,
-  gearToCheckout,
-  onRemove,
-  onCheckout: onCheckoutCB,
-}: Props) {
+export function CheckoutStaging({ onCheckout }: { onCheckout: () => void }) {
+  const { person, checkoutBasket } = usePersonPageContext();
+  const gearToCheckout = checkoutBasket.items;
   const totalDeposit = sum(map(gearToCheckout, "depositAmount"));
-  const gearIDs = map(gearToCheckout, "id");
-
-  const onCheckout = () => {
-    checkoutGear(person.id, gearIDs).then(onCheckoutCB);
-  };
 
   return (
     <div className="border rounded-2 p-2 mb-3 bg-light">
@@ -78,7 +64,7 @@ export function CheckoutStaging({
                     <td>{fmtAmount(depositAmount)}</td>
                     <td>{fmtAmount(dailyFee)}</td>
                     <td className="text-end align-middle">
-                      <RemoveButton onClick={() => onRemove(id)} />
+                      <RemoveButton onClick={() => checkoutBasket.remove(id)} />
                     </td>
                   </tr>
                 )
@@ -88,7 +74,10 @@ export function CheckoutStaging({
         </>
       )}
       <div className="text-end">
-        <button className="btn btn-primary btn-lg" onClick={onCheckout}>
+        <button
+          className="btn btn-primary btn-lg"
+          onClick={() => checkoutBasket.submit().then(onCheckout)}
+        >
           Check out
         </button>
       </div>
