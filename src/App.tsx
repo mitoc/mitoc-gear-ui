@@ -21,6 +21,7 @@ import { RequestDeskCreditPage } from "pages/OfficeHours/RequestDeskCreditPage";
 import { ApproveDeskCreditPage } from "pages/OfficeHours/ApproveDeskCreditPage";
 import { OfficeHoursHistory } from "pages/OfficeHours/OfficeHoursHistory";
 import { MyOfficeHoursHistory } from "pages/OfficeHours/MyOfficeHoursHistory";
+import { ApprovalsPage } from "pages/Approvals";
 
 function App() {
   const { loggedIn, isLoading } = useLoadCurrentUser();
@@ -69,6 +70,9 @@ function App() {
           </Route>
           <Route exact path="/office-hours">
             <OfficeHoursPage />
+          </Route>
+          <Route exact path="/approvals">
+            <ApprovalsPage />
           </Route>
           {loggedIn && (
             <Route exact path="/request-desk-credit">

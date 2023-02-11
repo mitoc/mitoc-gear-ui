@@ -17,6 +17,7 @@ import {
 } from "apiClient/types";
 import { API_HOST } from "apiClient/client";
 import { isEmpty } from "lodash";
+import { Approval } from "apiClient/approvals";
 
 export const gearDbApi = createApi({
   reducerPath: "gearDbApi",
@@ -131,6 +132,9 @@ export const gearDbApi = createApi({
         },
       }),
     }),
+    getApprovals: builder.query<ListWrapper<Approval>, void>({
+      query: () => "/approvals/",
+    }),
   }),
 });
 
@@ -146,6 +150,7 @@ export const {
   useGetOfficeHoursQuery,
   useGetPersonSignupsQuery,
   useGetSignupsQuery,
+  useGetApprovalsQuery,
 } = gearDbApi;
 
 export function useGearList({
