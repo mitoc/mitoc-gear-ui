@@ -8,20 +8,44 @@ import { formatDate } from "lib/fmtDate";
 import { Approval } from "apiClient/approvals";
 import { PersonLink } from "components/PersonLink";
 import { GearLink } from "components/GearLink";
+import { Checkbox } from "components/Inputs/Checkbox";
 
 export function ApprovalsPage() {
   useSetPageTitle("Restricted gear");
-  const { data } = useGetApprovalsQuery();
+  const [showExpired, setShowExpired] = useState<boolean>(false);
+  const { data } = useGetApprovalsQuery({
+    past: showExpired ? undefined : false, // filter past by default, unless opting in
+  });
   const [page, setPage] = useState<number>(1);
   const nbPages =
     data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
   return (
     <>
       <h1>Restricted Gear Approvals</h1>
-      <div className="col-md-auto">
-        {nbPages != null && nbPages > 1 && (
-          <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
-        )}
+      {nbPages != null && (
+        <div className="row">
+          {
+            <div className="col-sm-auto">
+              <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
+            </div>
+          }
+
+          <div className="col-md d-flex flex-grow-1 justify-content-end">
+            {/* <Link to="/add-gear"> */}
+            <button className="btn btn-outline-primary mb-3">
+              ＋ Add approval
+            </button>
+            {/* </Link> */}
+          </div>
+        </div>
+      )}
+      <div className="form-switch mb-2">
+        <Checkbox
+          value={showExpired}
+          className="me-3"
+          onChange={() => setShowExpired((v) => !v)}
+        />
+        Show expired approvals
       </div>
       {data && <ApprovalsTable approvals={data.results} />}
     </>

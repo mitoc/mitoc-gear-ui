@@ -132,8 +132,13 @@ export const gearDbApi = createApi({
         },
       }),
     }),
-    getApprovals: builder.query<ListWrapper<Approval>, void>({
-      query: () => "/approvals/",
+    getApprovals: builder.query<ListWrapper<Approval>, { past?: boolean }>({
+      query: ({ past }) => ({
+        url: "/approvals/",
+        params: {
+          past,
+        },
+      }),
     }),
   }),
 });
