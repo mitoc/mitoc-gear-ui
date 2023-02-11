@@ -69,14 +69,9 @@ export function Header() {
                 <Link className="nav-link" to="/gear">
                   Gear
                 </Link>
-                <a
-                  className="nav-link"
-                  href={restrictedGearDoc}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <Link className="nav-link" to="/approvals">
                   Restricted gear
-                </a>
+                </Link>
                 <Link className="nav-link" to="/office-hours">
                   Office Hours
                 </Link>
