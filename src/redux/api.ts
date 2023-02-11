@@ -199,15 +199,16 @@ export function usePeopleList({
   openRentals?: boolean;
   groups?: number[];
 }) {
-  const { data } = useGetPersonListQuery({
+  const result = useGetPersonListQuery({
     q: q?.trim(),
     page,
     openRentals,
     groups,
   });
+  const data = result.data;
   const personList = data?.results;
   const nbPages =
     data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
 
-  return { personList, nbPages };
+  return { personList, nbPages, ...result };
 }

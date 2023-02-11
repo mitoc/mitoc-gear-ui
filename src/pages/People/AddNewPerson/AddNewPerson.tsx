@@ -25,7 +25,7 @@ export function AddNewPerson() {
 
   const formObject = useForm<FormValues>();
 
-  const onSubmit = (args: CreatePersonArgs) => {
+  const onSubmit = (args: FormValues) => {
     createPerson(args)
       .then((person) => {
         setError(undefined);
