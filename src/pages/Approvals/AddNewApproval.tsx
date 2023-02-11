@@ -20,19 +20,9 @@ export function AddNewApproval() {
             renderComponent={({ value, onChange, onBlur, invalid }: any) => {
               return (
                 <PersonSelect
-                  // className={`w-100 ${invalid ? "is-invalid" : ""}`}
-                  // styles={{
-                  //   control: (base, state) =>
-                  //     !invalid
-                  //       ? base
-                  //       : {
-                  //           ...base,
-                  //           ...invalidFormControlStyle,
-                  //         },
-                  // }}
+                  className="w-100"
                   value={value}
                   onChange={onChange}
-                  // onBlur={onBlur}
                 />
               );
             }}
