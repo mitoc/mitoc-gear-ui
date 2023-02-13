@@ -39,7 +39,7 @@ export function PersonSelect({ value, onChange, className, invalid }: Props) {
 
   return (
     <Select
-      className={`flex-grow-1 ${className ?? ""}`}
+      className={className}
       options={options}
       value={value}
       onChange={onChange}

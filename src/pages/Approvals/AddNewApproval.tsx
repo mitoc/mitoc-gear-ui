@@ -11,8 +11,7 @@ export function AddNewApproval() {
   return (
     <div className="row">
       <div className="col-lg-8">
-        {/* {error && <AddNewPersonError err={error} />} */}
-        <h3>New approval</h3>
+        <h3>Approve restricted gear rental</h3>
         <Form onSubmit={onSubmit} form={formObject}>
           <LabeledInput
             title="Renter:"
@@ -20,7 +19,7 @@ export function AddNewApproval() {
             renderComponent={({ value, onChange, onBlur, invalid }: any) => {
               return (
                 <PersonSelect
-                  className="w-100"
+                  className="w-100 flex-grow-1"
                   value={value}
                   onChange={onChange}
                 />
