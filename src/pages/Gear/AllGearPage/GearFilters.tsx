@@ -1,6 +1,6 @@
 import { map } from "lodash";
 
-import { GearTypeSelect } from "components/GearTypeSelect";
+import { GearTypeMultiSelect } from "components/GearTypeSelect";
 import { Select } from "components/Inputs/Select";
 
 export enum GearStatusFilter {
@@ -30,7 +30,7 @@ export function GearFilters({ filters, setFilters }: Props) {
     <div className="form mb-3 col-lg-6">
       <div className="mb-2">
         <label>Gear Types:</label>
-        <GearTypeSelect
+        <GearTypeMultiSelect
           gearTypes={filters.gearTypes ?? []}
           onChange={(gearTypes) => update({ gearTypes: map(gearTypes, "id") })}
         />

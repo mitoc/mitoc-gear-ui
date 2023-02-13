@@ -2,26 +2,43 @@ import { useCallback } from "react";
 import Select, { MultiValue } from "react-select";
 
 import { useGetGearTypesQuery } from "redux/api";
-import { GearType } from "apiClient/gear";
+import { GearType as APIGearType } from "apiClient/gear";
+
+type GearType = Pick<APIGearType, "id" | "typeName" | "shorthand">;
 
 type GearTypeOption = GearType & {
   value: number;
   label: string;
 };
 
+export function GearTypeSelect({
+  value,
+  onChange,
+}: {
+  value: GearType;
+  onChange: (value: GearType | null) => void;
+}) {
+  const gearTypeOptions = useGearTypesOptions();
+  return (
+    <Select
+      className="flex-grow-1"
+      options={gearTypeOptions}
+      value={value}
+      onChange={onChange}
+    />
+  );
+}
+
 type Props = {
   gearTypes: number[];
   onChange: (groups: GearType[]) => void;
 };
 
-export function GearTypeSelect({ gearTypes, onChange: onChangeProps }: Props) {
-  const { data: allGearTypes } = useGetGearTypesQuery();
-  const gearTypeOptions =
-    allGearTypes?.map((gearType) => ({
-      value: gearType.id,
-      label: gearType.typeName,
-      ...gearType,
-    })) ?? [];
+export function GearTypeMultiSelect({
+  gearTypes,
+  onChange: onChangeProps,
+}: Props) {
+  const gearTypeOptions = useGearTypesOptions();
   const values =
     gearTypeOptions == null
       ? null
@@ -42,6 +59,17 @@ export function GearTypeSelect({ gearTypes, onChange: onChangeProps }: Props) {
       value={values}
       onChange={onChange}
     />
+  );
+}
+
+function useGearTypesOptions() {
+  const { data: allGearTypes } = useGetGearTypesQuery();
+  return (
+    allGearTypes?.map((gearType) => ({
+      value: gearType.id,
+      label: gearType.typeName,
+      ...gearType,
+    })) ?? []
   );
 }
 

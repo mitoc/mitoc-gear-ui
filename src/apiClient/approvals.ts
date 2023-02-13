@@ -13,16 +13,21 @@ interface GearItem {
   type: GearType;
 }
 
-type ApprovalItem =
+export enum ApprovalItemType {
+  gearType = "gearType",
+  specificItem = "specificItem",
+}
+
+export type ApprovalItem =
   | {
-      type: "gearType";
+      type: ApprovalItemType.gearType;
       item: {
         quantity: number;
         gearType: GearType;
       };
     }
   | {
-      type: "specificItem";
+      type: ApprovalItemType.specificItem;
       item: {
         gearItem: GearItem;
       };
