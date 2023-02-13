@@ -1,5 +1,5 @@
 import { PersonSummary } from "apiClient/people";
-import { debounce } from "lodash";
+import { countBy, debounce } from "lodash";
 import { useMemo, useState } from "react";
 
 import { usePeopleList } from "redux/api";
@@ -15,16 +15,27 @@ type Props = {
 
 export function PersonSelect({ value, onChange, className, invalid }: Props) {
   const [query, setInput] = useState<string>("");
-  const debouncedSetInput = useMemo(() => debounce(setInput, 250), [setInput]);
+  const { pending, fn: debouncedSetInput } = useDebounce(setInput, 250);
   const { personList, isFetching } = usePeopleList({
     q: query,
   });
+
+  const getName = (person: PersonSummary) =>
+    `${person.firstName} ${person.lastName}`;
+
+  const namesCount = countBy(personList, getName);
+
   const options =
-    personList?.map((person) => ({
-      value: person.id,
-      label: person.firstName + " " + person.lastName,
-      ...person,
-    })) ?? [];
+    personList?.map((person) => {
+      const name = getName(person);
+      const fullName =
+        namesCount[name] > 1 ? `${name} (${person.email})` : name;
+      return {
+        value: person.id,
+        label: fullName,
+        ...person,
+      };
+    }) ?? [];
 
   return (
     <Select
@@ -33,8 +44,28 @@ export function PersonSelect({ value, onChange, className, invalid }: Props) {
       value={value}
       onChange={onChange}
       onInputChange={debouncedSetInput}
-      isLoading={isFetching}
+      isLoading={isFetching || pending}
       invalid={invalid}
     />
   );
+}
+
+function useDebounce<T extends (...args: any) => any>(fn: T, duration: number) {
+  const [pending, setPending] = useState<boolean>(false);
+  const debounced = useMemo(
+    () =>
+      debounce((...args: Parameters<typeof fn>) => {
+        setPending(false);
+        const result = fn(...args);
+        return result;
+      }, duration),
+    [setPending, fn, duration]
+  );
+  return {
+    pending,
+    fn: (...args: Parameters<typeof fn>) => {
+      setPending(true);
+      return debounced(...args);
+    },
+  };
 }
