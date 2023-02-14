@@ -1,12 +1,13 @@
 import { get } from "lodash";
 import { InputHTMLAttributes } from "react";
 import {
-  Path,
+  FieldPath,
   useFormContext,
   RegisterOptions,
   Controller,
   FieldValues,
 } from "react-hook-form";
+import { ErrorMessage } from "@hookform/error-message";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
@@ -19,7 +20,7 @@ export function LabeledInput<TFieldValues extends FieldValues>(
   props: InputProps & {
     as?: any;
     renderComponent?: (arg: any) => React.ReactElement;
-    name: Path<TFieldValues>;
+    name: FieldPath<TFieldValues>;
     title: string;
     options?: RegisterOptions<TFieldValues>;
     inputStyle?: React.CSSProperties;
@@ -42,9 +43,6 @@ export function LabeledInput<TFieldValues extends FieldValues>(
   } = props;
 
   const error = get(errors, name);
-  const errorMsg =
-    error?.message ||
-    (error?.type === "required" ? "This field is required" : undefined);
   const invalid = error != null;
   const isCheckBox = otherProps.type === "checkbox";
   const inputClassNames = [
@@ -75,7 +73,18 @@ export function LabeledInput<TFieldValues extends FieldValues>(
       )}
 
       {isCheckBox && <span className="ps-2">{title}</span>}
-      <div className="invalid-feedback">{errorMsg}</div>
+      <ErrorMessage
+        errors={errors}
+        // TODO
+        // @ts-expect-error
+        name={name}
+        render={({ message }) => {
+          const isRequiredError = get(errors, name).type === "required";
+          const errorMsg =
+            message || isRequiredError ? "This field is required" : "";
+          return <div className="invalid-feedback">{errorMsg}</div>;
+        }}
+      />
     </label>
   );
 }

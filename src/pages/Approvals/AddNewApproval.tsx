@@ -6,12 +6,16 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { LabeledInput } from "components/Inputs/LabeledInput";
 import { Form } from "components/Inputs/Form";
 import { PersonSelect } from "components/PersonSelect";
-import { ApprovalItemType, PartialApprovalItem } from "apiClient/approvals";
+import {
+  ApprovalItemType,
+  PartialApproval,
+  PartialApprovalItem,
+} from "apiClient/approvals";
 import { Select } from "components/Select";
 import { GearTypeSelect } from "components/GearTypeSelect";
 import { GearItemSelect } from "components/GearItemSelect";
 
-type FormValues = { items: PartialApprovalItem[] };
+type FormValues = PartialApproval;
 
 const defaultItem: PartialApprovalItem = {
   type: ApprovalItemType.gearType,
@@ -20,6 +24,11 @@ const defaultItem: PartialApprovalItem = {
     gearType: undefined,
   },
 };
+
+// TODO: Cancel button should bring you back to previous page
+// TODO: Validate dates are in the right order
+// TODO: Handle submit
+// TODO: Show error when missing type or item
 
 export function AddNewApproval() {
   const formObject = useForm<FormValues>({
@@ -43,6 +52,7 @@ export function AddNewApproval() {
     console.log({ values });
   };
   const items = formObject.watch("items");
+  console.log({ errors: formObject.formState.errors });
   return (
     <div className="row">
       <div className="col-lg-8">
@@ -110,8 +120,9 @@ export function AddNewApproval() {
                   marginLeft: "30px",
                   border: "solid 1px #ced4da",
                   borderRadius: ".375rem",
+                  backgroundColor: "#f8f8f8",
                 }}
-                className="p-2 mb-2 mt-2"
+                className="p-2 mb-3 mt-3"
               >
                 <div className="d-flex justify-content-between mb-3">
                   <strong>Item #{index + 1}</strong>

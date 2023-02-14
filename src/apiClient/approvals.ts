@@ -1,12 +1,15 @@
-export interface Approval {
+interface GenericApproval<T> {
   id: number;
   startDate: string;
   endDate: string;
   note: string;
   approvedBy: Person;
   renter: Person;
-  items: ApprovalItem[];
+  items: T[];
 }
+
+export type Approval = GenericApproval<ApprovalItem>;
+export type PartialApproval = GenericApproval<PartialApprovalItem>;
 
 interface GearItem {
   id: string;
@@ -55,3 +58,5 @@ interface GearType {
   typeName: string;
   shorthand: string;
 }
+
+export async function addNewApproval(approval: Approval) {}
