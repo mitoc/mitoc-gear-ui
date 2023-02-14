@@ -7,6 +7,7 @@ type Props<Option> = ReactSelectProps<Option, false> & {
 export function Select<Option = unknown>(props: Props<Option>) {
   return (
     <ReactSelect
+      {...props}
       className={`${props.className} ${props.invalid ? "is-invalid" : ""}`}
       styles={{
         control: (base) =>
@@ -17,7 +18,6 @@ export function Select<Option = unknown>(props: Props<Option>) {
                 ...invalidFormControlStyle,
               },
       }}
-      {...props}
     />
   );
 }

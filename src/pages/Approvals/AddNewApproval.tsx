@@ -14,6 +14,9 @@ import {
 import { Select } from "components/Select";
 import { GearTypeSelect } from "components/GearTypeSelect";
 import { GearItemSelect } from "components/GearItemSelect";
+import { ErrorMessage } from "@hookform/error-message";
+import { get } from "lodash";
+import styled from "styled-components";
 
 type FormValues = PartialApproval;
 
@@ -52,6 +55,7 @@ export function AddNewApproval() {
     console.log({ values });
   };
   const items = formObject.watch("items");
+  const errors = formObject.formState.errors;
   console.log({ errors: formObject.formState.errors });
   return (
     <div className="row">
@@ -113,96 +117,128 @@ export function AddNewApproval() {
           />
           <fieldset>
             Items approved:
-            {itemFields.map((field, index) => (
-              <div
-                key={field.id}
-                style={{
-                  marginLeft: "30px",
-                  border: "solid 1px #ced4da",
-                  borderRadius: ".375rem",
-                  backgroundColor: "#f8f8f8",
-                }}
-                className="p-2 mb-3 mt-3"
-              >
-                <div className="d-flex justify-content-between mb-3">
-                  <strong>Item #{index + 1}</strong>
-                  {items.length > 1 && (
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() => remove(index)}
-                      style={{
-                        borderColor: "#ced4da",
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faClose} />
-                    </button>
-                  )}
-                </div>
-                <Controller
-                  control={formObject.control}
-                  name={`items.${index}.type`}
-                  rules={{ required: true }}
-                  render={({ field: { onChange, onBlur, value, ref } }) => {
-                    return (
-                      <ApprovalTypePicker
-                        value={value}
-                        onChange={(v) => {
-                          formObject.resetField(`items.${index}`);
-                          onChange(v);
+            {itemFields.map((field, index) => {
+              return (
+                <StyledItem key={field.id} className="p-2 mb-3 mt-3">
+                  <div className="d-flex justify-content-between mb-3">
+                    <strong>Item #{index + 1}</strong>
+                    {items.length > 1 && (
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={() => remove(index)}
+                        style={{
+                          borderColor: "#ced4da",
                         }}
-                        onBlur={onBlur}
+                      >
+                        <FontAwesomeIcon icon={faClose} />
+                      </button>
+                    )}
+                  </div>
+                  <Controller
+                    control={formObject.control}
+                    name={`items.${index}.type`}
+                    rules={{ required: true }}
+                    render={({ field: { onChange, onBlur, value, ref } }) => {
+                      return (
+                        <ApprovalTypePicker
+                          value={value}
+                          onChange={(v) => {
+                            formObject.resetField(`items.${index}`);
+                            onChange(v);
+                          }}
+                          onBlur={onBlur}
+                        />
+                      );
+                    }}
+                  />
+                  {items[index].type === ApprovalItemType.gearType ? (
+                    <>
+                      <label>Type</label>
+                      <Controller
+                        key={field.id} // Needed to reset the type
+                        control={formObject.control}
+                        name={`items.${index}.item.gearType`}
+                        rules={{ required: true }}
+                        render={({
+                          field: { onChange, onBlur, value, ref },
+                        }) => {
+                          return (
+                            <GearTypeSelect
+                              value={value ?? null}
+                              onChange={onChange}
+                              invalid={true}
+                            />
+                          );
+                        }}
                       />
-                    );
-                  }}
-                />
-                {items[index].type === ApprovalItemType.gearType ? (
-                  <>
-                    <label>Type</label>
-                    <Controller
-                      key={field.id} // Needed to reset the type
-                      control={formObject.control}
-                      name={`items.${index}.item.gearType`}
-                      rules={{ required: true }}
-                      render={({ field: { onChange, onBlur, value, ref } }) => {
-                        return (
-                          <GearTypeSelect
-                            value={value ?? null}
-                            onChange={onChange}
-                          />
-                        );
-                      }}
-                    />
-                    <LabeledInput
-                      title="Quantity approved"
-                      type="number"
-                      name={`items.${index}.item.quantity`}
-                      step={1}
-                      options={{
-                        valueAsNumber: true,
-                      }}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <label>Item</label>
-                    <Controller
-                      control={formObject.control}
-                      name={`items.${index}.item.gearItem`}
-                      rules={{ required: true }}
-                      render={({ field: { onChange, onBlur, value, ref } }) => {
-                        return (
-                          <GearItemSelect
-                            value={value?.id ?? null}
-                            onChange={onChange}
-                          />
-                        );
-                      }}
-                    />
-                  </>
-                )}
-              </div>
-            ))}
+                      <ErrorMessage
+                        errors={formObject.formState.errors}
+                        name={`items.${index}.item.gearType`}
+                        render={({ message }) => {
+                          const isRequiredError =
+                            get(errors, `items.${index}.item.gearType`).type ===
+                            "required";
+                          const errorMsg =
+                            message || isRequiredError
+                              ? "This field is required"
+                              : "";
+                          return (
+                            <div className="invalid-feedback">{errorMsg}</div>
+                          );
+                        }}
+                      />
+                      <LabeledInput
+                        title="Quantity approved"
+                        type="number"
+                        name={`items.${index}.item.quantity`}
+                        step={1}
+                        options={{
+                          valueAsNumber: true,
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <label>Item</label>
+                      <Controller
+                        control={formObject.control}
+                        name={`items.${index}.item.gearItem`}
+                        rules={{ required: true }}
+                        render={({
+                          field: { onChange, onBlur, value, ref },
+                        }) => {
+                          return (
+                            <GearItemSelect
+                              value={value?.id ?? null}
+                              onChange={onChange}
+                              invalid={true}
+                            />
+                          );
+                        }}
+                      />
+                      <ErrorMessage
+                        errors={formObject.formState.errors}
+                        name={`items.${index}.item.gearItem`}
+                        render={({ message }) => {
+                          const isRequiredError =
+                            get(errors, `items.${index}.item.gearItem`).type ===
+                            "required";
+                          const errorMsg =
+                            message || isRequiredError
+                              ? "This field is required"
+                              : "";
+                          console.log({ message, errorMsg, isRequiredError });
+                          return (
+                            <div className="invalid-feedback">{errorMsg}</div>
+                          );
+                        }}
+                      />
+                    </>
+                  )}
+                </StyledItem>
+              );
+            })}
             <div className="mt-2 d-flex justify-content-end">
               <button
                 className="btn btn-outline-primary"
@@ -264,3 +300,10 @@ function ApprovalTypePicker({
     />
   );
 }
+
+const StyledItem = styled.div`
+  margin-left: 30px;
+  border: solid 1px #ced4da;
+  border-radius: 0.375rem;
+  background-color: #f8f8f8;
+`;

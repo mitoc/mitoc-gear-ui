@@ -1,8 +1,10 @@
 import { useCallback } from "react";
-import Select, { MultiValue } from "react-select";
+import ReactSelect, { MultiValue } from "react-select";
 
 import { useGetGearTypesQuery } from "redux/api";
 import { GearType as APIGearType } from "apiClient/gear";
+
+import { Select } from "./Select";
 
 type GearType = Pick<APIGearType, "id" | "typeName" | "shorthand">;
 
@@ -14,9 +16,11 @@ type GearTypeOption = GearType & {
 export function GearTypeSelect({
   value,
   onChange,
+  invalid,
 }: {
   value: GearType | null;
   onChange: (value: GearType | null) => void;
+  invalid?: boolean;
 }) {
   const gearTypeOptions = useGearTypesOptions();
   return (
@@ -25,6 +29,7 @@ export function GearTypeSelect({
       options={gearTypeOptions}
       value={value}
       onChange={onChange}
+      invalid={invalid}
     />
   );
 }
@@ -52,7 +57,7 @@ export function GearTypeMultiSelect({
   );
 
   return (
-    <Select
+    <ReactSelect
       className="flex-grow-1"
       isMulti={true}
       options={gearTypeOptions}
