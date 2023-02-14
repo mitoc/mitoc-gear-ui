@@ -8,16 +8,16 @@ import { PersonSelect } from "components/PersonSelect";
 
 import { ApprovalItemsPicker, defaultItem } from "./ApprovalItemsPicker";
 import { FormValues } from "./types";
-import {
-  ApprovalItemType,
-  createNewApproval,
-  CreateNewApprovalArgs,
-} from "apiClient/approvals";
+import { ApprovalItemType, CreateNewApprovalArgs } from "apiClient/approvals";
 
-// TODO: Message after submitting
+// TODO: Refresh approvals after submiting
 // TODO: Simplify with LabeledControlledInput?
 
-export function AddNewApprovalForm() {
+type Props = {
+  onSubmit: (args: CreateNewApprovalArgs) => void;
+};
+
+export function AddNewApprovalForm({ onSubmit }: Props) {
   const history = useHistory();
   const formObject = useForm<FormValues>({
     defaultValues: {
@@ -25,21 +25,16 @@ export function AddNewApprovalForm() {
     },
   });
 
-  const onSubmit = (values: FormValues) => {
+  const handleSubmit = (values: FormValues) => {
     if (!ensureApprovalComplete(values)) {
       // This case should not happen, the validation should handle it
       return;
     }
-    createNewApproval(values)
-      .then(() => {
-        console.log("success");
-      })
-      .catch(() => console.log("fail"));
-    console.log({ values });
+    onSubmit(values);
   };
   const startDate = formObject.watch("startDate");
   return (
-    <Form onSubmit={onSubmit} form={formObject}>
+    <Form onSubmit={handleSubmit} form={formObject}>
       <LabeledInput
         title="Renter:"
         name="renter"

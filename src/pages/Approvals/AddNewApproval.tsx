@@ -1,49 +1,64 @@
+import { useState } from "react";
+
+import { APIErrorType } from "apiClient/types";
 import { useSetPageTitle } from "hooks";
+import { createNewApproval, CreateNewApprovalArgs } from "apiClient/approvals";
+import { APIError as APIErrorClass } from "apiClient/client";
 
 import { AddNewApprovalForm } from "./AddNewApprovalForm";
+import { Link } from "react-router-dom";
 
 export function AddNewApproval() {
   useSetPageTitle("Approve restricted gear rental");
-  // const [gearCreated, setGearCreated] = useState<GearSummary[]>([]);
-  // const [error, setError] = useState<APIErrorType | undefined>();
+  const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<APIErrorType | undefined>();
 
-  // const onSubmit = (args: CreateGearArgs) => {
-  //   createGear(args)
-  //     .then(({ items }) => {
-  //       setError(undefined);
-  //       setGearCreated(items);
-  //     })
-  //     .catch((err) => {
-  //       if (err instanceof APIErrorClass) {
-  //         setError(err.error);
-  //       }
-  //       throw err;
-  //     });
-  // };
+  const onSubmit = (args: CreateNewApprovalArgs) => {
+    createNewApproval(args)
+      .then(({ items }) => {
+        setError(undefined);
+        setSuccess(true);
+      })
+      .catch((err) => {
+        if (err instanceof APIErrorClass) {
+          setSuccess(false);
+          setError(err.error);
+        }
+        throw err;
+      });
+  };
 
   return (
     <div className="row">
       <div className="col-lg-8">
         <h3>Approve restricted gear rental</h3>
-        <AddNewApprovalForm />
+        {error && (
+          <div className="alert alert-danger">Approval failed: {error.msg}</div>
+        )}
+        {!success && <AddNewApprovalForm onSubmit={onSubmit} />}
+        {success && (
+          <>
+            <p className="mb-2 alert alert-success">
+              Success! The approval was granted:
+            </p>
+
+            <div className="d-flex justify-content-between">
+              <Link to="/approvals">
+                <button type="button" className="btn btn-outline-secondary">
+                  Go to approvals list
+                </button>
+              </Link>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => setSuccess(false)}
+              >
+                Approve another rental
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
-
-  // return (
-  //   <div className="row">
-  //     <div className="col-lg-8">
-  //       <h1>Add new gear</h1>
-  //       {error && <AddNewGearError err={error} />}
-  //       {isEmpty(gearCreated) ? (
-  //         <AddNewGearForm onSubmit={onSubmit} />
-  //       ) : (
-  //         <AddNewGearResults
-  //           gearCreated={gearCreated}
-  //           onReset={() => setGearCreated([])}
-  //         />
-  //       )}
-  //     </div>
-  //   </div>
-  // );
 }
