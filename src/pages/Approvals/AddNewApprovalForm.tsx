@@ -17,7 +17,7 @@ import {
 // TODO: Message after submitting
 // TODO: Simplify with LabeledControlledInput?
 
-export function AddNewApproval() {
+export function AddNewApprovalForm() {
   const history = useHistory();
   const formObject = useForm<FormValues>({
     defaultValues: {
@@ -39,86 +39,81 @@ export function AddNewApproval() {
   };
   const startDate = formObject.watch("startDate");
   return (
-    <div className="row">
-      <div className="col-lg-8">
-        <h3>Approve restricted gear rental</h3>
-        <Form onSubmit={onSubmit} form={formObject}>
-          <LabeledInput
-            title="Renter:"
-            name="renter"
-            renderComponent={({ value, onChange, onBlur, invalid }) => {
-              return (
-                <PersonSelect
-                  value={value}
-                  onChange={(person) => onChange(person?.id)}
-                  invalid={invalid}
-                />
-              );
-            }}
-            options={{
-              required: true,
-            }}
-          />
-          <LabeledInput
-            title="Start Date:"
-            name="startDate"
-            renderComponent={({ value, onChange, onBlur, invalid }) => {
-              return (
-                <DatePicker
-                  selected={value}
-                  onChange={onChange}
-                  className={`form-control ${invalid ? "is-invalid" : ""}`}
-                  wrapperClassName={invalid ? "is-invalid" : ""}
-                  onBlur={onBlur}
-                />
-              );
-            }}
-            options={{
-              required: true,
-            }}
-          />
-          <LabeledInput
-            title="End Date:"
-            name="endDate"
-            renderComponent={({ value, onChange, onBlur, invalid }) => {
-              return (
-                <DatePicker
-                  selected={value}
-                  onChange={onChange}
-                  className={`form-control ${invalid ? "is-invalid" : ""}`}
-                  wrapperClassName={invalid ? "is-invalid" : ""}
-                  onBlur={onBlur}
-                />
-              );
-            }}
-            options={{
-              required: true,
-              validate: (value) => {
-                if (startDate != null && value < startDate) {
-                  return "The approval end date cannot be before the start date.";
-                }
-              },
-            }}
-          />
-          <ApprovalItemsPicker />
+    <Form onSubmit={onSubmit} form={formObject}>
+      <LabeledInput
+        title="Renter:"
+        name="renter"
+        renderComponent={({ value, onChange, onBlur, invalid }) => {
+          return (
+            <PersonSelect
+              value={value}
+              onChange={(person) => onChange(person?.id)}
+              invalid={invalid}
+            />
+          );
+        }}
+        options={{
+          required: true,
+        }}
+      />
+      <LabeledInput
+        title="Start Date:"
+        name="startDate"
+        renderComponent={({ value, onChange, onBlur, invalid }) => {
+          return (
+            <DatePicker
+              selected={value}
+              onChange={onChange}
+              className={`form-control ${invalid ? "is-invalid" : ""}`}
+              wrapperClassName={invalid ? "is-invalid" : ""}
+              onBlur={onBlur}
+            />
+          );
+        }}
+        options={{
+          required: true,
+        }}
+      />
+      <LabeledInput
+        title="End Date:"
+        name="endDate"
+        renderComponent={({ value, onChange, onBlur, invalid }) => {
+          return (
+            <DatePicker
+              selected={value}
+              onChange={onChange}
+              className={`form-control ${invalid ? "is-invalid" : ""}`}
+              wrapperClassName={invalid ? "is-invalid" : ""}
+              onBlur={onBlur}
+            />
+          );
+        }}
+        options={{
+          required: true,
+          validate: (value) => {
+            if (startDate != null && value < startDate) {
+              return "The approval end date cannot be before the start date.";
+            }
+          },
+        }}
+      />
+      <ApprovalItemsPicker />
 
-          <LabeledInput title="Note:" as="textarea" name="note" />
+      <LabeledInput title="Note:" as="textarea" name="note" />
 
-          <div className="d-flex justify-content-between mb-3">
-            <button
-              type="button"
-              className="btn btn-outline-secondary"
-              onClick={history.goBack}
-            >
-              Cancel
-            </button>
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-          </div>
-        </Form>
+      <div className="d-flex justify-content-between mb-3">
+        <button
+          type="button"
+          className="btn btn-outline-secondary"
+          onClick={history.goBack}
+        >
+          Cancel
+        </button>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
       </div>
-    </div>
+    </Form>
   );
 }
 
