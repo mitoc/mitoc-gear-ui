@@ -15,12 +15,15 @@ type FormValues = { items: ApprovalItem[] };
 
 const defaultItem = {
   type: ApprovalItemType.gearType,
-  item: {},
+  item: {
+    quantity: 1,
+  },
 };
 
 export function AddNewApproval() {
   const formObject = useForm<FormValues>({
     defaultValues: {
+      //@ts-expect-error
       items: [defaultItem],
     },
   });
@@ -36,9 +39,7 @@ export function AddNewApproval() {
     name: "items", // unique name for your Field Array
   });
 
-  const onSubmit = (values: FormValues) => {
-    console.log(values);
-  };
+  const onSubmit = (values: FormValues) => {};
   const items = formObject.watch("items");
   return (
     <div className="row">
@@ -134,10 +135,7 @@ export function AddNewApproval() {
                       <ApprovalTypePicker
                         value={value}
                         onChange={(v) => {
-                          console.log("reset");
-                          formObject.resetField(`items.${index}.item`, {
-                            defaultValue: {},
-                          });
+                          formObject.resetField(`items.${index}`);
                           onChange(v);
                         }}
                         onBlur={onBlur}
@@ -149,6 +147,7 @@ export function AddNewApproval() {
                   <>
                     <label>Type</label>
                     <Controller
+                      key={field.id} // Needed to reset the type
                       control={formObject.control}
                       name={`items.${index}.item.gearType`}
                       rules={{ required: true }}
