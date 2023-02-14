@@ -15,6 +15,7 @@ import { Select } from "components/Select";
 import { GearTypeSelect } from "components/GearTypeSelect";
 import { GearItemSelect } from "components/GearItemSelect";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 type FormValues = PartialApproval;
 
@@ -26,11 +27,11 @@ const defaultItem: PartialApprovalItem = {
   },
 };
 
-// TODO: Cancel button should bring you back to previous page
 // TODO: Validate dates are in the right order
 // TODO: Handle submit
 
 export function AddNewApproval() {
+  const history = useHistory();
   const formObject = useForm<FormValues>({
     defaultValues: {
       items: [defaultItem],
@@ -214,7 +215,7 @@ export function AddNewApproval() {
             <button
               type="button"
               className="btn btn-outline-secondary"
-              // onClick={onCancel}
+              onClick={history.goBack}
             >
               Cancel
             </button>
