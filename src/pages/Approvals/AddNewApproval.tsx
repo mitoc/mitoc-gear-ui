@@ -1,5 +1,7 @@
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 import { LabeledInput } from "components/Inputs/LabeledInput";
 import { Form } from "components/Inputs/Form";
@@ -11,21 +13,20 @@ import { GearItemSelect } from "components/GearItemSelect";
 
 type FormValues = { items: ApprovalItem[] };
 
+const defaultItem = {
+  type: ApprovalItemType.gearType,
+  item: {},
+};
+
 export function AddNewApproval() {
   const formObject = useForm<FormValues>({
     defaultValues: {
-      items: [
-        {
-          type: ApprovalItemType.gearType,
-          item: {},
-        },
-      ],
+      items: [defaultItem],
     },
   });
   const {
     fields: itemFields,
     append,
-    prepend,
     remove,
     swap,
     move,
@@ -98,10 +99,32 @@ export function AddNewApproval() {
             }}
           />
           <fieldset>
-            Items:
+            Items approved:
             {itemFields.map((field, index) => (
-              <div key={field.id} style={{ marginLeft: "30px" }}>
-                Item #{index + 1}
+              <div
+                key={field.id}
+                style={{
+                  marginLeft: "30px",
+                  border: "solid 1px #ced4da",
+                  borderRadius: ".375rem",
+                }}
+                className="p-2 mb-2 mt-2"
+              >
+                <div className="d-flex justify-content-between mb-3">
+                  <strong>Item #{index + 1}</strong>
+                  {items.length > 1 && (
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={() => remove(index)}
+                      style={{
+                        borderColor: "#ced4da",
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faClose} />
+                    </button>
+                  )}
+                </div>
                 <Controller
                   control={formObject.control}
                   name={`items.${index}.type`}
@@ -110,7 +133,13 @@ export function AddNewApproval() {
                     return (
                       <ApprovalTypePicker
                         value={value}
-                        onChange={onChange}
+                        onChange={(v) => {
+                          console.log("reset");
+                          formObject.resetField(`items.${index}.item`, {
+                            defaultValue: {},
+                          });
+                          onChange(v);
+                        }}
                         onBlur={onBlur}
                       />
                     );
@@ -156,7 +185,19 @@ export function AddNewApproval() {
                 )}
               </div>
             ))}
+            <div className="mt-2 d-flex justify-content-end">
+              <button
+                className="btn btn-outline-primary"
+                // @ts-expect-error
+                // TODO
+                onClick={() => append(defaultItem)}
+                type="button"
+              >
+                Add item
+              </button>
+            </div>
           </fieldset>
+
           <LabeledInput title="Note:" as="textarea" name="note" />
 
           <div className="d-flex justify-content-between mb-3">
