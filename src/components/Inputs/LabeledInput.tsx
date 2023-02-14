@@ -1,11 +1,12 @@
 import { get } from "lodash";
 import { InputHTMLAttributes } from "react";
 import {
-  FieldPath,
   useFormContext,
   RegisterOptions,
   Controller,
   FieldValues,
+  ControllerRenderProps,
+  Path,
 } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 
@@ -16,11 +17,16 @@ type InputProps = InputHTMLAttributes<HTMLInputElement>;
   from react-hook-form. It it not compatible with React usual controlled
   components
  */
-export function LabeledInput<TFieldValues extends FieldValues>(
+export function LabeledInput<
+  TFieldValues extends FieldValues,
+  TName extends Path<TFieldValues>
+>(
   props: InputProps & {
     as?: any;
-    renderComponent?: (arg: any) => React.ReactElement;
-    name: FieldPath<TFieldValues>;
+    renderComponent?: (
+      props: ControllerRenderProps<TFieldValues, TName> & { invalid?: boolean }
+    ) => React.ReactElement;
+    name: TName;
     title: string;
     options?: RegisterOptions<TFieldValues>;
     inputStyle?: React.CSSProperties;
@@ -60,6 +66,8 @@ export function LabeledInput<TFieldValues extends FieldValues>(
           name={name}
           rules={options}
           render={({ field: { onChange, onBlur, value, ref } }) => {
+            // TODO
+            // @ts-expect-error
             return renderComponent({ value, onBlur, onChange, ref, invalid });
           }}
         />
@@ -81,7 +89,7 @@ export function LabeledInput<TFieldValues extends FieldValues>(
         render={({ message }) => {
           const isRequiredError = get(errors, name).type === "required";
           const errorMsg =
-            message || isRequiredError ? "This field is required" : "";
+            message || (isRequiredError ? "This field is required" : "");
           return <div className="invalid-feedback">{errorMsg}</div>;
         }}
       />
