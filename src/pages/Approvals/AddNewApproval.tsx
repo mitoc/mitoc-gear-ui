@@ -8,21 +8,21 @@ import { gearDbApi } from "redux/api";
 
 import { AddNewApprovalForm } from "./AddNewApprovalForm";
 import { Link } from "react-router-dom";
-import { useAppDispatch } from "redux/hooks";
 
 export function AddNewApproval() {
   useSetPageTitle("Approve restricted gear rental");
-  const dispatch = useAppDispatch();
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<APIErrorType | undefined>();
+  const [refetchApprovals, ..._] = gearDbApi.useLazyGetApprovalsQuery();
 
   const onSubmit = (args: CreateNewApprovalArgs) => {
     createNewApproval(args)
       .then(({ items }) => {
         setError(undefined);
         setSuccess(true);
-        // TODO: We should use RTK's mutations instead
-        dispatch(gearDbApi.endpoints.getApprovals.initiate({ past: false }));
+        // TODO: We should use RTK's mutations instead of refetching everything
+        refetchApprovals({ past: false });
+        refetchApprovals({ past: undefined });
       })
       .catch((err) => {
         if (err instanceof APIErrorClass) {

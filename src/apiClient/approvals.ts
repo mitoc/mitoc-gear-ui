@@ -86,3 +86,7 @@ export async function createNewApproval(approval: CreateNewApprovalArgs) {
   };
   return request(`/people/${renter}/approvals/`, "POST", body);
 }
+
+export async function deleteApproval(approvalID: number) {
+  return request(`/approvals/${approvalID}/`, "DELETE");
+}

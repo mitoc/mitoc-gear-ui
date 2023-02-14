@@ -14,7 +14,7 @@ export function ApprovalsPage() {
   useSetPageTitle("Restricted gear");
   const { isApprover } = usePermissions();
   const [showExpired, setShowExpired] = useState<boolean>(false);
-  const { data } = useGetApprovalsQuery({
+  const { data, refetch } = useGetApprovalsQuery({
     past: showExpired ? undefined : false, // filter past by default, unless opting in
   });
   const [page, setPage] = useState<number>(1);
@@ -50,7 +50,9 @@ export function ApprovalsPage() {
         />
         Show expired approvals
       </div>
-      {data && <ApprovalsTable approvals={data.results} />}
+      {data && (
+        <ApprovalsTable approvals={data.results} onDelete={() => refetch()} />
+      )}
     </>
   );
 }

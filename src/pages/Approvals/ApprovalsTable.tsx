@@ -1,10 +1,26 @@
+import { useMemo } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
+
 import { DataGrid } from "components/DataGrid";
 import { formatDate } from "lib/fmtDate";
-import { Approval } from "apiClient/approvals";
+import { Approval, deleteApproval } from "apiClient/approvals";
 import { PersonLink } from "components/PersonLink";
 import { GearLink } from "components/GearLink";
 
-export function ApprovalsTable({ approvals }: { approvals: Approval[] }) {
+export function ApprovalsTable({
+  approvals,
+  onDelete,
+}: {
+  approvals: Approval[];
+  onDelete: () => void;
+}) {
+  const LocalDeleteCell = useMemo(
+    () =>
+      ({ item }: { item: Approval }) =>
+        <DeleteCell item={item} onDelete={onDelete} />,
+    [onDelete]
+  );
   const columns = [
     { key: "deskWorker", header: "Renter", renderer: RenterCell, width: 0.8 },
     {
@@ -27,6 +43,7 @@ export function ApprovalsTable({ approvals }: { approvals: Approval[] }) {
       width: 0.8,
     },
     { key: "note", header: "Note", width: 1.25 },
+    { key: "delete", header: "Delete", width: 0.6, renderer: LocalDeleteCell },
   ];
 
   return (
@@ -87,5 +104,31 @@ function PersonCell({
     <PersonLink id={String(value.id)}>
       {value.firstName} {value.lastName}
     </PersonLink>
+  );
+}
+
+function DeleteCell({
+  item: approval,
+  onDelete,
+}: {
+  item: Approval;
+  onDelete: () => void;
+}) {
+  return (
+    <div className="d-flex justify-content-center w-100">
+      <button
+        className="btn btn-outline-secondary"
+        onClick={() => {
+          const isConfirmed = window.confirm(
+            "Are you sure you want to delete the approval? This action cannot be undone."
+          );
+          if (isConfirmed) {
+            deleteApproval(approval.id).then(() => onDelete());
+          }
+        }}
+      >
+        <FontAwesomeIcon icon={faClose} />
+      </button>
+    </div>
   );
 }

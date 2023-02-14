@@ -115,7 +115,7 @@ export function ApprovalItemsPicker() {
           onClick={() => append(defaultItem)}
           type="button"
         >
-          Add item
+          Approve another item
         </button>
       </div>
     </fieldset>
