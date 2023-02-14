@@ -9,7 +9,6 @@ import { PersonSelect } from "components/PersonSelect";
 import { ApprovalItemsPicker, defaultItem } from "./ApprovalItemsPicker";
 import { FormValues } from "./types";
 
-// TODO: Validate dates are in the right order
 // TODO: Handle submit
 // TODO: Simplify with LabeledControlledInput?
 
@@ -24,6 +23,7 @@ export function AddNewApproval() {
   const onSubmit = (values: FormValues) => {
     console.log({ values });
   };
+  const startDate = formObject.watch("startDate");
   return (
     <div className="row">
       <div className="col-lg-8">
@@ -32,7 +32,7 @@ export function AddNewApproval() {
           <LabeledInput
             title="Renter:"
             name="renter"
-            renderComponent={({ value, onChange, onBlur, invalid }: any) => {
+            renderComponent={({ value, onChange, onBlur, invalid }) => {
               return (
                 <PersonSelect
                   value={value}
@@ -48,7 +48,7 @@ export function AddNewApproval() {
           <LabeledInput
             title="Start Date:"
             name="startDate"
-            renderComponent={({ value, onChange, onBlur, invalid }: any) => {
+            renderComponent={({ value, onChange, onBlur, invalid }) => {
               return (
                 <DatePicker
                   selected={value}
@@ -66,7 +66,7 @@ export function AddNewApproval() {
           <LabeledInput
             title="End Date:"
             name="endDate"
-            renderComponent={({ value, onChange, onBlur, invalid }: any) => {
+            renderComponent={({ value, onChange, onBlur, invalid }) => {
               return (
                 <DatePicker
                   selected={value}
@@ -79,6 +79,11 @@ export function AddNewApproval() {
             }}
             options={{
               required: true,
+              validate: (value) => {
+                if (startDate != null && value < startDate) {
+                  return "The approval end date cannot be before the start date.";
+                }
+              },
             }}
           />
           <ApprovalItemsPicker />
