@@ -1,14 +1,30 @@
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 
 import { LabeledInput } from "components/Inputs/LabeledInput";
 import { Form } from "components/Inputs/Form";
 import { PersonSelect } from "components/PersonSelect";
+import { ApprovalItem, ApprovalItemType } from "apiClient/approvals";
+import { Select } from "components/Select";
 
-type FormValues = {};
+type FormValues = { items: ApprovalItem[] };
 
 export function AddNewApproval() {
-  const formObject = useForm<FormValues>();
+  const formObject = useForm<FormValues>({
+    defaultValues: { items: [{ type: ApprovalItemType.gearType }] },
+  });
+  const {
+    fields: itemFields,
+    append,
+    prepend,
+    remove,
+    swap,
+    move,
+    insert,
+  } = useFieldArray({
+    control: formObject.control, // control props comes from useForm (optional: if you are using FormContext)
+    name: "items", // unique name for your Field Array
+  });
 
   const onSubmit = (values: FormValues) => {};
   return (
@@ -69,6 +85,27 @@ export function AddNewApproval() {
               required: true,
             }}
           />
+          <fieldset>
+            Items:
+            {itemFields.map((field, index) => (
+              <Controller
+                key={field.id}
+                control={formObject.control}
+                name={`items.${index}`}
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value, ref } }) => {
+                  return (
+                    <ApprovalTypePicker
+                      value={value.type}
+                      onChange={(newType) => {
+                        onChange({ ...value, type: newType });
+                      }}
+                    />
+                  );
+                }}
+              />
+            ))}
+          </fieldset>
           <LabeledInput title="Note:" as="textarea" name="note" />
 
           <div className="d-flex justify-content-between mb-3">
@@ -86,5 +123,33 @@ export function AddNewApproval() {
         </Form>
       </div>
     </div>
+  );
+}
+
+const approvalTypeOptions = [
+  {
+    value: ApprovalItemType.gearType,
+    label: "Gear type",
+  },
+  {
+    value: ApprovalItemType.specificItem,
+    label: "Specific item",
+  },
+];
+
+function ApprovalTypePicker({
+  onChange,
+  value,
+}: {
+  onChange: (value: ApprovalItemType | undefined) => void;
+  value: ApprovalItemType;
+}) {
+  const selectedOption = approvalTypeOptions.find((o) => o.value === value);
+  return (
+    <Select
+      onChange={(newType) => onChange(newType?.value)}
+      value={selectedOption}
+      options={approvalTypeOptions}
+    />
   );
 }
