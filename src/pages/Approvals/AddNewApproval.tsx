@@ -4,12 +4,15 @@ import { APIErrorType } from "apiClient/types";
 import { useSetPageTitle } from "hooks";
 import { createNewApproval, CreateNewApprovalArgs } from "apiClient/approvals";
 import { APIError as APIErrorClass } from "apiClient/client";
+import { gearDbApi } from "redux/api";
 
 import { AddNewApprovalForm } from "./AddNewApprovalForm";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "redux/hooks";
 
 export function AddNewApproval() {
   useSetPageTitle("Approve restricted gear rental");
+  const dispatch = useAppDispatch();
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<APIErrorType | undefined>();
 
@@ -18,6 +21,8 @@ export function AddNewApproval() {
       .then(({ items }) => {
         setError(undefined);
         setSuccess(true);
+        // TODO: We should use RTK's mutations instead
+        dispatch(gearDbApi.endpoints.getApprovals.initiate({ past: false }));
       })
       .catch((err) => {
         if (err instanceof APIErrorClass) {

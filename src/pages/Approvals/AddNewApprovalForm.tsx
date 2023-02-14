@@ -10,9 +10,6 @@ import { ApprovalItemsPicker, defaultItem } from "./ApprovalItemsPicker";
 import { FormValues } from "./types";
 import { ApprovalItemType, CreateNewApprovalArgs } from "apiClient/approvals";
 
-// TODO: Refresh approvals after submiting
-// TODO: Simplify with LabeledControlledInput?
-
 type Props = {
   onSubmit: (args: CreateNewApprovalArgs) => void;
 };

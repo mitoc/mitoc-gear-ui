@@ -8,7 +8,7 @@ import { Select } from "./Select";
 import { useDebounce } from "./useDebounce";
 
 type Props = {
-  value: PersonSummary;
+  value: string;
   onChange: (person: PersonSummary | null) => void;
   className?: string;
   invalid?: boolean;
@@ -38,11 +38,13 @@ export function PersonSelect({ value, onChange, className, invalid }: Props) {
       };
     }) ?? [];
 
+  const selectedOption = options.find((o) => o.id === value);
+
   return (
     <Select
       className={className}
       options={options}
-      value={value}
+      value={selectedOption}
       onChange={onChange}
       onInputChange={debouncedSetInput}
       isLoading={isFetching || pending}
