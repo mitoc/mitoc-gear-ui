@@ -15,7 +15,7 @@ export function GearTypeSelect({
   value,
   onChange,
 }: {
-  value: GearType;
+  value: GearType | null;
   onChange: (value: GearType | null) => void;
 }) {
   const gearTypeOptions = useGearTypesOptions();

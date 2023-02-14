@@ -18,20 +18,31 @@ export enum ApprovalItemType {
   specificItem = "specificItem",
 }
 
-export type ApprovalItem =
-  | {
-      type: ApprovalItemType.gearType;
-      item: {
-        quantity: number;
-        gearType: GearType;
-      };
-    }
-  | {
-      type: ApprovalItemType.specificItem;
-      item: {
-        gearItem: GearItem;
-      };
-    };
+type GenericGearTypeApproval<T> = {
+  type: ApprovalItemType.gearType;
+  item: {
+    quantity: number;
+    gearType: T;
+  };
+};
+
+type GenericSpecificItemApproval<T> = {
+  type: ApprovalItemType.specificItem;
+  item: {
+    gearItem: T;
+  };
+};
+
+type GearTypeApproval = GenericGearTypeApproval<GearType>;
+type SpecificItemApproval = GenericSpecificItemApproval<GearItem>;
+type PartialGearTypeApproval = GenericGearTypeApproval<GearType | undefined>;
+type PartialSpecificItemApproval = GenericSpecificItemApproval<
+  GearItem | undefined
+>;
+export type ApprovalItem = GearTypeApproval | SpecificItemApproval;
+export type PartialApprovalItem =
+  | PartialGearTypeApproval
+  | PartialSpecificItemApproval;
 
 interface Person {
   id: number;

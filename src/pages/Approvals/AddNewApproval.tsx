@@ -6,24 +6,24 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { LabeledInput } from "components/Inputs/LabeledInput";
 import { Form } from "components/Inputs/Form";
 import { PersonSelect } from "components/PersonSelect";
-import { ApprovalItem, ApprovalItemType } from "apiClient/approvals";
+import { ApprovalItemType, PartialApprovalItem } from "apiClient/approvals";
 import { Select } from "components/Select";
 import { GearTypeSelect } from "components/GearTypeSelect";
 import { GearItemSelect } from "components/GearItemSelect";
 
-type FormValues = { items: ApprovalItem[] };
+type FormValues = { items: PartialApprovalItem[] };
 
-const defaultItem = {
+const defaultItem: PartialApprovalItem = {
   type: ApprovalItemType.gearType,
   item: {
     quantity: 1,
+    gearType: undefined,
   },
 };
 
 export function AddNewApproval() {
   const formObject = useForm<FormValues>({
     defaultValues: {
-      //@ts-expect-error
       items: [defaultItem],
     },
   });
@@ -39,7 +39,9 @@ export function AddNewApproval() {
     name: "items", // unique name for your Field Array
   });
 
-  const onSubmit = (values: FormValues) => {};
+  const onSubmit = (values: FormValues) => {
+    console.log({ values });
+  };
   const items = formObject.watch("items");
   return (
     <div className="row">
@@ -153,7 +155,10 @@ export function AddNewApproval() {
                       rules={{ required: true }}
                       render={({ field: { onChange, onBlur, value, ref } }) => {
                         return (
-                          <GearTypeSelect value={value} onChange={onChange} />
+                          <GearTypeSelect
+                            value={value ?? null}
+                            onChange={onChange}
+                          />
                         );
                       }}
                     />
@@ -177,7 +182,7 @@ export function AddNewApproval() {
                       render={({ field: { onChange, onBlur, value, ref } }) => {
                         return (
                           <GearItemSelect
-                            value={value?.id}
+                            value={value?.id ?? null}
                             onChange={onChange}
                           />
                         );
@@ -190,8 +195,6 @@ export function AddNewApproval() {
             <div className="mt-2 d-flex justify-content-end">
               <button
                 className="btn btn-outline-primary"
-                // @ts-expect-error
-                // TODO
                 onClick={() => append(defaultItem)}
                 type="button"
               >

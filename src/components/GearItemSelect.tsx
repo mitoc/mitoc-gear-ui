@@ -7,7 +7,7 @@ import { Select } from "./Select";
 import { useDebounce } from "./useDebounce";
 
 type Props = {
-  value: string;
+  value: string | null;
   onChange: (person: GearSummary | null) => void;
   className?: string;
   invalid?: boolean;
