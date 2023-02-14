@@ -14,7 +14,7 @@ import {
   CreateNewApprovalArgs,
 } from "apiClient/approvals";
 
-// TODO: Message after sending
+// TODO: Message after submitting
 // TODO: Simplify with LabeledControlledInput?
 
 export function AddNewApproval() {
