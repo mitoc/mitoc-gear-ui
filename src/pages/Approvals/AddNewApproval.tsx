@@ -14,8 +14,6 @@ import {
 import { Select } from "components/Select";
 import { GearTypeSelect } from "components/GearTypeSelect";
 import { GearItemSelect } from "components/GearItemSelect";
-import { ErrorMessage } from "@hookform/error-message";
-import { get } from "lodash";
 import styled from "styled-components";
 
 type FormValues = PartialApproval;
@@ -31,7 +29,6 @@ const defaultItem: PartialApprovalItem = {
 // TODO: Cancel button should bring you back to previous page
 // TODO: Validate dates are in the right order
 // TODO: Handle submit
-// TODO: Show error when missing type or item
 
 export function AddNewApproval() {
   const formObject = useForm<FormValues>({
@@ -43,9 +40,6 @@ export function AddNewApproval() {
     fields: itemFields,
     append,
     remove,
-    swap,
-    move,
-    insert,
   } = useFieldArray({
     control: formObject.control, // control props comes from useForm (optional: if you are using FormContext)
     name: "items", // unique name for your Field Array
@@ -55,8 +49,6 @@ export function AddNewApproval() {
     console.log({ values });
   };
   const items = formObject.watch("items");
-  const errors = formObject.formState.errors;
-  console.log({ errors: formObject.formState.errors });
   return (
     <div className="row">
       <div className="col-lg-8">
@@ -154,38 +146,24 @@ export function AddNewApproval() {
                   />
                   {items[index].type === ApprovalItemType.gearType ? (
                     <>
-                      <label>Type</label>
-                      <Controller
-                        key={field.id} // Needed to reset the type
-                        control={formObject.control}
+                      <LabeledInput
+                        title="Type:"
                         name={`items.${index}.item.gearType`}
-                        rules={{ required: true }}
-                        render={({
-                          field: { onChange, onBlur, value, ref },
-                        }) => {
+                        renderComponent={({
+                          value,
+                          onChange,
+                          invalid,
+                        }: any) => {
                           return (
                             <GearTypeSelect
                               value={value ?? null}
                               onChange={onChange}
-                              invalid={true}
+                              invalid={invalid}
                             />
                           );
                         }}
-                      />
-                      <ErrorMessage
-                        errors={formObject.formState.errors}
-                        name={`items.${index}.item.gearType`}
-                        render={({ message }) => {
-                          const isRequiredError =
-                            get(errors, `items.${index}.item.gearType`).type ===
-                            "required";
-                          const errorMsg =
-                            message || isRequiredError
-                              ? "This field is required"
-                              : "";
-                          return (
-                            <div className="invalid-feedback">{errorMsg}</div>
-                          );
+                        options={{
+                          required: true,
                         }}
                       />
                       <LabeledInput
@@ -199,42 +177,22 @@ export function AddNewApproval() {
                       />
                     </>
                   ) : (
-                    <>
-                      <label>Item</label>
-                      <Controller
-                        control={formObject.control}
-                        name={`items.${index}.item.gearItem`}
-                        rules={{ required: true }}
-                        render={({
-                          field: { onChange, onBlur, value, ref },
-                        }) => {
-                          return (
-                            <GearItemSelect
-                              value={value?.id ?? null}
-                              onChange={onChange}
-                              invalid={true}
-                            />
-                          );
-                        }}
-                      />
-                      <ErrorMessage
-                        errors={formObject.formState.errors}
-                        name={`items.${index}.item.gearItem`}
-                        render={({ message }) => {
-                          const isRequiredError =
-                            get(errors, `items.${index}.item.gearItem`).type ===
-                            "required";
-                          const errorMsg =
-                            message || isRequiredError
-                              ? "This field is required"
-                              : "";
-                          console.log({ message, errorMsg, isRequiredError });
-                          return (
-                            <div className="invalid-feedback">{errorMsg}</div>
-                          );
-                        }}
-                      />
-                    </>
+                    <LabeledInput
+                      title="Item:"
+                      name={`items.${index}.item.gearItem`}
+                      renderComponent={({ value, onChange, invalid }: any) => {
+                        return (
+                          <GearItemSelect
+                            value={value?.id ?? null}
+                            onChange={onChange}
+                            invalid={invalid}
+                          />
+                        );
+                      }}
+                      options={{
+                        required: true,
+                      }}
+                    />
                   )}
                 </StyledItem>
               );
