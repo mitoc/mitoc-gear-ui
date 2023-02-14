@@ -162,6 +162,9 @@ export function AddNewApproval() {
                       type="number"
                       name={`items.${index}.item.quantity`}
                       step={1}
+                      options={{
+                        valueAsNumber: true,
+                      }}
                     />
                   </>
                 ) : (
