@@ -1,10 +1,8 @@
-import type { PartialApprovalItem } from "apiClient/approvals";
+import type {
+  CreateNewApprovalArgs,
+  PartialApprovalItem,
+} from "apiClient/approvals";
 
-export type FormValues = {
-  id: number;
-  startDate: Date;
-  endDate: Date;
-  note: string;
-  renter: string;
+export type FormValues = Omit<CreateNewApprovalArgs, "items"> & {
   items: PartialApprovalItem[];
 };

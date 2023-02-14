@@ -1,3 +1,5 @@
+import { request } from "./client";
+
 interface GenericApproval<T> {
   id: number;
   startDate: string;
@@ -59,4 +61,28 @@ interface GearType {
   shorthand: string;
 }
 
-export async function addNewApproval(approval: Approval) {}
+export type CreateNewApprovalArgs = {
+  startDate: Date;
+  endDate: Date;
+  note: string;
+  renter: string;
+  items: ApprovalItem[];
+};
+
+export async function createNewApproval(approval: CreateNewApprovalArgs) {
+  const { renter, startDate, endDate, items, note } = approval;
+  const body = {
+    note,
+    //TODO: helper for this formatting
+    endDate: endDate.toISOString().split("T")[0],
+    startDate: startDate.toISOString().split("T")[0],
+    items: items.map((item) => ({
+      type: item.type,
+      item:
+        item.type === ApprovalItemType.gearType
+          ? { ...item.item, gearType: item.item.gearType.id }
+          : { ...item.item, gearItem: item.item.gearItem.id },
+    })),
+  };
+  return request(`/people/${renter}/approvals/`, "POST", body);
+}

@@ -8,8 +8,13 @@ import { PersonSelect } from "components/PersonSelect";
 
 import { ApprovalItemsPicker, defaultItem } from "./ApprovalItemsPicker";
 import { FormValues } from "./types";
+import {
+  ApprovalItemType,
+  createNewApproval,
+  CreateNewApprovalArgs,
+} from "apiClient/approvals";
 
-// TODO: Handle submit
+// TODO: Message after sending
 // TODO: Simplify with LabeledControlledInput?
 
 export function AddNewApproval() {
@@ -21,6 +26,15 @@ export function AddNewApproval() {
   });
 
   const onSubmit = (values: FormValues) => {
+    if (!ensureApprovalComplete(values)) {
+      // This case should not happen, the validation should handle it
+      return;
+    }
+    createNewApproval(values)
+      .then(() => {
+        console.log("success");
+      })
+      .catch(() => console.log("fail"));
     console.log({ values });
   };
   const startDate = formObject.watch("startDate");
@@ -36,7 +50,7 @@ export function AddNewApproval() {
               return (
                 <PersonSelect
                   value={value}
-                  onChange={onChange}
+                  onChange={(person) => onChange(person?.id)}
                   invalid={invalid}
                 />
               );
@@ -106,4 +120,15 @@ export function AddNewApproval() {
       </div>
     </div>
   );
+}
+
+function ensureApprovalComplete(
+  approval: FormValues
+): approval is CreateNewApprovalArgs {
+  return approval.items.every((item) => {
+    if (item.type === ApprovalItemType.gearType) {
+      return item.item.gearType != null;
+    }
+    return item.item.gearItem != null;
+  });
 }
