@@ -6,12 +6,21 @@ import { Form } from "components/Inputs/Form";
 import { PersonSelect } from "components/PersonSelect";
 import { ApprovalItem, ApprovalItemType } from "apiClient/approvals";
 import { Select } from "components/Select";
+import { GearTypeSelect } from "components/GearTypeSelect";
+import { GearItemSelect } from "components/GearItemSelect";
 
 type FormValues = { items: ApprovalItem[] };
 
 export function AddNewApproval() {
   const formObject = useForm<FormValues>({
-    defaultValues: { items: [{ type: ApprovalItemType.gearType }] },
+    defaultValues: {
+      items: [
+        {
+          type: ApprovalItemType.gearType,
+          item: {},
+        },
+      ],
+    },
   });
   const {
     fields: itemFields,
@@ -26,7 +35,10 @@ export function AddNewApproval() {
     name: "items", // unique name for your Field Array
   });
 
-  const onSubmit = (values: FormValues) => {};
+  const onSubmit = (values: FormValues) => {
+    console.log(values);
+  };
+  const items = formObject.watch("items");
   return (
     <div className="row">
       <div className="col-lg-8">
@@ -88,22 +100,61 @@ export function AddNewApproval() {
           <fieldset>
             Items:
             {itemFields.map((field, index) => (
-              <Controller
-                key={field.id}
-                control={formObject.control}
-                name={`items.${index}`}
-                rules={{ required: true }}
-                render={({ field: { onChange, onBlur, value, ref } }) => {
-                  return (
-                    <ApprovalTypePicker
-                      value={value.type}
-                      onChange={(newType) => {
-                        onChange({ ...value, type: newType });
+              <div key={field.id} style={{ marginLeft: "30px" }}>
+                Item #{index + 1}
+                <Controller
+                  control={formObject.control}
+                  name={`items.${index}.type`}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, onBlur, value, ref } }) => {
+                    return (
+                      <ApprovalTypePicker
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                      />
+                    );
+                  }}
+                />
+                {items[index].type === ApprovalItemType.gearType ? (
+                  <>
+                    <label>Type</label>
+                    <Controller
+                      control={formObject.control}
+                      name={`items.${index}.item.gearType`}
+                      rules={{ required: true }}
+                      render={({ field: { onChange, onBlur, value, ref } }) => {
+                        return (
+                          <GearTypeSelect value={value} onChange={onChange} />
+                        );
                       }}
                     />
-                  );
-                }}
-              />
+                    <LabeledInput
+                      title="Quantity approved"
+                      type="number"
+                      name={`items.${index}.item.quantity`}
+                      step={1}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <label>Item</label>
+                    <Controller
+                      control={formObject.control}
+                      name={`items.${index}.item.gearItem`}
+                      rules={{ required: true }}
+                      render={({ field: { onChange, onBlur, value, ref } }) => {
+                        return (
+                          <GearItemSelect
+                            value={value?.id}
+                            onChange={onChange}
+                          />
+                        );
+                      }}
+                    />
+                  </>
+                )}
+              </div>
             ))}
           </fieldset>
           <LabeledInput title="Note:" as="textarea" name="note" />
@@ -129,19 +180,21 @@ export function AddNewApproval() {
 const approvalTypeOptions = [
   {
     value: ApprovalItemType.gearType,
-    label: "Gear type",
+    label: "Approve gear by type",
   },
   {
     value: ApprovalItemType.specificItem,
-    label: "Specific item",
+    label: "Approve a specific item",
   },
 ];
 
 function ApprovalTypePicker({
   onChange,
   value,
+  onBlur,
 }: {
   onChange: (value: ApprovalItemType | undefined) => void;
+  onBlur?: () => void;
   value: ApprovalItemType;
 }) {
   const selectedOption = approvalTypeOptions.find((o) => o.value === value);
@@ -150,6 +203,7 @@ function ApprovalTypePicker({
       onChange={(newType) => onChange(newType?.value)}
       value={selectedOption}
       options={approvalTypeOptions}
+      onBlur={onBlur}
     />
   );
 }

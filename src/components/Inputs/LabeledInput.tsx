@@ -5,6 +5,7 @@ import {
   useFormContext,
   RegisterOptions,
   Controller,
+  FieldValues,
 } from "react-hook-form";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>;
@@ -14,7 +15,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement>;
   from react-hook-form. It it not compatible with React usual controlled
   components
  */
-export function LabeledInput<TFieldValues>(
+export function LabeledInput<TFieldValues extends FieldValues>(
   props: InputProps & {
     as?: any;
     renderComponent?: (arg: any) => React.ReactElement;

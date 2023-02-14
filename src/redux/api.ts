@@ -173,7 +173,7 @@ export function useGearList({
   missing?: boolean;
   retired?: boolean;
 }) {
-  const { data } = useGetGearListQuery({
+  const result = useGetGearListQuery({
     q: q?.trim(),
     page,
     gearTypes,
@@ -181,11 +181,12 @@ export function useGearList({
     missing,
     retired,
   });
+  const data = result.data;
   const gearList = data?.results;
   const nbPages =
     data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
 
-  return { gearList, nbPages };
+  return { gearList, nbPages, ...result };
 }
 
 export function usePeopleList({
