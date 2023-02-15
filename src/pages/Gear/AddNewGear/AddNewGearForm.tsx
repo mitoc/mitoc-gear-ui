@@ -3,7 +3,7 @@ import { useForm, FormProvider } from "react-hook-form";
 
 import { useGetGearTypesQuery } from "redux/api";
 import { CreateGearArgs, GearType } from "apiClient/gear";
-import { LabeledInput } from "components/Inputs/LabeledInput";
+import { makeLabeledInput } from "components/Inputs/LabeledInput";
 import { Link } from "react-router-dom";
 import { fmtAmount } from "lib/fmtNumber";
 import { Select } from "components/Select";
@@ -20,6 +20,8 @@ type FormValues = {
   depositAmount?: number;
   quantity: number;
 };
+
+const LabeledInput = makeLabeledInput<FormValues>();
 
 export function AddNewGearForm({
   onSubmit,
@@ -81,7 +83,7 @@ export function AddNewGearForm({
         <LabeledInput
           title="Gear type:"
           name="gearType"
-          renderComponent={({ value, onChange, onBlur, invalid }: any) => {
+          renderComponent={({ value, onChange, onBlur, invalid }) => {
             return (
               <Select
                 isLoading={!gearTypes}

@@ -8,7 +8,7 @@ import { useDebounce } from "./useDebounce";
 
 type Props = {
   value: string | null;
-  onChange: (person: GearSummary | null) => void;
+  onChange: (person: GearSummary | null | undefined) => void;
   className?: string;
   invalid?: boolean;
 };

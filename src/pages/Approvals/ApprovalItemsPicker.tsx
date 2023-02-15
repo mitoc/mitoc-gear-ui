@@ -3,13 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
-import { LabeledInput } from "components/Inputs/LabeledInput";
+import { makeLabeledInput } from "components/Inputs/LabeledInput";
 import { ApprovalItemType, PartialApprovalItem } from "apiClient/approvals";
 import { Select } from "components/Select";
 import { GearTypeSelect } from "components/GearTypeSelect";
 import { GearItemSelect } from "components/GearItemSelect";
 
 import { FormValues } from "./types";
+
+const LabeledInput = makeLabeledInput<FormValues>();
 
 export function ApprovalItemsPicker() {
   const formObject = useFormContext<FormValues>();
@@ -64,12 +66,12 @@ export function ApprovalItemsPicker() {
               <>
                 <LabeledInput
                   title="Type:"
-                  name={`items.${index}.item.gearType`}
-                  renderComponent={({ value, onChange, invalid }: any) => {
+                  name={`items.${index}.item.gearType` as const}
+                  renderComponent={({ value, onChange, invalid }) => {
                     return (
                       <GearTypeSelect
                         value={value ?? null}
-                        onChange={onChange}
+                        onChange={(val) => onChange(val ?? undefined)}
                         invalid={invalid}
                       />
                     );
@@ -91,12 +93,12 @@ export function ApprovalItemsPicker() {
             ) : (
               <LabeledInput
                 title="Item:"
-                name={`items.${index}.item.gearItem`}
-                renderComponent={({ value, onChange, invalid }: any) => {
+                name={`items.${index}.item.gearItem` as const}
+                renderComponent={({ value, onChange, invalid }) => {
                   return (
                     <GearItemSelect
                       value={value?.id ?? null}
-                      onChange={onChange}
+                      onChange={(val) => onChange(val ?? undefined)}
                       invalid={invalid}
                     />
                   );

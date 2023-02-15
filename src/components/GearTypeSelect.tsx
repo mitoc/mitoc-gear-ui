@@ -18,7 +18,7 @@ export function GearTypeSelect({
   onChange,
   invalid,
 }: {
-  value: GearType | null;
+  value: GearType | null | undefined;
   onChange: (value: GearType | null) => void;
   invalid?: boolean;
 }) {
