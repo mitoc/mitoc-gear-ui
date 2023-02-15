@@ -8,7 +8,7 @@ import { ItemToPurchase } from "../types";
 
 import { useBasket } from "./useBasket";
 
-export const isWinterSchool = true; // TODO: This could be read from the database
+export const isWinterSchool = false; // TODO: This should be read from the database
 
 type PersonPageContextType = ReturnType<typeof useMakePersonPageContext>;
 
