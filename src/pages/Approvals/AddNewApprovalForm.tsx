@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import { useHistory } from "react-router-dom";
 
-import { LabeledInput } from "components/Inputs/LabeledInput";
+import { makeLabeledInput } from "components/Inputs/LabeledInput";
 import { Form } from "components/Inputs/Form";
 import { PersonSelect } from "components/PersonSelect";
 
@@ -13,6 +13,8 @@ import { ApprovalItemType, CreateNewApprovalArgs } from "apiClient/approvals";
 type Props = {
   onSubmit: (args: CreateNewApprovalArgs) => void;
 };
+
+const LabeledInput = makeLabeledInput<FormValues>();
 
 export function AddNewApprovalForm({ onSubmit }: Props) {
   const history = useHistory();

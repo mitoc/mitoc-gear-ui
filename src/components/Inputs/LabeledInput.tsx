@@ -22,6 +22,27 @@ import {
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
+export type Props<
+  TFieldValues extends FieldValues,
+  TName extends Path<TFieldValues>
+> = InputProps & {
+  as?: any;
+  renderComponent?: (props: {
+    value: UnpackNestedValue<FieldPathValue<TFieldValues, TName>>;
+    invalid?: boolean;
+    name: TName;
+    onChange: (
+      value: UnpackNestedValue<FieldPathValue<TFieldValues, TName>>
+    ) => void;
+    onBlur: Noop;
+    ref: RefCallBack;
+  }) => React.ReactElement;
+  name: TName;
+  title: string;
+  options?: RegisterOptions<TFieldValues, TName>;
+  inputStyle?: React.CSSProperties;
+};
+
 /*
   Important note: this component can only be used inside a FormProvider
   from react-hook-form. It it not compatible with React usual controlled
@@ -30,30 +51,21 @@ type InputProps = InputHTMLAttributes<HTMLInputElement>;
 export function LabeledInput<
   TFieldValues extends FieldValues,
   TName extends Path<TFieldValues>
->(
-  props: InputProps & {
-    as?: any;
-    renderComponent?: (props: {
-      value: UnpackNestedValue<FieldPathValue<TFieldValues, TName>>;
-      invalid?: boolean;
-      name: TName;
-      onChange: (
-        value: UnpackNestedValue<FieldPathValue<TFieldValues, TName>>
-      ) => void;
-      onBlur: Noop;
-      ref: RefCallBack;
-    }) => React.ReactElement;
-    name: TName;
-    title: string;
-    options?: RegisterOptions<TFieldValues, TName>;
-    inputStyle?: React.CSSProperties;
-  }
-) {
+>(props: Props<TFieldValues, TName>) {
   const {
     register,
     control,
     formState: { errors },
   } = useFormContext<TFieldValues>();
+
+  /* TODO:
+    Using the context here causes issue: when we use LabeledInput in a form,
+    TS cannot infer the TFieldValues type for LabeledInput
+    This could be fixed by:
+      - Pass the formObject rather than using context
+      - Explicit the generic each type whe use LabeledInput
+   */
+
   const { name } = props;
   const {
     as: Component = "input",
@@ -121,4 +133,12 @@ export function LabeledInput<
       />
     </label>
   );
+}
+
+export function makeLabeledInput<TFormValues extends FieldValues>() {
+  return function TypedLabeledInput<TName extends Path<TFormValues>>(
+    props: Props<TFormValues, TName>
+  ) {
+    return LabeledInput(props);
+  };
 }
