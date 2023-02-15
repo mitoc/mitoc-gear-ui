@@ -1,3 +1,4 @@
+import { toIsoDate } from "lib/fmtDate";
 import { request } from "./client";
 
 interface GenericApproval<T> {
@@ -73,9 +74,8 @@ export async function createNewApproval(approval: CreateNewApprovalArgs) {
   const { renter, startDate, endDate, items, note } = approval;
   const body = {
     note,
-    //TODO: helper for this formatting
-    endDate: endDate.toISOString().split("T")[0],
-    startDate: startDate.toISOString().split("T")[0],
+    endDate: toIsoDate(endDate),
+    startDate: toIsoDate(startDate),
     items: items.map((item) => ({
       type: item.type,
       item:

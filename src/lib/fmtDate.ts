@@ -11,3 +11,7 @@ export function formatDateTime(date: string) {
 export function formatDuration(duration: string) {
   return duration.split(":").slice(0, -1).join(":");
 }
+
+export function toIsoDate(date: Date) {
+  return dayjs(date).format("YYYY-MM-DD");
+}
