@@ -29,16 +29,17 @@ type InputProps = InputHTMLAttributes<HTMLInputElement>;
  */
 export function LabeledInput<
   TFieldValues extends FieldValues,
-  TName extends Path<TFieldValues>,
-  TValue extends UnpackNestedValue<FieldPathValue<TFieldValues, TName>>
+  TName extends Path<TFieldValues>
 >(
   props: InputProps & {
     as?: any;
     renderComponent?: (props: {
-      value: TValue;
+      value: UnpackNestedValue<FieldPathValue<TFieldValues, TName>>;
       invalid?: boolean;
       name: TName;
-      onChange: (value: TValue) => void;
+      onChange: (
+        value: UnpackNestedValue<FieldPathValue<TFieldValues, TName>>
+      ) => void;
       onBlur: Noop;
       ref: RefCallBack;
     }) => React.ReactElement;
