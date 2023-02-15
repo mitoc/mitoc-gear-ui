@@ -2,13 +2,14 @@ import { useState } from "react";
 
 import { TablePagination } from "components/TablePagination";
 import { useSetPageTitle } from "hooks";
-import { useGetApprovalsQuery } from "redux/api";
+import { Link } from "react-router-dom";
 
 import { Checkbox } from "components/Inputs/Checkbox";
+import { restrictedGearDoc } from "lib/constants";
+import { useGetApprovalsQuery } from "redux/api";
+import { usePermissions } from "redux/auth";
 
 import { ApprovalsTable } from "./ApprovalsTable";
-import { Link } from "react-router-dom";
-import { usePermissions } from "redux/auth";
 
 export function ApprovalsPage() {
   useSetPageTitle("Restricted gear");
@@ -23,6 +24,13 @@ export function ApprovalsPage() {
   return (
     <>
       <h1>Restricted Gear Approvals</h1>
+      <p>
+        The old{" "}
+        <a href={restrictedGearDoc} target="_blank" rel="noreferrer">
+          restricted gear doc
+        </a>{" "}
+        has been deprecated. All current approvals should be on this page.
+      </p>
       {nbPages != null && (
         <div className="row">
           {

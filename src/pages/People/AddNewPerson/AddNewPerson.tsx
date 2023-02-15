@@ -7,7 +7,7 @@ import { APIErrorType } from "apiClient/types";
 import { validateEmail } from "lib/validation";
 import { LabeledInput } from "components/Inputs/LabeledInput";
 import { Form } from "components/Inputs/Form";
-import { createPerson, CreatePersonArgs } from "apiClient/people";
+import { createPerson } from "apiClient/people";
 import { useSetPageTitle } from "hooks";
 
 import { AddNewPersonError } from "./AddNewPersonError";

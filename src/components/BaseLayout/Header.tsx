@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { useCurrentUser, logOut, usePermissions } from "redux/auth";
 import { useAppDispatch } from "redux/hooks";
 import { PersonLink } from "components/PersonLink";
-import { restrictedGearDoc } from "lib/constants";
 
 export function Header() {
   const { user } = useCurrentUser();
