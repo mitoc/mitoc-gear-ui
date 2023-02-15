@@ -5,10 +5,20 @@ import {
   RegisterOptions,
   Controller,
   FieldValues,
-  ControllerRenderProps,
   Path,
+  FieldPathValue,
+  UnpackNestedValue,
+  Noop,
+  RefCallBack,
+  FieldName,
+  DeepMap,
+  DeepPartial,
+  FieldError,
 } from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
+import {
+  ErrorMessage,
+  FieldValuesFromFieldErrors,
+} from "@hookform/error-message";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
@@ -19,16 +29,22 @@ type InputProps = InputHTMLAttributes<HTMLInputElement>;
  */
 export function LabeledInput<
   TFieldValues extends FieldValues,
-  TName extends Path<TFieldValues>
+  TName extends Path<TFieldValues>,
+  TValue extends UnpackNestedValue<FieldPathValue<TFieldValues, TName>>
 >(
   props: InputProps & {
     as?: any;
-    renderComponent?: (
-      props: ControllerRenderProps<TFieldValues, TName> & { invalid?: boolean }
-    ) => React.ReactElement;
+    renderComponent?: (props: {
+      value: TValue;
+      invalid?: boolean;
+      name: TName;
+      onChange: (value: TValue) => void;
+      onBlur: Noop;
+      ref: RefCallBack;
+    }) => React.ReactElement;
     name: TName;
     title: string;
-    options?: RegisterOptions<TFieldValues>;
+    options?: RegisterOptions<TFieldValues, TName>;
     inputStyle?: React.CSSProperties;
   }
 ) {
@@ -61,14 +77,19 @@ export function LabeledInput<
     <label className={labelClassNames.join(" ")}>
       {!isCheckBox && title}
       {renderComponent != null ? (
-        <Controller
+        <Controller<TFieldValues, TName>
           control={control}
           name={name}
           rules={options}
-          render={({ field: { onChange, onBlur, value, ref } }) => {
-            // TODO
-            // @ts-expect-error
-            return renderComponent({ value, onBlur, onChange, ref, invalid });
+          render={({ field: { onChange, onBlur, value, ref, name } }) => {
+            return renderComponent({
+              value,
+              onBlur,
+              onChange,
+              ref,
+              invalid,
+              name,
+            });
           }}
         />
       ) : (
@@ -83,9 +104,13 @@ export function LabeledInput<
       {isCheckBox && <span className="ps-2">{title}</span>}
       <ErrorMessage
         errors={errors}
-        // TODO
-        // @ts-expect-error
-        name={name}
+        name={
+          name as FieldName<
+            FieldValuesFromFieldErrors<
+              DeepMap<DeepPartial<TFieldValues>, FieldError>
+            >
+          >
+        }
         render={({ message }) => {
           const isRequiredError = get(errors, name).type === "required";
           const errorMsg =
