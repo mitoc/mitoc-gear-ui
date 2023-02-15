@@ -68,7 +68,7 @@ function ItemsCell({ item: approval }: { item: Approval }) {
           return (
             <li>
               {item.gearType.typeName} ({item.gearType.shorthand}) -
-              {item.quantity} items
+              {item.quantity} {item.quantity > 1 ? "items" : "item"}
             </li>
           );
         }
