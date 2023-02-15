@@ -8,7 +8,11 @@ import { PersonSelect } from "components/PersonSelect";
 
 import { ApprovalItemsPicker, defaultItem } from "./ApprovalItemsPicker";
 import { FormValues } from "./types";
-import { ApprovalItemType, CreateNewApprovalArgs } from "apiClient/approvals";
+import {
+  ApprovalItemToCreate,
+  ApprovalItemType,
+  CreateNewApprovalArgs,
+} from "apiClient/approvals";
 
 type Props = {
   onSubmit: (args: CreateNewApprovalArgs) => void;
@@ -25,11 +29,8 @@ export function AddNewApprovalForm({ onSubmit }: Props) {
   });
 
   const handleSubmit = (values: FormValues) => {
-    if (!ensureApprovalComplete(values)) {
-      // This case should not happen, the validation should handle it
-      return;
-    }
-    onSubmit(values);
+    const validatedValues = validateApproval(values);
+    onSubmit(validatedValues);
   };
   const startDate = formObject.watch("startDate");
   return (
@@ -57,7 +58,7 @@ export function AddNewApprovalForm({ onSubmit }: Props) {
           return (
             <DatePicker
               selected={value}
-              onChange={onChange}
+              onChange={(val) => onChange(val ?? undefined)}
               className={`form-control ${invalid ? "is-invalid" : ""}`}
               wrapperClassName={invalid ? "is-invalid" : ""}
               onBlur={onBlur}
@@ -75,7 +76,7 @@ export function AddNewApprovalForm({ onSubmit }: Props) {
           return (
             <DatePicker
               selected={value}
-              onChange={onChange}
+              onChange={(val) => onChange(val ?? undefined)}
               className={`form-control ${invalid ? "is-invalid" : ""}`}
               wrapperClassName={invalid ? "is-invalid" : ""}
               onBlur={onBlur}
@@ -85,7 +86,7 @@ export function AddNewApprovalForm({ onSubmit }: Props) {
         options={{
           required: true,
           validate: (value) => {
-            if (startDate != null && value < startDate) {
+            if (startDate != null && value != null && value < startDate) {
               return "The approval end date cannot be before the start date.";
             }
           },
@@ -111,13 +112,27 @@ export function AddNewApprovalForm({ onSubmit }: Props) {
   );
 }
 
-function ensureApprovalComplete(
-  approval: FormValues
-): approval is CreateNewApprovalArgs {
-  return approval.items.every((item) => {
-    if (item.type === ApprovalItemType.gearType) {
-      return item.item.gearType != null;
-    }
-    return item.item.gearItem != null;
-  });
+function validateApproval(approval: FormValues): CreateNewApprovalArgs {
+  const { startDate, endDate, renter, items, note } = approval;
+  if (
+    startDate != null &&
+    endDate != null &&
+    renter != null &&
+    items.every((item) => {
+      if (item.type === ApprovalItemType.gearType) {
+        return item.item.gearType != null;
+      }
+      return item.item.gearItem != null;
+    })
+  ) {
+    return {
+      startDate,
+      endDate,
+      renter,
+      items: items as ApprovalItemToCreate[],
+      note,
+    };
+  }
+  // This case should not happen, the validation should handle it
+  throw Error("Missing required fields");
 }

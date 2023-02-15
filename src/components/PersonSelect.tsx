@@ -8,8 +8,8 @@ import { Select } from "./Select";
 import { useDebounce } from "./useDebounce";
 
 type Props = {
-  value: string;
-  onChange: (person: PersonSummary | null) => void;
+  value: string | undefined;
+  onChange: (person: PersonSummary | null | undefined) => void;
   className?: string;
   invalid?: boolean;
 };

@@ -3,6 +3,6 @@ import type {
   PartialApprovalItem,
 } from "apiClient/approvals";
 
-export type FormValues = Omit<CreateNewApprovalArgs, "items"> & {
+export type FormValues = Omit<Partial<CreateNewApprovalArgs>, "items"> & {
   items: PartialApprovalItem[];
 };

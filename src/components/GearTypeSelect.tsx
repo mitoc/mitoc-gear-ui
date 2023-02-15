@@ -18,16 +18,17 @@ export function GearTypeSelect({
   onChange,
   invalid,
 }: {
-  value: GearType | null | undefined;
+  value: number | null | undefined;
   onChange: (value: GearType | null) => void;
   invalid?: boolean;
 }) {
   const gearTypeOptions = useGearTypesOptions();
+  const selectedOption = gearTypeOptions.find((o) => o.id === value);
   return (
     <Select
       className="flex-grow-1"
       options={gearTypeOptions}
-      value={value}
+      value={selectedOption}
       onChange={onChange}
       invalid={invalid}
     />

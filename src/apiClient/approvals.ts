@@ -39,16 +39,17 @@ type GenericSpecificItemApproval<T> = {
   };
 };
 
-type GearTypeApproval = GenericGearTypeApproval<GearType>;
-type SpecificItemApproval = GenericSpecificItemApproval<GearItem>;
-type PartialGearTypeApproval = GenericGearTypeApproval<GearType | undefined>;
-type PartialSpecificItemApproval = GenericSpecificItemApproval<
-  GearItem | undefined
->;
-export type ApprovalItem = GearTypeApproval | SpecificItemApproval;
+export type ApprovalItem =
+  | GenericGearTypeApproval<GearType>
+  | GenericSpecificItemApproval<GearItem>;
+
 export type PartialApprovalItem =
-  | PartialGearTypeApproval
-  | PartialSpecificItemApproval;
+  | GenericGearTypeApproval<number | undefined>
+  | GenericSpecificItemApproval<string | undefined>;
+
+export type ApprovalItemToCreate =
+  | GenericGearTypeApproval<number>
+  | GenericSpecificItemApproval<string>;
 
 interface Person {
   id: number;
@@ -65,9 +66,9 @@ interface GearType {
 export type CreateNewApprovalArgs = {
   startDate: Date;
   endDate: Date;
-  note: string;
+  note?: string;
   renter: string;
-  items: ApprovalItem[];
+  items: ApprovalItemToCreate[];
 };
 
 export async function createNewApproval(approval: CreateNewApprovalArgs) {
@@ -80,8 +81,8 @@ export async function createNewApproval(approval: CreateNewApprovalArgs) {
       type: item.type,
       item:
         item.type === ApprovalItemType.gearType
-          ? { ...item.item, gearType: item.item.gearType.id }
-          : { ...item.item, gearItem: item.item.gearItem.id },
+          ? { ...item.item, gearType: item.item.gearType }
+          : { ...item.item, gearItem: item.item.gearItem },
     })),
   };
   return request(`/people/${renter}/approvals/`, "POST", body);

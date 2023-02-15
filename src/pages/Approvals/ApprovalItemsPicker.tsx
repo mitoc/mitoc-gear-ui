@@ -71,7 +71,7 @@ export function ApprovalItemsPicker() {
                     return (
                       <GearTypeSelect
                         value={value ?? null}
-                        onChange={(val) => onChange(val ?? undefined)}
+                        onChange={(val) => onChange(val?.id)}
                         invalid={invalid}
                       />
                     );
@@ -97,8 +97,8 @@ export function ApprovalItemsPicker() {
                 renderComponent={({ value, onChange, invalid }) => {
                   return (
                     <GearItemSelect
-                      value={value?.id ?? null}
-                      onChange={(val) => onChange(val ?? undefined)}
+                      value={value ?? null}
+                      onChange={(val) => onChange(val?.id)}
                       invalid={invalid}
                     />
                   );
