@@ -53,6 +53,11 @@ export interface GearType {
   defaultDeposit: number;
 }
 
+export interface GearLocation {
+  id: number;
+  shorthand: string;
+}
+
 async function getGearRentalHistory(
   id: string,
   page?: number

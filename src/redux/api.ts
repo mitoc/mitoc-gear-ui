@@ -6,6 +6,7 @@ import type {
   GearItem,
   GearSummary,
   GearType,
+  GearLocation,
   PurchasableItem,
 } from "apiClient/gear";
 import {
@@ -133,6 +134,9 @@ export const gearDbApi = createApi({
         },
       }),
     }),
+    getGearLocations: builder.query<GearLocation[], void>({
+      query: () => "/gear-locations/",
+    }),
   }),
 });
 
@@ -148,6 +152,7 @@ export const {
   useGetOfficeHoursQuery,
   useGetPersonSignupsQuery,
   useGetSignupsQuery,
+  useGetGearLocationsQuery,
 } = gearDbApi;
 
 export function useGearList({
