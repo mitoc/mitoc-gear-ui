@@ -19,6 +19,10 @@ export interface GearSummary {
   type: {
     typeName: string;
   };
+  location: {
+    id: string;
+    shorthand: string;
+  };
 }
 
 export interface GearItem extends GearSummary {

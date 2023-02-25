@@ -45,6 +45,7 @@ export function AllGearPage() {
       renderer: DescriptionCell,
     },
     { key: "status", header: "Status", renderer: StatusCell },
+    { key: "location", header: "Location", renderer: LocationCell },
   ]);
 
   return (
@@ -150,6 +151,14 @@ function TypeCell({ item: gearItem }: { item: GearSummary }) {
           <strong className="text-warning">RESTRICTED</strong>
         </>
       )}
+    </>
+  );
+}
+
+function LocationCell({ item: gearItem }: { item: GearSummary }) {
+  return (
+    <>
+      {gearItem.location.shorthand}
     </>
   );
 }
