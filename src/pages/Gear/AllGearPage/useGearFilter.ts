@@ -50,7 +50,9 @@ function parse(params: URLSearchParams): Filters {
     ...(missing != null && { missing }),
     ...(!isEmpty(gearTypes) && {
       gearTypes: gearTypes!.split(",").map(Number),
-    ...(!isEmpty(locations) && { locations: locations!.split(",").map(Number) }),
+    }),
+    ...(!isEmpty(locations) && {
+      locations: locations!.split(",").map(Number),
     }),
   };
 }

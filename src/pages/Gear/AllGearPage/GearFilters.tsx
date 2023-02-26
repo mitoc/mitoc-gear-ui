@@ -1,6 +1,7 @@
 import { map } from "lodash";
 
 import { GearTypeSelect } from "components/GearTypeSelect";
+import { GearLocationSelect } from "components/GearLocationSelect";
 import { Select } from "components/Inputs/Select";
 
 export enum GearStatusFilter {
@@ -39,6 +40,10 @@ export function GearFilters({ filters, setFilters }: Props) {
 
       <div className="mb-2">
         <label>Locations:</label>
+        <GearLocationSelect
+          locations={filters.locations ?? []}
+          onChange={(locations) => update({ locations: map(locations, "id") })}
+        />
       </div>
 
       {gearStatus.map((status) => (
