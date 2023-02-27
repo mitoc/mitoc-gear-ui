@@ -110,6 +110,7 @@ export type CreateGearArgs = {
   specification?: string;
   depositAmount?: number;
   description?: string;
+  location?: string;
 };
 
 async function createGear(
