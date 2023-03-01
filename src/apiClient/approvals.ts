@@ -1,18 +1,15 @@
 import { toIsoDate } from "lib/fmtDate";
 import { request } from "./client";
 
-interface GenericApproval<T> {
+export type Approval = {
   id: number;
   startDate: string;
   endDate: string;
   note: string;
   approvedBy: Person;
   renter: Person;
-  items: T[];
-}
-
-export type Approval = GenericApproval<ApprovalItem>;
-export type PartialApproval = GenericApproval<PartialApprovalItem>;
+  items: ApprovalItem[];
+};
 
 interface GearItem {
   id: string;
