@@ -13,7 +13,7 @@ export function AddNewApproval() {
   useSetPageTitle("Approve restricted gear rental");
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<APIErrorType | undefined>();
-  const [refetchApprovals, ..._] = gearDbApi.useLazyGetApprovalsQuery();
+  const refetchApprovals = gearDbApi.useLazyGetApprovalsQuery()[0];
 
   const onSubmit = (args: CreateNewApprovalArgs) => {
     createNewApproval(args)
