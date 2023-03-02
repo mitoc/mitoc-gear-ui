@@ -46,7 +46,7 @@ export function AllGearPage() {
       renderer: DescriptionCell,
     },
     { key: "status", header: "Status", renderer: StatusCell },
-    { key: "location", header: "Location", renderer: LocationCell },
+    { key: "location", header: "Location", renderer: LocationCell, hideOnMobile: true },
   ]);
 
   return (

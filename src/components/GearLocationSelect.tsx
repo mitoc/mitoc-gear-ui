@@ -22,12 +22,9 @@ export function GearLocationSelect({ locations, onChange: onChangeProps }: Props
       label: allGearLocations.shorthand,
       ...allGearLocations,
     })) ?? [];
-  const values =
-    gearLocationOptions == null
-      ? null
-      : (locations
-          .map((id) => gearLocationOptions.find((opt) => opt.id === id))
-          .filter((opt) => opt != null) as GearLocationOption[]);
+  const values = gearLocationOptions.filter((opt) =>
+      locations.includes(opt.id)
+  );
   const onChange = useCallback(
     (options: MultiValue<GearLocationOption>) =>
       onChangeProps(options.map(parseOption)),
