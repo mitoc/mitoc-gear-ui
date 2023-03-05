@@ -20,7 +20,7 @@ export interface GearSummary {
     typeName: string;
   };
   location: {
-    id: string;
+    id: number;
     shorthand: string;
   };
 }
