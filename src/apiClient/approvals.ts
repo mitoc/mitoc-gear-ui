@@ -1,19 +1,21 @@
 import { toIsoDate } from "lib/fmtDate";
 import { request } from "./client";
+import { GearTypeWithShorthand } from "./gear";
+import { PersonBase } from "./people";
 
 export type Approval = {
   id: number;
   startDate: string;
   endDate: string;
   note: string;
-  approvedBy: Person;
-  renter: Person;
+  approvedBy: PersonBase;
+  renter: PersonBase;
   items: ApprovalItem[];
 };
 
 interface GearItem {
   id: string;
-  type: GearType;
+  type: GearTypeWithShorthand;
 }
 
 export enum ApprovalItemType {
@@ -37,7 +39,7 @@ type GenericSpecificItemApproval<T> = {
 };
 
 export type ApprovalItem =
-  | GenericGearTypeApproval<GearType>
+  | GenericGearTypeApproval<GearTypeWithShorthand>
   | GenericSpecificItemApproval<GearItem>;
 
 export type PartialApprovalItem =
@@ -47,18 +49,6 @@ export type PartialApprovalItem =
 export type ApprovalItemToCreate =
   | GenericGearTypeApproval<number>
   | GenericSpecificItemApproval<string>;
-
-interface Person {
-  id: number;
-  firstName: string;
-  lastName: string;
-}
-
-interface GearType {
-  id: number;
-  typeName: string;
-  shorthand: string;
-}
 
 export type CreateNewApprovalArgs = {
   startDate: Date;

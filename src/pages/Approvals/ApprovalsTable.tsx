@@ -7,6 +7,7 @@ import { formatDate } from "lib/fmtDate";
 import { Approval, deleteApproval } from "apiClient/approvals";
 import { PersonLink } from "components/PersonLink";
 import { GearLink } from "components/GearLink";
+import { PersonBase } from "apiClient/people";
 
 export function ApprovalsTable({
   approvals,
@@ -91,15 +92,7 @@ function ApproverCell({ item: approval }: { item: Approval }) {
   return <PersonCell value={approval.approvedBy} />;
 }
 
-function PersonCell({
-  value,
-}: {
-  value: {
-    id: number;
-    firstName: string;
-    lastName: string;
-  };
-}) {
+function PersonCell({ value }: { value: PersonBase }) {
   return (
     <PersonLink id={String(value.id)}>
       {value.firstName} {value.lastName}

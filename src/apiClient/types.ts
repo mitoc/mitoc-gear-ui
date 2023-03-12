@@ -1,4 +1,4 @@
-import { PeopleGroup } from "./people";
+import { PeopleGroup, PersonBase } from "./people";
 
 export interface ListWrapper<T> {
   count: number;
@@ -7,10 +7,7 @@ export interface ListWrapper<T> {
   results: T[];
 }
 
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
+export interface User extends PersonBase {
   email: string;
   isDeskworker: boolean;
   groups: PeopleGroup[];
@@ -26,7 +23,7 @@ export interface Note {
   id: string;
   note: string;
   dateInserted: string;
-  author: { firstName: string; lastName: string };
+  author: PersonBase;
 }
 
 export interface Affiliations {
@@ -42,7 +39,7 @@ export interface OfficeHour {
   endTime: string;
   signups: {
     id: string;
-    deskWorker: { id: string; firstName: string; lastName: string };
+    deskWorker: PersonBase;
   }[];
 }
 
