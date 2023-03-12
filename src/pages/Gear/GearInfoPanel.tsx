@@ -7,6 +7,8 @@ import { GearStatus } from "./GearStatus";
 import { GearStatusForm, GearStatusFormType } from "./GearStatusForm";
 import { GearItemEditForm } from "./GearItemEditForm";
 import { Link } from "react-router-dom";
+import { newApprovalUI } from "featureFlags";
+import { restrictedGearDoc } from "lib/constants";
 
 type Props = { gearItem: GearSummary; refreshGear: () => void };
 
@@ -41,7 +43,13 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
         <div className="alert alert-warning p-2">
           ⚠️ This item is restricted! Check the{" "}
           <strong>
-            <Link to="/approvals">Restricted gear approvals</Link>
+            {newApprovalUI ? (
+              <Link to="/approvals">Restricted gear approvals</Link>
+            ) : (
+              <a href={restrictedGearDoc} target="_blank" rel="noreferrer">
+                Restricted gear doc
+              </a>
+            )}
           </strong>
           .
         </div>

@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { useCurrentUser, logOut, usePermissions } from "redux/auth";
 import { useAppDispatch } from "redux/hooks";
 import { PersonLink } from "components/PersonLink";
+import { newApprovalUI } from "featureFlags";
+import { restrictedGearDoc } from "lib/constants";
 
 export function Header() {
   const { user } = useCurrentUser();
@@ -68,9 +70,20 @@ export function Header() {
                 <Link className="nav-link" to="/gear">
                   Gear
                 </Link>
-                <Link className="nav-link" to="/approvals">
-                  Restricted gear
-                </Link>
+                {newApprovalUI ? (
+                  <Link className="nav-link" to="/approvals">
+                    Restricted gear
+                  </Link>
+                ) : (
+                  <a
+                    className="nav-link"
+                    href={restrictedGearDoc}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Restricted gear
+                  </a>
+                )}
                 <Link className="nav-link" to="/office-hours">
                   Office Hours
                 </Link>
