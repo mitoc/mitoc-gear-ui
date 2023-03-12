@@ -41,7 +41,7 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
       />
       {gearItem.restricted && (
         <div className="alert alert-warning p-2">
-          ⚠️ This item is restricted! Check the{" "}
+          ⚠️ This item is restricted! See the{" "}
           <strong>
             {newApprovalUI ? (
               <Link to="/approvals">Restricted gear approvals</Link>
