@@ -17,6 +17,10 @@ export interface GearSummary {
   size?: string;
   specification?: string;
   type: GearTypeWithFee;
+  location: {
+    id: string;
+    shorthand: string;
+  };
 }
 
 export interface GearItem extends GearSummary {
@@ -53,6 +57,11 @@ export interface GearTypeWithFee extends GearTypeBase {
 /** The representation of a gear type in the list endpoint*/
 export interface GearType extends GearTypeWithShorthand {
   defaultDeposit: number;
+}
+
+export interface GearLocation {
+  id: number;
+  shorthand: string;
 }
 
 async function getGearRentalHistory(
@@ -107,6 +116,7 @@ export type CreateGearArgs = {
   specification?: string;
   depositAmount?: number;
   description?: string;
+  location?: string;
 };
 
 async function createGear(

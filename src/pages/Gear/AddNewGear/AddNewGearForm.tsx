@@ -1,14 +1,16 @@
 import { useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 
-import { useGetGearTypesQuery } from "redux/api";
-import { CreateGearArgs, GearType } from "apiClient/gear";
+import { useGetGearTypesQuery, useGetGearLocationsQuery } from "redux/api";
+import { CreateGearArgs, GearType, GearLocation } from "apiClient/gear";
 import { makeLabeledInput } from "components/Inputs/LabeledInput";
 import { Link } from "react-router-dom";
 import { fmtAmount } from "lib/fmtNumber";
 import { Select } from "components/Select";
 
 type GearTypeOption = GearType & { value: string; label: string };
+
+type GearLocationOption = GearLocation & { value: string; label: string };
 
 type FormValues = {
   gearType: GearTypeOption | null;
@@ -19,6 +21,7 @@ type FormValues = {
   autoGenerateIds: boolean;
   depositAmount?: number;
   quantity: number;
+  location: GearLocationOption | null;
 };
 
 const LabeledInput = makeLabeledInput<FormValues>();
@@ -29,6 +32,7 @@ export function AddNewGearForm({
   onSubmit: (args: CreateGearArgs) => void;
 }) {
   const { data: gearTypes } = useGetGearTypesQuery();
+  const { data: gearLocations } = useGetGearLocationsQuery();
 
   const formObject = useForm<FormValues>({
     defaultValues: {
@@ -42,6 +46,7 @@ export function AddNewGearForm({
   const autoGenerateIds = watch("autoGenerateIds");
   const gearType = watch("gearType");
   const deposit = watch("depositAmount");
+  const gearLocation = watch("location");
   useEffect(() => {
     if (autoGenerateIds) {
       setValue("firstId", "");
@@ -59,11 +64,17 @@ export function AddNewGearForm({
       setValue("depositAmount", gearType.defaultDeposit);
     }
   }, [getFieldState, setValue, gearType]);
-  const options =
+  const optionsGearTypes =
     gearTypes?.map((gearType) => ({
       value: String(gearType.id),
       label: gearType.typeName,
       ...gearType,
+    })) ?? [];
+  const optionsGearLocations =
+    gearLocations?.map((gearLocation) => ({
+      value: gearLocation.id,
+      label: gearLocation.shorthand,
+      ...gearLocation,
     })) ?? [];
 
   return (
@@ -77,6 +88,7 @@ export function AddNewGearForm({
             ...formValues,
             id: formValues.firstId,
             type: gearType.value,
+            location: gearLocation?.value,
           });
         })}
       >
@@ -87,7 +99,7 @@ export function AddNewGearForm({
             return (
               <Select
                 isLoading={!gearTypes}
-                options={options}
+                options={optionsGearTypes}
                 className="w-100"
                 value={value}
                 onChange={onChange}
@@ -170,6 +182,23 @@ export function AddNewGearForm({
           title="Description:"
           as="textarea"
           name="description"
+        />
+        <LabeledInput
+          title="Gear location (override):"
+          name="location"
+          renderComponent={({ value, onChange, onBlur, invalid }: any) => {
+            return (
+              <Select
+                isLoading={!gearLocations}
+                options={optionsGearLocations}
+                className={`w-100 ${invalid ? "is-invalid" : ""}`}
+                invalid={invalid}
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+            );
+          }}
         />
         <div className="d-flex justify-content-between mb-3">
           <Link to="/gear">

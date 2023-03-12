@@ -22,7 +22,7 @@ export function AllGearPage() {
   const [showFilters, setShowFilters] = useState<boolean>(
     !isEqual(filters, { retired: GearStatusFilter.exclude }) // Open the panel if filters are not the default
   );
-  const { gearTypes, broken, missing, retired, q } = filters;
+  const { gearTypes, broken, missing, retired, q, locations } = filters;
   const query = q ?? "";
   const setQuery = (q: string) => setFilters((filters) => ({ ...filters, q }));
 
@@ -33,6 +33,7 @@ export function AllGearPage() {
     broken: gearStatusToBoolean(broken),
     missing: gearStatusToBoolean(missing),
     retired: gearStatusToBoolean(retired),
+    locations: locations,
   });
 
   const myColumns = compact([
@@ -45,6 +46,7 @@ export function AllGearPage() {
       renderer: DescriptionCell,
     },
     { key: "status", header: "Status", renderer: StatusCell },
+    { key: "location", header: "Location", renderer: LocationCell, hideOnMobile: true },
   ]);
 
   return (
@@ -150,6 +152,14 @@ function TypeCell({ item: gearItem }: { item: GearSummary }) {
           <strong className="text-warning">RESTRICTED</strong>
         </>
       )}
+    </>
+  );
+}
+
+function LocationCell({ item: gearItem }: { item: GearSummary }) {
+  return (
+    <>
+      {gearItem.location.shorthand}
     </>
   );
 }
