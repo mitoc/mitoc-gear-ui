@@ -7,7 +7,7 @@ import {
 
 import BaseLayout from "components/BaseLayout";
 
-import { useLoadCurrentUser } from "./redux/auth";
+import { useLoadCurrentUser, usePermissions } from "./redux/auth";
 import LoginPage from "./pages/LogIn";
 import { PeoplePage, PersonPage } from "./pages/People";
 import { AllGearPage, GearItemPage } from "./pages/Gear";
@@ -21,10 +21,13 @@ import { RequestDeskCreditPage } from "pages/OfficeHours/RequestDeskCreditPage";
 import { ApproveDeskCreditPage } from "pages/OfficeHours/ApproveDeskCreditPage";
 import { OfficeHoursHistory } from "pages/OfficeHours/OfficeHoursHistory";
 import { MyOfficeHoursHistory } from "pages/OfficeHours/MyOfficeHoursHistory";
+import { ApprovalsPage } from "pages/Approvals";
+import { AddNewApproval } from "pages/Approvals/AddNewApproval";
 
 function App() {
   const { loggedIn, isLoading } = useLoadCurrentUser();
   const { pathname, search } = window.location;
+  const { isApprover } = usePermissions();
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <BaseLayout>
@@ -70,6 +73,14 @@ function App() {
           <Route exact path="/office-hours">
             <OfficeHoursPage />
           </Route>
+          <Route exact path="/approvals">
+            <ApprovalsPage />
+          </Route>
+          {isApprover && (
+            <Route exact path="/add-approval">
+              <AddNewApproval />
+            </Route>
+          )}
           {loggedIn && (
             <Route exact path="/request-desk-credit">
               <RequestDeskCreditPage />

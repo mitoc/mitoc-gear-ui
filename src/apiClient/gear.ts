@@ -1,5 +1,5 @@
 import { request } from "./client";
-import { PersonSummary } from "./people";
+import { PersonBase, PersonSummary } from "./people";
 import { ListWrapper, Note } from "./types";
 
 export interface GearSummary {
@@ -16,9 +16,7 @@ export interface GearSummary {
   retired: string;
   size?: string;
   specification?: string;
-  type: {
-    typeName: string;
-  };
+  type: GearTypeWithFee;
   location: {
     id: string;
     shorthand: string;
@@ -30,11 +28,7 @@ export interface GearItem extends GearSummary {
 }
 
 export interface GearRental {
-  person: {
-    id: string;
-    firstName: string;
-    lastName: string;
-  };
+  person: PersonBase;
   checkedout: string;
   returned: string;
   weeksOut: number;
@@ -46,10 +40,22 @@ export interface PurchasableItem {
   name: string;
 }
 
-export interface GearType {
+/** The minimal representation of a gear type*/
+export interface GearTypeBase {
   id: number;
   typeName: string;
+}
+
+export interface GearTypeWithShorthand extends GearTypeBase {
   shorthand: string;
+}
+
+export interface GearTypeWithFee extends GearTypeBase {
+  rentalAmount: number;
+}
+
+/** The representation of a gear type in the list endpoint*/
+export interface GearType extends GearTypeWithShorthand {
   defaultDeposit: number;
 }
 

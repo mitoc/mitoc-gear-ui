@@ -10,6 +10,7 @@ enum Roles {
   GEAR_MANAGER = 6,
   DESK_CAPTAIN = 8,
   ADMIN = 24,
+  APPROVER = 25,
 }
 
 export function useLoadCurrentUser() {
@@ -42,5 +43,8 @@ export function usePermissions() {
       [Roles.DESK_CAPTAIN, Roles.GEAR_MANAGER, Roles.ADMIN].includes(g.id)
     ),
     isDeskWorker: user.isDeskworker,
+    isApprover: user.groups.some((g) =>
+      [Roles.ADMIN, Roles.APPROVER].includes(g.id)
+    ),
   };
 }

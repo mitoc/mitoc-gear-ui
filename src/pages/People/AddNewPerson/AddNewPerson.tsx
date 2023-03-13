@@ -7,7 +7,7 @@ import { APIErrorType } from "apiClient/types";
 import { validateEmail } from "lib/validation";
 import { LabeledInput } from "components/Inputs/LabeledInput";
 import { Form } from "components/Inputs/Form";
-import { createPerson, CreatePersonArgs } from "apiClient/people";
+import { createPerson } from "apiClient/people";
 import { useSetPageTitle } from "hooks";
 
 import { AddNewPersonError } from "./AddNewPersonError";
@@ -25,7 +25,7 @@ export function AddNewPerson() {
 
   const formObject = useForm<FormValues>();
 
-  const onSubmit = (args: CreatePersonArgs) => {
+  const onSubmit = (args: FormValues) => {
     createPerson(args)
       .then((person) => {
         setError(undefined);

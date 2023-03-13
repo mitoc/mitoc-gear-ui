@@ -2,11 +2,13 @@ import { useState } from "react";
 
 import type { GearSummary } from "apiClient/gear";
 import { fmtAmount } from "lib/fmtNumber";
-import { restrictedGearDoc } from "lib/constants";
 
 import { GearStatus } from "./GearStatus";
 import { GearStatusForm, GearStatusFormType } from "./GearStatusForm";
 import { GearItemEditForm } from "./GearItemEditForm";
+import { Link } from "react-router-dom";
+import { newApprovalUI } from "featureFlags";
+import { restrictedGearDoc } from "lib/constants";
 
 type Props = { gearItem: GearSummary; refreshGear: () => void };
 
@@ -39,11 +41,15 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
       />
       {gearItem.restricted && (
         <div className="alert alert-warning p-2">
-          ⚠️ This item is restricted! Check the{" "}
+          ⚠️ This item is restricted! See the{" "}
           <strong>
-            <a href={restrictedGearDoc} target="_blank" rel="noreferrer">
-              Restricted gear doc
-            </a>
+            {newApprovalUI ? (
+              <Link to="/approvals">Restricted gear approvals</Link>
+            ) : (
+              <a href={restrictedGearDoc} target="_blank" rel="noreferrer">
+                Restricted gear doc
+              </a>
+            )}
           </strong>
           .
         </div>

@@ -1,12 +1,18 @@
 import dayjs from "dayjs";
 
 import { request } from "./client";
+import { GearTypeWithFee } from "./gear";
 import { ListWrapper, Note } from "./types";
 
-export interface PersonSummary {
+/** The minimal representation of a person*/
+export interface PersonBase {
   id: string;
   firstName: string;
   lastName: string;
+}
+
+/** The representation of a person in the list endpoint*/
+export interface PersonSummary extends PersonBase {
   email: string;
   rentals: Rental[];
 }
@@ -20,6 +26,7 @@ export interface PeopleGroup {
   id: number;
 }
 
+/** The representation of a person in the retrieve endpoint*/
 export interface Person extends PersonSummary {
   affiliation: string;
   membership?: Expireable & { membershipType: string };
@@ -37,10 +44,7 @@ export interface Rental {
   returned?: string;
   totalAmount: number;
   weeksOut: number;
-  type: {
-    typeName: string;
-    rentalAmount: number;
-  };
+  type: GearTypeWithFee;
 }
 
 export interface GearToReturn {

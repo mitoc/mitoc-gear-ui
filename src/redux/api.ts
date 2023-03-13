@@ -18,6 +18,7 @@ import {
 } from "apiClient/types";
 import { API_HOST } from "apiClient/client";
 import { isEmpty } from "lodash";
+import { Approval } from "apiClient/approvals";
 
 export const gearDbApi = createApi({
   reducerPath: "gearDbApi",
@@ -134,6 +135,14 @@ export const gearDbApi = createApi({
         },
       }),
     }),
+    getApprovals: builder.query<ListWrapper<Approval>, { past?: boolean }>({
+      query: ({ past }) => ({
+        url: "/approvals/",
+        params: {
+          past,
+        },
+      }),
+    }),
     getGearLocations: builder.query<GearLocation[], void>({
       query: () => "/gear-locations/",
     }),
@@ -152,6 +161,7 @@ export const {
   useGetOfficeHoursQuery,
   useGetPersonSignupsQuery,
   useGetSignupsQuery,
+  useGetApprovalsQuery,
   useGetGearLocationsQuery,
 } = gearDbApi;
 
@@ -172,7 +182,7 @@ export function useGearList({
   retired?: boolean;
   locations?: number[];
 }) {
-  const { data } = useGetGearListQuery({
+  const result = useGetGearListQuery({
     q: q?.trim(),
     page,
     gearTypes,
@@ -181,11 +191,12 @@ export function useGearList({
     retired,
     locations,
   });
+  const data = result.data;
   const gearList = data?.results;
   const nbPages =
     data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
 
-  return { gearList, nbPages };
+  return { gearList, nbPages, ...result };
 }
 
 export function usePeopleList({
@@ -199,15 +210,16 @@ export function usePeopleList({
   openRentals?: boolean;
   groups?: number[];
 }) {
-  const { data } = useGetPersonListQuery({
+  const result = useGetPersonListQuery({
     q: q?.trim(),
     page,
     openRentals,
     groups,
   });
+  const data = result.data;
   const personList = data?.results;
   const nbPages =
     data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
 
-  return { personList, nbPages };
+  return { personList, nbPages, ...result };
 }
