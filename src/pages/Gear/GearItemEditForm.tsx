@@ -88,6 +88,7 @@ export function GearItemEditForm({ gearItem, closeForm, refreshGear }: Props) {
           isMulti={false}
           options={optionsGearLocations}
           onChange={setGearLocation}
+          value={optionsGearLocations.find((o) => o.id === location.id)}
         />
       </div>
 
