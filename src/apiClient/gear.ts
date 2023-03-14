@@ -18,7 +18,7 @@ export interface GearSummary {
   specification?: string;
   type: GearTypeWithFee;
   location: {
-    id: string;
+    id: number;
     shorthand: string;
   };
 }
@@ -130,13 +130,15 @@ async function editGearItem(
   specification: string,
   description: string,
   size: string,
-  depositAmount: number
+  depositAmount: number,
+  location: number,
 ) {
   return request(`/gear/${id}/`, "PATCH", {
     specification,
     description,
     size,
     depositAmount,
+    location,
   });
 }
 

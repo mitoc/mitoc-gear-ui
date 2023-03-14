@@ -68,6 +68,7 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
           <Field value={gearItem.description} title="Description" />
           <Field value={gearItem.size} title="Size" />
           <Field value={fmtAmount(gearItem.depositAmount)} title="Deposit" />
+          <Field value={gearItem.location.shorthand} title="Location" />
         </>
       )}
 
