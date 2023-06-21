@@ -1,11 +1,10 @@
 import React, { useContext, useState } from "react";
 
-import { flow, keyBy, map, mapValues, sum } from "lodash";
-import { checkoutGear, Person, Rental, returnGear } from "apiClient/people";
 import { GearSummary } from "apiClient/gear";
+import { checkoutGear, Person, Rental, returnGear } from "apiClient/people";
+import { flow, keyBy, map, mapValues, sum } from "lodash";
 
 import { ItemToPurchase } from "../types";
-
 import { useBasket } from "./useBasket";
 
 export const isWinterSchool = false; // TODO: This should be read from the database
@@ -91,9 +90,14 @@ function useMakePersonPageContext({ person, refreshPerson }: Props) {
       submit(checkNumber: string) {
         return returnGear(
           person.id,
-          returnBasketBase.items.map((rental) => ({
-            id: rental.id,
-          })),
+          returnBasketBase.items.map((rental) => {
+            return {
+              id: rental.id,
+              daysCharged:
+                rentalsWithOverride[rental.id].daysOutOverride ??
+                rental.weeksOut,
+            };
+          }),
           purchaseBasket.items.map((item) => item.item.id),
           checkNumber,
           creditToSpent
