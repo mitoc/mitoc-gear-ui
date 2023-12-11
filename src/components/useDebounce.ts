@@ -13,7 +13,7 @@ export function useDebounce<T extends (...args: any) => any>(
         const result = fn(...args);
         return result;
       }, duration),
-    [setPending, fn, duration    ],
+    [setPending, fn, duration],
   );
   return {
     pending,
