@@ -1,13 +1,13 @@
-import { GearItem } from 'apiClient/gear';
-import { useState } from 'react';
+import { GearItem } from "apiClient/gear";
+import { useState } from "react";
 
-import { PicturePickerModal } from './PicturePickerModal';
-import { PicturePlaceholder } from './PicturePlaceholder';
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { PicturePickerModal } from "./PicturePickerModal";
+import { PicturePlaceholder } from "./PicturePlaceholder";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
-import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type Props = {
   gearItem: GearItem;

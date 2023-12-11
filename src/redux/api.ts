@@ -1,25 +1,32 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { isEmpty } from 'lodash';
-import queryString from 'query-string';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { isEmpty } from "lodash";
+import queryString from "query-string";
 
-import { Approval } from 'apiClient/approvals';
-import { API_HOST } from 'apiClient/client';
+import { Approval } from "apiClient/approvals";
+import { API_HOST } from "apiClient/client";
 import type {
   GearItem,
   GearLocation,
   GearSummary,
   GearType,
   PurchasableItem,
-} from 'apiClient/gear';
-import { PeopleGroup, Person, PersonSummary } from 'apiClient/people';
-import { Affiliations, ListWrapper, OfficeHour, PersonSignup, Signup } from 'apiClient/types';
+} from "apiClient/gear";
+import { PeopleGroup, Person, PersonSummary } from "apiClient/people";
+import {
+  Affiliations,
+  ListWrapper,
+  OfficeHour,
+  PersonSignup,
+  Signup,
+} from "apiClient/types";
 
 export const gearDbApi = createApi({
-  reducerPath: 'gearDbApi',
+  reducerPath: "gearDbApi",
   baseQuery: fetchBaseQuery({
     baseUrl: API_HOST,
-    credentials: 'include',
-    paramsSerializer: (params) => queryString.stringify(params, { arrayFormat: 'none' }),
+    credentials: "include",
+    paramsSerializer: (params) =>
+      queryString.stringify(params, { arrayFormat: "none" }),
   }),
   endpoints: (builder) => ({
     getPerson: builder.query<Person, string>({
@@ -35,7 +42,7 @@ export const gearDbApi = createApi({
       }
     >({
       query: ({ q, page, openRentals, groups }) => ({
-        url: 'people/',
+        url: "people/",
         params: {
           ...(q && { q }),
           ...(page && { page }),
@@ -60,7 +67,7 @@ export const gearDbApi = createApi({
       }
     >({
       query: ({ q, page, gearTypes, broken, missing, retired, locations }) => ({
-        url: 'gear/',
+        url: "gear/",
         params: {
           ...(q && { q }),
           ...(page && { page }),
@@ -76,19 +83,19 @@ export const gearDbApi = createApi({
       query: (gearType) => `/gear-types/${gearType}/pictures`,
     }),
     getPurchasables: builder.query<PurchasableItem[], void>({
-      query: () => '/purchasable/',
+      query: () => "/purchasable/",
     }),
     getAffiliations: builder.query<Affiliations[], void>({
-      query: () => '/affiliations/',
+      query: () => "/affiliations/",
     }),
     getGroups: builder.query<PeopleGroup[], void>({
       query: () => `/people-groups/`,
     }),
     getGearTypes: builder.query<GearType[], void>({
-      query: () => '/gear-types/',
+      query: () => "/gear-types/",
     }),
     getOfficeHours: builder.query<OfficeHour[], void>({
-      query: () => '/office-hours/',
+      query: () => "/office-hours/",
     }),
     getPersonSignups: builder.query<
       ListWrapper<PersonSignup>,
@@ -96,7 +103,7 @@ export const gearDbApi = createApi({
         personID: string;
         approved?: boolean;
         page?: number;
-        orderBy?: 'date' | '-date';
+        orderBy?: "date" | "-date";
       }
     >({
       query: ({ personID, approved, page, orderBy }) => ({
@@ -116,7 +123,7 @@ export const gearDbApi = createApi({
         page?: number;
         before?: string;
         after?: string;
-        orderBy?: 'date' | '-date';
+        orderBy?: "date" | "-date";
       }
     >({
       query: ({ approved, creditRequested, page, before, after, orderBy }) => ({
@@ -133,14 +140,14 @@ export const gearDbApi = createApi({
     }),
     getApprovals: builder.query<ListWrapper<Approval>, { past?: boolean }>({
       query: ({ past }) => ({
-        url: '/approvals/',
+        url: "/approvals/",
         params: {
           past,
         },
       }),
     }),
     getGearLocations: builder.query<GearLocation[], void>({
-      query: () => '/gear-locations/',
+      query: () => "/gear-locations/",
     }),
   }),
 });
@@ -190,7 +197,8 @@ export function useGearList({
   });
   const data = result.data;
   const gearList = data?.results;
-  const nbPages = data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
+  const nbPages =
+    data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
 
   return { gearList, nbPages, ...result };
 }
@@ -214,7 +222,8 @@ export function usePeopleList({
   });
   const data = result.data;
   const personList = data?.results;
-  const nbPages = data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
+  const nbPages =
+    data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
 
   return { personList, nbPages, ...result };
 }
