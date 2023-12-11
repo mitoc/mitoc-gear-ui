@@ -1,12 +1,12 @@
-import { GearItem, editGearItem } from 'apiClient/gear';
-import Modal from 'react-bootstrap/Modal';
-import { useGetGearTypePicturesQuery } from 'redux/api';
-import styled from 'styled-components';
+import { GearItem, editGearItem } from "apiClient/gear";
+import Modal from "react-bootstrap/Modal";
+import { useGetGearTypePicturesQuery } from "redux/api";
+import styled from "styled-components";
 
-import { PicturePlaceholder } from './PicturePlaceholder';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { uploadFile } from 'apiClient/client';
-import { useRef, useState } from 'react';
+import { PicturePlaceholder } from "./PicturePlaceholder";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { uploadFile } from "apiClient/client";
+import { useRef, useState } from "react";
 
 type Props = {
   isOpen: boolean;
@@ -15,8 +15,14 @@ type Props = {
   refreshGear: () => void;
 };
 
-export function PicturePickerModal({ isOpen, close, item, refreshGear }: Props) {
-  const { data: pictures, refetch: refetchPictures } = useGetGearTypePicturesQuery(item.type.id);
+export function PicturePickerModal({
+  isOpen,
+  close,
+  item,
+  refreshGear,
+}: Props) {
+  const { data: pictures, refetch: refetchPictures } =
+    useGetGearTypePicturesQuery(item.type.id);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selected, setSelected] = useState<string | undefined>(item.picture);
 
@@ -27,7 +33,7 @@ export function PicturePickerModal({ isOpen, close, item, refreshGear }: Props) 
       </Modal.Header>
       <Modal.Body>
         <GridContainer>
-          <div style={{ width: '200px' }}>
+          <div style={{ width: "200px" }}>
             <PicturePlaceholder
               icon={faUpload}
               onClick={() => {
@@ -105,7 +111,8 @@ const PicContainer = styled.button<{ selected?: boolean }>`
   outline: grey solid 1px;
   border: none;
 
-  ${({ selected }) => (selected ? 'outline: var(--bs-success) 6px solid !important' : '')}
+  ${({ selected }) =>
+    selected ? "outline: var(--bs-success) 6px solid !important" : ""}
 `;
 
 const Pic = styled.img`

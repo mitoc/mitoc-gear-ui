@@ -1,6 +1,6 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styled from 'styled-components';
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styled from "styled-components";
 
 type Props = {
   onClick: () => void;
@@ -10,7 +10,13 @@ type Props = {
   fontSize?: number;
 };
 
-export function PicturePlaceholder({ onClick, icon, text, size, fontSize = 1 }: Props) {
+export function PicturePlaceholder({
+  onClick,
+  icon,
+  text,
+  size,
+  fontSize = 1,
+}: Props) {
   const iconFontSize = Math.min(fontSize * 50, 100);
   const thickness = `${fontSize * 4}px`;
   return (
@@ -26,7 +32,7 @@ export function PicturePlaceholder({ onClick, icon, text, size, fontSize = 1 }: 
 }
 
 const PictureButton = styled.button.attrs({
-  className: 'd-flex align-items-center justify-content-center text-center',
+  className: "d-flex align-items-center justify-content-center text-center",
 })<{ size?: string; thickness: string }>`
   &:hover {
     color: var(--bs-link-color);
@@ -143,5 +149,5 @@ const PictureButton = styled.button.attrs({
   background-repeat: no-repeat;
   background-size: 50px 50px;
 
-  ${(props) => (props.size != null ? `max-width: ${props.size}` : '')}
+  ${(props) => (props.size != null ? `max-width: ${props.size}` : "")}
 `;

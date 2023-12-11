@@ -1,25 +1,30 @@
-import { useEffect } from 'react';
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import { useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 
-import { refreshCsrfToken } from 'apiClient/client';
-import BaseLayout from 'components/BaseLayout';
-import { ApprovalsPage } from 'pages/Approvals';
-import { AddNewApproval } from 'pages/Approvals/AddNewApproval';
-import { ApproveDeskCreditPage } from 'pages/OfficeHours/ApproveDeskCreditPage';
-import { MyOfficeHoursHistory } from 'pages/OfficeHours/MyOfficeHoursHistory';
-import { OfficeHoursHistory } from 'pages/OfficeHours/OfficeHoursHistory';
-import { RequestDeskCreditPage } from 'pages/OfficeHours/RequestDeskCreditPage';
-import { ChangePassword } from 'pages/People/PersonProfile/PersonChangePassword';
+import { refreshCsrfToken } from "apiClient/client";
+import BaseLayout from "components/BaseLayout";
+import { ApprovalsPage } from "pages/Approvals";
+import { AddNewApproval } from "pages/Approvals/AddNewApproval";
+import { ApproveDeskCreditPage } from "pages/OfficeHours/ApproveDeskCreditPage";
+import { MyOfficeHoursHistory } from "pages/OfficeHours/MyOfficeHoursHistory";
+import { OfficeHoursHistory } from "pages/OfficeHours/OfficeHoursHistory";
+import { RequestDeskCreditPage } from "pages/OfficeHours/RequestDeskCreditPage";
+import { ChangePassword } from "pages/People/PersonProfile/PersonChangePassword";
 
-import { AllGearPage, GearItemPage } from './pages/Gear';
-import { AddNewGear } from './pages/Gear/AddNewGear';
-import LoginPage from './pages/LogIn';
-import { RequestPasswordConfirm } from './pages/LogIn/RequestPasswordConfirm';
-import { RequestPasswordReset } from './pages/LogIn/RequestPasswordReset';
-import { OfficeHoursPage } from './pages/OfficeHours';
-import { PeoplePage, PersonPage } from './pages/People';
-import { AddNewPerson } from './pages/People/AddNewPerson';
-import { useLoadCurrentUser, usePermissions } from './redux/auth';
+import { AllGearPage, GearItemPage } from "./pages/Gear";
+import { AddNewGear } from "./pages/Gear/AddNewGear";
+import LoginPage from "./pages/LogIn";
+import { RequestPasswordConfirm } from "./pages/LogIn/RequestPasswordConfirm";
+import { RequestPasswordReset } from "./pages/LogIn/RequestPasswordReset";
+import { OfficeHoursPage } from "./pages/OfficeHours";
+import { PeoplePage, PersonPage } from "./pages/People";
+import { AddNewPerson } from "./pages/People/AddNewPerson";
+import { useLoadCurrentUser, usePermissions } from "./redux/auth";
 
 function App() {
   const { loggedIn, isLoading } = useLoadCurrentUser();
@@ -51,7 +56,7 @@ function App() {
           {!isLoading && !loggedIn && (
             <Redirect
               to={{
-                pathname: '/login',
+                pathname: "/login",
                 search: `redirectTo=${encodeURIComponent(pathname + search)}`,
               }}
             />
