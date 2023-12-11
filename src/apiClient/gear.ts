@@ -58,7 +58,6 @@ export interface GearTypeWithFee extends GearTypeBase {
 /** The representation of a gear type in the list endpoint*/
 export interface GearType extends GearTypeWithShorthand {
   defaultDeposit: number;
-  shouldInventory: boolean;
 }
 
 export interface GearLocation {
