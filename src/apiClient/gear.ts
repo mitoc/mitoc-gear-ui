@@ -17,6 +17,7 @@ export interface GearSummary {
   size?: string;
   specification?: string;
   type: GearTypeWithFee;
+  picture?: string;
   location: {
     id: number;
     shorthand: string;
@@ -57,6 +58,7 @@ export interface GearTypeWithFee extends GearTypeBase {
 /** The representation of a gear type in the list endpoint*/
 export interface GearType extends GearTypeWithShorthand {
   defaultDeposit: number;
+  shouldInventory: boolean;
 }
 
 export interface GearLocation {
@@ -127,24 +129,22 @@ async function createGear(
 
 async function editGearItem(
   id: string,
-  specification: string,
-  description: string,
-  size: string,
-  depositAmount: number,
-  location: number,
+  item: {
+    specification?: string;
+    description?: string;
+    size?: string;
+    depositAmount?: number;
+    location?: number;
+    picture?: string;
+  },
 ) {
-  return request(`/gear/${id}/`, "PATCH", {
-    specification,
-    description,
-    size,
-    depositAmount,
-    location,
-  });
+  return request(`/gear/${id}/`, "PATCH", item);
 }
 
 export {
   addNote,
   createGear,
+  editGearItem,
   getGearRentalHistory,
   markBroken,
   markFixed,
@@ -152,5 +152,4 @@ export {
   markMissing,
   markRetired,
   markUnretired,
-  editGearItem,
 };

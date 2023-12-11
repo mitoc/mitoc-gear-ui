@@ -10,28 +10,57 @@ export async function request(
   path: string,
   method: string,
   data?: Data,
-  maxRetry: number = 3,
+  maxRetry?: number,
 ): Promise<any> {
-  if (maxRetry <= 0) {
-    return;
-  }
+  return requestInternal({
+    path,
+    method,
+    data,
+    maxRetry,
+    contentType: "application/json",
+  });
+}
+
+export async function uploadFile(path: string, file: File) {
+  console.log({ file });
+  const formData = new FormData();
+  formData.append("file", file);
+  return requestInternal({ path, method: "POST", body: formData });
+}
+
+async function requestInternal(args: {
+  path: string;
+  method: string;
+  data?: Data;
+  body?: BodyInit;
+  maxRetry?: number;
+  contentType?: string;
+}): Promise<any> {
+  const { path, method, data, maxRetry = 3, body: rawBody, contentType } = args;
+  const isGet = method === "GET";
   const queryParams =
     data != null && method === "GET" ? "?" + getQueryParams(data) : "";
+  const body = isGet
+    ? undefined
+    : rawBody != null
+      ? rawBody
+      : data != null
+        ? JSON.stringify(data)
+        : undefined;
+
+  const headers = {
+    ...(!isGet && { "X-CSRFTOKEN": await getCsrfToken() }),
+    ...(contentType != null && { "Content-Type": contentType }),
+  };
   const response = await fetch(`${API_HOST}${path}${queryParams}`, {
     method: method,
-    headers:
-      method !== "GET"
-        ? {
-            "X-CSRFTOKEN": await getCsrfToken(),
-            "Content-Type": "application/json",
-          }
-        : { "Content-Type": "application/json" },
+    headers,
     credentials: "include",
-    ...(data != null && method !== "GET" && { body: JSON.stringify(data) }),
+    ...(body && { body }),
   });
   if (response.status === 403) {
     await refreshCsrfToken();
-    return request(path, method, data, maxRetry - 1);
+    return requestInternal({ ...args, maxRetry: maxRetry - 1 });
   }
   const jsonResponse = await parseJson(response);
   if (!response.ok) {

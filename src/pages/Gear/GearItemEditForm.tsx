@@ -48,14 +48,13 @@ export function GearItemEditForm({ gearItem, closeForm, refreshGear }: Props) {
     if (deposit == null) {
       return;
     }
-    editGearItem(
-      gearItem.id,
+    editGearItem(gearItem.id, {
       specification,
       description,
       size,
-      deposit,
-      location.id,
-    ).then(() => {
+      depositAmount: deposit,
+      location: location.id,
+    }).then(() => {
       closeForm();
       refreshGear();
     });
