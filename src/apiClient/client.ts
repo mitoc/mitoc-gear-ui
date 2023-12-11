@@ -36,6 +36,9 @@ async function requestInternal(args: {
   contentType?: string;
 }): Promise<any> {
   const { path, method, data, maxRetry = 3, body: rawBody, contentType } = args;
+  if (maxRetry <= 0) {
+    return;
+  }
   const isGet = method === "GET";
   const queryParams =
     data != null && method === "GET" ? "?" + getQueryParams(data) : "";
