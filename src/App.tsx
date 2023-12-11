@@ -1,33 +1,42 @@
+import { useEffect } from "react";
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
   Redirect,
+  Route,
+  Switch,
 } from "react-router-dom";
 
+import { refreshCsrfToken } from "apiClient/client";
 import BaseLayout from "components/BaseLayout";
-
-import { useLoadCurrentUser, usePermissions } from "./redux/auth";
-import LoginPage from "./pages/LogIn";
-import { PeoplePage, PersonPage } from "./pages/People";
-import { AllGearPage, GearItemPage } from "./pages/Gear";
-import { OfficeHoursPage } from "./pages/OfficeHours";
-import { AddNewGear } from "./pages/Gear/AddNewGear";
-import { AddNewPerson } from "./pages/People/AddNewPerson";
-import { RequestPasswordReset } from "./pages/LogIn/RequestPasswordReset";
-import { RequestPasswordConfirm } from "./pages/LogIn/RequestPasswordConfirm";
-import { ChangePassword } from "pages/People/PersonProfile/PersonChangePassword";
-import { RequestDeskCreditPage } from "pages/OfficeHours/RequestDeskCreditPage";
-import { ApproveDeskCreditPage } from "pages/OfficeHours/ApproveDeskCreditPage";
-import { OfficeHoursHistory } from "pages/OfficeHours/OfficeHoursHistory";
-import { MyOfficeHoursHistory } from "pages/OfficeHours/MyOfficeHoursHistory";
 import { ApprovalsPage } from "pages/Approvals";
 import { AddNewApproval } from "pages/Approvals/AddNewApproval";
+import { ApproveDeskCreditPage } from "pages/OfficeHours/ApproveDeskCreditPage";
+import { MyOfficeHoursHistory } from "pages/OfficeHours/MyOfficeHoursHistory";
+import { OfficeHoursHistory } from "pages/OfficeHours/OfficeHoursHistory";
+import { RequestDeskCreditPage } from "pages/OfficeHours/RequestDeskCreditPage";
+import { ChangePassword } from "pages/People/PersonProfile/PersonChangePassword";
+
+import { AllGearPage, GearItemPage } from "./pages/Gear";
+import { AddNewGear } from "./pages/Gear/AddNewGear";
+import LoginPage from "./pages/LogIn";
+import { RequestPasswordConfirm } from "./pages/LogIn/RequestPasswordConfirm";
+import { RequestPasswordReset } from "./pages/LogIn/RequestPasswordReset";
+import { OfficeHoursPage } from "./pages/OfficeHours";
+import { PeoplePage, PersonPage } from "./pages/People";
+import { AddNewPerson } from "./pages/People/AddNewPerson";
+import { useLoadCurrentUser, usePermissions } from "./redux/auth";
 
 function App() {
   const { loggedIn, isLoading } = useLoadCurrentUser();
   const { pathname, search } = window.location;
   const { isApprover } = usePermissions();
+  useEffect(() => {
+    if (loggedIn) {
+      // Pre-load CSRF token
+      refreshCsrfToken();
+    }
+  }, [loggedIn]);
+
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <BaseLayout>

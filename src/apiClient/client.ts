@@ -66,12 +66,12 @@ let _csrfToken: any = null;
 
 async function getCsrfToken() {
   if (_csrfToken == null) {
-    refreshCsrfToken();
+    return refreshCsrfToken();
   }
   return _csrfToken;
 }
 
-async function refreshCsrfToken() {
+export async function refreshCsrfToken() {
   const response = await fetch(`${API_HOST}/auth/csrf/`, {
     credentials: "include",
   });
