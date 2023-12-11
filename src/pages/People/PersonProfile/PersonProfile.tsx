@@ -1,17 +1,18 @@
+import { useState } from "react";
+import styled from "styled-components";
+
 import { ToggleExpandButton } from "components/Buttons";
+import { usePermissions } from "redux/auth";
+
+import { usePersonPageContext } from "../PeoplePage/PersonPageContext";
 
 import { ColoredTile, ExpirableTile } from "./ExpirableTile";
 import { FrequentFlyerForm } from "./FrequentFlyerForm";
-import { WaiverForm } from "./WaiverForm";
 import { MembershipForm } from "./MembershipForm";
-import { useState } from "react";
-import { PersonEditForm } from "./PersonEditForm";
 import { MitocCreditForm } from "./MitocCreditForm";
-import { usePermissions } from "redux/auth";
-
 import PeopleGroups from "./PeopleGroups";
-import styled from "styled-components";
-import { usePersonPageContext } from "../PeoplePage/PersonPageContext";
+import { PersonEditForm } from "./PersonEditForm";
+import { WaiverForm } from "./WaiverForm";
 
 export function PersonProfile() {
   const [isEditing, setEditing] = useState<boolean>(false);

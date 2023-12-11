@@ -1,14 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { isEmpty } from "lodash";
 import queryString from "query-string";
 
-import { Person, PersonSummary, PeopleGroup } from "apiClient/people";
+import { Approval } from "apiClient/approvals";
+import { API_HOST } from "apiClient/client";
 import type {
   GearItem,
+  GearLocation,
   GearSummary,
   GearType,
-  GearLocation,
   PurchasableItem,
 } from "apiClient/gear";
+import { PeopleGroup, Person, PersonSummary } from "apiClient/people";
 import {
   Affiliations,
   ListWrapper,
@@ -16,9 +19,6 @@ import {
   PersonSignup,
   Signup,
 } from "apiClient/types";
-import { API_HOST } from "apiClient/client";
-import { isEmpty } from "lodash";
-import { Approval } from "apiClient/approvals";
 
 export const gearDbApi = createApi({
   reducerPath: "gearDbApi",

@@ -1,24 +1,24 @@
+import { isEmpty } from "lodash";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { isEmpty } from "lodash";
 
 import { addNote, archiveNote } from "apiClient/people";
 import { Notes } from "components/Notes";
-import { useGetPersonQuery } from "redux/api";
 import { useSetPageTitle } from "hooks";
+import { useGetPersonQuery } from "redux/api";
 
-import { PersonProfile } from "./PersonProfile";
-import { PersonRentals } from "./PersonRentals";
-import { MoreGear } from "./MoreGear";
 import { BuyGear } from "./BuyGear";
-import { PersonTabsSelector, PersonPageTabs } from "./PersonTabs";
-import { PersonRentalsHistory } from "./PersonRentalsHistory";
 import { CheckoutStaging } from "./CheckoutStaging";
-import { ReturnStaging } from "./ReturnStaging";
+import { MoreGear } from "./MoreGear";
 import {
   PersonPageContextProvider,
   usePersonPageContext,
 } from "./PeoplePage/PersonPageContext";
+import { PersonProfile } from "./PersonProfile";
+import { PersonRentals } from "./PersonRentals";
+import { PersonRentalsHistory } from "./PersonRentalsHistory";
+import { PersonPageTabs, PersonTabsSelector } from "./PersonTabs";
+import { ReturnStaging } from "./ReturnStaging";
 
 export function PersonPage() {
   const { personId } = useParams<{ personId: string }>();

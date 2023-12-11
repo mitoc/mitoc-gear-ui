@@ -1,18 +1,18 @@
-import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
+import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 
-import { makeLabeledInput } from "components/Inputs/LabeledInput";
-import { Form } from "components/Inputs/Form";
-import { PersonSelect } from "components/PersonSelect";
-
-import { ApprovalItemsPicker, defaultItem } from "./ApprovalItemsPicker";
-import { FormValues } from "./types";
 import {
   ApprovalItemToCreate,
   ApprovalItemType,
   CreateNewApprovalArgs,
 } from "apiClient/approvals";
+import { Form } from "components/Inputs/Form";
+import { makeLabeledInput } from "components/Inputs/LabeledInput";
+import { PersonSelect } from "components/PersonSelect";
+
+import { ApprovalItemsPicker, defaultItem } from "./ApprovalItemsPicker";
+import { FormValues } from "./types";
 
 type Props = {
   onSubmit: (args: CreateNewApprovalArgs) => void;

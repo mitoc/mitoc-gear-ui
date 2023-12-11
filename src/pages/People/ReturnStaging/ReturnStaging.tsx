@@ -1,20 +1,21 @@
+import { isEmpty } from "lodash";
 import { useState } from "react";
 import styled from "styled-components";
-import { isEmpty } from "lodash";
 
+import { RemoveButton } from "components/Buttons";
+import { GearLink } from "components/GearLink";
 import { Checkbox } from "components/Inputs/Checkbox";
 import { NumberField } from "components/Inputs/NumberField";
-import { GearLink } from "components/GearLink";
-import { RemoveButton } from "components/Buttons";
-import { fmtAmount } from "lib/fmtNumber";
 import { formatDate } from "lib/fmtDate";
+import { fmtAmount } from "lib/fmtNumber";
 
-import { WinterSchoolDisclaimer } from "./WinterSchoolDisclaimer";
 import {
   isWinterSchool,
   usePersonPageContext,
 } from "../PeoplePage/PersonPageContext";
+
 import { PaymentSummary } from "./PaymentSummary";
+import { WinterSchoolDisclaimer } from "./WinterSchoolDisclaimer";
 
 export function ReturnStaging() {
   const { returnBasket, purchaseBasket } = usePersonPageContext();

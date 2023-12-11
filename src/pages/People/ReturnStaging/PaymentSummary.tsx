@@ -1,13 +1,13 @@
-import styled from "styled-components";
-import { ButtonHTMLAttributes, useState } from "react";
-import { isEmpty } from "lodash";
+import { faEdit, faPen, faRefresh } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faRefresh, faPen } from "@fortawesome/free-solid-svg-icons";
+import { isEmpty } from "lodash";
+import { ButtonHTMLAttributes, useState } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import styled from "styled-components";
 
-import { fmtAmount } from "lib/fmtNumber";
-import { NumberField } from "components/Inputs/NumberField";
 import { Checkbox } from "components/Inputs/Checkbox";
+import { NumberField } from "components/Inputs/NumberField";
+import { fmtAmount } from "lib/fmtNumber";
 
 import {
   isWinterSchool,

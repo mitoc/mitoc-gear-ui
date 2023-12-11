@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { formatDate } from "lib/fmtDate";
-import { Rental, getPersonRentalHistory } from "apiClient/people";
-import { TablePagination } from "components/TablePagination";
+import { getPersonRentalHistory, Rental } from "apiClient/people";
 import { GearLink } from "components/GearLink";
+import { TablePagination } from "components/TablePagination";
+import { formatDate } from "lib/fmtDate";
 
 type Props = {
   personId: string;

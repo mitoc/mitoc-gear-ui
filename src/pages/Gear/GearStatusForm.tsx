@@ -4,8 +4,8 @@ import {
   GearSummary,
   markBroken,
   markFixed,
-  markMissing,
   markFound,
+  markMissing,
   markRetired,
   markUnretired,
 } from "apiClient/gear";

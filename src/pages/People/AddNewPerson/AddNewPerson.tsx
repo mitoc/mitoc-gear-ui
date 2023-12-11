@@ -3,12 +3,12 @@ import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 
 import { APIError as APIErrorClass } from "apiClient/client";
-import { APIErrorType } from "apiClient/types";
-import { validateEmail } from "lib/validation";
-import { LabeledInput } from "components/Inputs/LabeledInput";
-import { Form } from "components/Inputs/Form";
 import { createPerson } from "apiClient/people";
+import { APIErrorType } from "apiClient/types";
+import { Form } from "components/Inputs/Form";
+import { LabeledInput } from "components/Inputs/LabeledInput";
 import { useSetPageTitle } from "hooks";
+import { validateEmail } from "lib/validation";
 
 import { AddNewPersonError } from "./AddNewPersonError";
 

@@ -1,11 +1,11 @@
+import { isEmpty, map } from "lodash";
 import { useFieldArray, useForm } from "react-hook-form";
+import styled from "styled-components";
 
+import { editPerson, Person } from "apiClient/people";
 import { Form } from "components/Inputs/Form";
 import { LabeledInput } from "components/Inputs/LabeledInput";
-import { editPerson, Person } from "apiClient/people";
 import { validateEmail } from "lib/validation";
-import styled from "styled-components";
-import { isEmpty, map } from "lodash";
 
 type Props = {
   person: Person;

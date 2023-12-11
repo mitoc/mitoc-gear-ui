@@ -1,16 +1,15 @@
 import { isEmpty, max } from "lodash";
 import { useState } from "react";
-
-import styled from "styled-components";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 import { PersonSummary } from "apiClient/people";
 import { DataGrid } from "components/DataGrid";
-import { TablePagination } from "components/TablePagination";
 import { SearchTextField } from "components/Inputs/TextField";
 import { PersonLink } from "components/PersonLink";
-import { usePeopleList } from "redux/api";
+import { TablePagination } from "components/TablePagination";
 import { useSetPageTitle } from "hooks";
+import { usePeopleList } from "redux/api";
 
 import { PeopleFilters } from "./PeopleFilters";
 import { usePeopleFilters } from "./usePeopleFilters";

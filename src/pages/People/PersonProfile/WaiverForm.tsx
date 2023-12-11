@@ -1,10 +1,12 @@
-import { useState } from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+import { useState } from "react";
+import DatePicker from "react-datepicker";
+
 import { addWaiver, Person } from "apiClient/people";
-import { getNextExpirationDate } from "./utils";
 import { useGetPersonQuery } from "redux/api";
+
+import { getNextExpirationDate } from "./utils";
 
 type Props = {
   person: Person;

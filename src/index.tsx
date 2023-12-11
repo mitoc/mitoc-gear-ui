@@ -1,13 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/js/dist/collapse";
 import "bootstrap/js/dist/dropdown";
-
 import "./index.css";
+
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+
 import App from "./App";
 import { store } from "./redux/store";
-import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(

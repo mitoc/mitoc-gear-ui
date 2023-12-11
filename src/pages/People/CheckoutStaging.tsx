@@ -1,9 +1,9 @@
-import { sum, map } from "lodash";
+import { map, sum } from "lodash";
 
 import type { Person } from "apiClient/people";
+import { RemoveButton } from "components/Buttons";
 import { GearLink } from "components/GearLink";
 import { fmtAmount } from "lib/fmtNumber";
-import { RemoveButton } from "components/Buttons";
 
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
-import { GearLink } from "components/GearLink";
 import { GearSummary } from "apiClient/gear";
+import { GearLink } from "components/GearLink";
 
 export function AddNewGearResults({
   gearCreated,
