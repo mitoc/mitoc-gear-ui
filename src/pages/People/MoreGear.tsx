@@ -51,7 +51,7 @@ export function MoreGear() {
           <tbody>
             {gearList
               .filter(
-                (item) => !checkoutBasket.items.some((g) => g.id === item.id)
+                (item) => !checkoutBasket.items.some((g) => g.id === item.id),
               )
               .map((gearItem) => {
                 const {
@@ -82,12 +82,12 @@ export function MoreGear() {
                           {checkedOutTo
                             ? "Checked out"
                             : missing
-                            ? "Missing"
-                            : broken
-                            ? "Broken"
-                            : retired
-                            ? "Retired"
-                            : ""}
+                              ? "Missing"
+                              : broken
+                                ? "Broken"
+                                : retired
+                                  ? "Retired"
+                                  : ""}
                         </strong>
                       )}
                     </td>

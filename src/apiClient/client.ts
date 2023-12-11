@@ -10,7 +10,7 @@ export async function request(
   path: string,
   method: string,
   data?: Data,
-  maxRetry: number = 3
+  maxRetry: number = 3,
 ): Promise<any> {
   if (maxRetry <= 0) {
     return;

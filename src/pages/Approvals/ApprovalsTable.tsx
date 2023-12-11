@@ -18,9 +18,10 @@ export function ApprovalsTable({
 }) {
   const LocalDeleteCell = useMemo(
     () =>
-      ({ item }: { item: Approval }) =>
-        <DeleteCell item={item} onDelete={onDelete} />,
-    [onDelete]
+      ({ item }: { item: Approval }) => (
+        <DeleteCell item={item} onDelete={onDelete} />
+      ),
+    [onDelete],
   );
   const columns = [
     { key: "deskWorker", header: "Renter", renderer: RenterCell, width: 0.8 },
@@ -113,7 +114,7 @@ function DeleteCell({
         className="btn btn-outline-secondary"
         onClick={() => {
           const isConfirmed = window.confirm(
-            "Are you sure you want to delete the approval? This action cannot be undone."
+            "Are you sure you want to delete the approval? This action cannot be undone.",
           );
           if (isConfirmed) {
             deleteApproval(approval.id).then(() => onDelete());

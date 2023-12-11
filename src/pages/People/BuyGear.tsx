@@ -40,7 +40,7 @@ export function BuyGear() {
         <tbody>
           {items
             .filter((item) =>
-              item.name.toLowerCase().includes(query.toLowerCase())
+              item.name.toLowerCase().includes(query.toLowerCase()),
             )
             .map((item) => {
               const { id, name, price } = item;

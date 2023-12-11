@@ -100,7 +100,7 @@ async function archiveNote(personId: string, noteId: string) {
 
 async function getPersonRentalHistory(
   id: string,
-  page?: number
+  page?: number,
 ): Promise<ListWrapper<Rental>> {
   return request(`/people/${id}/rentals/`, "GET", { ...(page && { page }) });
 }
@@ -114,7 +114,7 @@ async function returnGear(
   gear: GearToReturn[],
   purchases: string[] = [],
   checkNumber: string = "",
-  useMitocCredit?: number
+  useMitocCredit?: number,
 ) {
   return request(`/people/${personID}/return/`, "POST", {
     gear,
@@ -129,7 +129,7 @@ async function editPerson(
   firstName: string,
   lastName: string,
   email: string,
-  altEmails: string[]
+  altEmails: string[],
 ) {
   return request(`/people/${id}/`, "PATCH", {
     firstName,

@@ -39,10 +39,10 @@ export function OfficeHoursPage() {
             week === now.week()
               ? "This Week"
               : week === now.add(1, "week").week() // Cannot just use now.week() + 1, since week number resets every year
-              ? "Next week"
-              : week === now.add(2, "week").week()
-              ? "Future Weeks"
-              : null;
+                ? "Next week"
+                : week === now.add(2, "week").week()
+                  ? "Future Weeks"
+                  : null;
 
           return (
             <div key={weekStr}>
@@ -83,15 +83,15 @@ function OfficeHourBlock({ officeHour }: { officeHour: OfficeHour }) {
     Number(weekDelta) >= 1
       ? "secondary"
       : signups.length === 0
-      ? "danger"
-      : signups.length === 1
-      ? "warning"
-      : "success";
+        ? "danger"
+        : signups.length === 1
+          ? "warning"
+          : "success";
   const buttonClass = ["danger", "warning"].includes(alertClass)
     ? "primary"
     : "outline-primary";
   const userSignUp = signups.find(
-    ({ deskWorker }) => deskWorker.id === user?.id
+    ({ deskWorker }) => deskWorker.id === user?.id,
   );
   return (
     <div className={`alert alert-${alertClass}`} key={googleId}>

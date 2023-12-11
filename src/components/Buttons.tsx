@@ -13,7 +13,7 @@ export function ArchiveButton(props: Omit<Props, "children">) {
 }
 
 export function ToggleExpandButton(
-  props: Omit<Props, "children"> & { isOpen: boolean }
+  props: Omit<Props, "children"> & { isOpen: boolean },
 ) {
   const content = props.isOpen ? "－" : "＋";
   return <SquareButton {...props}>{content}</SquareButton>;

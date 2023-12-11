@@ -27,7 +27,7 @@ export function LoginForm() {
       logIn({
         username: email.trim(),
         password,
-      })
+      }),
     );
   };
 

@@ -18,8 +18,8 @@ export function NumberField({
   const Component = small
     ? SmallNumberInput
     : integer
-    ? InputWithArrows
-    : ArrowLessInput;
+      ? InputWithArrows
+      : ArrowLessInput;
   const actualClassName = `form-control ${className ?? ""} ${small && "sm"}`;
   return (
     <Component

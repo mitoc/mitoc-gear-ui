@@ -67,7 +67,7 @@ export function CheckoutStaging({ onCheckout }: { onCheckout: () => void }) {
                       <RemoveButton onClick={() => checkoutBasket.remove(id)} />
                     </td>
                   </tr>
-                )
+                ),
               )}
             </tbody>
           </table>

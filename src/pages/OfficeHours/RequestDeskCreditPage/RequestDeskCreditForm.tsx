@@ -53,7 +53,7 @@ export function RequestDeskCreditForm({ onRequestSubmitted }: Props) {
           value: id,
           label: formatDate(date),
         })),
-    [pendingSignups, today]
+    [pendingSignups, today],
   );
   const eventTypeOptions = [
     { value: EventType.officeHour, label: "Office hour" },
@@ -100,14 +100,14 @@ export function RequestDeskCreditForm({ onRequestSubmitted }: Props) {
             return requestOfficeHourCredit(
               formValues.signup.value,
               formValues.duration,
-              formValues.note
+              formValues.note,
             ).then(onAfterSubmit);
           }
           return requestOtherEventCredit(
             formValues.eventType?.value,
             formValues.date,
             formValues.duration,
-            formValues.note
+            formValues.note,
           ).then(onAfterSubmit);
         })}
       >

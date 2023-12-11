@@ -135,7 +135,7 @@ export function AddNewGearForm({
               required: true,
               pattern: {
                 value: new RegExp(
-                  "^" + (gearType?.shorthand ?? "[A-Z]{2}") + "-\\d{2}-\\d\\d+"
+                  "^" + (gearType?.shorthand ?? "[A-Z]{2}") + "-\\d{2}-\\d\\d+",
                 ),
                 message:
                   "ID must follow the pattern " +

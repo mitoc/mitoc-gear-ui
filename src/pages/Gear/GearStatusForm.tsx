@@ -64,7 +64,7 @@ function getLabel(formType: GearStatusFormType, gearItem: GearSummary) {
 function changeStatus(
   formType: GearStatusFormType,
   gearItem: GearSummary,
-  note: string
+  note: string,
 ) {
   if (formType === GearStatusFormType.broken) {
     if (!gearItem.broken) {

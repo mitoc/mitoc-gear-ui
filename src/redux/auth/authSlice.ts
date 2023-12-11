@@ -16,7 +16,7 @@ const initialState: AuthState = { loadingStatus: "blank" };
 
 export const checkLoggedIn = createCustomAsyncThunk(
   "auth/checkLoggedIn",
-  authClient.loggedIn
+  authClient.loggedIn,
 );
 
 export const logIn = createCustomAsyncThunk("auth/logIn", authClient.logIn);

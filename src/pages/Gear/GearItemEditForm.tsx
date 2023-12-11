@@ -17,10 +17,10 @@ type Props = {
 
 export function GearItemEditForm({ gearItem, closeForm, refreshGear }: Props) {
   const [specification, setSpecification] = useState<string>(
-    gearItem.specification ?? ""
+    gearItem.specification ?? "",
   );
   const [description, setDescription] = useState<string>(
-    gearItem.description ?? ""
+    gearItem.description ?? "",
   );
   const [size, setSize] = useState<string>(gearItem.size ?? "");
   const [deposit, setDeposit] = useState<number | null>(gearItem.depositAmount);
@@ -54,7 +54,7 @@ export function GearItemEditForm({ gearItem, closeForm, refreshGear }: Props) {
       description,
       size,
       deposit,
-      location.id
+      location.id,
     ).then(() => {
       closeForm();
       refreshGear();

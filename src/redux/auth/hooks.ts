@@ -40,11 +40,11 @@ export function usePermissions() {
   return {
     isOfficer: user.groups.some((g) => g.id === Roles.BOD),
     isDeskManager: user.groups.some((g) =>
-      [Roles.DESK_CAPTAIN, Roles.GEAR_MANAGER, Roles.ADMIN].includes(g.id)
+      [Roles.DESK_CAPTAIN, Roles.GEAR_MANAGER, Roles.ADMIN].includes(g.id),
     ),
     isDeskWorker: user.isDeskworker,
     isApprover: user.groups.some((g) =>
-      [Roles.ADMIN, Roles.APPROVER].includes(g.id)
+      [Roles.ADMIN, Roles.APPROVER].includes(g.id),
     ),
   };
 }

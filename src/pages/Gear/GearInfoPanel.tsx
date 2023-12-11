@@ -14,14 +14,14 @@ type Props = { gearItem: GearSummary; refreshGear: () => void };
 
 export function GearInfoPanel({ gearItem, refreshGear }: Props) {
   const [formToShow, setFormToShow] = useState<GearStatusFormType>(
-    GearStatusFormType.none
+    GearStatusFormType.none,
   );
   const gearStatusColor =
     gearItem.missing || gearItem.retired || gearItem.broken
       ? "alert-danger"
       : gearItem.checkedOutTo
-      ? "alert-info"
-      : "";
+        ? "alert-info"
+        : "";
 
   const [isEditing, setEditing] = useState<boolean>(false);
 

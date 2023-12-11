@@ -11,7 +11,7 @@ export async function cancelSignUp(signupId: string) {
 export async function requestOfficeHourCredit(
   signupId: number,
   duration: string,
-  note?: string
+  note?: string,
 ) {
   const formattedDuration = duration + ":00";
   return request(`/office-hour-signups/${signupId}/request-credit/`, "POST", {
@@ -24,7 +24,7 @@ export async function requestOtherEventCredit(
   eventType: string,
   date: string,
   duration: string,
-  note?: string
+  note?: string,
 ) {
   const formattedDuration = duration + ":00";
   return request(`/office-hour-signups/`, "POST", {
@@ -37,7 +37,7 @@ export async function requestOtherEventCredit(
 export async function approveCredit(
   signupId: number,
   duration: string,
-  credit: number
+  credit: number,
 ) {
   const formattedDuration = duration + ":00";
   return request(`/office-hour-signups/${signupId}/approve/`, "POST", {

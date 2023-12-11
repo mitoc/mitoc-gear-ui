@@ -37,7 +37,7 @@ export function ChangePassword() {
           logIn({
             username: user!.email,
             password: newPassword,
-          })
+          }),
         );
       })
       .catch((err) => {

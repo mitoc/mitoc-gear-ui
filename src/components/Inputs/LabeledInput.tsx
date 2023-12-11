@@ -24,7 +24,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
 export type Props<
   TFieldValues extends FieldValues,
-  TName extends Path<TFieldValues>
+  TName extends Path<TFieldValues>,
 > = InputProps & {
   as?: any;
   renderComponent?: (props: {
@@ -32,7 +32,7 @@ export type Props<
     invalid?: boolean;
     name: TName;
     onChange: (
-      value: UnpackNestedValue<FieldPathValue<TFieldValues, TName>>
+      value: UnpackNestedValue<FieldPathValue<TFieldValues, TName>>,
     ) => void;
     onBlur: Noop;
     ref: RefCallBack;
@@ -50,7 +50,7 @@ export type Props<
  */
 export function LabeledInput<
   TFieldValues extends FieldValues,
-  TName extends Path<TFieldValues>
+  TName extends Path<TFieldValues>,
 >(props: Props<TFieldValues, TName>) {
   const {
     register,
@@ -137,7 +137,7 @@ export function LabeledInput<
 
 export function makeLabeledInput<TFormValues extends FieldValues>() {
   return function TypedLabeledInput<TName extends Path<TFormValues>>(
-    props: Props<TFormValues, TName>
+    props: Props<TFormValues, TName>,
   ) {
     return LabeledInput(props);
   };

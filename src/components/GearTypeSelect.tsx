@@ -54,7 +54,7 @@ export function GearTypeMultiSelect({
   const onChange = useCallback(
     (options: MultiValue<GearTypeOption>) =>
       onChangeProps(options.map(parseOption)),
-    [onChangeProps]
+    [onChangeProps],
   );
 
   return (

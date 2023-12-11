@@ -66,7 +66,7 @@ function parseStatus(v: string | null) {
 }
 
 export function gearStatusToBoolean(
-  status?: GearStatusFilter
+  status?: GearStatusFilter,
 ): boolean | undefined {
   switch (status) {
     case GearStatusFilter.exclude:
