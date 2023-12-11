@@ -20,8 +20,8 @@ export function CheckoutStaging({ onCheckout }: { onCheckout: () => void }) {
         Deposit due:{" "}
         {hasFFCheck(person) ? (
           <>
-            <strong style={{ color: "var(--bs-teal)" }}>{fmtAmount(0)}</strong>
-             (Frequent Flyer)
+            <strong style={{ color: "var(--bs-teal)" }}>{fmtAmount(0)}</strong>{" "}
+            (Frequent Flyer)
           </>
         ) : (
           <strong className="text-warning">{fmtAmount(totalDeposit)}</strong>

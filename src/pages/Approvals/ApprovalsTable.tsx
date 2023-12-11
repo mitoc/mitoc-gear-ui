@@ -16,13 +16,13 @@ export function ApprovalsTable({
   approvals: Approval[];
   onDelete: () => void;
 }) {
-  const LocalDeleteCell = useMemo(
-    () =>
-      ({ item }: { item: Approval }) => (
-        <DeleteCell item={item} onDelete={onDelete} />
-      ),
-    [onDelete],
-  );
+  const LocalDeleteCell = useMemo(() => {
+    const component = ({ item }: { item: Approval }) => (
+      <DeleteCell item={item} onDelete={onDelete} />
+    );
+    component.displayName = "LocalDeleteCell";
+    return component;
+  }, [onDelete]);
   const columns = [
     { key: "deskWorker", header: "Renter", renderer: RenterCell, width: 0.8 },
     {
@@ -68,14 +68,14 @@ function ItemsCell({ item: approval }: { item: Approval }) {
       {approval.items.map(({ type, item }) => {
         if (type === "gearType") {
           return (
-            <li>
+            <li key={item.gearType.id}>
               {item.gearType.typeName} ({item.gearType.shorthand}) -
               {item.quantity} {item.quantity > 1 ? "items" : "item"}
             </li>
           );
         }
         return (
-          <li>
+          <li key={item.gearItem.id}>
             {item.gearItem.type.typeName} -{" "}
             <GearLink id={item.gearItem.id}>{item.gearItem.id}</GearLink>{" "}
           </li>

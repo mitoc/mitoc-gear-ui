@@ -17,7 +17,7 @@ export function AddNewApproval() {
 
   const onSubmit = (args: CreateNewApprovalArgs) => {
     createNewApproval(args)
-      .then(({ items }) => {
+      .then(() => {
         setError(undefined);
         setSuccess(true);
         // TODO: We should use RTK's mutations instead of refetching everything

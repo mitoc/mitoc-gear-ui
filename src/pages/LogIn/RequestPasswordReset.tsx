@@ -25,7 +25,6 @@ export function RequestPasswordReset() {
     authClient.requestResetPassword({ email }).then(() => setSuccess(true));
   };
 
-  const formClass = false ? "was-validated" : "";
   return (
     <div className="row">
       <div className="col-md-6">
@@ -43,7 +42,6 @@ export function RequestPasswordReset() {
           help you reset your password
         </p>
         <form
-          className={formClass}
           onSubmit={(evt) => {
             evt.preventDefault();
             onSubmit();
