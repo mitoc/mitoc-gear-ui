@@ -1,9 +1,9 @@
-import { useGetPurchasablesQuery } from "redux/api";
 import { useState } from "react";
 
+import { SearchTextField } from "components/Inputs/TextField";
 import { fmtAmount } from "lib/fmtNumber";
 import { uniqueID } from "lib/uniqueID";
-import { SearchTextField } from "components/Inputs/TextField";
+import { useGetPurchasablesQuery } from "redux/api";
 
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 

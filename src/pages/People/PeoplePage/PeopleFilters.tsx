@@ -1,7 +1,7 @@
 import { map } from "lodash";
 
-import { Checkbox } from "components/Inputs/Checkbox";
 import { GroupSelect } from "components/GroupSelect";
+import { Checkbox } from "components/Inputs/Checkbox";
 
 export type Filters = {
   q?: string;

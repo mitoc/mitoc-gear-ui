@@ -1,10 +1,9 @@
 import { useState } from "react";
-
-import { TablePagination } from "components/TablePagination";
-import { useSetPageTitle } from "hooks";
 import { Link } from "react-router-dom";
 
 import { Checkbox } from "components/Inputs/Checkbox";
+import { TablePagination } from "components/TablePagination";
+import { useSetPageTitle } from "hooks";
 import { restrictedGearDoc } from "lib/constants";
 import { useGetApprovalsQuery } from "redux/api";
 import { usePermissions } from "redux/auth";

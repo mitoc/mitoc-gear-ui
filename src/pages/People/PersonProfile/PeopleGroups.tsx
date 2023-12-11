@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { isEmpty, map } from "lodash";
+import { useState } from "react";
 
 import { PeopleGroup, Person, updatePersonGroups } from "apiClient/people";
-import { usePermissions } from "redux/auth";
 import { GroupSelect } from "components/GroupSelect";
+import { usePermissions } from "redux/auth";
 
 type Props = {
   person: Person;

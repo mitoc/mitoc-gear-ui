@@ -1,14 +1,14 @@
+import { newApprovalUI } from "featureFlags";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import type { GearSummary } from "apiClient/gear";
+import { restrictedGearDoc } from "lib/constants";
 import { fmtAmount } from "lib/fmtNumber";
 
+import { GearItemEditForm } from "./GearItemEditForm";
 import { GearStatus } from "./GearStatus";
 import { GearStatusForm, GearStatusFormType } from "./GearStatusForm";
-import { GearItemEditForm } from "./GearItemEditForm";
-import { Link } from "react-router-dom";
-import { newApprovalUI } from "featureFlags";
-import { restrictedGearDoc } from "lib/constants";
 
 type Props = { gearItem: GearSummary; refreshGear: () => void };
 

@@ -1,13 +1,13 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-import { APIErrorType } from "apiClient/types";
-import { useSetPageTitle } from "hooks";
 import { createNewApproval, CreateNewApprovalArgs } from "apiClient/approvals";
 import { APIError as APIErrorClass } from "apiClient/client";
+import { APIErrorType } from "apiClient/types";
+import { useSetPageTitle } from "hooks";
 import { gearDbApi } from "redux/api";
 
 import { AddNewApprovalForm } from "./AddNewApprovalForm";
-import { Link } from "react-router-dom";
 
 export function AddNewApproval() {
   useSetPageTitle("Approve restricted gear rental");

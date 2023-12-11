@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 import { addMitocCredit, Person } from "apiClient/people";
-import { useGetPersonQuery } from "redux/api";
 import { NumberField } from "components/Inputs/NumberField";
+import { useGetPersonQuery } from "redux/api";
 
 type Props = {
   person: Person;

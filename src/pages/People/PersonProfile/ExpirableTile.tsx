@@ -1,10 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import { formatDate } from "lib/fmtDate";
-
 import type { Expireable, Person } from "apiClient/people";
 import { ToggleExpandButton } from "components/Buttons";
+import { formatDate } from "lib/fmtDate";
 
 export function ExpirableTile({
   title,

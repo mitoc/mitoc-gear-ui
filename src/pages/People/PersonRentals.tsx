@@ -1,6 +1,7 @@
-import { formatDate } from "lib/fmtDate";
 import { GearLink } from "components/GearLink";
+import { formatDate } from "lib/fmtDate";
 import { fmtAmount } from "lib/fmtNumber";
+
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
 export function PersonRentals() {

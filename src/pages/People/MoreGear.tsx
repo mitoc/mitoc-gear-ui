@@ -1,11 +1,11 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import { useGearList } from "redux/api";
-import { TablePagination } from "components/TablePagination";
 import { GearLink } from "components/GearLink";
 import { SearchTextField } from "components/Inputs/TextField";
+import { TablePagination } from "components/TablePagination";
 import { fmtAmount } from "lib/fmtNumber";
+import { useGearList } from "redux/api";
 
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 

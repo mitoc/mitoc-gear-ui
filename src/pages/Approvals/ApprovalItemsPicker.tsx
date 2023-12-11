@@ -1,13 +1,13 @@
-import { useFieldArray, Controller, useFormContext } from "react-hook-form";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import styled from "styled-components";
 
-import { makeLabeledInput } from "components/Inputs/LabeledInput";
 import { ApprovalItemType, PartialApprovalItem } from "apiClient/approvals";
-import { Select } from "components/Select";
-import { GearTypeSelect } from "components/GearTypeSelect";
 import { GearItemSelect } from "components/GearItemSelect";
+import { GearTypeSelect } from "components/GearTypeSelect";
+import { makeLabeledInput } from "components/Inputs/LabeledInput";
+import { Select } from "components/Select";
 
 import { FormValues } from "./types";
 

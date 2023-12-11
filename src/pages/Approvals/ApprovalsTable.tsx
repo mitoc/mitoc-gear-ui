@@ -1,13 +1,13 @@
-import { useMemo } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMemo } from "react";
 
-import { DataGrid } from "components/DataGrid";
-import { formatDate } from "lib/fmtDate";
 import { Approval, deleteApproval } from "apiClient/approvals";
-import { PersonLink } from "components/PersonLink";
-import { GearLink } from "components/GearLink";
 import { PersonBase } from "apiClient/people";
+import { DataGrid } from "components/DataGrid";
+import { GearLink } from "components/GearLink";
+import { PersonLink } from "components/PersonLink";
+import { formatDate } from "lib/fmtDate";
 
 export function ApprovalsTable({
   approvals,

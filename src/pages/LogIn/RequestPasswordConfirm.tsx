@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { Link, useLocation } from "react-router-dom";
 
 import { authClient } from "apiClient/auth";
 import { Form } from "components/Inputs/Form";

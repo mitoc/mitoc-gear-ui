@@ -1,9 +1,10 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { authClient } from "apiClient/auth";
-import type { User, APIErrorType } from "apiClient/types";
+import type { APIErrorType, User } from "apiClient/types";
 
 import { createCustomAsyncThunk } from "../tools";
+
 export interface AuthState {
   loadingStatus: "loading" | "idle" | "blank";
   loggedIn?: boolean;
@@ -39,8 +40,7 @@ const authSlice = createSlice({
         state.loadingStatus = "idle";
         if (action.payload == null) {
           state.error = {
-            msg:
-              "Unable to reach API server. Please try again later and/or contact mitoc-webmaster@mit.edu",
+            msg: "Unable to reach API server. Please try again later and/or contact mitoc-webmaster@mit.edu",
             err: "unavailableServer",
           };
           return;
@@ -48,8 +48,7 @@ const authSlice = createSlice({
         const payload = action.payload as APIErrorType;
         if ((payload.err = "userDoesNotMatchPerson")) {
           state.error = {
-            msg:
-              "This user account is not associated with a desk worker person. Please contact mitoc-desk@mit.edu to fix the issue.",
+            msg: "This user account is not associated with a desk worker person. Please contact mitoc-desk@mit.edu to fix the issue.",
             err: payload.err,
           };
           return;

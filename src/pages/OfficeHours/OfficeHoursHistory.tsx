@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
-
 import { useEffect, useState } from "react";
 
+import { Checkbox } from "components/Inputs/Checkbox";
 import { TablePagination } from "components/TablePagination";
 import { useSetPageTitle } from "hooks";
 import { useGetSignupsQuery } from "redux/api";
-import { Checkbox } from "components/Inputs/Checkbox";
+
 import { OfficeHoursSignupsTable } from "./OfficeHoursSignupsTable";
 
 export function OfficeHoursHistory() {

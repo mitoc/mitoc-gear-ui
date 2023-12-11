@@ -1,11 +1,11 @@
-import { editGearItem, GearSummary, GearLocation } from "apiClient/gear";
+import { useState } from "react";
+import Select from "react-select";
+
+import { editGearItem, GearLocation, GearSummary } from "apiClient/gear";
 import { NumberField } from "components/Inputs/NumberField";
 import { TextArea } from "components/Inputs/TextArea";
 import { TextField } from "components/Inputs/TextField";
-import { useState } from "react";
-import Select from "react-select";
 import { useGetGearLocationsQuery } from "redux/api";
-
 
 type GearLocationOption = GearLocation & { value: number; label: string };
 
@@ -39,7 +39,7 @@ export function GearItemEditForm({ gearItem, closeForm, refreshGear }: Props) {
       setLocation({
         id: gearLocationOption.id,
         shorthand: gearLocationOption.shorthand,
-      })
+      });
     }
   };
 
@@ -48,11 +48,17 @@ export function GearItemEditForm({ gearItem, closeForm, refreshGear }: Props) {
     if (deposit == null) {
       return;
     }
-    editGearItem(gearItem.id, specification, description, size, deposit, location.id).then(      () => {
-        closeForm();
-        refreshGear();
-      }
-    );
+    editGearItem(
+      gearItem.id,
+      specification,
+      description,
+      size,
+      deposit,
+      location.id
+    ).then(() => {
+      closeForm();
+      refreshGear();
+    });
   };
   return (
     <form>

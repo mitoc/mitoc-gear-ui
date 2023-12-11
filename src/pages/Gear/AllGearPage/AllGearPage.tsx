@@ -1,19 +1,20 @@
 import { compact, isEqual } from "lodash";
 import { useState } from "react";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 import { GearSummary } from "apiClient/gear";
 import { DataGrid } from "components/DataGrid";
-import { TablePagination } from "components/TablePagination";
-import { SearchTextField } from "components/Inputs/TextField";
 import { GearLink } from "components/GearLink";
-import { useGearList } from "redux/api";
+import { SearchTextField } from "components/Inputs/TextField";
+import { TablePagination } from "components/TablePagination";
 import { useSetPageTitle } from "hooks";
+import { useGearList } from "redux/api";
 
 import { GearStatus } from "../GearStatus";
+
 import { GearFilters, GearStatusFilter } from "./GearFilters";
-import { useGearFilters, gearStatusToBoolean } from "./useGearFilter";
+import { gearStatusToBoolean, useGearFilters } from "./useGearFilter";
 
 export function AllGearPage() {
   useSetPageTitle("Gear");
@@ -46,7 +47,12 @@ export function AllGearPage() {
       renderer: DescriptionCell,
     },
     { key: "status", header: "Status", renderer: StatusCell },
-    { key: "location", header: "Location", renderer: LocationCell, hideOnMobile: true },
+    {
+      key: "location",
+      header: "Location",
+      renderer: LocationCell,
+      hideOnMobile: true,
+    },
   ]);
 
   return (
@@ -157,11 +163,7 @@ function TypeCell({ item: gearItem }: { item: GearSummary }) {
 }
 
 function LocationCell({ item: gearItem }: { item: GearSummary }) {
-  return (
-    <>
-      {gearItem.location.shorthand}
-    </>
-  );
+  return <>{gearItem.location.shorthand}</>;
 }
 
 const ColoredCell = styled.div<{ color?: string }>`
