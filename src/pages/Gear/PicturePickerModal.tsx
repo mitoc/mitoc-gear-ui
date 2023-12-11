@@ -16,11 +16,9 @@ type Props = {
 };
 
 export function PicturePickerModal({ isOpen, close, item, refreshGear }: Props) {
-  const { data: pictures } = useGetGearTypePicturesQuery(item.type.id);
+  const { data: pictures, refetch: refetchPictures } = useGetGearTypePicturesQuery(item.type.id);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selected, setSelected] = useState<string | undefined>(item.picture);
-
-  console.log(selected);
 
   return (
     <Modal show={isOpen} onHide={close} size="xl">
@@ -50,8 +48,9 @@ export function PicturePickerModal({ isOpen, close, item, refreshGear }: Props) 
                   return;
                 }
                 uploadFile(`/gear/${item.id}/picture/`, file).then(() => {
-                  close();
                   refreshGear();
+                  refetchPictures();
+                  close();
                 });
               }}
               accept="image/*"
@@ -59,6 +58,7 @@ export function PicturePickerModal({ isOpen, close, item, refreshGear }: Props) 
           </div>
           {pictures?.map((pic) => (
             <PicContainer
+              key={pic}
               onClick={() => {
                 setSelected(pic);
               }}

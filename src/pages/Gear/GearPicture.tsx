@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { PicturePickerModal } from './PicturePickerModal';
 import { PicturePlaceholder } from './PicturePlaceholder';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type Props = {
   gearItem: GearItem;
@@ -20,6 +22,9 @@ export function GearPicture({ gearItem, refreshGear }: Props) {
       {gearItem.picture ? (
         <PictureButton onClick={() => setIsModalOpen(true)}>
           <GearPic src={gearItem.picture} alt="Gear item" />
+          <TopRightIcon className="top-right-icon">
+            <FontAwesomeIcon icon={faEdit} />
+          </TopRightIcon>
         </PictureButton>
       ) : (
         <div className="border rounded-2 p-2 mb-3 bg-light">
@@ -46,8 +51,24 @@ export function GearPicture({ gearItem, refreshGear }: Props) {
 const PictureButton = styled.button`
   padding: 0;
   border: none;
+  position: relative;
+
+  &:hover .top-right-icon {
+    opacity: 1;
+  }
 `;
 
 const GearPic = styled.img`
   width: 100%;
+`;
+
+const TopRightIcon = styled.span`
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 3rem;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: var(--bs-link-color);
 `;

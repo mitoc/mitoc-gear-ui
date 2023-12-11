@@ -22,7 +22,6 @@ export async function request(
 }
 
 export async function uploadFile(path: string, file: File) {
-  console.log({ file });
   const formData = new FormData();
   formData.append("file", file);
   return requestInternal({ path, method: "POST", body: formData });
