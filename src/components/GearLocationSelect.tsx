@@ -14,7 +14,10 @@ type Props = {
   onChange: (groups: GearLocation[]) => void;
 };
 
-export function GearLocationSelect({ locations, onChange: onChangeProps }: Props) {
+export function GearLocationSelect({
+  locations,
+  onChange: onChangeProps,
+}: Props) {
   const { data: allGearLocations } = useGetGearLocationsQuery();
   const gearLocationOptions =
     allGearLocations?.map((allGearLocations) => ({
@@ -23,12 +26,12 @@ export function GearLocationSelect({ locations, onChange: onChangeProps }: Props
       ...allGearLocations,
     })) ?? [];
   const values = gearLocationOptions.filter((opt) =>
-      locations.includes(opt.id)
+    locations.includes(opt.id),
   );
   const onChange = useCallback(
     (options: MultiValue<GearLocationOption>) =>
       onChangeProps(options.map(parseOption)),
-    [onChangeProps]
+    [onChangeProps],
   );
 
   return (

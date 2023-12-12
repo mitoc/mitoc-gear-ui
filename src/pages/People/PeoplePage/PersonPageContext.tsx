@@ -22,7 +22,7 @@ const PersonPageContext = React.createContext<
 >(undefined);
 
 export function PersonPageContextProvider(
-  props: Props & { children: React.ReactNode }
+  props: Props & { children: React.ReactNode },
 ) {
   const { children, ...otherProps } = props;
   const value = useMakePersonPageContext(otherProps);
@@ -37,7 +37,7 @@ export function usePersonPageContext() {
   const context = useContext(PersonPageContext);
   if (context == null) {
     throw new Error(
-      "No ReturnContext.Provider found when calling usePersonPageContext."
+      "No ReturnContext.Provider found when calling usePersonPageContext.",
     );
   }
   return context;
@@ -48,10 +48,10 @@ function useMakePersonPageContext({ person, refreshPerson }: Props) {
   const returnBasketBase = useBasket<Rental>();
   const purchaseBasket = useBasket<ItemToPurchase>();
   const [shouldUseMitocCredit, setShouldUseMitocCredit] = useState<boolean>(
-    person.mitocCredit > 0
+    person.mitocCredit > 0,
   );
   const [totalRentalsOverride, overrideTotalRentals] = useState<number | null>(
-    null
+    null,
   );
 
   const {
@@ -60,7 +60,7 @@ function useMakePersonPageContext({ person, refreshPerson }: Props) {
     overrideDaysOut,
   } = useReturnState(
     returnBasketBase.items,
-    person.groups.some((group) => group.groupName === "BOD")
+    person.groups.some((group) => group.groupName === "BOD"),
   );
 
   const calculatedTotalRentals = sum(
@@ -68,9 +68,9 @@ function useMakePersonPageContext({ person, refreshPerson }: Props) {
       return item.waived
         ? 0
         : item.daysOutOverride != null
-        ? item.daysOutOverride * item.type.rentalAmount
-        : item.totalAmount;
-    })
+          ? item.daysOutOverride * item.type.rentalAmount
+          : item.totalAmount;
+    }),
   );
   const totalRentals = totalRentalsOverride ?? calculatedTotalRentals;
   const totalPurchases = sum(map(purchaseBasket.items, "item.price"));
@@ -101,7 +101,7 @@ function useMakePersonPageContext({ person, refreshPerson }: Props) {
           }),
           purchaseBasket.items.map((item) => item.item.id),
           checkNumber,
-          creditToSpent
+          creditToSpent,
         ).then(() => {
           returnBasketBase.clear();
           purchaseBasket.clear();
@@ -148,7 +148,7 @@ function useReturnState(rentalsToReturn: Rental[], waiveByDefault?: boolean) {
         ...rental,
         ...(waiveByDefault && { waived: true }),
         ...(state[id] ?? {}),
-      }))
+      })),
   )(rentalsToReturn);
 
   const toggleWaiveFee = (id: string, value: boolean) => {

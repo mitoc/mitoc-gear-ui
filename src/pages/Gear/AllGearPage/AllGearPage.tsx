@@ -21,7 +21,7 @@ export function AllGearPage() {
   const [page, setPage] = useState<number>(1);
   const { filters, setFilters } = useGearFilters();
   const [showFilters, setShowFilters] = useState<boolean>(
-    !isEqual(filters, { retired: GearStatusFilter.exclude }) // Open the panel if filters are not the default
+    !isEqual(filters, { retired: GearStatusFilter.exclude }), // Open the panel if filters are not the default
   );
   const { gearTypes, broken, missing, retired, q, locations } = filters;
   const query = q ?? "";

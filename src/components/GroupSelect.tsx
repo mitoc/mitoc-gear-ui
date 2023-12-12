@@ -27,7 +27,7 @@ export function GroupSelect({ groupIds, onChange: onChangeProps }: Props) {
   const onChange = useCallback(
     (options: MultiValue<GroupOption>) =>
       onChangeProps(options.map(parseOption)),
-    [onChangeProps]
+    [onChangeProps],
   );
 
   return (

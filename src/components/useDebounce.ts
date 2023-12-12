@@ -3,7 +3,7 @@ import { debounce } from "lodash";
 
 export function useDebounce<T extends (...args: any) => any>(
   fn: T,
-  duration: number
+  duration: number,
 ) {
   const [pending, setPending] = useState<boolean>(false);
   const debounced = useMemo(
@@ -13,7 +13,7 @@ export function useDebounce<T extends (...args: any) => any>(
         const result = fn(...args);
         return result;
       }, duration),
-    [setPending, fn, duration]
+    [setPending, fn, duration],
   );
   return {
     pending,

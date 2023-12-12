@@ -27,8 +27,8 @@ export function ReturnStaging() {
   const title = purchaseOnly
     ? "Purchases"
     : returnOnly
-    ? "Gear to return"
-    : "Return and purchases";
+      ? "Gear to return"
+      : "Return and purchases";
 
   return (
     <div className="border rounded-2 p-2 mb-3 bg-light">

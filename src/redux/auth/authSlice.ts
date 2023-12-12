@@ -16,7 +16,7 @@ const initialState: AuthState = { loadingStatus: "blank" };
 
 export const checkLoggedIn = createCustomAsyncThunk(
   "auth/checkLoggedIn",
-  authClient.loggedIn
+  authClient.loggedIn,
 );
 
 export const logIn = createCustomAsyncThunk("auth/logIn", authClient.logIn);
@@ -46,7 +46,7 @@ const authSlice = createSlice({
           return;
         }
         const payload = action.payload as APIErrorType;
-        if ((payload.err = "userDoesNotMatchPerson")) {
+        if (payload.err == "userDoesNotMatchPerson") {
           state.error = {
             msg: "This user account is not associated with a desk worker person. Please contact mitoc-desk@mit.edu to fix the issue.",
             err: payload.err,
@@ -73,10 +73,10 @@ const authSlice = createSlice({
       .addCase(logOut.pending, (state) => {
         state.loadingStatus = "loading";
       })
-      .addCase(logOut.rejected, (state, action) => {
+      .addCase(logOut.rejected, (state) => {
         state.loadingStatus = "idle";
       })
-      .addCase(logOut.fulfilled, (state, action) => {
+      .addCase(logOut.fulfilled, (state) => {
         state.loadingStatus = "idle";
         delete state.user;
         state.loggedIn = false;

@@ -27,15 +27,14 @@ export function LoginForm() {
       logIn({
         username: email.trim(),
         password,
-      })
+      }),
     );
   };
 
-  const formClass = false ? "was-validated" : "";
   return (
     <div className="row">
       <div className="col-md-6">
-        <form className={formClass}>
+        <form>
           <label className="w-100 mb-2">
             Email:
             <input

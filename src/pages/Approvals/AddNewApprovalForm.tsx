@@ -38,7 +38,7 @@ export function AddNewApprovalForm({ onSubmit }: Props) {
       <LabeledInput
         title="Renter:"
         name="renter"
-        renderComponent={({ value, onChange, onBlur, invalid }) => {
+        renderComponent={({ value, onChange, invalid }) => {
           return (
             <PersonSelect
               value={value}

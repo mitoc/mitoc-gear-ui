@@ -49,7 +49,7 @@ export function ApprovalItemsPicker() {
               control={formObject.control}
               name={`items.${index}.type`}
               rules={{ required: true }}
-              render={({ field: { onChange, onBlur, value, ref } }) => {
+              render={({ field: { onChange, onBlur, value } }) => {
                 return (
                   <ApprovalTypePicker
                     value={value}

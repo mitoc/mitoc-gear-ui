@@ -11,6 +11,8 @@ export interface LogInQuery {
   password: string;
 }
 
+type EmptyObject = Record<string, never>;
+
 async function loggedIn(): Promise<LoggedInResponse> {
   return request("/auth/logged-in/", "GET");
 }
@@ -22,11 +24,13 @@ async function logIn(query: LogInQuery): Promise<User | APIErrorType> {
 async function checkResetPasswordToken(query: {
   email: string;
   token: string;
-}): Promise<{}> {
+}): Promise<EmptyObject> {
   return request("/auth/reset-password/check-token/", "GET", query);
 }
 
-async function requestResetPassword(query: { email: string }): Promise<{}> {
+async function requestResetPassword(query: {
+  email: string;
+}): Promise<EmptyObject> {
   return request("/auth/reset-password/request/", "POST", query);
 }
 
@@ -34,14 +38,14 @@ async function confirmResetPassword(query: {
   email: string;
   password: string;
   token: string;
-}): Promise<{}> {
+}): Promise<EmptyObject> {
   return request("/auth/reset-password/confirm/", "POST", query);
 }
 
 async function changePassword(query: {
   oldPassword: string;
   newPassword: string;
-}): Promise<{}> {
+}): Promise<EmptyObject> {
   return request("/auth/change-password/", "POST", query);
 }
 

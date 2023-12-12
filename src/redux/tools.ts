@@ -2,8 +2,9 @@ import { AsyncThunkPayloadCreator, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { APIError as APIErrorClass } from "apiClient/client";
 
+type EmptyObject = Record<string, never>;
 function wrapper<R, Arg>(
-  fn: AsyncThunkPayloadCreator<R, Arg, {}>
+  fn: AsyncThunkPayloadCreator<R, Arg, EmptyObject>,
 ): AsyncThunkPayloadCreator<R, Arg> {
   return async (arg: Arg, api) => {
     try {
@@ -19,7 +20,7 @@ function wrapper<R, Arg>(
 
 export function createCustomAsyncThunk<R, Arg = void>(
   actionName: string,
-  fn: AsyncThunkPayloadCreator<R, Arg, {}>
+  fn: AsyncThunkPayloadCreator<R, Arg, EmptyObject>,
 ) {
   return createAsyncThunk(actionName, wrapper(fn));
 }

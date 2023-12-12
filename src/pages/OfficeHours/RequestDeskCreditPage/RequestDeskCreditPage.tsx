@@ -25,7 +25,7 @@ export function RequestDeskCreditPage() {
       pendingSignups?.filter(({ creditRequested, approved }) => {
         return creditRequested != null && approved == null;
       }),
-    [pendingSignups]
+    [pendingSignups],
   );
 
   return (
@@ -66,7 +66,7 @@ export function RequestDeskCreditPage() {
                   </small>
                 </div>
               );
-            }
+            },
           )}
         </>
         {data != null && isEmpty(pendingApproval) && (

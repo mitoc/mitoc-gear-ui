@@ -66,7 +66,7 @@ export interface GearLocation {
 
 async function getGearRentalHistory(
   id: string,
-  page?: number
+  page?: number,
 ): Promise<ListWrapper<GearRental>> {
   return request(`/gear/${id}/rentals/`, "GET", { ...(page && { page }) });
 }
@@ -120,7 +120,7 @@ export type CreateGearArgs = {
 };
 
 async function createGear(
-  args: CreateGearArgs
+  args: CreateGearArgs,
 ): Promise<{ items: GearSummary[] }> {
   return request(`/gear/`, "POST", args);
 }

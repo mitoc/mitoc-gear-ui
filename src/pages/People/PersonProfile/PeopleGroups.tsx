@@ -66,7 +66,7 @@ function PeopleGroupsForm({
   const onSubmit = () =>
     updatePersonGroups(
       person.id,
-      groups.map((g) => g.id)
+      groups.map((g) => g.id),
     ).then(() => {
       refreshPerson();
       closeForm();
