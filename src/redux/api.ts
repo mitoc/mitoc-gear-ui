@@ -79,6 +79,9 @@ export const gearDbApi = createApi({
         },
       }),
     }),
+    getGearTypePictures: builder.query<string[], string | number>({
+      query: (gearType) => `/gear-types/${gearType}/pictures`,
+    }),
     getPurchasables: builder.query<PurchasableItem[], void>({
       query: () => "/purchasable/",
     }),
@@ -163,6 +166,7 @@ export const {
   useGetSignupsQuery,
   useGetApprovalsQuery,
   useGetGearLocationsQuery,
+  useGetGearTypePicturesQuery,
 } = gearDbApi;
 
 export function useGearList({
