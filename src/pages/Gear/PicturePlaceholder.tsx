@@ -36,7 +36,8 @@ const PictureButton = styled.button.attrs({
 })<{ size?: string; thickness: string }>`
   &:hover {
     color: var(--bs-link-color);
-    background: linear-gradient(
+    background:
+      linear-gradient(
           to right,
           var(--bs-link-color) ${({ thickness }) => thickness},
           transparent ${({ thickness }) => thickness}
@@ -97,7 +98,8 @@ const PictureButton = styled.button.attrs({
     border: none;
   }
   aspect-ratio: 1/1;
-  background: linear-gradient(
+  background:
+    linear-gradient(
         to right,
         var(--bs-body-color) ${({ thickness }) => thickness},
         transparent ${({ thickness }) => thickness}
