@@ -134,7 +134,7 @@ async function editGearItem(
     size?: string;
     depositAmount?: number;
     location?: number;
-    picture?: string;
+    picture?: string | null;
   },
 ) {
   return request(`/gear/${id}/`, "PATCH", item);
