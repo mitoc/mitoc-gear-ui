@@ -118,7 +118,7 @@ const PicContainer = styled.button<{ selected?: boolean }>`
   border: none;
 
   ${({ selected }) =>
-    selected ? "outline: var(--bs-success) 6px solid !important" : ""}
+    selected ? "outline: var(--bs-link-color) 6px solid !important" : ""}
 `;
 
 const Pic = styled.img`
