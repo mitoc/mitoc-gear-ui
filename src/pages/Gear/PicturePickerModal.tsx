@@ -24,7 +24,7 @@ export function PicturePickerModal({
   const { data: pictures, refetch: refetchPictures } =
     useGetGearTypePicturesQuery(item.type.id);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [selected, setSelected] = useState<string | undefined>(item.picture);
+  const [selected, setSelected] = useState<string | null>(item.picture ?? null);
 
   return (
     <Modal show={isOpen} onHide={close} size="xl">
@@ -66,6 +66,10 @@ export function PicturePickerModal({
             <PicContainer
               key={pic}
               onClick={() => {
+                if (pic === selected) {
+                  setSelected(null);
+                  return;
+                }
                 setSelected(pic);
               }}
               selected={selected === pic}
@@ -84,12 +88,14 @@ export function PicturePickerModal({
         <button
           className="btn btn-primary"
           onClick={() => {
+            if (selected == item.picture) {
+              return close();
+            }
             editGearItem(item.id, { picture: selected }).then(() => {
               close();
               refreshGear();
             });
           }}
-          disabled={selected == null}
         >
           Save
         </button>
@@ -112,7 +118,7 @@ const PicContainer = styled.button<{ selected?: boolean }>`
   border: none;
 
   ${({ selected }) =>
-    selected ? "outline: var(--bs-success) 6px solid !important" : ""}
+    selected ? "outline: var(--bs-link-color) 6px solid !important" : ""}
 `;
 
 const Pic = styled.img`
