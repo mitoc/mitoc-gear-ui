@@ -58,6 +58,7 @@ export interface GearTypeWithFee extends GearTypeBase {
 /** The representation of a gear type in the list endpoint*/
 export interface GearType extends GearTypeWithShorthand {
   defaultDeposit: number;
+  shouldInventory: boolean;
 }
 
 export interface GearLocation {
@@ -140,10 +141,18 @@ async function editGearItem(
   return request(`/gear/${id}/`, "PATCH", item);
 }
 
+async function editGearType(
+  id: number,
+  gearType: Partial<Omit<GearType, "id" | "shorthand">>,
+) {
+  return request(`/gear-types/${id}/`, "PATCH", gearType);
+}
+
 export {
   addNote,
   createGear,
   editGearItem,
+  editGearType,
   getGearRentalHistory,
   markBroken,
   markFixed,

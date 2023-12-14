@@ -10,6 +10,7 @@ import { refreshCsrfToken } from "apiClient/client";
 import BaseLayout from "components/BaseLayout";
 import { ApprovalsPage } from "pages/Approvals";
 import { AddNewApproval } from "pages/Approvals/AddNewApproval";
+import { GearInventoryPage } from "pages/Inventory/GearInventoryPage";
 import { ApproveDeskCreditPage } from "pages/OfficeHours/ApproveDeskCreditPage";
 import { MyOfficeHoursHistory } from "pages/OfficeHours/MyOfficeHoursHistory";
 import { OfficeHoursHistory } from "pages/OfficeHours/OfficeHoursHistory";
@@ -81,6 +82,9 @@ function App() {
           </Route>
           <Route exact path="/office-hours">
             <OfficeHoursPage />
+          </Route>
+          <Route exact path="/gear-inventory">
+            <GearInventoryPage />
           </Route>
           <Route exact path="/approvals">
             <ApprovalsPage />
