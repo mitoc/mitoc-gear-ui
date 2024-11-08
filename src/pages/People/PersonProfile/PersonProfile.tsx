@@ -17,7 +17,7 @@ import { WaiverForm } from "./WaiverForm";
 export function PersonProfile() {
   const [isEditing, setEditing] = useState<boolean>(false);
   const [showDeskCreditForm, setShowDeskCreditForm] = useState<boolean>(false);
-  const { isOfficer } = usePermissions();
+  const { isDeskManager } = usePermissions();
 
   const onEdit = () => {
     setEditing(true);
@@ -89,7 +89,7 @@ export function PersonProfile() {
           <div>
             <strong>Mitoc credit:</strong> ${person.mitocCredit}
           </div>
-          {isOfficer && (
+          {isDeskManager && (
             <ToggleExpandButton
               onClick={() => setShowDeskCreditForm((current) => !current)}
               isOpen={showDeskCreditForm}
