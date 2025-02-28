@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { PeopleGroup, Person, updatePersonGroups } from "apiClient/people";
 import { GroupSelect } from "components/GroupSelect";
-import { usePermissions } from "redux/auth";
+import { useCurrentUser, usePermissions } from "redux/auth";
 
 type Props = {
   person: Person;
@@ -12,7 +12,9 @@ type Props = {
 
 export default function PeopleGroups({ person, refreshPerson }: Props) {
   const [showGroupsForm, setShowGroupForms] = useState<boolean>(false);
+  const { user } = useCurrentUser();
   const { isOfficer } = usePermissions();
+  const isMyProfile = person.id === user?.id;
 
   const noGroups = isEmpty(person.groups);
 
@@ -24,7 +26,7 @@ export default function PeopleGroups({ person, refreshPerson }: Props) {
   if (!showGroupsForm) {
     return (
       <div className={containerClassName}>
-        {isOfficer && (
+        {(isOfficer || isMyProfile) && (
           <button
             className="mt-1 badge bg-secondary"
             onClick={() => setShowGroupForms((v) => !v)}
@@ -49,6 +51,7 @@ export default function PeopleGroups({ person, refreshPerson }: Props) {
 
   return (
     <PeopleGroupsForm
+      isOfficer={isOfficer}
       person={person}
       refreshPerson={refreshPerson}
       closeForm={() => setShowGroupForms(false)}
@@ -60,7 +63,8 @@ function PeopleGroupsForm({
   person,
   refreshPerson,
   closeForm,
-}: Props & { closeForm: () => void }) {
+  isOfficer,
+}: Props & { isOfficer?: boolean; closeForm: () => void }) {
   const [groups, setGroups] = useState<readonly PeopleGroup[]>(person.groups);
 
   const onSubmit = () =>
@@ -84,7 +88,11 @@ function PeopleGroupsForm({
           {isEmpty(person.groups) ? "+ Add groups" : "± Edit groups"}
         </button>
       </div>
-      <GroupSelect groupIds={map(groups, "id")} onChange={setGroups} />
+      <GroupSelect
+        groupIds={map(groups, "id")}
+        onChange={setGroups}
+        editableGroups={isOfficer ? undefined : ["Office Access"]}
+      />
 
       <div className="ms-3 d-flex justify-content-end">
         <button className="btn btn-primary mt-3" onClick={onSubmit}>

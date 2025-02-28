@@ -12,22 +12,40 @@ type GroupOption = PeopleGroup & {
 type Props = {
   groupIds: number[];
   onChange: (groups: PeopleGroup[]) => void;
+  editableGroups?: string[]; // if unspecified, allow to edit all groups
 };
 
-export function GroupSelect({ groupIds, onChange: onChangeProps }: Props) {
+export function GroupSelect({
+  groupIds,
+  onChange: onChangeProps,
+  editableGroups,
+}: Props) {
   const { data: allGroups } = useGetGroupsQuery();
-  const options = allGroups?.map(makeOption);
+  const allOptions = allGroups?.map(makeOption);
+  const options =
+    editableGroups == null
+      ? allOptions
+      : allOptions?.filter(({ groupName }) =>
+          editableGroups.includes(groupName),
+        );
+
   const values =
-    options == null
+    allOptions == null
       ? null
       : (groupIds
-          .map((groupdId) => options.find((opt) => opt.id === groupdId))
+          .map((groupdId) => allOptions.find((opt) => opt.id === groupdId))
           .filter((opt) => opt != null) as GroupOption[]);
 
   const onChange = useCallback(
-    (options: MultiValue<GroupOption>) =>
-      onChangeProps(options.map(parseOption)),
-    [onChangeProps],
+    (rawNewValues: MultiValue<GroupOption>) => {
+      const newValues = getNewValues(
+        values ?? [],
+        rawNewValues,
+        editableGroups,
+      );
+      return onChangeProps(newValues.map(parseOption));
+    },
+    [values, editableGroups, onChangeProps],
   );
 
   return (
@@ -37,6 +55,11 @@ export function GroupSelect({ groupIds, onChange: onChangeProps }: Props) {
       options={options}
       value={values}
       onChange={onChange}
+      isOptionDisabled={
+        editableGroups == null
+          ? undefined
+          : ({ groupName }) => !editableGroups.includes(groupName)
+      }
     />
   );
 }
@@ -52,4 +75,26 @@ function makeOption(g: PeopleGroup): GroupOption {
 function parseOption(o: GroupOption): PeopleGroup {
   const { value, label, ...other } = o;
   return other;
+}
+
+function getNewValues(
+  currentValues: GroupOption[],
+  newValues: MultiValue<GroupOption>,
+  editableGroups?: string[],
+) {
+  if (!editableGroups) {
+    // No restriction on what group is editable, just pass the values through
+    return newValues;
+  }
+  const currentValuesIds = new Set(currentValues.map(({ id }) => id));
+  const newValuesIds = new Set(newValues.map(({ id }) => id));
+  const addedValues = newValues.filter(({ id }) => !currentValuesIds.has(id));
+  return [
+    ...currentValues.filter(
+      ({ groupName, id }) =>
+        newValuesIds.has(id) || // the group is still included in the new values, keep it
+        !editableGroups?.includes(groupName), // the group is not editable, keep it
+    ),
+    ...addedValues,
+  ];
 }
