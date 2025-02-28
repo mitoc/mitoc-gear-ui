@@ -10,7 +10,12 @@ import { OfficeHour, User } from "apiClient/types";
 import { PersonLink } from "components/PersonLink";
 import { useSetPageTitle } from "hooks";
 import { useGetOfficeHoursQuery } from "redux/api";
-import { Roles, useCurrentUser, usePermissions } from "redux/auth";
+import {
+  Roles,
+  useCurrentUser,
+  useCurrentUserReload,
+  usePermissions,
+} from "redux/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdCard } from "@fortawesome/free-solid-svg-icons";
 import { updatePersonGroups } from "apiClient/people";
@@ -75,12 +80,13 @@ export function OfficeHoursPage() {
 function OfficeAccessBanner() {
   const { hasOfficeAccess } = usePermissions();
   const { user } = useCurrentUser();
+  const reloadUser = useCurrentUserReload();
 
   return hasOfficeAccess ? (
     <div className="alert alert-success">
       <FontAwesomeIcon icon={faIdCard} /> You have office access 🎉. If that's
       not the case anymore, click{" "}
-      <UnstyleButton onClick={() => removeOfficeAccess(user)}>
+      <UnstyleButton onClick={() => removeOfficeAccess(user, reloadUser)}>
         here
       </UnstyleButton>
       .
@@ -89,7 +95,10 @@ function OfficeAccessBanner() {
     <div className="alert alert-warning">
       <FontAwesomeIcon icon={faIdCard} /> You do <b>not</b> have office access
       😢. If you actually do, click{" "}
-      <UnstyleButton onClick={() => addOfficeAccess(user)}>here</UnstyleButton>.
+      <UnstyleButton onClick={() => addOfficeAccess(user, reloadUser)}>
+        here
+      </UnstyleButton>
+      .
     </div>
   );
 }
@@ -227,18 +236,17 @@ const WeekBlock = styled.div`
   }
 `;
 
-function addOfficeAccess(user: User | undefined) {
+function addOfficeAccess(user: User | undefined, cb: () => void) {
   if (user == null) {
     return;
   }
   const newGroups = [...user.groups.map(({ id }) => id), Roles.OFFICE_ACCESS];
   updatePersonGroups(user.id, newGroups).then(() => {
-    // TODO: Refresh current user
-    // refreshPerson();
+    cb();
   });
 }
 
-function removeOfficeAccess(user: User | undefined) {
+function removeOfficeAccess(user: User | undefined, cb: () => void) {
   if (user == null) {
     return;
   }
@@ -246,7 +254,6 @@ function removeOfficeAccess(user: User | undefined) {
     .map(({ id }) => id)
     .filter((id) => id !== Roles.OFFICE_ACCESS);
   updatePersonGroups(user.id, newGroups).then(() => {
-    // TODO: Refresh current user
-    // refreshPerson();
+    cb();
   });
 }

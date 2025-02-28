@@ -33,6 +33,11 @@ export function useCurrentUser() {
   }));
 }
 
+export function useCurrentUserReload() {
+  const dispatch = useAppDispatch();
+  return () => dispatch(checkLoggedIn());
+}
+
 export function usePermissions() {
   const user = useCurrentUser().user;
   if (user == null) {
