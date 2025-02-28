@@ -19,6 +19,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdCard } from "@fortawesome/free-solid-svg-icons";
 import { updatePersonGroups } from "apiClient/people";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 dayjs.extend(weekOfYears);
 dayjs.extend(customParseFormat);
@@ -81,29 +83,51 @@ function OfficeAccessBanner() {
   const { hasOfficeAccess } = usePermissions();
   const { user } = useCurrentUser();
   const reloadUser = useCurrentUserReload();
+  const { refetch: reloadOfficeHours } = useGetOfficeHoursQuery();
+
+  const reload = () => {
+    reloadUser();
+    reloadOfficeHours();
+  };
 
   return hasOfficeAccess ? (
     <div className="alert alert-success">
       <FontAwesomeIcon icon={faIdCard} /> You have office access 🎉. If that's
       not the case anymore, click{" "}
-      <UnstyleButton onClick={() => removeOfficeAccess(user, reloadUser)}>
+      <UnstyledButton onClick={() => removeOfficeAccess(user, reload)}>
         here
-      </UnstyleButton>
+      </UnstyledButton>
       .
     </div>
   ) : (
     <div className="alert alert-warning">
       <FontAwesomeIcon icon={faIdCard} /> You do <b>not</b> have office access
       😢. If you actually do, click{" "}
-      <UnstyleButton onClick={() => addOfficeAccess(user, reloadUser)}>
+      <UnstyledButton onClick={() => addOfficeAccess(user, reload)}>
         here
-      </UnstyleButton>
+      </UnstyledButton>
       .
     </div>
   );
 }
 
-function UnstyleButton({
+function IconWithTooltip({ icon, text }: { icon: IconProp; text: string }) {
+  return (
+    <OverlayTrigger placement="top" overlay={<Tooltip>{text}</Tooltip>}>
+      {({ ref, ...triggerHandler }) => (
+        <FontAwesomeIcon
+          icon={icon}
+          ref={ref}
+          data-toggle="tooltip"
+          data-placement="top"
+          {...triggerHandler}
+        />
+      )}
+    </OverlayTrigger>
+  );
+}
+
+function UnstyledButton({
   onClick,
   children,
 }: {
@@ -165,6 +189,11 @@ function OfficeHourBlock({ officeHour }: { officeHour: OfficeHour }) {
           {signups.map((signup, i) => (
             <React.Fragment key={signup.deskWorker.id}>
               {i > 0 && ", "}
+              {signup.deskWorker.hasOfficeAccess && (
+                <>
+                  <IconWithTooltip icon={faIdCard} text="Has office access" />{" "}
+                </>
+              )}
               <PersonLink id={signup.deskWorker.id} key={signup.deskWorker.id}>
                 {signup.deskWorker.firstName}
               </PersonLink>
