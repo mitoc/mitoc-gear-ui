@@ -6,21 +6,26 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { cancelSignUp, signUp } from "apiClient/officeHours";
-import { OfficeHour } from "apiClient/types";
+import { OfficeHour, User } from "apiClient/types";
 import { PersonLink } from "components/PersonLink";
 import { useSetPageTitle } from "hooks";
 import { useGetOfficeHoursQuery } from "redux/api";
-import { useCurrentUser, usePermissions } from "redux/auth";
+import { Roles, useCurrentUser, usePermissions } from "redux/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdCard } from "@fortawesome/free-solid-svg-icons";
+import { updatePersonGroups } from "apiClient/people";
 
 dayjs.extend(weekOfYears);
 dayjs.extend(customParseFormat);
 
 export function OfficeHoursPage() {
   useSetPageTitle("Office Hours");
-  const { hasOfficeAccess } = usePermissions();
   const { data: officeHours } = useGetOfficeHoursQuery();
+  const { user } = useCurrentUser();
+
+  if (!user) {
+    return null;
+  }
 
   const now = dayjs();
   const officeHoursByWeek = groupBy(officeHours, ({ startTime }) => {
@@ -34,35 +39,7 @@ export function OfficeHoursPage() {
     <div className="row">
       <div className="col-lg-8">
         <h1>Upcoming office hours</h1>
-        {hasOfficeAccess ? (
-          <div className="alert alert-success">
-            <FontAwesomeIcon icon={faIdCard} /> You have office access 🎉. If
-            that's not the case anymore, click{" "}
-            <button
-              className="btn btn-link p-0 border-0 align-baseline"
-              onClick={() => {
-                console.log("2");
-              }}
-            >
-              here
-            </button>
-            .
-          </div>
-        ) : (
-          <div className="alert alert-warning">
-            <FontAwesomeIcon icon={faIdCard} /> You do <b>not</b> have office
-            access 😢. If you actually do, click{" "}
-            <button
-              className="btn btn-link p-0 border-0 align-baseline"
-              onClick={() => {
-                console.log("1");
-              }}
-            >
-              here
-            </button>
-            .
-          </div>
-        )}
+        <OfficeAccessBanner />
 
         {map(officeHoursByWeek, (officeHours, yearWeekStr) => {
           const weekStr = yearWeekStr.split(",")[1];
@@ -92,6 +69,45 @@ export function OfficeHoursPage() {
         })}
       </div>
     </div>
+  );
+}
+
+function OfficeAccessBanner() {
+  const { hasOfficeAccess } = usePermissions();
+  const { user } = useCurrentUser();
+
+  return hasOfficeAccess ? (
+    <div className="alert alert-success">
+      <FontAwesomeIcon icon={faIdCard} /> You have office access 🎉. If that's
+      not the case anymore, click{" "}
+      <UnstyleButton onClick={() => removeOfficeAccess(user)}>
+        here
+      </UnstyleButton>
+      .
+    </div>
+  ) : (
+    <div className="alert alert-warning">
+      <FontAwesomeIcon icon={faIdCard} /> You do <b>not</b> have office access
+      😢. If you actually do, click{" "}
+      <UnstyleButton onClick={() => addOfficeAccess(user)}>here</UnstyleButton>.
+    </div>
+  );
+}
+
+function UnstyleButton({
+  onClick,
+  children,
+}: {
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      className="btn btn-link p-0 border-0 align-baseline"
+      onClick={onClick}
+    >
+      {children}
+    </button>
   );
 }
 
@@ -211,4 +227,26 @@ const WeekBlock = styled.div`
   }
 `;
 
-function addOfficeAccess() {}
+function addOfficeAccess(user: User | undefined) {
+  if (user == null) {
+    return;
+  }
+  const newGroups = [...user.groups.map(({ id }) => id), Roles.OFFICE_ACCESS];
+  updatePersonGroups(user.id, newGroups).then(() => {
+    // TODO: Refresh current user
+    // refreshPerson();
+  });
+}
+
+function removeOfficeAccess(user: User | undefined) {
+  if (user == null) {
+    return;
+  }
+  const newGroups = user.groups
+    .map(({ id }) => id)
+    .filter((id) => id !== Roles.OFFICE_ACCESS);
+  updatePersonGroups(user.id, newGroups).then(() => {
+    // TODO: Refresh current user
+    // refreshPerson();
+  });
+}
