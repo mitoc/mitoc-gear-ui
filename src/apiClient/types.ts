@@ -1,4 +1,4 @@
-import { PeopleGroup, PersonBase } from "./people";
+import { PeopleGroup, PersonBase, PersonWithOfficeAccess } from "./people";
 
 export interface ListWrapper<T> {
   count: number;
@@ -39,7 +39,7 @@ export interface OfficeHour {
   endTime: string;
   signups: {
     id: string;
-    deskWorker: PersonBase;
+    deskWorker: PersonWithOfficeAccess;
   }[];
 }
 

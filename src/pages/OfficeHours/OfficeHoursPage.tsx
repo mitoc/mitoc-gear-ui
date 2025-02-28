@@ -6,11 +6,21 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { cancelSignUp, signUp } from "apiClient/officeHours";
-import { OfficeHour } from "apiClient/types";
+import { OfficeHour, User } from "apiClient/types";
 import { PersonLink } from "components/PersonLink";
 import { useSetPageTitle } from "hooks";
 import { useGetOfficeHoursQuery } from "redux/api";
-import { useCurrentUser } from "redux/auth";
+import {
+  Roles,
+  useCurrentUser,
+  useCurrentUserReload,
+  usePermissions,
+} from "redux/auth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faIdCard } from "@fortawesome/free-solid-svg-icons";
+import { updatePersonGroups } from "apiClient/people";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 dayjs.extend(weekOfYears);
 dayjs.extend(customParseFormat);
@@ -18,6 +28,11 @@ dayjs.extend(customParseFormat);
 export function OfficeHoursPage() {
   useSetPageTitle("Office Hours");
   const { data: officeHours } = useGetOfficeHoursQuery();
+  const { user } = useCurrentUser();
+
+  if (!user) {
+    return null;
+  }
 
   const now = dayjs();
   const officeHoursByWeek = groupBy(officeHours, ({ startTime }) => {
@@ -31,6 +46,7 @@ export function OfficeHoursPage() {
     <div className="row">
       <div className="col-lg-8">
         <h1>Upcoming office hours</h1>
+        <OfficeAccessBanner />
 
         {map(officeHoursByWeek, (officeHours, yearWeekStr) => {
           const weekStr = yearWeekStr.split(",")[1];
@@ -60,6 +76,71 @@ export function OfficeHoursPage() {
         })}
       </div>
     </div>
+  );
+}
+
+function OfficeAccessBanner() {
+  const { hasOfficeAccess } = usePermissions();
+  const { user } = useCurrentUser();
+  const reloadUser = useCurrentUserReload();
+  const { refetch: reloadOfficeHours } = useGetOfficeHoursQuery();
+
+  const reload = () => {
+    reloadUser();
+    reloadOfficeHours();
+  };
+
+  return hasOfficeAccess ? (
+    <div className="alert alert-success">
+      <FontAwesomeIcon icon={faIdCard} /> You have office access 🎉. If that's
+      not the case anymore, click{" "}
+      <UnstyledButton onClick={() => removeOfficeAccess(user, reload)}>
+        here
+      </UnstyledButton>
+      .
+    </div>
+  ) : (
+    <div className="alert alert-warning">
+      <FontAwesomeIcon icon={faIdCard} /> You do <b>not</b> have office access
+      😢. If you actually do, click{" "}
+      <UnstyledButton onClick={() => addOfficeAccess(user, reload)}>
+        here
+      </UnstyledButton>
+      .
+    </div>
+  );
+}
+
+function IconWithTooltip({ icon, text }: { icon: IconProp; text: string }) {
+  return (
+    <OverlayTrigger placement="top" overlay={<Tooltip>{text}</Tooltip>}>
+      {({ ref, ...triggerHandler }) => (
+        <FontAwesomeIcon
+          icon={icon}
+          ref={ref}
+          data-toggle="tooltip"
+          data-placement="top"
+          {...triggerHandler}
+        />
+      )}
+    </OverlayTrigger>
+  );
+}
+
+function UnstyledButton({
+  onClick,
+  children,
+}: {
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      className="btn btn-link p-0 border-0 align-baseline"
+      onClick={onClick}
+    >
+      {children}
+    </button>
   );
 }
 
@@ -108,6 +189,11 @@ function OfficeHourBlock({ officeHour }: { officeHour: OfficeHour }) {
           {signups.map((signup, i) => (
             <React.Fragment key={signup.deskWorker.id}>
               {i > 0 && ", "}
+              {signup.deskWorker.hasOfficeAccess && (
+                <>
+                  <IconWithTooltip icon={faIdCard} text="Has office access" />{" "}
+                </>
+              )}
               <PersonLink id={signup.deskWorker.id} key={signup.deskWorker.id}>
                 {signup.deskWorker.firstName}
               </PersonLink>
@@ -178,3 +264,25 @@ const WeekBlock = styled.div`
     justify-content: right;
   }
 `;
+
+function addOfficeAccess(user: User | undefined, cb: () => void) {
+  if (user == null) {
+    return;
+  }
+  const newGroups = [...user.groups.map(({ id }) => id), Roles.OFFICE_ACCESS];
+  updatePersonGroups(user.id, newGroups).then(() => {
+    cb();
+  });
+}
+
+function removeOfficeAccess(user: User | undefined, cb: () => void) {
+  if (user == null) {
+    return;
+  }
+  const newGroups = user.groups
+    .map(({ id }) => id)
+    .filter((id) => id !== Roles.OFFICE_ACCESS);
+  updatePersonGroups(user.id, newGroups).then(() => {
+    cb();
+  });
+}

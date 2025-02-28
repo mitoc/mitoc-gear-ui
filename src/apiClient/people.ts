@@ -11,6 +11,11 @@ export interface PersonBase {
   lastName: string;
 }
 
+/** Representation of a person including office access tag*/
+export interface PersonWithOfficeAccess extends PersonBase {
+  hasOfficeAccess: boolean;
+}
+
 /** The representation of a person in the list endpoint*/
 export interface PersonSummary extends PersonBase {
   email: string;

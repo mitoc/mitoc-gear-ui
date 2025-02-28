@@ -5,12 +5,13 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { checkLoggedIn } from "./authSlice";
 
 // TODO: Ideally these should be ids rather than an arbitrary numbers
-enum Roles {
+export enum Roles {
   BOD = 1,
   GEAR_MANAGER = 6,
   DESK_CAPTAIN = 8,
   ADMIN = 24,
   APPROVER = 25,
+  OFFICE_ACCESS = 28,
 }
 
 export function useLoadCurrentUser() {
@@ -32,6 +33,11 @@ export function useCurrentUser() {
   }));
 }
 
+export function useCurrentUserReload() {
+  const dispatch = useAppDispatch();
+  return () => dispatch(checkLoggedIn());
+}
+
 export function usePermissions() {
   const user = useCurrentUser().user;
   if (user == null) {
@@ -46,5 +52,6 @@ export function usePermissions() {
     isApprover: user.groups.some((g) =>
       [Roles.ADMIN, Roles.APPROVER].includes(g.id),
     ),
+    hasOfficeAccess: user.groups.some(({ id }) => id === Roles.OFFICE_ACCESS),
   };
 }
