@@ -55,11 +55,6 @@ export function GroupSelect({
       options={options}
       value={values}
       onChange={onChange}
-      isOptionDisabled={
-        editableGroups == null
-          ? undefined
-          : ({ groupName }) => !editableGroups.includes(groupName)
-      }
     />
   );
 }
