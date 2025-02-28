@@ -11,6 +11,7 @@ enum Roles {
   DESK_CAPTAIN = 8,
   ADMIN = 24,
   APPROVER = 25,
+  OFFICE_ACCESS = 27,
 }
 
 export function useLoadCurrentUser() {
@@ -46,5 +47,6 @@ export function usePermissions() {
     isApprover: user.groups.some((g) =>
       [Roles.ADMIN, Roles.APPROVER].includes(g.id),
     ),
+    hasOfficeAccess: user.groups.some(({ id }) => id === Roles.OFFICE_ACCESS),
   };
 }

@@ -10,13 +10,16 @@ import { OfficeHour } from "apiClient/types";
 import { PersonLink } from "components/PersonLink";
 import { useSetPageTitle } from "hooks";
 import { useGetOfficeHoursQuery } from "redux/api";
-import { useCurrentUser } from "redux/auth";
+import { useCurrentUser, usePermissions } from "redux/auth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faIdCard } from "@fortawesome/free-solid-svg-icons";
 
 dayjs.extend(weekOfYears);
 dayjs.extend(customParseFormat);
 
 export function OfficeHoursPage() {
   useSetPageTitle("Office Hours");
+  const { hasOfficeAccess } = usePermissions();
   const { data: officeHours } = useGetOfficeHoursQuery();
 
   const now = dayjs();
@@ -31,6 +34,35 @@ export function OfficeHoursPage() {
     <div className="row">
       <div className="col-lg-8">
         <h1>Upcoming office hours</h1>
+        {hasOfficeAccess ? (
+          <div className="alert alert-success">
+            <FontAwesomeIcon icon={faIdCard} /> You have office access 🎉. If
+            that's not the case anymore, click{" "}
+            <button
+              className="btn btn-link p-0 border-0 align-baseline"
+              onClick={() => {
+                console.log("2");
+              }}
+            >
+              here
+            </button>
+            .
+          </div>
+        ) : (
+          <div className="alert alert-warning">
+            <FontAwesomeIcon icon={faIdCard} /> You do <b>not</b> have office
+            access 😢. If you actually do, click{" "}
+            <button
+              className="btn btn-link p-0 border-0 align-baseline"
+              onClick={() => {
+                console.log("1");
+              }}
+            >
+              here
+            </button>
+            .
+          </div>
+        )}
 
         {map(officeHoursByWeek, (officeHours, yearWeekStr) => {
           const weekStr = yearWeekStr.split(",")[1];
@@ -178,3 +210,5 @@ const WeekBlock = styled.div`
     justify-content: right;
   }
 `;
+
+function addOfficeAccess() {}
