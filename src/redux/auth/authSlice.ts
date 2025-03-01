@@ -20,6 +20,10 @@ export const checkLoggedIn = createCustomAsyncThunk(
 );
 
 export const logIn = createCustomAsyncThunk("auth/logIn", authClient.logIn);
+export const signInWithGoogle = createCustomAsyncThunk(
+  "auth/signInWithGoogle",
+  authClient.signInWithGoogle,
+);
 export const logOut = createAsyncThunk("auth/logOut", authClient.logOut);
 
 const authSlice = createSlice({

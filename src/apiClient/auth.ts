@@ -21,6 +21,12 @@ async function logIn(query: LogInQuery): Promise<User | APIErrorType> {
   return request("/auth/login/", "POST", query);
 }
 
+async function signInWithGoogle(query: {
+  token: string;
+}): Promise<User | APIErrorType> {
+  return request("/auth/login/google/", "POST", query);
+}
+
 async function checkResetPasswordToken(query: {
   email: string;
   token: string;
@@ -60,5 +66,6 @@ export const authClient = {
   loggedIn,
   logIn,
   logOut,
+  signInWithGoogle,
   changePassword,
 };
