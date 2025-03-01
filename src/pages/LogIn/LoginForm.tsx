@@ -40,6 +40,7 @@ export function LoginForm() {
             <input
               className={`form-control ${emailError ? "is-invalid" : ""}`}
               required
+              autoComplete="email"
               type="email"
               value={email}
               onChange={(evt) => {
@@ -54,6 +55,7 @@ export function LoginForm() {
             <input
               type="password"
               required
+              autoComplete="current-password"
               className={`form-control ${passwordError ? "is-invalid" : ""}`}
               value={password}
               onChange={(evt) => {
