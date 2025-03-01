@@ -74,6 +74,19 @@ const authSlice = createSlice({
         state.loadingStatus = "idle";
         state.error = action.payload as APIErrorType;
       })
+      .addCase(signInWithGoogle.pending, (state) => {
+        state.loadingStatus = "loading";
+      })
+      .addCase(signInWithGoogle.fulfilled, (state, action) => {
+        state.loadingStatus = "idle";
+        state.loggedIn = true;
+        state.user = action.payload as User;
+        delete state.error;
+      })
+      .addCase(signInWithGoogle.rejected, (state, action) => {
+        state.loadingStatus = "idle";
+        state.error = action.payload as APIErrorType;
+      })
       .addCase(logOut.pending, (state) => {
         state.loadingStatus = "loading";
       })
