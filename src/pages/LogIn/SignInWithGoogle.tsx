@@ -7,7 +7,6 @@ import { useAppDispatch } from "redux/hooks";
 
 export function SignInWithGoogle() {
   const dispatch = useAppDispatch();
-  const [hasError, setHasError] = useState<boolean>(false);
 
   return (
     <GoogleOAuthProvider clientId={googleOauthClientId}>
@@ -15,15 +14,13 @@ export function SignInWithGoogle() {
         onSuccess={(response) => {
           const token = response.credential;
           if (!token) {
-            setHasError(true);
+            console.error("No Google token.");
             return;
           }
-          setHasError(false);
           dispatch(signInWithGoogle({ token }));
         }}
-        onError={() => setHasError(true)}
+        onError={() => console.error("Signin with google failed.")}
       />
-      {hasError && <span>Error signing in with Google.</span>}
     </GoogleOAuthProvider>
   );
 }
