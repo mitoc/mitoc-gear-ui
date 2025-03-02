@@ -1,7 +1,6 @@
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 import { googleOauthClientId } from "lib/constants";
-import { useState } from "react";
 import { signInWithGoogle } from "redux/auth";
 import { useAppDispatch } from "redux/hooks";
 
