@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { validateEmail } from "lib/validation";
 import { logIn } from "redux/auth/authSlice";
 import { useAppDispatch } from "redux/hooks";
+import { SignInWithGoogle } from "./SignInWithGoogle";
 
 export function LoginForm() {
   const dispatch = useAppDispatch();
@@ -34,12 +35,15 @@ export function LoginForm() {
   return (
     <div className="row">
       <div className="col-md-6">
+        <SignInWithGoogle />
+        <hr />
         <form>
           <label className="w-100 mb-2">
             Email:
             <input
               className={`form-control ${emailError ? "is-invalid" : ""}`}
               required
+              autoComplete="email"
               type="email"
               value={email}
               onChange={(evt) => {
@@ -54,6 +58,7 @@ export function LoginForm() {
             <input
               type="password"
               required
+              autoComplete="current-password"
               className={`form-control ${passwordError ? "is-invalid" : ""}`}
               value={password}
               onChange={(evt) => {

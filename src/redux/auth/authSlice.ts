@@ -20,6 +20,10 @@ export const checkLoggedIn = createCustomAsyncThunk(
 );
 
 export const logIn = createCustomAsyncThunk("auth/logIn", authClient.logIn);
+export const signInWithGoogle = createCustomAsyncThunk(
+  "auth/signInWithGoogle",
+  authClient.signInWithGoogle,
+);
 export const logOut = createAsyncThunk("auth/logOut", authClient.logOut);
 
 const authSlice = createSlice({
@@ -67,6 +71,19 @@ const authSlice = createSlice({
         delete state.error;
       })
       .addCase(logIn.rejected, (state, action) => {
+        state.loadingStatus = "idle";
+        state.error = action.payload as APIErrorType;
+      })
+      .addCase(signInWithGoogle.pending, (state) => {
+        state.loadingStatus = "loading";
+      })
+      .addCase(signInWithGoogle.fulfilled, (state, action) => {
+        state.loadingStatus = "idle";
+        state.loggedIn = true;
+        state.user = action.payload as User;
+        delete state.error;
+      })
+      .addCase(signInWithGoogle.rejected, (state, action) => {
         state.loadingStatus = "idle";
         state.error = action.payload as APIErrorType;
       })
