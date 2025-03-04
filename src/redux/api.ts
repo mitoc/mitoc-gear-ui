@@ -4,6 +4,7 @@ import queryString from "query-string";
 
 import { Approval } from "apiClient/approvals";
 import { API_HOST } from "apiClient/client";
+import { Config } from "apiClient/config";
 import type {
   GearItem,
   GearLocation,
@@ -29,6 +30,11 @@ export const gearDbApi = createApi({
       queryString.stringify(params, { arrayFormat: "none" }),
   }),
   endpoints: (builder) => ({
+    getConfig: builder.query<Config, void>({
+      query: () => `config/`,
+      // Keep config in cache
+      keepUnusedDataFor: 24 * 60 * 60,
+    }),
     getPerson: builder.query<Person, string>({
       query: (personID) => `people/${personID}/`,
     }),
@@ -153,6 +159,7 @@ export const gearDbApi = createApi({
 });
 
 export const {
+  useGetConfigQuery,
   useGetPersonQuery,
   useGetPersonListQuery,
   useGetGearItemQuery,

@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import { Checkbox } from "components/Inputs/Checkbox";
 import { TablePagination } from "components/TablePagination";
 import { useSetPageTitle } from "hooks";
-import { restrictedGearDoc } from "lib/constants";
 import { useGetApprovalsQuery } from "redux/api";
 import { usePermissions } from "redux/auth";
+import { useConfig } from "redux/hooks";
 
 import { ApprovalsTable } from "./ApprovalsTable";
 
@@ -14,6 +14,7 @@ export function ApprovalsPage() {
   useSetPageTitle("Restricted gear");
   const { isApprover } = usePermissions();
   const [showExpired, setShowExpired] = useState<boolean>(false);
+  const { restrictedDocUrl } = useConfig();
   const { data, refetch } = useGetApprovalsQuery({
     past: showExpired ? undefined : false, // filter past by default, unless opting in
   });
@@ -25,7 +26,7 @@ export function ApprovalsPage() {
       <h1>Restricted Gear Approvals</h1>
       <p>
         The old{" "}
-        <a href={restrictedGearDoc} target="_blank" rel="noreferrer">
+        <a href={restrictedDocUrl} target="_blank" rel="noreferrer">
           restricted gear doc
         </a>{" "}
         has been deprecated. All current approvals should be on this page.
