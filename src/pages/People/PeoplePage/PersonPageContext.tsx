@@ -8,8 +8,6 @@ import { ItemToPurchase } from "../types";
 
 import { useBasket } from "./useBasket";
 
-export const isWinterSchool = true; // TODO: This should be read from the database
-
 type PersonPageContextType = ReturnType<typeof useMakePersonPageContext>;
 
 type Props = {
