@@ -8,16 +8,15 @@ import { Checkbox } from "components/Inputs/Checkbox";
 import { NumberField } from "components/Inputs/NumberField";
 import { formatDate } from "lib/fmtDate";
 import { fmtAmount } from "lib/fmtNumber";
+import { useConfig } from "redux/hooks";
 
-import {
-  isWinterSchool,
-  usePersonPageContext,
-} from "../PeoplePage/PersonPageContext";
+import { usePersonPageContext } from "../PeoplePage/PersonPageContext";
 
 import { PaymentSummary } from "./PaymentSummary";
 import { WinterSchoolDisclaimer } from "./WinterSchoolDisclaimer";
 
 export function ReturnStaging() {
+  const { isWinterSchool } = useConfig();
   const { returnBasket, purchaseBasket } = usePersonPageContext();
   const [checkNumber, setCheckNumber] = useState<string>("");
   const rentals = returnBasket.rentalsWithOverride;

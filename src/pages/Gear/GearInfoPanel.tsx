@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import type { GearSummary } from "apiClient/gear";
-import { restrictedGearDoc } from "lib/constants";
 import { fmtAmount } from "lib/fmtNumber";
+import { useConfig } from "redux/hooks";
 
 import { GearItemEditForm } from "./GearItemEditForm";
 import { GearStatus } from "./GearStatus";
@@ -16,6 +16,8 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
   const [formToShow, setFormToShow] = useState<GearStatusFormType>(
     GearStatusFormType.none,
   );
+  const { restrictedDocUrl } = useConfig();
+
   const gearStatusColor =
     gearItem.missing || gearItem.retired || gearItem.broken
       ? "alert-danger"
@@ -46,7 +48,7 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
             {newApprovalUI ? (
               <Link to="/approvals">Restricted gear approvals</Link>
             ) : (
-              <a href={restrictedGearDoc} target="_blank" rel="noreferrer">
+              <a href={restrictedDocUrl} target="_blank" rel="noreferrer">
                 Restricted gear doc
               </a>
             )}

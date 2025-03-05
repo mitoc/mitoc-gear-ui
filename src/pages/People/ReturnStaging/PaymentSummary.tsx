@@ -8,13 +8,12 @@ import styled from "styled-components";
 import { Checkbox } from "components/Inputs/Checkbox";
 import { NumberField } from "components/Inputs/NumberField";
 import { fmtAmount } from "lib/fmtNumber";
+import { useConfig } from "redux/hooks";
 
-import {
-  isWinterSchool,
-  usePersonPageContext,
-} from "../PeoplePage/PersonPageContext";
+import { usePersonPageContext } from "../PeoplePage/PersonPageContext";
 
 export function PaymentSummary() {
+  const { isWinterSchool } = useConfig();
   const [editTotalRental, setEditTotalRental] = useState<boolean>(false);
   const {
     purchaseBasket,
