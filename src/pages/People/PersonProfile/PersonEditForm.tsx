@@ -6,6 +6,7 @@ import { editPerson, Person } from "apiClient/people";
 import { Form } from "components/Inputs/Form";
 import { LabeledInput } from "components/Inputs/LabeledInput";
 import { validateEmail } from "lib/validation";
+import { useCurrentUser } from "redux/auth";
 
 type Props = {
   person: Person;
@@ -21,6 +22,7 @@ type FormValues = {
 };
 
 export function PersonEditForm({ person, closeForm, refreshPerson }: Props) {
+  const { user } = useCurrentUser();
   const formObject = useForm<FormValues>({
     defaultValues: {
       firstName: person.firstName,
@@ -44,6 +46,10 @@ export function PersonEditForm({ person, closeForm, refreshPerson }: Props) {
       refreshPerson();
     });
   };
+  const isPersonUser = person.groups.some(
+    ({ groupName }) => groupName === "Desk Worker",
+  );
+  const disableEmailEdit = isPersonUser && person.id !== user?.id;
   return (
     <Form onSubmit={onSubmit} form={formObject}>
       <LabeledInput
@@ -62,6 +68,7 @@ export function PersonEditForm({ person, closeForm, refreshPerson }: Props) {
         title="Primary email:"
         type="email"
         name="email"
+        disabled={disableEmailEdit}
         options={{
           required: true,
           validate: (value) => {
