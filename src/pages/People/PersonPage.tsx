@@ -19,6 +19,7 @@ import { PersonRentals } from "./PersonRentals";
 import { PersonRentalsHistory } from "./PersonRentalsHistory";
 import { PersonPageTabs, PersonTabsSelector } from "./PersonTabs";
 import { ReturnStaging } from "./ReturnStaging";
+import { PersonApprovals } from "./PersonApprovals";
 
 export function PersonPage() {
   const { personId } = useParams<{ personId: string }>();
@@ -82,6 +83,7 @@ function PersonPageInner() {
         {tab === PersonPageTabs.gearOut && <PersonRentals />}
         {tab === PersonPageTabs.moreGear && <MoreGear />}
         {tab === PersonPageTabs.buyGear && <BuyGear />}
+        {tab === PersonPageTabs.approvals && <PersonApprovals />}
         {tab === PersonPageTabs.rentalHistory && (
           <PersonRentalsHistory personId={person.id} />
         )}

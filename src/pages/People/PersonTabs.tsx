@@ -7,12 +7,14 @@ export enum PersonPageTabs {
   gearOut = "gearOut",
   moreGear = "moreGear",
   buyGear = "buyGear",
+  approvals = "approvals",
   rentalHistory = "rentalHistory",
 }
 
 const tabs = [
   { name: PersonPageTabs.gearOut, label: "Gear out" },
   { name: PersonPageTabs.moreGear, label: "Rent Gear", shortLabel: "Rent" },
+  { name: PersonPageTabs.approvals, label: "Approvals", shortLabel: "Rent" },
   { name: PersonPageTabs.buyGear, label: "Buy Gear", shortLabel: "Buy" },
   {
     name: PersonPageTabs.rentalHistory,
