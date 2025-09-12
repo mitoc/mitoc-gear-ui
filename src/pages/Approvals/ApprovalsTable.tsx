@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMemo } from "react";
 
 import { Approval, deleteApproval } from "apiClient/approvals";
-import { PersonBase } from "apiClient/people";
+import { ApprovalItemsList } from "components/ApprovalItemsList";
 import { DataGrid } from "components/DataGrid";
-import { GearLink } from "components/GearLink";
-import { PersonLink } from "components/PersonLink";
 import { formatDate } from "lib/fmtDate";
+import { PersonBase } from "apiClient/people";
+import { PersonLink } from "components/PersonLink";
 
 export function ApprovalsTable({
   approvals,
@@ -64,39 +64,25 @@ function EndDateCell({ item: approval }: { item: Approval }) {
 
 function ItemsCell({ item: approval }: { item: Approval }) {
   return (
-    <ul>
-      {approval.items.map(({ type, item }) => {
-        if (type === "gearType") {
-          return (
-            <li key={item.gearType.id}>
-              {item.gearType.typeName} ({item.gearType.shorthand}) -
-              {item.quantity} {item.quantity > 1 ? "items" : "item"}
-            </li>
-          );
-        }
-        return (
-          <li key={item.gearItem.id}>
-            {item.gearItem.type.typeName} -{" "}
-            <GearLink id={item.gearItem.id}>{item.gearItem.id}</GearLink>{" "}
-          </li>
-        );
-      })}
-    </ul>
+    <ApprovalItemsList
+      items={approval.items}
+      keyPrefix={`approval-${approval.id}`}
+    />
   );
 }
 
 function RenterCell({ item: approval }: { item: Approval }) {
-  return <PersonCell value={approval.renter} />;
+  return <PersonCell person={approval.renter} />;
 }
 
 function ApproverCell({ item: approval }: { item: Approval }) {
-  return <PersonCell value={approval.approvedBy} />;
+  return <PersonCell person={approval.approvedBy} />;
 }
 
-function PersonCell({ value }: { value: PersonBase }) {
+function PersonCell({ person }: { person: PersonBase }) {
   return (
-    <PersonLink id={String(value.id)}>
-      {value.firstName} {value.lastName}
+    <PersonLink id={String(person.id)}>
+      {person.firstName} {person.lastName}
     </PersonLink>
   );
 }
