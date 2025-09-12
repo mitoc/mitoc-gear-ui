@@ -6,15 +6,14 @@ import { GearLink } from "components/GearLink";
  */
 export function ApprovalItemsList({ items }: { items: ApprovalItem[] }) {
   return (
-    <ul>
+    <ul className="list-unstyled">
       {items.map((approvalItem) => {
         if (approvalItem.type === "gearType") {
           return (
             <li key={`${approvalItem.item.gearType.id}-type`}>
               {approvalItem.item.gearType.typeName} (
-              {approvalItem.item.gearType.shorthand}) -
-              {approvalItem.item.quantity}{" "}
-              {approvalItem.item.quantity > 1 ? "items" : "item"}
+              {approvalItem.item.gearType.shorthand}){" "}
+              <strong>x{approvalItem.item.quantity}</strong>
             </li>
           );
         }
