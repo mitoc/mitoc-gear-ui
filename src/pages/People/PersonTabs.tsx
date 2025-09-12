@@ -13,12 +13,12 @@ export enum PersonPageTabs {
 
 const tabs = [
   { name: PersonPageTabs.gearOut, label: "Gear out" },
-  { name: PersonPageTabs.moreGear, label: "Rent Gear", shortLabel: "Rent" },
-  { name: PersonPageTabs.approvals, label: "Approvals", shortLabel: "Rent" },
-  { name: PersonPageTabs.buyGear, label: "Buy Gear", shortLabel: "Buy" },
+  { name: PersonPageTabs.moreGear, label: "Rent", shortLabel: "Rent" },
+  { name: PersonPageTabs.approvals, label: "Approvals", shortLabel: "Appr." },
+  { name: PersonPageTabs.buyGear, label: "Buy", shortLabel: "Buy" },
   {
     name: PersonPageTabs.rentalHistory,
-    label: "Rental History",
+    label: "History",
     shortLabel: "Hist.",
   },
 ];
