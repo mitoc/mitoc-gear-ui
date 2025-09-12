@@ -1,5 +1,5 @@
 import { flow, keyBy, map, mapValues, partition, sum } from "lodash";
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 
 import { RenterApproval } from "apiClient/approvals";
 import { GearSummary } from "apiClient/gear";
@@ -75,6 +75,21 @@ function useMakePersonPageContext({ person, refreshPerson, approvals }: Props) {
     },
   );
 
+  const isApproved = useCallback(
+    (gearId: string, typeId: number) => {
+      return activeApprovals.some((approval) => {
+        return approval.items.some((item) => {
+          return (
+            (item.type === "specificItem" &&
+              item.item.gearItem.id === gearId) ||
+            (item.type === "gearType" && item.item.gearType.id === typeId)
+          );
+        });
+      });
+    },
+    [activeApprovals],
+  );
+
   const calculatedTotalRentals = sum(
     map(rentalsWithOverride, (item) => {
       return item.waived
@@ -95,6 +110,7 @@ function useMakePersonPageContext({ person, refreshPerson, approvals }: Props) {
     person,
     activeApprovals,
     futureApprovals,
+    isApproved,
     refreshPerson,
     purchaseBasket,
     returnBasket: {

@@ -10,7 +10,7 @@ import { useGearList } from "redux/api";
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
 export function MoreGear() {
-  const { checkoutBasket } = usePersonPageContext();
+  const { checkoutBasket, isApproved } = usePersonPageContext();
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
@@ -98,7 +98,13 @@ export function MoreGear() {
                       {restricted && (
                         <>
                           <br />
-                          <strong className="text-warning">RESTRICTED</strong>
+                          {!isApproved(id, type.id) ? (
+                            <strong className="text-warning">RESTRICTED</strong>
+                          ) : (
+                            <strong className="text-success">
+                              ☑ Approved
+                            </strong>
+                          )}
                         </>
                       )}
                     </td>
