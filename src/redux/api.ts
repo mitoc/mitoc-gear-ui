@@ -155,7 +155,7 @@ export const gearDbApi = createApi({
 
     getRenterApprovals: builder.query<
       ListWrapper<RenterApproval>,
-      { personID: string; past: boolean }
+      { personID: string; past: boolean; future?: boolean }
     >({
       query: ({ personID, past }) => ({
         url: `people/${personID}/approvals`,

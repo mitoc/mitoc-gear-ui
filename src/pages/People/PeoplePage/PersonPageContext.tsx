@@ -1,18 +1,21 @@
-import { flow, keyBy, map, mapValues, sum } from "lodash";
+import { flow, keyBy, map, mapValues, partition, sum } from "lodash";
 import React, { useContext, useState } from "react";
 
+import { RenterApproval } from "apiClient/approvals";
 import { GearSummary } from "apiClient/gear";
 import { checkoutGear, Person, Rental, returnGear } from "apiClient/people";
 
 import { ItemToPurchase } from "../types";
 
 import { useBasket } from "./useBasket";
+import dayjs from "dayjs";
 
 type PersonPageContextType = ReturnType<typeof useMakePersonPageContext>;
 
 type Props = {
   person: Person;
   refreshPerson: () => void;
+  approvals: RenterApproval[];
 };
 
 const PersonPageContext = React.createContext<
@@ -41,7 +44,7 @@ export function usePersonPageContext() {
   return context;
 }
 
-function useMakePersonPageContext({ person, refreshPerson }: Props) {
+function useMakePersonPageContext({ person, refreshPerson, approvals }: Props) {
   const checkoutBasketBase = useBasket<GearSummary>();
   const returnBasketBase = useBasket<Rental>();
   const purchaseBasket = useBasket<ItemToPurchase>();
@@ -59,6 +62,17 @@ function useMakePersonPageContext({ person, refreshPerson }: Props) {
   } = useReturnState(
     returnBasketBase.items,
     person.groups.some((group) => group.groupName === "BOD"),
+  );
+
+  const today = dayjs().startOf("day");
+
+  const [activeApprovals, futureApprovals] = partition(
+    approvals,
+    (approval) => {
+      const startDate = dayjs(approval.startDate).startOf("day");
+      const endDate = dayjs(approval.endDate).endOf("day");
+      return startDate.isSameOrBefore(today) && endDate.isSameOrAfter(today);
+    },
   );
 
   const calculatedTotalRentals = sum(
@@ -79,6 +93,8 @@ function useMakePersonPageContext({ person, refreshPerson }: Props) {
 
   return {
     person,
+    activeApprovals,
+    futureApprovals,
     refreshPerson,
     purchaseBasket,
     returnBasket: {

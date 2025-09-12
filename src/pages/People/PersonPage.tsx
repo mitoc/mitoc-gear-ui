@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { addNote, archiveNote } from "apiClient/people";
 import { Notes } from "components/Notes";
 import { useSetPageTitle } from "hooks";
-import { useGetPersonQuery } from "redux/api";
+import { useGetPersonQuery, useGetRenterApprovalsQuery } from "redux/api";
 
 import { BuyGear } from "./BuyGear";
 import { CheckoutStaging } from "./CheckoutStaging";
@@ -24,11 +24,20 @@ import { PersonApprovals } from "./PersonApprovals";
 export function PersonPage() {
   const { personId } = useParams<{ personId: string }>();
   const { data: person, refetch: refreshPerson } = useGetPersonQuery(personId);
+  const { data: approvalResult } = useGetRenterApprovalsQuery({
+    personID: personId,
+    past: false,
+  });
   if (person == null) {
     return null;
   }
   return (
-    <PersonPageContextProvider person={person} refreshPerson={refreshPerson}>
+    <PersonPageContextProvider
+      person={person}
+      refreshPerson={refreshPerson}
+      // NOTE: This doesn't handle pagination for now, which could be a problem if someone has 50+ active approvals. Unlikely.
+      approvals={approvalResult?.results ?? []}
+    >
       <PersonPageInner />
     </PersonPageContextProvider>
   );

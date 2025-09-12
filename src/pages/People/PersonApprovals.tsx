@@ -1,36 +1,22 @@
 import dayjs from "dayjs";
-import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import { isEmpty } from "lodash";
+
+import { RenterApproval } from "apiClient/approvals";
+import { ApprovalItemsList } from "components/ApprovalItemsList";
+import { PersonLink } from "components/PersonLink";
+import { formatDate } from "lib/fmtDate";
+
+import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
-import { ApprovalItemsList } from "components/ApprovalItemsList";
-import { PersonLink } from "components/PersonLink";
-import { formatDate } from "lib/fmtDate";
-import { useGetRenterApprovalsQuery } from "redux/api";
-import { RenterApproval } from "apiClient/approvals";
-
-import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
-import { isEmpty, partition } from "lodash";
-
 export function PersonApprovals() {
-  const { person } = usePersonPageContext();
-  const { data: approvals, isLoading } = useGetRenterApprovalsQuery({
-    personID: person.id,
-    past: false,
-  });
+  const { activeApprovals, futureApprovals } = usePersonPageContext();
 
-  if (isLoading) {
-    return (
-      <div className="border rounded-2 p-2 bg-light">
-        <h3>Approvals</h3>
-        <p>Loading approvals...</p>
-      </div>
-    );
-  }
-
-  if (!approvals?.results.length) {
+  if (isEmpty(activeApprovals) && isEmpty(futureApprovals)) {
     return (
       <div className="border rounded-2 p-2 bg-light">
         <h3>Approvals</h3>
@@ -38,17 +24,6 @@ export function PersonApprovals() {
       </div>
     );
   }
-
-  const today = dayjs().startOf("day");
-
-  const [activeApprovals, futureApprovals] = partition(
-    approvals.results,
-    (approval) => {
-      const startDate = dayjs(approval.startDate).startOf("day");
-      const endDate = dayjs(approval.endDate).endOf("day");
-      return startDate.isSameOrBefore(today) && endDate.isSameOrAfter(today);
-    },
-  );
 
   const hasFutureApprovals = !isEmpty(futureApprovals);
 
