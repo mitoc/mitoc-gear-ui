@@ -42,32 +42,11 @@ export function PersonApprovals() {
 
             return (
               <tr key={id}>
-                {/* Mobile: Single column with stacked info */}
-                <td className="d-md-none">
-                  <div className="mb-2">
-                    <strong>Items:</strong>
-                    <ApprovalItemsList
-                      items={items}
-                      keyPrefix={`mobile-${id}`}
-                    />
-                  </div>
-                  <div className="mb-2">
-                    <strong>Period:</strong>{" "}
-                    <DateRange startDate={startDate} endDate={endDate} />
-                  </div>
-                  <div className="mb-2">
-                    <strong>By:</strong>{" "}
-                    <ApproverInfo approvedBy={approvedBy} />
-                  </div>
-                  <ApprovalNote note={note} />
-                </td>
+                <MobileApprovalRow approval={approval} />
 
                 {/* Desktop: Separate columns */}
                 <td className="d-none d-md-table-cell">
-                  <ApprovalItemsList
-                    items={items}
-                    keyPrefix={`desktop-${id}`}
-                  />
+                  <ApprovalItemsList items={items} />
                 </td>
                 <td className="d-none d-md-table-cell">
                   <DateRange startDate={startDate} endDate={endDate} />
@@ -87,6 +66,30 @@ export function PersonApprovals() {
         </tbody>
       </table>
     </div>
+  );
+}
+
+/** Row renderer for mobile display. Single column with stacked info */
+function MobileApprovalRow({
+  approval: { items, startDate, endDate, approvedBy, note },
+}: {
+  approval: RenterApproval;
+}) {
+  return (
+    <td className="d-md-none">
+      <div className="mb-2">
+        <strong>Items:</strong>
+        <ApprovalItemsList items={items} />
+      </div>
+      <div className="mb-2">
+        <strong>Period:</strong>{" "}
+        <DateRange startDate={startDate} endDate={endDate} />
+      </div>
+      <div className="mb-2">
+        <strong>By:</strong> <ApproverInfo approvedBy={approvedBy} />
+      </div>
+      <ApprovalNote note={note} />
+    </td>
   );
 }
 

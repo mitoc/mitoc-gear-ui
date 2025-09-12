@@ -4,21 +4,13 @@ import { GearLink } from "components/GearLink";
 /**
  * Renders a list of approval items (gear types or specific gear items)
  */
-export function ApprovalItemsList({
-  items,
-  keyPrefix = "",
-}: {
-  items: ApprovalItem[];
-  keyPrefix?: string;
-}) {
+export function ApprovalItemsList({ items }: { items: ApprovalItem[] }) {
   return (
     <ul>
-      {items.map((approvalItem, index) => {
-        const key = keyPrefix ? `${keyPrefix}-${index}` : index;
-
+      {items.map((approvalItem) => {
         if (approvalItem.type === "gearType") {
           return (
-            <li key={`${approvalItem.item.gearType.id}-${key}`}>
+            <li key={`${approvalItem.item.gearType.id}-type`}>
               {approvalItem.item.gearType.typeName} (
               {approvalItem.item.gearType.shorthand}) -
               {approvalItem.item.quantity}{" "}
@@ -27,7 +19,7 @@ export function ApprovalItemsList({
           );
         }
         return (
-          <li key={`${approvalItem.item.gearItem.id}-${key}`}>
+          <li key={`${approvalItem.item.gearItem.id}-item`}>
             {approvalItem.item.gearItem.type.typeName} -{" "}
             <GearLink id={approvalItem.item.gearItem.id}>
               {approvalItem.item.gearItem.id}

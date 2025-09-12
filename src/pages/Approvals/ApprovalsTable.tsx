@@ -63,12 +63,7 @@ function EndDateCell({ item: approval }: { item: Approval }) {
 }
 
 function ItemsCell({ item: approval }: { item: Approval }) {
-  return (
-    <ApprovalItemsList
-      items={approval.items}
-      keyPrefix={`approval-${approval.id}`}
-    />
-  );
+  return <ApprovalItemsList items={approval.items} />;
 }
 
 function RenterCell({ item: approval }: { item: Approval }) {
