@@ -1,3 +1,10 @@
+import dayjs from "dayjs";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
+
 import { ApprovalItemsList } from "components/ApprovalItemsList";
 import { PersonLink } from "components/PersonLink";
 import { formatDate } from "lib/fmtDate";
@@ -5,6 +12,7 @@ import { useGetRenterApprovalsQuery } from "redux/api";
 import { RenterApproval } from "apiClient/approvals";
 
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
+import { isEmpty, partition } from "lodash";
 
 export function PersonApprovals() {
   const { person } = usePersonPageContext();
@@ -31,12 +39,48 @@ export function PersonApprovals() {
     );
   }
 
+  const today = dayjs().startOf("day");
+
+  const [activeApprovals, futureApprovals] = partition(
+    approvals.results,
+    (approval) => {
+      const startDate = dayjs(approval.startDate).startOf("day");
+      const endDate = dayjs(approval.endDate).endOf("day");
+      return startDate.isSameOrBefore(today) && endDate.isSameOrAfter(today);
+    },
+  );
+
+  const hasFutureApprovals = !isEmpty(futureApprovals);
+
   return (
     <div className="border rounded-2 p-2 bg-light">
       <h3>Approvals</h3>
+      {!isEmpty(activeApprovals) && (
+        <ApprovalTable
+          approvals={activeApprovals}
+          title={hasFutureApprovals ? "Current" : undefined}
+        />
+      )}
+      {hasFutureApprovals && (
+        <ApprovalTable approvals={futureApprovals} title="Upcoming" />
+      )}
+    </div>
+  );
+}
+
+function ApprovalTable({
+  approvals,
+  title,
+}: {
+  approvals: RenterApproval[];
+  title?: string;
+}) {
+  return (
+    <>
+      {title != null && <h5 className="mb-3 text-muted">{title}</h5>}
       <table className="table">
         <tbody>
-          {approvals.results.map((approval) => {
+          {approvals.map((approval) => {
             return (
               <tr key={approval.id}>
                 <MobileApprovalRow approval={approval} />
@@ -46,7 +90,7 @@ export function PersonApprovals() {
           })}
         </tbody>
       </table>
-    </div>
+    </>
   );
 }
 
