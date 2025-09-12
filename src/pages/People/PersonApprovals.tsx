@@ -37,35 +37,43 @@ export function PersonApprovals() {
       <table className="table">
         <tbody>
           {approvals.results.map((approval) => {
-            const { id, startDate, endDate, note, approvedBy, items } =
-              approval;
-
             return (
-              <tr key={id}>
+              <tr key={approval.id}>
                 <MobileApprovalRow approval={approval} />
-
-                {/* Desktop: Separate columns */}
-                <td className="d-none d-md-table-cell">
-                  <ApprovalItemsList items={items} />
-                </td>
-                <td className="d-none d-md-table-cell">
-                  <DateRange startDate={startDate} endDate={endDate} />
-                  <br />
-                  <small className="text-muted">
-                    By: <ApproverInfo approvedBy={approvedBy} />
-                  </small>
-                  {note && (
-                    <div className="mt-1">
-                      <small className="text-muted">{note}</small>
-                    </div>
-                  )}
-                </td>
+                <DesktopApprovalRow approval={approval} />
               </tr>
             );
           })}
         </tbody>
       </table>
     </div>
+  );
+}
+
+/** Row renderer for desktop display. 2 separate columns */
+function DesktopApprovalRow({
+  approval: { items, startDate, endDate, approvedBy, note },
+}: {
+  approval: RenterApproval;
+}) {
+  return (
+    <>
+      <td className="d-none d-md-table-cell">
+        <ApprovalItemsList items={items} />
+      </td>
+      <td className="d-none d-md-table-cell">
+        <DateRange startDate={startDate} endDate={endDate} />
+        <br />
+        <small className="text-muted">
+          By: <ApproverInfo approvedBy={approvedBy} />
+        </small>
+        {note && (
+          <div className="mt-1">
+            <small className="text-muted">{note}</small>
+          </div>
+        )}
+      </td>
+    </>
   );
 }
 
