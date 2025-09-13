@@ -77,13 +77,24 @@ function useMakePersonPageContext({ person, refreshPerson, approvals }: Props) {
 
   const isApproved = useCallback(
     (gearId: string, typeId: number) => {
-      return activeApprovals.some((approval) => {
-        return approval.items.some((item) => {
-          return (
-            (item.type === "specificItem" &&
-              item.item.gearItem.id === gearId) ||
-            (item.type === "gearType" && item.item.gearType.id === typeId)
+      return activeApprovals.some(({ items }) => {
+        return items.some((item) => {
+          if (item.type === "specificItem") {
+            return item.item.gearItem.id === gearId;
+          }
+          if (item.item.gearType.id !== typeId) {
+            return false;
+          }
+          const checkedOut = checkoutBasketBase.items.filter(
+            ({ type }) => type.id === item.item.gearType.id,
           );
+          if (checkedOut.length < item.item.quantity) {
+            return true;
+          }
+          return checkedOut
+            .slice(0, item.item.quantity)
+            .map((g) => g.id)
+            .includes(gearId);
         });
       });
     },
