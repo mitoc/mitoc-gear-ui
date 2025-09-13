@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
-import { isEmpty } from "lodash";
+import { isEmpty, sortBy } from "lodash";
 
 import { RenterApproval } from "apiClient/approvals";
 import { ApprovalItemsList } from "components/ApprovalItemsList";
@@ -14,9 +14,10 @@ dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
 export function PersonApprovals() {
-  const { activeApprovals, futureApprovals } = usePersonPageContext();
+  const { approvals: unsortedApprovals } = usePersonPageContext();
+  const approvals = sortBy(unsortedApprovals, "startDate");
 
-  if (isEmpty(activeApprovals) && isEmpty(futureApprovals)) {
+  if (isEmpty(approvals)) {
     return (
       <div className="border rounded-2 p-2 bg-light">
         <h3>Approvals</h3>
@@ -25,47 +26,24 @@ export function PersonApprovals() {
     );
   }
 
-  const hasFutureApprovals = !isEmpty(futureApprovals);
-
   return (
     <div className="border rounded-2 p-2 bg-light">
       <h3>Approvals</h3>
-      {!isEmpty(activeApprovals) && (
-        <ApprovalTable
-          approvals={activeApprovals}
-          title={hasFutureApprovals ? "Current" : undefined}
-        />
-      )}
-      {hasFutureApprovals && (
-        <ApprovalTable approvals={futureApprovals} title="Upcoming" />
+      {!isEmpty(approvals) && (
+        <table className="table">
+          <tbody>
+            {approvals.map((approval) => {
+              return (
+                <tr key={approval.id}>
+                  <MobileApprovalRow approval={approval} />
+                  <DesktopApprovalRow approval={approval} />
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       )}
     </div>
-  );
-}
-
-function ApprovalTable({
-  approvals,
-  title,
-}: {
-  approvals: RenterApproval[];
-  title?: string;
-}) {
-  return (
-    <>
-      {title != null && <h5 className="mb-3 text-muted">{title}</h5>}
-      <table className="table">
-        <tbody>
-          {approvals.map((approval) => {
-            return (
-              <tr key={approval.id}>
-                <MobileApprovalRow approval={approval} />
-                <DesktopApprovalRow approval={approval} />
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </>
   );
 }
 
@@ -77,10 +55,10 @@ function DesktopApprovalRow({
 }) {
   return (
     <>
-      <td className="d-none d-md-table-cell">
+      <td className="d-none d-md-table-cell w-50">
         <ApprovalItemsList items={items} />
       </td>
-      <td className="d-none d-md-table-cell">
+      <td className="d-none d-md-table-cell w-50">
         <DateRange startDate={startDate} endDate={endDate} />
         <br />
         <small className="text-muted">

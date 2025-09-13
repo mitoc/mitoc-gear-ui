@@ -1,4 +1,5 @@
-import { flow, keyBy, map, mapValues, partition, sum } from "lodash";
+import dayjs from "dayjs";
+import { flow, keyBy, map, mapValues, sum } from "lodash";
 import React, { useCallback, useContext, useState } from "react";
 
 import { RenterApproval } from "apiClient/approvals";
@@ -8,7 +9,6 @@ import { checkoutGear, Person, Rental, returnGear } from "apiClient/people";
 import { ItemToPurchase } from "../types";
 
 import { useBasket } from "./useBasket";
-import dayjs from "dayjs";
 
 type PersonPageContextType = ReturnType<typeof useMakePersonPageContext>;
 
@@ -66,14 +66,11 @@ function useMakePersonPageContext({ person, refreshPerson, approvals }: Props) {
 
   const today = dayjs().startOf("day");
 
-  const [activeApprovals, futureApprovals] = partition(
-    approvals,
-    (approval) => {
-      const startDate = dayjs(approval.startDate).startOf("day");
-      const endDate = dayjs(approval.endDate).endOf("day");
-      return startDate.isSameOrBefore(today) && endDate.isSameOrAfter(today);
-    },
-  );
+  const activeApprovals = approvals.filter((approval) => {
+    const startDate = dayjs(approval.startDate).startOf("day");
+    const endDate = dayjs(approval.endDate).endOf("day");
+    return startDate.isSameOrBefore(today) && endDate.isSameOrAfter(today);
+  });
 
   const isApproved = useCallback(
     (gearId: string, typeId: number) => {
@@ -119,8 +116,7 @@ function useMakePersonPageContext({ person, refreshPerson, approvals }: Props) {
 
   return {
     person,
-    activeApprovals,
-    futureApprovals,
+    approvals,
     isApproved,
     refreshPerson,
     purchaseBasket,
