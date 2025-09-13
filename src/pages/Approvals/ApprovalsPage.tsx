@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
+import { AddApprovalLink } from "components/AddApprovalLink";
 import { Checkbox } from "components/Inputs/Checkbox";
 import { TablePagination } from "components/TablePagination";
 import { useSetPageTitle } from "hooks";
@@ -40,13 +40,7 @@ export function ApprovalsPage() {
           }
 
           <div className="col-md d-flex flex-grow-1 justify-content-end">
-            {isApprover && (
-              <Link to="/add-approval">
-                <button className="btn btn-outline-primary mb-3">
-                  ＋ Add approval
-                </button>
-              </Link>
-            )}
+            {isApprover && <AddApprovalLink />}
           </div>
         </div>
       )}

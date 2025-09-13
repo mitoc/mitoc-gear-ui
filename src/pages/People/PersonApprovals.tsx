@@ -4,9 +4,11 @@ import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import { isEmpty, sortBy } from "lodash";
 
 import { RenterApproval } from "apiClient/approvals";
+import { AddApprovalLink } from "components/AddApprovalLink";
 import { ApprovalItemsList } from "components/ApprovalItemsList";
 import { PersonLink } from "components/PersonLink";
 import { formatDate } from "lib/fmtDate";
+import { usePermissions } from "redux/auth";
 
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
@@ -14,22 +16,17 @@ dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
 export function PersonApprovals() {
-  const { approvals: unsortedApprovals } = usePersonPageContext();
+  const { isApprover } = usePermissions();
+  const { person, approvals: unsortedApprovals } = usePersonPageContext();
   const approvals = sortBy(unsortedApprovals, "startDate");
-
-  if (isEmpty(approvals)) {
-    return (
-      <div className="border rounded-2 p-2 bg-light">
-        <h3>Approvals</h3>
-        <p>No approvals.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="border rounded-2 p-2 bg-light">
-      <h3>Approvals</h3>
-      {!isEmpty(approvals) && (
+      <div className="d-flex justify-content-between align-items-center">
+        <h3>Approvals</h3>
+        {isApprover && <AddApprovalLink personId={person.id} />}
+      </div>
+      {!isEmpty(approvals) ? (
         <table className="table">
           <tbody>
             {approvals.map((approval) => {
@@ -42,6 +39,8 @@ export function PersonApprovals() {
             })}
           </tbody>
         </table>
+      ) : (
+        <p>No approvals.</p>
       )}
     </div>
   );
