@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import { useHistory, useLocation } from "react-router-dom";
@@ -32,6 +33,7 @@ export function AddNewApprovalForm({ onSubmit }: Props) {
     defaultValues: {
       items: [defaultItem],
       renter: personId || undefined,
+      startDate: dayjs().startOf("day").toDate(),
     },
   });
 
