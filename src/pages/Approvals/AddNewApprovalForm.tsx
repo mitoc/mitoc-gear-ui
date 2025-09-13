@@ -24,8 +24,6 @@ const LabeledInput = makeLabeledInput<FormValues>();
 export function AddNewApprovalForm({ onSubmit }: Props) {
   const history = useHistory();
   const location = useLocation();
-
-  // Read personId from query parameters
   const searchParams = new URLSearchParams(location.search);
   const personId = searchParams.get("personId");
 
