@@ -14,7 +14,8 @@ export function AddNewApproval() {
   const history = useHistory();
   const location = useLocation();
   const [error, setError] = useState<APIErrorType | undefined>();
-  const refetchApprovals = gearDbApi.useLazyGetApprovalsQuery()[0];
+  const refetchAllApprovals = gearDbApi.useLazyGetApprovalsQuery()[0];
+  const refetchPersonApprovals = gearDbApi.useLazyGetRenterApprovalsQuery()[0];
 
   const searchParams = new URLSearchParams(location.search);
   const personId = searchParams.get("personId");
@@ -24,10 +25,10 @@ export function AddNewApproval() {
       .then(() => {
         setError(undefined);
         // TODO: We should use RTK's mutations instead of refetching everything
-        refetchApprovals({ past: false });
-        refetchApprovals({ past: undefined });
-
+        refetchAllApprovals({ past: false });
+        refetchAllApprovals({ past: undefined });
         if (personId != null) {
+          refetchPersonApprovals({ personID: personId, past: false });
           history.push(`/people/${personId}?tab=approvals`);
         } else {
           history.push("/approvals");

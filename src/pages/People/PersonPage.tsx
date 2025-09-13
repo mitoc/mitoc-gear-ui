@@ -1,5 +1,4 @@
 import { isEmpty } from "lodash";
-import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { addNote, archiveNote } from "apiClient/people";
@@ -18,7 +17,7 @@ import { PersonApprovals } from "./PersonApprovals";
 import { PersonProfile } from "./PersonProfile";
 import { PersonRentals } from "./PersonRentals";
 import { PersonRentalsHistory } from "./PersonRentalsHistory";
-import { PersonPageTabs, PersonTabsSelector } from "./PersonTabs";
+import { PersonPageTabs, PersonTabsSelector, useTab } from "./PersonTabs";
 import { ReturnStaging } from "./ReturnStaging";
 
 export function PersonPage() {
@@ -44,7 +43,7 @@ export function PersonPage() {
 }
 
 function PersonPageInner() {
-  const [tab, setTab] = useState<PersonPageTabs>(PersonPageTabs.gearOut);
+  const [tab, setTab] = useTab();
 
   const {
     person,
@@ -107,10 +106,10 @@ function PersonPageInner() {
       <div className="col-12 col-md-7 p-2">
         <PersonTabsSelector activeTab={tab} updateTab={setTab} />
         {tab === PersonPageTabs.gearOut && <PersonRentals />}
-        {tab === PersonPageTabs.moreGear && <MoreGear />}
-        {tab === PersonPageTabs.buyGear && <BuyGear />}
+        {tab === PersonPageTabs.rent && <MoreGear />}
+        {tab === PersonPageTabs.buy && <BuyGear />}
         {tab === PersonPageTabs.approvals && <PersonApprovals />}
-        {tab === PersonPageTabs.rentalHistory && (
+        {tab === PersonPageTabs.history && (
           <PersonRentalsHistory personId={person.id} />
         )}
       </div>
