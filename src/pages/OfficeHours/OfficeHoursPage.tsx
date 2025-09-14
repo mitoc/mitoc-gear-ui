@@ -285,6 +285,9 @@ const WeekBlock = styled.div`
       transform 0.2s ease,
       box-shadow 0.2s ease;
     margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     &:hover {
       transform: translateY(-2px);
@@ -295,7 +298,8 @@ const WeekBlock = styled.div`
   .btn-container {
     display: flex;
     justify-content: flex-end;
-    margin-top: 1rem;
+    margin-top: auto;
+    padding-top: 1rem;
   }
 `;
 
