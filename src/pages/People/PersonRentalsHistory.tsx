@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { getPersonRentalHistory, Rental } from "apiClient/people";
+import { getPagesCount } from "apiClient/getPagesCount";
 import { GearLink } from "components/GearLink";
 import { TablePagination } from "components/TablePagination";
 import { formatDate } from "lib/fmtDate";
@@ -17,7 +18,7 @@ export function PersonRentalsHistory({ personId }: Props) {
   useEffect(() => {
     getPersonRentalHistory(personId, page).then((rentalsList) => {
       setRentals(rentalsList.results);
-      setNbPages(Math.ceil(rentalsList.count / 50));
+      setNbPages(getPagesCount(rentalsList));
     });
   }, [personId, page]);
 

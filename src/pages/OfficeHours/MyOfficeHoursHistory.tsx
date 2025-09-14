@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { getPagesCount } from "apiClient/getPagesCount";
 import { TablePagination } from "components/TablePagination";
 import { useSetPageTitle } from "hooks";
 import { useGetPersonSignupsQuery } from "redux/api";
@@ -16,8 +17,7 @@ export function MyOfficeHoursHistory() {
     page,
     orderBy: "-date",
   });
-  const nbPages =
-    data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
+  const nbPages = data ? getPagesCount(data) : undefined;
 
   return (
     <>

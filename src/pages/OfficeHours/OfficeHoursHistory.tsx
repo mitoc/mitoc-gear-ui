@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
+import { getPagesCount } from "apiClient/getPagesCount";
 import { Checkbox } from "components/Inputs/Checkbox";
 import { TablePagination } from "components/TablePagination";
 import { useSetPageTitle } from "hooks";
@@ -18,8 +19,7 @@ export function OfficeHoursHistory() {
     orderBy: "-date",
     ...(!showUpcoming && { before: today }),
   });
-  const nbPages =
-    data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
+  const nbPages = data ? getPagesCount(data) : undefined;
   useEffect(() => {
     setPage(1);
   }, [showUpcoming]);

@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { getPagesCount } from "apiClient/getPagesCount";
 import { Checkbox } from "components/Inputs/Checkbox";
 import { TablePagination } from "components/TablePagination";
 import { useSetPageTitle } from "hooks";
 import { useGetApprovalsQuery } from "redux/api";
-import { usePermissions } from "redux/auth";
 import { useConfig } from "redux/hooks";
+import { usePermissions } from "redux/auth";
 
 import { ApprovalsTable } from "./ApprovalsTable";
 
@@ -19,8 +20,7 @@ export function ApprovalsPage() {
     past: showExpired ? undefined : false, // filter past by default, unless opting in
   });
   const [page, setPage] = useState<number>(1);
-  const nbPages =
-    data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
+  const nbPages = data ? getPagesCount(data) : undefined;
   return (
     <>
       <h1>Restricted Gear Approvals</h1>
