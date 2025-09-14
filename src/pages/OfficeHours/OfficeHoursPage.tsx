@@ -248,15 +248,16 @@ function OfficeHourBlock({ officeHour }: { officeHour: OfficeHour }) {
 }
 
 function formatDateTime(date: string) {
-  return dayjs(date).format("dddd MMM DD YYYY, hh:mma");
+  return dayjs(date).format("ddd MM/DD YYYY, ha");
 }
 
 const WeekBlock = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 
-  @media (max-width: 767px) {
-    flex-direction: column;
+  @media (min-width: 767px) {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .btn-container {
