@@ -8,8 +8,8 @@ It is written using React and Typescript. It was bootstrapped with [Create React
 ## Prerequisites
 
 To run this app locally, you need to:
-- Have Node.js v16 installed
-- After installing Node.js v16, install `yarn` via `npm install --global yarn`
+- Have Node.js v24 installed
+- After installing Node.js v24, install `yarn` via `npm install --global yarn`
 - Have a local version of the gear database backend API running on http://localhost:8000. This backend code lives (for now) in a [separate private repository](https://github.com/mitoc/gear-db-django).
 
 ## Available Scripts
