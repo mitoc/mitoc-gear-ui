@@ -1,12 +1,13 @@
-import { GearItem, editGearItem } from "src/apiClient/gear";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { useRef, useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import { useGetGearTypePicturesQuery } from "src/redux/api";
 import styled from "styled-components";
 
-import { PicturePlaceholder } from "./PicturePlaceholder";
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { uploadFile } from "src/apiClient/client";
-import { useRef, useState } from "react";
+import { editGearItem, GearItem } from "src/apiClient/gear";
+import { useGetGearTypePicturesQuery } from "src/redux/api";
+
+import { PicturePlaceholder } from "./PicturePlaceholder";
 
 type Props = {
   isOpen: boolean;

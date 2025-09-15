@@ -1,8 +1,8 @@
-import { newApprovalUI } from "src/featureFlags";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import type { GearSummary } from "src/apiClient/gear";
+import { newApprovalUI } from "src/featureFlags";
 import { fmtAmount } from "src/lib/fmtNumber";
 import { useConfig } from "src/redux/hooks";
 
