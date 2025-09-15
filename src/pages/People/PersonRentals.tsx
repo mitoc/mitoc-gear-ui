@@ -1,6 +1,6 @@
-import { GearLink } from "components/GearLink";
-import { formatDate } from "lib/fmtDate";
-import { fmtAmount } from "lib/fmtNumber";
+import { GearLink } from "src/components/GearLink";
+import { formatDate } from "src/lib/fmtDate";
+import { fmtAmount } from "src/lib/fmtNumber";
 
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 

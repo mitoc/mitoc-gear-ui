@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-import { TablePagination } from "components/TablePagination";
-import { useSetPageTitle } from "hooks";
-import { useGetPersonSignupsQuery } from "redux/api";
-import { useCurrentUser } from "redux/auth";
+import { TablePagination } from "src/components/TablePagination";
+import { useSetPageTitle } from "src/hooks";
+import { useGetPersonSignupsQuery } from "src/redux/api";
+import { useCurrentUser } from "src/redux/auth";
 
 import { OfficeHoursSignupsTable } from "./OfficeHoursSignupsTable";
 

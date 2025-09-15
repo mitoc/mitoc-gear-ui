@@ -2,7 +2,7 @@ import { APIErrorType } from "./types";
 
 type Data = { [key: string]: any };
 
-const API_BASE = process.env.REACT_APP_API_URL || "";
+const API_BASE = import.meta.env.VITE_API_URL || "";
 
 export const API_HOST = API_BASE + "/api/v1";
 

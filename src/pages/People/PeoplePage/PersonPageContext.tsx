@@ -1,8 +1,8 @@
 import { flow, keyBy, map, mapValues, sum } from "lodash";
 import React, { useContext, useState } from "react";
 
-import { GearSummary } from "apiClient/gear";
-import { checkoutGear, Person, Rental, returnGear } from "apiClient/people";
+import { GearSummary } from "src/apiClient/gear";
+import { checkoutGear, Person, Rental, returnGear } from "src/apiClient/people";
 
 import { ItemToPurchase } from "../types";
 

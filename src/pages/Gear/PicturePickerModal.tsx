@@ -1,11 +1,11 @@
-import { GearItem, editGearItem } from "apiClient/gear";
+import { GearItem, editGearItem } from "src/apiClient/gear";
 import Modal from "react-bootstrap/Modal";
-import { useGetGearTypePicturesQuery } from "redux/api";
+import { useGetGearTypePicturesQuery } from "src/redux/api";
 import styled from "styled-components";
 
 import { PicturePlaceholder } from "./PicturePlaceholder";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
-import { uploadFile } from "apiClient/client";
+import { uploadFile } from "src/apiClient/client";
 import { useRef, useState } from "react";
 
 type Props = {

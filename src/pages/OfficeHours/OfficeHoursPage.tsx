@@ -5,20 +5,20 @@ import { groupBy, isEmpty, map } from "lodash";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { cancelSignUp, signUp } from "apiClient/officeHours";
-import { OfficeHour, User } from "apiClient/types";
-import { PersonLink } from "components/PersonLink";
-import { useSetPageTitle } from "hooks";
-import { useGetOfficeHoursQuery } from "redux/api";
+import { cancelSignUp, signUp } from "src/apiClient/officeHours";
+import { OfficeHour, User } from "src/apiClient/types";
+import { PersonLink } from "src/components/PersonLink";
+import { useSetPageTitle } from "src/hooks";
+import { useGetOfficeHoursQuery } from "src/redux/api";
 import {
   Roles,
   useCurrentUser,
   useCurrentUserReload,
   usePermissions,
-} from "redux/auth";
+} from "src/redux/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdCard } from "@fortawesome/free-solid-svg-icons";
-import { updatePersonGroups } from "apiClient/people";
+import { updatePersonGroups } from "src/apiClient/people";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 

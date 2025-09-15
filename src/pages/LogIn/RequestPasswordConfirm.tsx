@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation } from "react-router-dom";
 
-import { authClient } from "apiClient/auth";
-import { Form } from "components/Inputs/Form";
-import { LabeledInput } from "components/Inputs/LabeledInput";
-import { useSetPageTitle } from "hooks";
+import { authClient } from "src/apiClient/auth";
+import { Form } from "src/components/Inputs/Form";
+import { LabeledInput } from "src/components/Inputs/LabeledInput";
+import { useSetPageTitle } from "src/hooks";
 
 type FormValues = {
   password: string;

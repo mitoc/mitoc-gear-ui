@@ -2,13 +2,13 @@ import { isEmpty } from "lodash";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { RemoveButton } from "components/Buttons";
-import { GearLink } from "components/GearLink";
-import { Checkbox } from "components/Inputs/Checkbox";
-import { NumberField } from "components/Inputs/NumberField";
-import { formatDate } from "lib/fmtDate";
-import { fmtAmount } from "lib/fmtNumber";
-import { useConfig } from "redux/hooks";
+import { RemoveButton } from "src/components/Buttons";
+import { GearLink } from "src/components/GearLink";
+import { Checkbox } from "src/components/Inputs/Checkbox";
+import { NumberField } from "src/components/Inputs/NumberField";
+import { formatDate } from "src/lib/fmtDate";
+import { fmtAmount } from "src/lib/fmtNumber";
+import { useConfig } from "src/redux/hooks";
 
 import { usePersonPageContext } from "../PeoplePage/PersonPageContext";
 

@@ -1,4 +1,4 @@
-import { GearItem } from "apiClient/gear";
+import { GearItem } from "src/apiClient/gear";
 import { useState } from "react";
 
 import { PicturePickerModal } from "./PicturePickerModal";

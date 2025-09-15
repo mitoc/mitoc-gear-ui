@@ -8,8 +8,8 @@ import {
   markMissing,
   markRetired,
   markUnretired,
-} from "apiClient/gear";
-import { TextArea } from "components/Inputs/TextArea";
+} from "src/apiClient/gear";
+import { TextArea } from "src/components/Inputs/TextArea";
 
 export enum GearStatusFormType {
   none,

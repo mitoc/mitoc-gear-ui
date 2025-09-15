@@ -3,13 +3,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import { PersonSummary } from "apiClient/people";
-import { DataGrid } from "components/DataGrid";
-import { SearchTextField } from "components/Inputs/TextField";
-import { PersonLink } from "components/PersonLink";
-import { TablePagination } from "components/TablePagination";
-import { useSetPageTitle } from "hooks";
-import { usePeopleList } from "redux/api";
+import { PersonSummary } from "src/apiClient/people";
+import { DataGrid } from "src/components/DataGrid";
+import { SearchTextField } from "src/components/Inputs/TextField";
+import { PersonLink } from "src/components/PersonLink";
+import { TablePagination } from "src/components/TablePagination";
+import { useSetPageTitle } from "src/hooks";
+import { usePeopleList } from "src/redux/api";
 
 import { PeopleFilters } from "./PeopleFilters";
 import { usePeopleFilters } from "./usePeopleFilters";

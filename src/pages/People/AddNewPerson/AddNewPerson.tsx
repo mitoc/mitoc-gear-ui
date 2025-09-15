@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 
-import { APIError as APIErrorClass } from "apiClient/client";
-import { createPerson } from "apiClient/people";
-import { APIErrorType } from "apiClient/types";
-import { Form } from "components/Inputs/Form";
-import { LabeledInput } from "components/Inputs/LabeledInput";
-import { useSetPageTitle } from "hooks";
-import { validateEmail } from "lib/validation";
+import { APIError as APIErrorClass } from "src/apiClient/client";
+import { createPerson } from "src/apiClient/people";
+import { APIErrorType } from "src/apiClient/types";
+import { Form } from "src/components/Inputs/Form";
+import { LabeledInput } from "src/components/Inputs/LabeledInput";
+import { useSetPageTitle } from "src/hooks";
+import { validateEmail } from "src/lib/validation";
 
 import { AddNewPersonError } from "./AddNewPersonError";
 

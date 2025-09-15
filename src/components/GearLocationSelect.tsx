@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import Select, { MultiValue } from "react-select";
 
-import { useGetGearLocationsQuery } from "redux/api";
-import { GearLocation } from "apiClient/gear";
+import { useGetGearLocationsQuery } from "src/redux/api";
+import { GearLocation } from "src/apiClient/gear";
 
 type GearLocationOption = GearLocation & {
   value: number;
