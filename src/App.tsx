@@ -39,7 +39,7 @@ function App() {
   }, [loggedIn]);
 
   return (
-    <Router basename={import.meta.env.BASE_URL}>
+    <Router basename="/">
       <BaseLayout>
         <Switch>
           <Route path="/login">

@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { createNewApproval, CreateNewApprovalArgs } from "src/apiClient/approvals";
+import {
+  createNewApproval,
+  CreateNewApprovalArgs,
+} from "src/apiClient/approvals";
 import { APIError as APIErrorClass } from "src/apiClient/client";
 import { APIErrorType } from "src/apiClient/types";
 import { useSetPageTitle } from "src/hooks";
