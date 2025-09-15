@@ -1,24 +1,24 @@
-import { get } from "lodash";
-import { InputHTMLAttributes } from "react";
-import {
-  useFormContext,
-  RegisterOptions,
-  Controller,
-  FieldValues,
-  Path,
-  FieldPathValue,
-  UnpackNestedValue,
-  Noop,
-  RefCallBack,
-  FieldName,
-  DeepMap,
-  DeepPartial,
-  FieldError,
-} from "react-hook-form";
 import {
   ErrorMessage,
   FieldValuesFromFieldErrors,
 } from "@hookform/error-message";
+import { get } from "lodash";
+import { InputHTMLAttributes } from "react";
+import {
+  Controller,
+  DeepMap,
+  DeepPartial,
+  FieldError,
+  FieldName,
+  FieldPathValue,
+  FieldValues,
+  Noop,
+  Path,
+  RefCallBack,
+  RegisterOptions,
+  UnpackNestedValue,
+  useFormContext,
+} from "react-hook-form";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
@@ -118,7 +118,7 @@ export function LabeledInput<
       <ErrorMessage
         errors={errors}
         name={
-          name as FieldName<
+          name as unknown as FieldName<
             FieldValuesFromFieldErrors<
               DeepMap<DeepPartial<TFieldValues>, FieldError>
             >
