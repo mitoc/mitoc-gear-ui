@@ -30,10 +30,6 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/jest": "^24.0.0",
     "@types/node": "^24.4.0",
     "@types/react": "^18.0.9",
     "@types/react-modal": "^3.16.3",
@@ -48,28 +44,11 @@
   "scripts": {
     "start": "VITE_API_URL=http://127.0.0.1:8000 vite",
     "build": "vite build",
-    "build-next": "vite build --base=/next/",
-    "test": "react-scripts test",
     "preview": "vite preview",
     "prettier:fix": "prettier --write 'src/**/*.{ts,tsx}'",
     "prettier": "prettier --check 'src/**/*.{ts,tsx}'",
     "lint:fix": "eslint --fix src",
     "lint": "eslint src",
     "ts": "tsc --noEmit"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }
