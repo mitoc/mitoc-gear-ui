@@ -1,12 +1,12 @@
-import { newApprovalUI } from "featureFlags";
+import { newApprovalUI } from "src/featureFlags";
 import { useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-import { User } from "apiClient/types";
-import { PersonLink } from "components/PersonLink";
-import { logOut, useCurrentUser, usePermissions } from "redux/auth";
-import { useAppDispatch, useConfig } from "redux/hooks";
+import { User } from "src/apiClient/types";
+import { PersonLink } from "src/components/PersonLink";
+import { logOut, useCurrentUser, usePermissions } from "src/redux/auth";
+import { useAppDispatch, useConfig } from "src/redux/hooks";
 
 export function Header() {
   const { user } = useCurrentUser();

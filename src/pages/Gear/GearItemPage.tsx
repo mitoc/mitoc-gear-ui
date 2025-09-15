@@ -1,8 +1,8 @@
-import { addNote } from "apiClient/gear";
-import { Notes } from "components/Notes";
-import { useSetPageTitle } from "hooks";
+import { addNote } from "src/apiClient/gear";
+import { Notes } from "src/components/Notes";
+import { useSetPageTitle } from "src/hooks";
 import { useParams } from "react-router-dom";
-import { useGetGearItemQuery } from "redux/api";
+import { useGetGearItemQuery } from "src/redux/api";
 
 import { GearInfoPanel } from "./GearInfoPanel";
 import { GearRentalsHistory } from "./GearRentalsHistory";

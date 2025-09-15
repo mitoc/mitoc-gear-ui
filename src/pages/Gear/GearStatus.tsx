@@ -1,6 +1,6 @@
-import { GearSummary } from "apiClient/gear";
-import { PersonLink } from "components/PersonLink";
-import { formatDate, formatDateTime } from "lib/fmtDate";
+import { GearSummary } from "src/apiClient/gear";
+import { PersonLink } from "src/components/PersonLink";
+import { formatDate, formatDateTime } from "src/lib/fmtDate";
 
 type Props = {
   gearItem: GearSummary;

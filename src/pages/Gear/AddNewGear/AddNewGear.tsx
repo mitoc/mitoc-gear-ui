@@ -1,10 +1,10 @@
 import { isEmpty } from "lodash";
 import { useState } from "react";
 
-import { APIError as APIErrorClass } from "apiClient/client";
-import { createGear, CreateGearArgs, GearSummary } from "apiClient/gear";
-import { APIErrorType } from "apiClient/types";
-import { useSetPageTitle } from "hooks";
+import { APIError as APIErrorClass } from "src/apiClient/client";
+import { createGear, CreateGearArgs, GearSummary } from "src/apiClient/gear";
+import { APIErrorType } from "src/apiClient/types";
+import { useSetPageTitle } from "src/hooks";
 
 import { AddNewGearError } from "./AddNewGearError";
 import { AddNewGearForm } from "./AddNewGearForm";

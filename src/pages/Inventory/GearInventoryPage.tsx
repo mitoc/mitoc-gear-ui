@@ -1,7 +1,7 @@
-import { API_HOST } from "apiClient/client";
-import { editGearType, GearType } from "apiClient/gear";
-import { useSetPageTitle } from "hooks";
-import { useGetGearTypesQuery } from "redux/api";
+import { API_HOST } from "src/apiClient/client";
+import { editGearType, GearType } from "src/apiClient/gear";
+import { useSetPageTitle } from "src/hooks";
+import { useGetGearTypesQuery } from "src/redux/api";
 
 export function GearInventoryPage() {
   useSetPageTitle("Gear Inventory");

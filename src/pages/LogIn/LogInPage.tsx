@@ -1,6 +1,6 @@
 import { Redirect } from "react-router-dom";
 
-import { useCurrentUser } from "redux/auth";
+import { useCurrentUser } from "src/redux/auth";
 
 import { LoginForm } from "./LoginForm";
 

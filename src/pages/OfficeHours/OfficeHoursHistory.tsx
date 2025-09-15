@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
-import { Checkbox } from "components/Inputs/Checkbox";
-import { TablePagination } from "components/TablePagination";
-import { useSetPageTitle } from "hooks";
-import { useGetSignupsQuery } from "redux/api";
+import { Checkbox } from "src/components/Inputs/Checkbox";
+import { TablePagination } from "src/components/TablePagination";
+import { useSetPageTitle } from "src/hooks";
+import { useGetSignupsQuery } from "src/redux/api";
 
 import { OfficeHoursSignupsTable } from "./OfficeHoursSignupsTable";
 

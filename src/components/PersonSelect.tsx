@@ -1,8 +1,8 @@
-import { PersonSummary } from "apiClient/people";
+import { PersonSummary } from "src/apiClient/people";
 import { countBy } from "lodash";
 import { useState } from "react";
 
-import { usePeopleList } from "redux/api";
+import { usePeopleList } from "src/redux/api";
 
 import { Select } from "./Select";
 import { useDebounce } from "./useDebounce";

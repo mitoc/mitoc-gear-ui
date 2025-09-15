@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useGearList } from "redux/api";
+import { useGearList } from "src/redux/api";
 
-import { GearSummary } from "apiClient/gear";
+import { GearSummary } from "src/apiClient/gear";
 
 import { Select } from "./Select";
 import { useDebounce } from "./useDebounce";

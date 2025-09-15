@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
 
-import { PersonSignup, Signup } from "apiClient/types";
-import { DataGrid } from "components/DataGrid";
-import { PersonLink } from "components/PersonLink";
-import { formatDate, formatDuration } from "lib/fmtDate";
-import { fmtAmount } from "lib/fmtNumber";
+import { PersonSignup, Signup } from "src/apiClient/types";
+import { DataGrid } from "src/components/DataGrid";
+import { PersonLink } from "src/components/PersonLink";
+import { formatDate, formatDuration } from "src/lib/fmtDate";
+import { fmtAmount } from "src/lib/fmtNumber";
 
 type Props<T extends PersonSignup> = {
   signups: T[];

@@ -1,6 +1,6 @@
 import { AsyncThunkPayloadCreator, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { APIError as APIErrorClass } from "apiClient/client";
+import { APIError as APIErrorClass } from "src/apiClient/client";
 
 type EmptyObject = Record<string, never>;
 function wrapper<R, Arg>(fn: AsyncThunkPayloadCreator<R, Arg, EmptyObject>) {

@@ -1,8 +1,8 @@
 import { map } from "lodash";
 
-import { GearLocationSelect } from "components/GearLocationSelect";
-import { GearTypeMultiSelect } from "components/GearTypeSelect";
-import { Select } from "components/Inputs/Select";
+import { GearLocationSelect } from "src/components/GearLocationSelect";
+import { GearTypeMultiSelect } from "src/components/GearTypeSelect";
+import { Select } from "src/components/Inputs/Select";
 
 export enum GearStatusFilter {
   include = "include",
