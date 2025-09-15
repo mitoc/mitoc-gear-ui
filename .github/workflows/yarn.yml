@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [24.x]
 
     outputs:
       sha_short: ${{ steps.vars.outputs.sha_short }}
