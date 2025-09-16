@@ -12,6 +12,7 @@ import type {
   GearType,
   PurchasableItem,
 } from "src/apiClient/gear";
+import { getPagesCount } from "src/apiClient/getPagesCount";
 import { PeopleGroup, Person, PersonSummary } from "src/apiClient/people";
 import {
   Affiliations,
@@ -217,8 +218,7 @@ export function useGearList({
   });
   const data = result.data;
   const gearList = data?.results;
-  const nbPages =
-    data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
+  const nbPages = data ? getPagesCount(data) : undefined;
 
   return { gearList, nbPages, ...result };
 }
@@ -242,8 +242,7 @@ export function usePeopleList({
   });
   const data = result.data;
   const personList = data?.results;
-  const nbPages =
-    data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
+  const nbPages = data ? getPagesCount(data) : undefined;
 
   return { personList, nbPages, ...result };
 }

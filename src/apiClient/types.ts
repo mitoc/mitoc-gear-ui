@@ -2,6 +2,7 @@ import { PeopleGroup, PersonBase, PersonWithOfficeAccess } from "./people";
 
 export interface ListWrapper<T> {
   count: number;
+  pageSize: number;
   previous: string | null;
   next: string | null;
   results: T[];

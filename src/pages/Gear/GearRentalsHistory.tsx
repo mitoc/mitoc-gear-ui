@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { GearRental, getGearRentalHistory } from "src/apiClient/gear";
+import { getPagesCount } from "src/apiClient/getPagesCount";
 import { PersonLink } from "src/components/PersonLink";
 import { TablePagination } from "src/components/TablePagination";
 import { formatDate } from "src/lib/fmtDate";
@@ -17,7 +18,7 @@ export function GearRentalsHistory({ gearId }: Props) {
   useEffect(() => {
     getGearRentalHistory(gearId, page).then((rentalsList) => {
       setRentals(rentalsList.results);
-      setNbPages(Math.ceil(rentalsList.count / 50));
+      setNbPages(getPagesCount(rentalsList));
     });
   }, [gearId, page]);
 

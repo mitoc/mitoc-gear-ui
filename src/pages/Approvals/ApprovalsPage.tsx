@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { getPagesCount } from "src/apiClient/getPagesCount";
 import { AddApprovalLink } from "src/components/AddApprovalLink";
 import { Checkbox } from "src/components/Inputs/Checkbox";
 import { TablePagination } from "src/components/TablePagination";
@@ -19,8 +20,7 @@ export function ApprovalsPage() {
     past: showExpired ? undefined : false, // filter past by default, unless opting in
   });
   const [page, setPage] = useState<number>(1);
-  const nbPages =
-    data?.count != null ? Math.ceil(data?.count / 50) : data?.count;
+  const nbPages = data ? getPagesCount(data) : undefined;
   return (
     <>
       <h1>Restricted Gear Approvals</h1>
