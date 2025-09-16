@@ -1,8 +1,8 @@
-import { PersonSummary } from "src/apiClient/people";
 import { countBy } from "lodash";
 import { useState } from "react";
 
-import { usePeopleList } from "src/redux/api";
+import { PersonSummary } from "src/apiClient/people";
+import { useGetPersonQuery, usePeopleList } from "src/redux/api";
 
 import { Select } from "./Select";
 import { useDebounce } from "./useDebounce";
@@ -20,14 +20,26 @@ export function PersonSelect({ value, onChange, className, invalid }: Props) {
   const { personList, isFetching } = usePeopleList({
     q: query,
   });
+  const { data: selectedPerson } = useGetPersonQuery(value ?? "", {
+    skip: value == null,
+  });
 
   const getName = (person: PersonSummary) =>
     `${person.firstName} ${person.lastName}`;
 
   const namesCount = countBy(personList, getName);
 
+  const listWithSelection =
+    personList == null
+      ? []
+      : selectedPerson == null
+        ? personList
+        : personList.some((p) => p.id === value)
+          ? personList
+          : [...personList, selectedPerson];
+
   const options =
-    personList?.map((person) => {
+    listWithSelection?.map((person) => {
       const name = getName(person);
       const fullName =
         namesCount[name] > 1 ? `${name} (${person.email})` : name;
@@ -38,7 +50,8 @@ export function PersonSelect({ value, onChange, className, invalid }: Props) {
       };
     }) ?? [];
 
-  const selectedOption = options.find((o) => o.id === value);
+  // We want == rather than ===, there is some type mess here
+  const selectedOption = options.find((o) => o.id == value);
 
   return (
     <Select

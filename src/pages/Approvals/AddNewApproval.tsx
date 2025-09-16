@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 import {
   createNewApproval,
@@ -14,22 +14,31 @@ import { AddNewApprovalForm } from "./AddNewApprovalForm";
 
 export function AddNewApproval() {
   useSetPageTitle("Approve restricted gear rental");
-  const [success, setSuccess] = useState<boolean>(false);
+  const history = useHistory();
+  const location = useLocation();
   const [error, setError] = useState<APIErrorType | undefined>();
-  const refetchApprovals = gearDbApi.useLazyGetApprovalsQuery()[0];
+  const refetchAllApprovals = gearDbApi.useLazyGetApprovalsQuery()[0];
+  const refetchPersonApprovals = gearDbApi.useLazyGetRenterApprovalsQuery()[0];
+
+  const searchParams = new URLSearchParams(location.search);
+  const personId = searchParams.get("personId");
 
   const onSubmit = (args: CreateNewApprovalArgs) => {
     createNewApproval(args)
       .then(() => {
         setError(undefined);
-        setSuccess(true);
         // TODO: We should use RTK's mutations instead of refetching everything
-        refetchApprovals({ past: false });
-        refetchApprovals({ past: undefined });
+        refetchAllApprovals({ past: false });
+        refetchAllApprovals({ past: undefined });
+        if (personId != null) {
+          refetchPersonApprovals({ personID: personId, past: false });
+          history.push(`/people/${personId}?tab=approvals`);
+        } else {
+          history.push("/approvals");
+        }
       })
       .catch((err) => {
         if (err instanceof APIErrorClass) {
-          setSuccess(false);
           setError(err.error);
         }
         throw err;
@@ -43,29 +52,7 @@ export function AddNewApproval() {
         {error && (
           <div className="alert alert-danger">Approval failed: {error.msg}</div>
         )}
-        {!success && <AddNewApprovalForm onSubmit={onSubmit} />}
-        {success && (
-          <>
-            <p className="mb-2 alert alert-success">
-              Success! The approval was granted:
-            </p>
-
-            <div className="d-flex justify-content-between">
-              <Link to="/approvals">
-                <button type="button" className="btn btn-outline-secondary">
-                  Go to approvals list
-                </button>
-              </Link>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => setSuccess(false)}
-              >
-                Approve another rental
-              </button>
-            </div>
-          </>
-        )}
+        <AddNewApprovalForm onSubmit={onSubmit} />
       </div>
     </div>
   );

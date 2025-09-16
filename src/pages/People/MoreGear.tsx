@@ -10,7 +10,7 @@ import { useGearList } from "src/redux/api";
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
 export function MoreGear() {
-  const { checkoutBasket } = usePersonPageContext();
+  const { checkoutBasket, isApproved } = usePersonPageContext();
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
@@ -19,7 +19,7 @@ export function MoreGear() {
   return (
     <StyledDiv className="border rounded-2 p-2 bg-light">
       <div className="d-flex justify-content-between">
-        <h3 className="mb-4">More gear</h3>
+        <h3 className="mb-4">Rent gear</h3>
         {query && nbPages != null && nbPages > 1 && (
           <TablePagination setPage={setPage} page={page} nbPage={nbPages} />
         )}
@@ -98,7 +98,13 @@ export function MoreGear() {
                       {restricted && (
                         <>
                           <br />
-                          <strong className="text-warning">RESTRICTED</strong>
+                          {!isApproved(id, type.id) ? (
+                            <strong className="text-warning">RESTRICTED</strong>
+                          ) : (
+                            <strong className="text-success">
+                              ☑ Approved
+                            </strong>
+                          )}
                         </>
                       )}
                     </td>

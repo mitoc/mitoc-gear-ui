@@ -1,6 +1,8 @@
+import dayjs from "dayjs";
 import { flow, keyBy, map, mapValues, sum } from "lodash";
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 
+import { RenterApproval } from "src/apiClient/approvals";
 import { GearSummary } from "src/apiClient/gear";
 import { checkoutGear, Person, Rental, returnGear } from "src/apiClient/people";
 
@@ -13,6 +15,7 @@ type PersonPageContextType = ReturnType<typeof useMakePersonPageContext>;
 type Props = {
   person: Person;
   refreshPerson: () => void;
+  approvals: RenterApproval[];
 };
 
 const PersonPageContext = React.createContext<
@@ -41,7 +44,7 @@ export function usePersonPageContext() {
   return context;
 }
 
-function useMakePersonPageContext({ person, refreshPerson }: Props) {
+function useMakePersonPageContext({ person, refreshPerson, approvals }: Props) {
   const checkoutBasketBase = useBasket<GearSummary>();
   const returnBasketBase = useBasket<Rental>();
   const purchaseBasket = useBasket<ItemToPurchase>();
@@ -59,6 +62,40 @@ function useMakePersonPageContext({ person, refreshPerson }: Props) {
   } = useReturnState(
     returnBasketBase.items,
     person.groups.some((group) => group.groupName === "BOD"),
+  );
+
+  const today = dayjs().startOf("day");
+
+  const activeApprovals = approvals.filter((approval) => {
+    const startDate = dayjs(approval.startDate).startOf("day");
+    const endDate = dayjs(approval.endDate).endOf("day");
+    return startDate.isSameOrBefore(today) && endDate.isSameOrAfter(today);
+  });
+
+  const isApproved = useCallback(
+    (gearId: string, typeId: number) => {
+      return activeApprovals.some(({ items }) => {
+        return items.some((item) => {
+          if (item.type === "specificItem") {
+            return item.item.gearItem.id === gearId;
+          }
+          if (item.item.gearType.id !== typeId) {
+            return false;
+          }
+          const checkedOut = checkoutBasketBase.items.filter(
+            ({ type }) => type.id === item.item.gearType.id,
+          );
+          if (checkedOut.length < item.item.quantity) {
+            return true;
+          }
+          return checkedOut
+            .slice(0, item.item.quantity)
+            .map((g) => g.id)
+            .includes(gearId);
+        });
+      });
+    },
+    [activeApprovals],
   );
 
   const calculatedTotalRentals = sum(
@@ -79,6 +116,8 @@ function useMakePersonPageContext({ person, refreshPerson }: Props) {
 
   return {
     person,
+    approvals,
+    isApproved,
     refreshPerson,
     purchaseBasket,
     returnBasket: {

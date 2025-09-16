@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { isEmpty } from "lodash";
 import queryString from "query-string";
 
-import { Approval } from "src/apiClient/approvals";
+import { Approval, RenterApproval } from "src/apiClient/approvals";
 import { API_HOST } from "src/apiClient/client";
 import { Config } from "src/apiClient/config";
 import type {
@@ -152,6 +152,18 @@ export const gearDbApi = createApi({
         },
       }),
     }),
+
+    getRenterApprovals: builder.query<
+      ListWrapper<RenterApproval>,
+      { personID: string; past: boolean; future?: boolean }
+    >({
+      query: ({ personID, past }) => ({
+        url: `people/${personID}/approvals`,
+        params: {
+          past,
+        },
+      }),
+    }),
     getGearLocations: builder.query<GearLocation[], void>({
       query: () => "/gear-locations/",
     }),
@@ -174,6 +186,7 @@ export const {
   useGetApprovalsQuery,
   useGetGearLocationsQuery,
   useGetGearTypePicturesQuery,
+  useGetRenterApprovalsQuery,
 } = gearDbApi;
 
 export function useGearList({

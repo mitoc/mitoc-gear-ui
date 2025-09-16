@@ -8,7 +8,7 @@ import { fmtAmount } from "src/lib/fmtNumber";
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
 export function CheckoutStaging({ onCheckout }: { onCheckout: () => void }) {
-  const { person, checkoutBasket } = usePersonPageContext();
+  const { person, checkoutBasket, isApproved } = usePersonPageContext();
   const gearToCheckout = checkoutBasket.items;
   const totalDeposit = sum(map(gearToCheckout, "depositAmount"));
 
@@ -57,7 +57,13 @@ export function CheckoutStaging({ onCheckout }: { onCheckout: () => void }) {
                       {restricted && (
                         <>
                           <br />
-                          <strong className="text-warning">RESTRICTED</strong>
+                          {!isApproved(id, type.id) ? (
+                            <strong className="text-warning">RESTRICTED</strong>
+                          ) : (
+                            <strong className="text-success">
+                              ☑ Approved
+                            </strong>
+                          )}
                         </>
                       )}
                     </td>

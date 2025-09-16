@@ -1,6 +1,7 @@
+import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 import {
   ApprovalItemToCreate,
@@ -22,9 +23,15 @@ const LabeledInput = makeLabeledInput<FormValues>();
 
 export function AddNewApprovalForm({ onSubmit }: Props) {
   const history = useHistory();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const personId = searchParams.get("personId");
+
   const formObject = useForm<FormValues>({
     defaultValues: {
       items: [defaultItem],
+      renter: personId || undefined,
+      startDate: dayjs().startOf("day").toDate(),
     },
   });
 

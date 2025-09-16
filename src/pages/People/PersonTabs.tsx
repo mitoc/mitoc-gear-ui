@@ -1,3 +1,6 @@
+import { useCallback } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+
 type Props = {
   updateTab: (newTab: PersonPageTabs) => void;
   activeTab: PersonPageTabs;
@@ -5,18 +8,20 @@ type Props = {
 
 export enum PersonPageTabs {
   gearOut = "gearOut",
-  moreGear = "moreGear",
-  buyGear = "buyGear",
-  rentalHistory = "rentalHistory",
+  rent = "rent",
+  buy = "buy",
+  approvals = "approvals",
+  history = "history",
 }
 
 const tabs = [
   { name: PersonPageTabs.gearOut, label: "Gear out" },
-  { name: PersonPageTabs.moreGear, label: "Rent Gear", shortLabel: "Rent" },
-  { name: PersonPageTabs.buyGear, label: "Buy Gear", shortLabel: "Buy" },
+  { name: PersonPageTabs.rent, label: "Rent", shortLabel: "Rent" },
+  { name: PersonPageTabs.approvals, label: "Approvals", shortLabel: "Appr." },
+  { name: PersonPageTabs.buy, label: "Buy", shortLabel: "Buy" },
   {
-    name: PersonPageTabs.rentalHistory,
-    label: "Rental History",
+    name: PersonPageTabs.history,
+    label: "History",
     shortLabel: "Hist.",
   },
 ];
@@ -37,4 +42,23 @@ export function PersonTabsSelector({ activeTab, updateTab }: Props) {
       ))}
     </ul>
   );
+}
+
+export function useTab(): [PersonPageTabs, (newTab: PersonPageTabs) => void] {
+  const history = useHistory();
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+  const tabParam = searchParams.get("tab");
+  const tab = Object.values(PersonPageTabs).includes(tabParam as PersonPageTabs)
+    ? (tabParam as PersonPageTabs)
+    : PersonPageTabs.gearOut;
+
+  const setTab = useCallback((newTab: PersonPageTabs) => {
+    const newSearchParams = new URLSearchParams(location.search);
+    newSearchParams.set("tab", newTab);
+    history.push(`${location.pathname}?${newSearchParams.toString()}`);
+  }, []);
+
+  return [tab, setTab];
 }
