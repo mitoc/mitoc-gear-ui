@@ -1,6 +1,6 @@
-import { AddApprovalLink } from "@/components/AddApprovalLink";
 import { useState } from "react";
 
+import { AddApprovalLink } from "src/components/AddApprovalLink";
 import { Checkbox } from "src/components/Inputs/Checkbox";
 import { TablePagination } from "src/components/TablePagination";
 import { useSetPageTitle } from "src/hooks";

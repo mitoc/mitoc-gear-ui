@@ -1,5 +1,6 @@
-import { ApprovalItem } from "apiClient/approvals";
-import { GearLink } from "components/GearLink";
+import { ApprovalItem } from "src/apiClient/approvals";
+
+import { GearLink } from "./GearLink";
 
 /**
  * Renders a list of approval items (gear types or specific gear items)

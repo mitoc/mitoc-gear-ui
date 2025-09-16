@@ -3,12 +3,12 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import { isEmpty, sortBy } from "lodash";
 
-import { RenterApproval } from "apiClient/approvals";
-import { AddApprovalLink } from "components/AddApprovalLink";
-import { ApprovalItemsList } from "components/ApprovalItemsList";
-import { PersonLink } from "components/PersonLink";
-import { formatDate } from "lib/fmtDate";
-import { usePermissions } from "redux/auth";
+import { RenterApproval } from "src/apiClient/approvals";
+import { AddApprovalLink } from "src/components/AddApprovalLink";
+import { ApprovalItemsList } from "src/components/ApprovalItemsList";
+import { PersonLink } from "src/components/PersonLink";
+import { formatDate } from "src/lib/fmtDate";
+import { usePermissions } from "src/redux/auth";
 
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
