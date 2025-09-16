@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import { authClient } from "apiClient/auth";
-import { useSetPageTitle } from "hooks";
-import { validateEmail } from "lib/validation";
+import { authClient } from "src/apiClient/auth";
+import { useSetPageTitle } from "src/hooks";
+import { validateEmail } from "src/lib/validation";
 
 export function RequestPasswordReset() {
   useSetPageTitle("Reset password");

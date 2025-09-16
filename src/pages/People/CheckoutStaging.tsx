@@ -1,14 +1,14 @@
 import { map, sum } from "lodash";
 
-import type { Person } from "apiClient/people";
-import { RemoveButton } from "components/Buttons";
-import { GearLink } from "components/GearLink";
-import { fmtAmount } from "lib/fmtNumber";
+import type { Person } from "src/apiClient/people";
+import { RemoveButton } from "src/components/Buttons";
+import { GearLink } from "src/components/GearLink";
+import { fmtAmount } from "src/lib/fmtNumber";
 
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
 export function CheckoutStaging({ onCheckout }: { onCheckout: () => void }) {
-  const { person, checkoutBasket } = usePersonPageContext();
+  const { person, checkoutBasket, isApproved } = usePersonPageContext();
   const gearToCheckout = checkoutBasket.items;
   const totalDeposit = sum(map(gearToCheckout, "depositAmount"));
 
@@ -57,7 +57,13 @@ export function CheckoutStaging({ onCheckout }: { onCheckout: () => void }) {
                       {restricted && (
                         <>
                           <br />
-                          <strong className="text-warning">RESTRICTED</strong>
+                          {!isApproved(id, type.id) ? (
+                            <strong className="text-warning">RESTRICTED</strong>
+                          ) : (
+                            <strong className="text-success">
+                              ☑ Approved
+                            </strong>
+                          )}
                         </>
                       )}
                     </td>

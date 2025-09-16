@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-import { getPagesCount } from "apiClient/getPagesCount";
-import { TablePagination } from "components/TablePagination";
-import { useSetPageTitle } from "hooks";
-import { useGetPersonSignupsQuery } from "redux/api";
-import { useCurrentUser } from "redux/auth";
+import { getPagesCount } from "src/apiClient/getPagesCount";
+import { TablePagination } from "src/components/TablePagination";
+import { useSetPageTitle } from "src/hooks";
+import { useGetPersonSignupsQuery } from "src/redux/api";
+import { useCurrentUser } from "src/redux/auth";
 
 import { OfficeHoursSignupsTable } from "./OfficeHoursSignupsTable";
 

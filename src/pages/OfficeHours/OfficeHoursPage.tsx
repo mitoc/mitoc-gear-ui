@@ -5,20 +5,20 @@ import { groupBy, isEmpty, map } from "lodash";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { cancelSignUp, signUp } from "apiClient/officeHours";
-import { OfficeHour, User } from "apiClient/types";
-import { PersonLink } from "components/PersonLink";
-import { useSetPageTitle } from "hooks";
-import { useGetOfficeHoursQuery } from "redux/api";
+import { cancelSignUp, signUp } from "src/apiClient/officeHours";
+import { OfficeHour, User } from "src/apiClient/types";
+import { PersonLink } from "src/components/PersonLink";
+import { useSetPageTitle } from "src/hooks";
+import { useGetOfficeHoursQuery } from "src/redux/api";
 import {
   Roles,
   useCurrentUser,
   useCurrentUserReload,
   usePermissions,
-} from "redux/auth";
+} from "src/redux/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdCard } from "@fortawesome/free-solid-svg-icons";
-import { updatePersonGroups } from "apiClient/people";
+import { updatePersonGroups } from "src/apiClient/people";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
@@ -44,8 +44,11 @@ export function OfficeHoursPage() {
 
   return (
     <div className="row">
-      <div className="col-lg-8">
+      <div className="col-lg-10">
         <h1>Upcoming office hours</h1>
+        <p className="text-muted fs-5">
+          Sign up for office hours to help fellow members with gear rentals
+        </p>
         <OfficeAccessBanner />
 
         {map(officeHoursByWeek, (officeHours, yearWeekStr) => {
@@ -61,8 +64,8 @@ export function OfficeHoursPage() {
                   : null;
 
           return (
-            <div key={weekStr}>
-              {weekTitle && <h3>{weekTitle}</h3>}
+            <WeekSection key={weekStr}>
+              {weekTitle && <WeekTitle>{weekTitle}</WeekTitle>}
               <WeekBlock>
                 {officeHours.map((officeHour) => (
                   <OfficeHourBlock
@@ -71,7 +74,7 @@ export function OfficeHoursPage() {
                   />
                 ))}
               </WeekBlock>
-            </div>
+            </WeekSection>
           );
         })}
       </div>
@@ -248,20 +251,55 @@ function OfficeHourBlock({ officeHour }: { officeHour: OfficeHour }) {
 }
 
 function formatDateTime(date: string) {
-  return dayjs(date).format("dddd MMM DD YYYY, hh:mma");
+  return dayjs(date).format("ddd MM/DD YYYY, ha");
 }
 
+const WeekSection = styled.div`
+  margin-bottom: 3rem;
+`;
+
+const WeekTitle = styled.h3`
+  color: #34495e;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e9ecef;
+`;
+
 const WeekBlock = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 2rem;
 
   @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .alert {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+    margin-bottom: 0;
+    display: flex;
     flex-direction: column;
+    justify-content: space-between;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
   }
 
   .btn-container {
     display: flex;
-    justify-content: right;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: 1rem;
   }
 `;
 

@@ -1,24 +1,21 @@
-import { get } from "lodash";
-import { InputHTMLAttributes } from "react";
-import {
-  useFormContext,
-  RegisterOptions,
-  Controller,
-  FieldValues,
-  Path,
-  FieldPathValue,
-  UnpackNestedValue,
-  Noop,
-  RefCallBack,
-  FieldName,
-  DeepMap,
-  DeepPartial,
-  FieldError,
-} from "react-hook-form";
 import {
   ErrorMessage,
   FieldValuesFromFieldErrors,
 } from "@hookform/error-message";
+import { get } from "lodash";
+import { InputHTMLAttributes } from "react";
+import {
+  Controller,
+  FieldErrors,
+  FieldName,
+  FieldPathValue,
+  FieldValues,
+  Noop,
+  Path,
+  RefCallBack,
+  RegisterOptions,
+  useFormContext,
+} from "react-hook-form";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
@@ -28,12 +25,10 @@ export type Props<
 > = InputProps & {
   as?: any;
   renderComponent?: (props: {
-    value: UnpackNestedValue<FieldPathValue<TFieldValues, TName>>;
+    value: FieldPathValue<TFieldValues, TName>;
     invalid?: boolean;
     name: TName;
-    onChange: (
-      value: UnpackNestedValue<FieldPathValue<TFieldValues, TName>>,
-    ) => void;
+    onChange: (value: FieldPathValue<TFieldValues, TName>) => void;
     onBlur: Noop;
     ref: RefCallBack;
   }) => React.ReactElement;
@@ -118,14 +113,13 @@ export function LabeledInput<
       <ErrorMessage
         errors={errors}
         name={
-          name as FieldName<
-            FieldValuesFromFieldErrors<
-              DeepMap<DeepPartial<TFieldValues>, FieldError>
-            >
+          name as unknown as FieldName<
+            FieldValuesFromFieldErrors<FieldErrors<TFieldValues>>
           >
         }
         render={({ message }) => {
-          const isRequiredError = get(errors, name).type === "required";
+          const fieldError = get(errors, name);
+          const isRequiredError = fieldError?.type === "required";
           const errorMsg =
             message || (isRequiredError ? "This field is required" : "");
           return <div className="invalid-feedback">{errorMsg}</div>;

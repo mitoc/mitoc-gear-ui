@@ -1,8 +1,8 @@
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
-import { googleOauthClientId } from "lib/constants";
-import { signInWithGoogle } from "redux/auth";
-import { useAppDispatch } from "redux/hooks";
+import { googleOauthClientId } from "src/lib/constants";
+import { signInWithGoogle } from "src/redux/auth";
+import { useAppDispatch } from "src/redux/hooks";
 
 export function SignInWithGoogle() {
   const dispatch = useAppDispatch();

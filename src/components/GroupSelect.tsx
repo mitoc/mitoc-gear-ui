@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import Select, { MultiValue } from "react-select";
 
-import { PeopleGroup } from "apiClient/people";
-import { useGetGroupsQuery } from "redux/api";
+import { PeopleGroup } from "src/apiClient/people";
+import { useGetGroupsQuery } from "src/redux/api";
 
 type GroupOption = PeopleGroup & {
   value: number;

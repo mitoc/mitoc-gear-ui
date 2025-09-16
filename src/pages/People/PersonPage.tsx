@@ -1,11 +1,10 @@
 import { isEmpty } from "lodash";
-import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { addNote, archiveNote } from "apiClient/people";
-import { Notes } from "components/Notes";
-import { useSetPageTitle } from "hooks";
-import { useGetPersonQuery } from "redux/api";
+import { addNote, archiveNote } from "src/apiClient/people";
+import { Notes } from "src/components/Notes";
+import { useSetPageTitle } from "src/hooks";
+import { useGetPersonQuery, useGetRenterApprovalsQuery } from "src/redux/api";
 
 import { BuyGear } from "./BuyGear";
 import { CheckoutStaging } from "./CheckoutStaging";
@@ -14,27 +13,37 @@ import {
   PersonPageContextProvider,
   usePersonPageContext,
 } from "./PeoplePage/PersonPageContext";
+import { PersonApprovals } from "./PersonApprovals";
 import { PersonProfile } from "./PersonProfile";
 import { PersonRentals } from "./PersonRentals";
 import { PersonRentalsHistory } from "./PersonRentalsHistory";
-import { PersonPageTabs, PersonTabsSelector } from "./PersonTabs";
+import { PersonPageTabs, PersonTabsSelector, useTab } from "./PersonTabs";
 import { ReturnStaging } from "./ReturnStaging";
 
 export function PersonPage() {
   const { personId } = useParams<{ personId: string }>();
   const { data: person, refetch: refreshPerson } = useGetPersonQuery(personId);
+  const { data: approvalResult } = useGetRenterApprovalsQuery({
+    personID: personId,
+    past: false,
+  });
   if (person == null) {
     return null;
   }
   return (
-    <PersonPageContextProvider person={person} refreshPerson={refreshPerson}>
+    <PersonPageContextProvider
+      person={person}
+      refreshPerson={refreshPerson}
+      // NOTE: This doesn't handle pagination for now, which could be a problem if someone has 50+ active approvals. Unlikely.
+      approvals={approvalResult?.results ?? []}
+    >
       <PersonPageInner />
     </PersonPageContextProvider>
   );
 }
 
 function PersonPageInner() {
-  const [tab, setTab] = useState<PersonPageTabs>(PersonPageTabs.gearOut);
+  const [tab, setTab] = useTab();
 
   const {
     person,
@@ -42,17 +51,34 @@ function PersonPageInner() {
     checkoutBasket,
     returnBasket,
     purchaseBasket,
+    isApproved,
   } = usePersonPageContext();
 
   useSetPageTitle(person ? `${person.firstName} ${person.lastName} ` : "");
 
   const isOverdue = person.rentals.some((rental) => rental.weeksOut >= 7);
 
+  const unaprovedRestrictedItems = checkoutBasket.items.filter(
+    ({ id, type }) => !isApproved(id, type.id),
+  );
+
   return (
     <div className="row">
-      {isOverdue && (
+      {isOverdue && isEmpty(unaprovedRestrictedItems) && (
         <div className="alert alert-danger" role="alert">
           Please remind renter to return overdue gear!
+        </div>
+      )}
+      {!isEmpty(unaprovedRestrictedItems) && (
+        <div className="alert alert-warning" role="alert">
+          ⚠️ <strong>Unapproved restricted gear</strong> in the basket:
+          <ul>
+            {unaprovedRestrictedItems.map((i) => (
+              <li key={i.id}>{i.id}</li>
+            ))}
+          </ul>
+          Please ensure that the renter has been approved by the relevant
+          activity chair to check this gear out (i.e. via email)
         </div>
       )}
       <div className="col-12 col-md-5 p-2">
@@ -80,9 +106,10 @@ function PersonPageInner() {
       <div className="col-12 col-md-7 p-2">
         <PersonTabsSelector activeTab={tab} updateTab={setTab} />
         {tab === PersonPageTabs.gearOut && <PersonRentals />}
-        {tab === PersonPageTabs.moreGear && <MoreGear />}
-        {tab === PersonPageTabs.buyGear && <BuyGear />}
-        {tab === PersonPageTabs.rentalHistory && (
+        {tab === PersonPageTabs.rent && <MoreGear />}
+        {tab === PersonPageTabs.buy && <BuyGear />}
+        {tab === PersonPageTabs.approvals && <PersonApprovals />}
+        {tab === PersonPageTabs.history && (
           <PersonRentalsHistory personId={person.id} />
         )}
       </div>

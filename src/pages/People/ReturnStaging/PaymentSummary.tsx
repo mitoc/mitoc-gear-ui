@@ -5,10 +5,10 @@ import { ButtonHTMLAttributes, useState } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import styled from "styled-components";
 
-import { Checkbox } from "components/Inputs/Checkbox";
-import { NumberField } from "components/Inputs/NumberField";
-import { fmtAmount } from "lib/fmtNumber";
-import { useConfig } from "redux/hooks";
+import { Checkbox } from "src/components/Inputs/Checkbox";
+import { NumberField } from "src/components/Inputs/NumberField";
+import { fmtAmount } from "src/lib/fmtNumber";
+import { useConfig } from "src/redux/hooks";
 
 import { usePersonPageContext } from "../PeoplePage/PersonPageContext";
 

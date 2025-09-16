@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import { ToggleExpandButton } from "components/Buttons";
-import { usePermissions } from "redux/auth";
+import { ToggleExpandButton } from "src/components/Buttons";
+import { usePermissions } from "src/redux/auth";
 
 import { usePersonPageContext } from "../PeoplePage/PersonPageContext";
 

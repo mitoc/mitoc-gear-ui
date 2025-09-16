@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-import { CreateGearArgs, GearLocation, GearType } from "apiClient/gear";
-import { makeLabeledInput } from "components/Inputs/LabeledInput";
-import { Select } from "components/Select";
-import { fmtAmount } from "lib/fmtNumber";
-import { useGetGearLocationsQuery, useGetGearTypesQuery } from "redux/api";
+import { CreateGearArgs, GearLocation, GearType } from "src/apiClient/gear";
+import { makeLabeledInput } from "src/components/Inputs/LabeledInput";
+import { Select } from "src/components/Select";
+import { fmtAmount } from "src/lib/fmtNumber";
+import { useGetGearLocationsQuery, useGetGearTypesQuery } from "src/redux/api";
 
 type GearTypeOption = GearType & { value: string; label: string };
 

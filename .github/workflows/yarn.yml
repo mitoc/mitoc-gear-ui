@@ -15,25 +15,23 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [24.x]
 
     outputs:
       sha_short: ${{ steps.vars.outputs.sha_short }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - name: Install production-level yarn dependencies
-        uses: Borales/actions-yarn@v3.0.0
-        with:
-          cmd: install --frozen-lockfile
+          cache: "yarn"
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
       - name: Prettier check
         run: yarn prettier
       - name: eslint check
@@ -41,12 +39,10 @@ jobs:
       - name: TS check
         run: yarn ts
       - name: Build output for prod
-        uses: Borales/actions-yarn@v3.0.0
-        with:
-          cmd: build
+        run: yarn build
       - name: tar files together before artifact creation
         run: tar -cvf build.tar build/
-      - name: Upload build.zip artifact for release
+      - name: Upload build artifact for release
         uses: actions/upload-artifact@v4
         with:
           name: build
@@ -61,10 +57,10 @@ jobs:
     if: ${{ inputs.release }}
     needs: build
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [24.x]
 
     steps:
       - name: Download artifact from build

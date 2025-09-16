@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Select from "react-select";
 
-import { editGearItem, GearLocation, GearSummary } from "apiClient/gear";
-import { NumberField } from "components/Inputs/NumberField";
-import { TextArea } from "components/Inputs/TextArea";
-import { TextField } from "components/Inputs/TextField";
-import { useGetGearLocationsQuery } from "redux/api";
+import { editGearItem, GearLocation, GearSummary } from "src/apiClient/gear";
+import { NumberField } from "src/components/Inputs/NumberField";
+import { TextArea } from "src/components/Inputs/TextArea";
+import { TextField } from "src/components/Inputs/TextField";
+import { useGetGearLocationsQuery } from "src/redux/api";
 
 type GearLocationOption = GearLocation & { value: number; label: string };
 

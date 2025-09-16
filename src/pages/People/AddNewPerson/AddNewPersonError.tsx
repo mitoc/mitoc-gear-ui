@@ -1,4 +1,4 @@
-import { APIErrorType } from "apiClient/types";
+import { APIErrorType } from "src/apiClient/types";
 
 export function AddNewPersonError({ err }: { err: APIErrorType }) {
   return (

@@ -1,10 +1,10 @@
 import { isEmpty } from "lodash";
 import { useMemo, useState } from "react";
 
-import { useSetPageTitle } from "hooks";
-import { formatDate, formatDateTime, formatDuration } from "lib/fmtDate";
-import { useGetPersonSignupsQuery } from "redux/api";
-import { useCurrentUser } from "redux/auth";
+import { useSetPageTitle } from "src/hooks";
+import { formatDate, formatDateTime, formatDuration } from "src/lib/fmtDate";
+import { useGetPersonSignupsQuery } from "src/redux/api";
+import { useCurrentUser } from "src/redux/auth";
 
 import { RequestDeskCreditForm } from "./RequestDeskCreditForm";
 import { RequestDeskCreditResults } from "./RequestDeskCreditResults";

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { getPersonRentalHistory, Rental } from "apiClient/people";
-import { getPagesCount } from "apiClient/getPagesCount";
-import { GearLink } from "components/GearLink";
-import { TablePagination } from "components/TablePagination";
-import { formatDate } from "lib/fmtDate";
+import { getPagesCount } from "src/apiClient/getPagesCount";
+import { getPersonRentalHistory, Rental } from "src/apiClient/people";
+import { GearLink } from "src/components/GearLink";
+import { TablePagination } from "src/components/TablePagination";
+import { formatDate } from "src/lib/fmtDate";
 
 type Props = {
   personId: string;

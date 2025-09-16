@@ -1,4 +1,4 @@
-import { toIsoDate } from "lib/fmtDate";
+import { toIsoDate } from "src/lib/fmtDate";
 import { request } from "./client";
 import { GearTypeWithShorthand } from "./gear";
 import { PersonBase } from "./people";
@@ -12,6 +12,8 @@ export type Approval = {
   renter: PersonBase;
   items: ApprovalItem[];
 };
+
+export type RenterApproval = Omit<Approval, "renter">;
 
 interface GearItem {
   id: string;

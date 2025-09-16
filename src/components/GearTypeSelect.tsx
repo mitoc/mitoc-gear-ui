@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import ReactSelect, { MultiValue } from "react-select";
 
-import { useGetGearTypesQuery } from "redux/api";
-import { GearType as APIGearType } from "apiClient/gear";
+import { useGetGearTypesQuery } from "src/redux/api";
+import { GearType as APIGearType } from "src/apiClient/gear";
 
 import { Select } from "./Select";
 

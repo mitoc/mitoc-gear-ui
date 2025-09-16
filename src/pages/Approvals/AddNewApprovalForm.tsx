@@ -1,15 +1,16 @@
+import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 import {
   ApprovalItemToCreate,
   ApprovalItemType,
   CreateNewApprovalArgs,
-} from "apiClient/approvals";
-import { Form } from "components/Inputs/Form";
-import { makeLabeledInput } from "components/Inputs/LabeledInput";
-import { PersonSelect } from "components/PersonSelect";
+} from "src/apiClient/approvals";
+import { Form } from "src/components/Inputs/Form";
+import { makeLabeledInput } from "src/components/Inputs/LabeledInput";
+import { PersonSelect } from "src/components/PersonSelect";
 
 import { ApprovalItemsPicker, defaultItem } from "./ApprovalItemsPicker";
 import { FormValues } from "./types";
@@ -22,9 +23,15 @@ const LabeledInput = makeLabeledInput<FormValues>();
 
 export function AddNewApprovalForm({ onSubmit }: Props) {
   const history = useHistory();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const personId = searchParams.get("personId");
+
   const formObject = useForm<FormValues>({
     defaultValues: {
       items: [defaultItem],
+      renter: personId || undefined,
+      startDate: dayjs().startOf("day").toDate(),
     },
   });
 

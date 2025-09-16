@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
-import { getPagesCount } from "apiClient/getPagesCount";
-import { Checkbox } from "components/Inputs/Checkbox";
-import { TablePagination } from "components/TablePagination";
-import { useSetPageTitle } from "hooks";
-import { useGetApprovalsQuery } from "redux/api";
-import { useConfig } from "redux/hooks";
-import { usePermissions } from "redux/auth";
+import { getPagesCount } from "src/apiClient/getPagesCount";
+import { AddApprovalLink } from "src/components/AddApprovalLink";
+import { Checkbox } from "src/components/Inputs/Checkbox";
+import { TablePagination } from "src/components/TablePagination";
+import { useSetPageTitle } from "src/hooks";
+import { useGetApprovalsQuery } from "src/redux/api";
+import { usePermissions } from "src/redux/auth";
+import { useConfig } from "src/redux/hooks";
 
 import { ApprovalsTable } from "./ApprovalsTable";
 
@@ -40,13 +40,7 @@ export function ApprovalsPage() {
           }
 
           <div className="col-md d-flex flex-grow-1 justify-content-end">
-            {isApprover && (
-              <Link to="/add-approval">
-                <button className="btn btn-outline-primary mb-3">
-                  ＋ Add approval
-                </button>
-              </Link>
-            )}
+            {isApprover && <AddApprovalLink />}
           </div>
         </div>
       )}
