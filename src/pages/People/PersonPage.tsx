@@ -59,7 +59,7 @@ function PersonPageInner() {
   const isOverdue = person.rentals.some((rental) => rental.weeksOut >= 7);
 
   const unaprovedRestrictedItems = checkoutBasket.items.filter(
-    ({ id, type }) => !isApproved(id, type.id),
+    ({ id, type, restricted }) => restricted && !isApproved(id, type.id),
   );
 
   return (
