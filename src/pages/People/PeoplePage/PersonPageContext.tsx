@@ -2,9 +2,9 @@ import dayjs from "dayjs";
 import { flow, keyBy, map, mapValues, sum } from "lodash";
 import React, { useCallback, useContext, useState } from "react";
 
-import { RenterApproval } from "apiClient/approvals";
-import { GearSummary } from "apiClient/gear";
-import { checkoutGear, Person, Rental, returnGear } from "apiClient/people";
+import { RenterApproval } from "src/apiClient/approvals";
+import { GearSummary } from "src/apiClient/gear";
+import { checkoutGear, Person, Rental, returnGear } from "src/apiClient/people";
 
 import { ItemToPurchase } from "../types";
 

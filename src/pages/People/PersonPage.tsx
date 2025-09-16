@@ -1,10 +1,10 @@
 import { isEmpty } from "lodash";
 import { useParams } from "react-router-dom";
 
-import { addNote, archiveNote } from "apiClient/people";
-import { Notes } from "components/Notes";
-import { useSetPageTitle } from "hooks";
-import { useGetPersonQuery, useGetRenterApprovalsQuery } from "redux/api";
+import { addNote, archiveNote } from "src/apiClient/people";
+import { Notes } from "src/components/Notes";
+import { useSetPageTitle } from "src/hooks";
+import { useGetPersonQuery, useGetRenterApprovalsQuery } from "src/redux/api";
 
 import { BuyGear } from "./BuyGear";
 import { CheckoutStaging } from "./CheckoutStaging";

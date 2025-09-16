@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { authClient } from "apiClient/auth";
-import { APIError } from "apiClient/client";
-import { Form } from "components/Inputs/Form";
-import { LabeledInput } from "components/Inputs/LabeledInput";
-import { useSetPageTitle } from "hooks";
-import { logIn } from "redux/auth";
-import { useCurrentUser } from "redux/auth/hooks";
-import { useAppDispatch } from "redux/hooks";
+import { authClient } from "src/apiClient/auth";
+import { APIError } from "src/apiClient/client";
+import { Form } from "src/components/Inputs/Form";
+import { LabeledInput } from "src/components/Inputs/LabeledInput";
+import { useSetPageTitle } from "src/hooks";
+import { logIn } from "src/redux/auth";
+import { useCurrentUser } from "src/redux/auth/hooks";
+import { useAppDispatch } from "src/redux/hooks";
 
 type FormValues = {
   oldPassword: string;

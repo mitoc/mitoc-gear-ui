@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash";
 
-import { useQueryParamFilters } from "hooks/useQueryParamFilters";
+import { useQueryParamFilters } from "src/hooks/useQueryParamFilters";
 
 import type { Filters } from "./PeopleFilters";
 

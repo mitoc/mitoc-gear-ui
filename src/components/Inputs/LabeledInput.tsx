@@ -6,9 +6,7 @@ import { get } from "lodash";
 import { InputHTMLAttributes } from "react";
 import {
   Controller,
-  DeepMap,
-  DeepPartial,
-  FieldError,
+  FieldErrors,
   FieldName,
   FieldPathValue,
   FieldValues,
@@ -16,7 +14,6 @@ import {
   Path,
   RefCallBack,
   RegisterOptions,
-  UnpackNestedValue,
   useFormContext,
 } from "react-hook-form";
 
@@ -28,12 +25,10 @@ export type Props<
 > = InputProps & {
   as?: any;
   renderComponent?: (props: {
-    value: UnpackNestedValue<FieldPathValue<TFieldValues, TName>>;
+    value: FieldPathValue<TFieldValues, TName>;
     invalid?: boolean;
     name: TName;
-    onChange: (
-      value: UnpackNestedValue<FieldPathValue<TFieldValues, TName>>,
-    ) => void;
+    onChange: (value: FieldPathValue<TFieldValues, TName>) => void;
     onBlur: Noop;
     ref: RefCallBack;
   }) => React.ReactElement;
@@ -119,13 +114,12 @@ export function LabeledInput<
         errors={errors}
         name={
           name as unknown as FieldName<
-            FieldValuesFromFieldErrors<
-              DeepMap<DeepPartial<TFieldValues>, FieldError>
-            >
+            FieldValuesFromFieldErrors<FieldErrors<TFieldValues>>
           >
         }
         render={({ message }) => {
-          const isRequiredError = get(errors, name).type === "required";
+          const fieldError = get(errors, name);
+          const isRequiredError = fieldError?.type === "required";
           const errorMsg =
             message || (isRequiredError ? "This field is required" : "");
           return <div className="invalid-feedback">{errorMsg}</div>;

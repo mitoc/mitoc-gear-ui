@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
-import { createNewApproval, CreateNewApprovalArgs } from "apiClient/approvals";
-import { APIError as APIErrorClass } from "apiClient/client";
-import { APIErrorType } from "apiClient/types";
-import { useSetPageTitle } from "hooks";
-import { gearDbApi } from "redux/api";
+import {
+  createNewApproval,
+  CreateNewApprovalArgs,
+} from "src/apiClient/approvals";
+import { APIError as APIErrorClass } from "src/apiClient/client";
+import { APIErrorType } from "src/apiClient/types";
+import { useSetPageTitle } from "src/hooks";
+import { gearDbApi } from "src/redux/api";
 
 import { AddNewApprovalForm } from "./AddNewApprovalForm";
 

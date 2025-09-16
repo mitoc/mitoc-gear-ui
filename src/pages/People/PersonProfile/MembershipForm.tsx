@@ -3,9 +3,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 
-import { addMembership, Person } from "apiClient/people";
-import { Select } from "components/Inputs/Select";
-import { useGetAffiliationsQuery, useGetPersonQuery } from "redux/api";
+import { addMembership, Person } from "src/apiClient/people";
+import { Select } from "src/components/Inputs/Select";
+import { useGetAffiliationsQuery, useGetPersonQuery } from "src/redux/api";
 
 import { getNextExpirationDate } from "./utils";
 

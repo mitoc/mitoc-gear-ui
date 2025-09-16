@@ -5,17 +5,18 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
+import { useLoadCurrentUser, usePermissions } from "src/redux/auth";
 
-import { refreshCsrfToken } from "apiClient/client";
-import BaseLayout from "components/BaseLayout";
-import { ApprovalsPage } from "pages/Approvals";
-import { AddNewApproval } from "pages/Approvals/AddNewApproval";
-import { GearInventoryPage } from "pages/Inventory/GearInventoryPage";
-import { ApproveDeskCreditPage } from "pages/OfficeHours/ApproveDeskCreditPage";
-import { MyOfficeHoursHistory } from "pages/OfficeHours/MyOfficeHoursHistory";
-import { OfficeHoursHistory } from "pages/OfficeHours/OfficeHoursHistory";
-import { RequestDeskCreditPage } from "pages/OfficeHours/RequestDeskCreditPage";
-import { ChangePassword } from "pages/People/PersonProfile/PersonChangePassword";
+import { refreshCsrfToken } from "src/apiClient/client";
+import BaseLayout from "src/components/BaseLayout";
+import { ApprovalsPage } from "src/pages/Approvals";
+import { AddNewApproval } from "src/pages/Approvals/AddNewApproval";
+import { GearInventoryPage } from "src/pages/Inventory/GearInventoryPage";
+import { ApproveDeskCreditPage } from "src/pages/OfficeHours/ApproveDeskCreditPage";
+import { MyOfficeHoursHistory } from "src/pages/OfficeHours/MyOfficeHoursHistory";
+import { OfficeHoursHistory } from "src/pages/OfficeHours/OfficeHoursHistory";
+import { RequestDeskCreditPage } from "src/pages/OfficeHours/RequestDeskCreditPage";
+import { ChangePassword } from "src/pages/People/PersonProfile/PersonChangePassword";
 
 import { AllGearPage, GearItemPage } from "./pages/Gear";
 import { AddNewGear } from "./pages/Gear/AddNewGear";
@@ -25,7 +26,6 @@ import { RequestPasswordReset } from "./pages/LogIn/RequestPasswordReset";
 import { OfficeHoursPage } from "./pages/OfficeHours";
 import { PeoplePage, PersonPage } from "./pages/People";
 import { AddNewPerson } from "./pages/People/AddNewPerson";
-import { useLoadCurrentUser, usePermissions } from "./redux/auth";
 
 function App() {
   const { loggedIn, isLoading } = useLoadCurrentUser();
@@ -39,7 +39,7 @@ function App() {
   }, [loggedIn]);
 
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router basename="/">
       <BaseLayout>
         <Switch>
           <Route path="/login">

@@ -1,13 +1,8 @@
-import {
-  FormProvider,
-  FieldValues,
-  UseFormReturn,
-  UnpackNestedValue,
-} from "react-hook-form";
+import { FormProvider, FieldValues, UseFormReturn } from "react-hook-form";
 
 type Props<FormValues extends FieldValues> = {
   children: React.ReactNode;
-  onSubmit: (args: UnpackNestedValue<FormValues>) => void;
+  onSubmit: (args: FormValues) => void;
   form: UseFormReturn<FormValues>;
 };
 

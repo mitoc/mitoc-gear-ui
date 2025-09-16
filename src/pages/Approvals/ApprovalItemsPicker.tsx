@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import styled from "styled-components";
 
-import { ApprovalItemType, PartialApprovalItem } from "apiClient/approvals";
-import { GearItemSelect } from "components/GearItemSelect";
-import { GearTypeSelect } from "components/GearTypeSelect";
-import { makeLabeledInput } from "components/Inputs/LabeledInput";
-import { Select } from "components/Select";
+import { ApprovalItemType, PartialApprovalItem } from "src/apiClient/approvals";
+import { GearItemSelect } from "src/components/GearItemSelect";
+import { GearTypeSelect } from "src/components/GearTypeSelect";
+import { makeLabeledInput } from "src/components/Inputs/LabeledInput";
+import { Select } from "src/components/Select";
 
 import { FormValues } from "./types";
 

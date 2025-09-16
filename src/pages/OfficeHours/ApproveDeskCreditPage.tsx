@@ -1,12 +1,12 @@
 import { isEmpty } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { approveCredit } from "apiClient/officeHours";
-import { Signup } from "apiClient/types";
-import { LabeledInput } from "components/Inputs/LabeledInput";
-import { useSetPageTitle } from "hooks";
-import { formatDate, formatDateTime, formatDuration } from "lib/fmtDate";
-import { useGetSignupsQuery } from "redux/api";
+import { approveCredit } from "src/apiClient/officeHours";
+import { Signup } from "src/apiClient/types";
+import { LabeledInput } from "src/components/Inputs/LabeledInput";
+import { useSetPageTitle } from "src/hooks";
+import { formatDate, formatDateTime, formatDuration } from "src/lib/fmtDate";
+import { useGetSignupsQuery } from "src/redux/api";
 
 export function ApproveDeskCreditPage() {
   useSetPageTitle("Approve desk credit requests");

@@ -3,13 +3,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import { GearSummary } from "apiClient/gear";
-import { DataGrid } from "components/DataGrid";
-import { GearLink } from "components/GearLink";
-import { SearchTextField } from "components/Inputs/TextField";
-import { TablePagination } from "components/TablePagination";
-import { useSetPageTitle } from "hooks";
-import { useGearList } from "redux/api";
+import { GearSummary } from "src/apiClient/gear";
+import { DataGrid } from "src/components/DataGrid";
+import { GearLink } from "src/components/GearLink";
+import { SearchTextField } from "src/components/Inputs/TextField";
+import { TablePagination } from "src/components/TablePagination";
+import { useSetPageTitle } from "src/hooks";
+import { useGearList } from "src/redux/api";
 
 import { GearStatus } from "../GearStatus";
 

@@ -7,10 +7,10 @@ import {
   ApprovalItemToCreate,
   ApprovalItemType,
   CreateNewApprovalArgs,
-} from "apiClient/approvals";
-import { Form } from "components/Inputs/Form";
-import { makeLabeledInput } from "components/Inputs/LabeledInput";
-import { PersonSelect } from "components/PersonSelect";
+} from "src/apiClient/approvals";
+import { Form } from "src/components/Inputs/Form";
+import { makeLabeledInput } from "src/components/Inputs/LabeledInput";
+import { PersonSelect } from "src/components/PersonSelect";
 
 import { ApprovalItemsPicker, defaultItem } from "./ApprovalItemsPicker";
 import { FormValues } from "./types";

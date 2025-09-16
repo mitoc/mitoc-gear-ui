@@ -1,4 +1,4 @@
-import { toIsoDate } from "lib/fmtDate";
+import { toIsoDate } from "src/lib/fmtDate";
 import { request } from "./client";
 import { GearTypeWithShorthand } from "./gear";
 import { PersonBase } from "./people";

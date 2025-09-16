@@ -2,12 +2,12 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMemo } from "react";
 
-import { Approval, deleteApproval } from "apiClient/approvals";
-import { ApprovalItemsList } from "components/ApprovalItemsList";
-import { DataGrid } from "components/DataGrid";
-import { formatDate } from "lib/fmtDate";
-import { PersonBase } from "apiClient/people";
-import { PersonLink } from "components/PersonLink";
+import { Approval, deleteApproval } from "src/apiClient/approvals";
+import { PersonBase } from "src/apiClient/people";
+import { ApprovalItemsList } from "src/components/ApprovalItemsList";
+import { DataGrid } from "src/components/DataGrid";
+import { PersonLink } from "src/components/PersonLink";
+import { formatDate } from "src/lib/fmtDate";
 
 export function ApprovalsTable({
   approvals,

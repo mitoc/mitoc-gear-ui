@@ -8,11 +8,11 @@ import Select from "react-select";
 import {
   requestOfficeHourCredit,
   requestOtherEventCredit,
-} from "apiClient/officeHours";
-import { LabeledInput } from "components/Inputs/LabeledInput";
-import { formatDate } from "lib/fmtDate";
-import { useGetPersonSignupsQuery } from "redux/api";
-import { useCurrentUser } from "redux/auth";
+} from "src/apiClient/officeHours";
+import { LabeledInput } from "src/components/Inputs/LabeledInput";
+import { formatDate } from "src/lib/fmtDate";
+import { useGetPersonSignupsQuery } from "src/redux/api";
+import { useCurrentUser } from "src/redux/auth";
 
 type FormValues = {
   signup: { value: number; label: string };

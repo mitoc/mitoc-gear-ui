@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { GearRental, getGearRentalHistory } from "apiClient/gear";
-import { PersonLink } from "components/PersonLink";
-import { TablePagination } from "components/TablePagination";
-import { formatDate } from "lib/fmtDate";
+import { GearRental, getGearRentalHistory } from "src/apiClient/gear";
+import { PersonLink } from "src/components/PersonLink";
+import { TablePagination } from "src/components/TablePagination";
+import { formatDate } from "src/lib/fmtDate";
 
 type Props = {
   gearId: string;

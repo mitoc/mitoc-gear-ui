@@ -3,8 +3,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 
-import { addFFChecks, Person } from "apiClient/people";
-import { useGetPersonQuery } from "redux/api";
+import { addFFChecks, Person } from "src/apiClient/people";
+import { useGetPersonQuery } from "src/redux/api";
 
 import { getNextExpirationDate } from "./utils";
 

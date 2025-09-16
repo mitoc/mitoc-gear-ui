@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-import { SearchTextField } from "components/Inputs/TextField";
-import { fmtAmount } from "lib/fmtNumber";
-import { uniqueID } from "lib/uniqueID";
-import { useGetPurchasablesQuery } from "redux/api";
+import { SearchTextField } from "src/components/Inputs/TextField";
+import { fmtAmount } from "src/lib/fmtNumber";
+import { uniqueID } from "src/lib/uniqueID";
+import { useGetPurchasablesQuery } from "src/redux/api";
 
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 

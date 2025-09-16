@@ -1,12 +1,12 @@
+import { AddApprovalLink } from "@/components/AddApprovalLink";
 import { useState } from "react";
 
-import { AddApprovalLink } from "components/AddApprovalLink";
-import { Checkbox } from "components/Inputs/Checkbox";
-import { TablePagination } from "components/TablePagination";
-import { useSetPageTitle } from "hooks";
-import { useGetApprovalsQuery } from "redux/api";
-import { usePermissions } from "redux/auth";
-import { useConfig } from "redux/hooks";
+import { Checkbox } from "src/components/Inputs/Checkbox";
+import { TablePagination } from "src/components/TablePagination";
+import { useSetPageTitle } from "src/hooks";
+import { useGetApprovalsQuery } from "src/redux/api";
+import { usePermissions } from "src/redux/auth";
+import { useConfig } from "src/redux/hooks";
 
 import { ApprovalsTable } from "./ApprovalsTable";
 
