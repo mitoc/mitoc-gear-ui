@@ -8,7 +8,6 @@ import { useGetPersonQuery, useGetRenterApprovalsQuery } from "src/redux/api";
 
 import { BuyGear } from "./BuyGear";
 import { CheckoutStaging } from "./CheckoutStaging";
-import { MoreGear } from "./MoreGear";
 import {
   PersonPageContextProvider,
   usePersonPageContext,
@@ -18,6 +17,7 @@ import { PersonProfile } from "./PersonProfile";
 import { PersonRentals } from "./PersonRentals";
 import { PersonRentalsHistory } from "./PersonRentalsHistory";
 import { PersonPageTabs, PersonTabsSelector, useTab } from "./PersonTabs";
+import { RentGear } from "./RentGear";
 import { ReturnStaging } from "./ReturnStaging";
 
 export function PersonPage() {
@@ -106,7 +106,7 @@ function PersonPageInner() {
       <div className="col-12 col-md-7 p-2">
         <PersonTabsSelector activeTab={tab} updateTab={setTab} />
         {tab === PersonPageTabs.gearOut && <PersonRentals />}
-        {tab === PersonPageTabs.rent && <MoreGear />}
+        {tab === PersonPageTabs.rent && <RentGear />}
         {tab === PersonPageTabs.buy && <BuyGear />}
         {tab === PersonPageTabs.approvals && <PersonApprovals />}
         {tab === PersonPageTabs.history && (
