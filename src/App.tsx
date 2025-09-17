@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Navigate,
@@ -8,24 +8,44 @@ import {
 
 import { refreshCsrfToken } from "src/apiClient/client";
 import BaseLayout from "src/components/BaseLayout";
-import { ApprovalsPage } from "src/pages/Approvals";
-import { AddNewApproval } from "src/pages/Approvals/AddNewApproval";
-import { GearInventoryPage } from "src/pages/Inventory/GearInventoryPage";
-import { ApproveDeskCreditPage } from "src/pages/OfficeHours/ApproveDeskCreditPage";
-import { MyOfficeHoursHistory } from "src/pages/OfficeHours/MyOfficeHoursHistory";
-import { OfficeHoursHistory } from "src/pages/OfficeHours/OfficeHoursHistory";
-import { RequestDeskCreditPage } from "src/pages/OfficeHours/RequestDeskCreditPage";
-import { ChangePassword } from "src/pages/People/PersonProfile/PersonChangePassword";
 import { useLoadCurrentUser, usePermissions } from "src/redux/auth";
 
-import { AllGearPage, GearItemPage } from "./pages/Gear";
-import { AddNewGear } from "./pages/Gear/AddNewGear";
 import LoginPage from "./pages/LogIn";
-import { RequestPasswordConfirm } from "./pages/LogIn/RequestPasswordConfirm";
-import { RequestPasswordReset } from "./pages/LogIn/RequestPasswordReset";
-import { OfficeHoursPage } from "./pages/OfficeHours";
 import { PeoplePage, PersonPage } from "./pages/People";
-import { AddNewPerson } from "./pages/People/AddNewPerson";
+
+const ApprovalsPage = lazy(() => import("./pages/Approvals/ApprovalsPage"));
+const AddNewApproval = lazy(() => import("./pages/Approvals/AddNewApproval"));
+const GearInventoryPage = lazy(
+  () => import("./pages/Inventory/GearInventoryPage"),
+);
+const ApproveDeskCreditPage = lazy(
+  () => import("./pages/OfficeHours/ApproveDeskCreditPage"),
+);
+const MyOfficeHoursHistory = lazy(
+  () => import("./pages/OfficeHours/MyOfficeHoursHistory"),
+);
+const OfficeHoursHistory = lazy(
+  () => import("./pages/OfficeHours/OfficeHoursHistory"),
+);
+const RequestDeskCreditPage = lazy(
+  () => import("./pages/OfficeHours/RequestDeskCreditPage"),
+);
+const ChangePassword = lazy(
+  () => import("./pages/People/PersonProfile/PersonChangePassword"),
+);
+const AllGearPage = lazy(() => import("./pages/Gear/AllGearPage"));
+const GearItemPage = lazy(() => import("./pages/Gear/GearItemPage"));
+const AddNewGear = lazy(() => import("./pages/Gear/AddNewGear"));
+const RequestPasswordConfirm = lazy(
+  () => import("./pages/LogIn/RequestPasswordConfirm"),
+);
+const RequestPasswordReset = lazy(
+  () => import("./pages/LogIn/RequestPasswordReset"),
+);
+const OfficeHoursPage = lazy(
+  () => import("./pages/OfficeHours/OfficeHoursPage"),
+);
+const AddNewPerson = lazy(() => import("./pages/People/AddNewPerson"));
 
 function App() {
   const { loggedIn, isLoading } = useLoadCurrentUser();
@@ -62,23 +82,25 @@ function App() {
     return (
       <Router basename="/">
         <BaseLayout>
-          <Routes>
-            {publicRoutes}
-            <Route
-              path="*"
-              element={
-                <Navigate
-                  to={{
-                    pathname: "/login",
-                    search: `redirectTo=${encodeURIComponent(
-                      pathname + search,
-                    )}`,
-                  }}
-                  replace
-                />
-              }
-            />
-          </Routes>
+          <Suspense>
+            <Routes>
+              {publicRoutes}
+              <Route
+                path="*"
+                element={
+                  <Navigate
+                    to={{
+                      pathname: "/login",
+                      search: `redirectTo=${encodeURIComponent(
+                        pathname + search,
+                      )}`,
+                    }}
+                    replace
+                  />
+                }
+              />
+            </Routes>
+          </Suspense>
         </BaseLayout>
       </Router>
     );
@@ -87,44 +109,49 @@ function App() {
   return (
     <Router basename="/">
       <BaseLayout>
-        <Routes>
-          {publicRoutes}
+        <Suspense>
+          <Routes>
+            {publicRoutes}
 
-          <Route path="/change-password" element={<ChangePassword />} />
+            <Route path="/change-password" element={<ChangePassword />} />
 
-          <Route path="/people" element={<PeoplePage />} />
-          <Route path="/people/:personId" element={<PersonPage />} />
-          <Route path="/add-person" element={<AddNewPerson />} />
+            <Route path="/people" element={<PeoplePage />} />
+            <Route path="/people/:personId" element={<PersonPage />} />
+            <Route path="/add-person" element={<AddNewPerson />} />
 
-          <Route path="/add-gear" element={<AddNewGear />} />
-          <Route path="/gear" element={<AllGearPage />} />
-          <Route path="/gear/:gearId" element={<GearItemPage />} />
+            <Route path="/add-gear" element={<AddNewGear />} />
+            <Route path="/gear" element={<AllGearPage />} />
+            <Route path="/gear/:gearId" element={<GearItemPage />} />
 
-          <Route path="/office-hours" element={<OfficeHoursPage />} />
-          <Route path="/gear-inventory" element={<GearInventoryPage />} />
-          <Route path="/approvals" element={<ApprovalsPage />} />
+            <Route path="/office-hours" element={<OfficeHoursPage />} />
+            <Route path="/gear-inventory" element={<GearInventoryPage />} />
+            <Route path="/approvals" element={<ApprovalsPage />} />
 
-          {isApprover && (
-            <Route path="/add-approval" element={<AddNewApproval />} />
-          )}
+            {isApprover && (
+              <Route path="/add-approval" element={<AddNewApproval />} />
+            )}
 
-          <Route
-            path="/request-desk-credit"
-            element={<RequestDeskCreditPage />}
-          />
-          <Route
-            path="/approve-desk-credit"
-            element={<ApproveDeskCreditPage />}
-          />
-          <Route
-            path="/office-hours-history"
-            element={<OfficeHoursHistory />}
-          />
-          <Route path="/volunteer-history" element={<MyOfficeHoursHistory />} />
+            <Route
+              path="/request-desk-credit"
+              element={<RequestDeskCreditPage />}
+            />
+            <Route
+              path="/approve-desk-credit"
+              element={<ApproveDeskCreditPage />}
+            />
+            <Route
+              path="/office-hours-history"
+              element={<OfficeHoursHistory />}
+            />
+            <Route
+              path="/volunteer-history"
+              element={<MyOfficeHoursHistory />}
+            />
 
-          <Route path="/" element={<Navigate to="/people" replace />} />
-          <Route path="*" element={<Navigate to="/people" replace />} />
-        </Routes>
+            <Route path="/" element={<Navigate to="/people" replace />} />
+            <Route path="*" element={<Navigate to="/people" replace />} />
+          </Routes>
+        </Suspense>
       </BaseLayout>
     </Router>
   );

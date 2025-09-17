@@ -11,7 +11,7 @@ import { useConfig } from "src/redux/hooks";
 
 import { ApprovalsTable } from "./ApprovalsTable";
 
-export function ApprovalsPage() {
+export default function ApprovalsPage() {
   useSetPageTitle("Restricted gear");
   const { isApprover } = usePermissions();
   const [showExpired, setShowExpired] = useState<boolean>(false);

@@ -9,7 +9,7 @@ import { useGetSignupsQuery } from "src/redux/api";
 
 import { OfficeHoursSignupsTable } from "./OfficeHoursSignupsTable";
 
-export function OfficeHoursHistory() {
+export default function OfficeHoursHistory() {
   useSetPageTitle("Office Hours History");
   const [page, setPage] = useState<number>(1);
   const [showUpcoming, setShowUpcoming] = useState<boolean>(false);

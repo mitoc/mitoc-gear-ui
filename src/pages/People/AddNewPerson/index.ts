@@ -1,1 +1,1 @@
-export { AddNewPerson } from "./AddNewPerson";
+export { AddNewPerson as default } from "./AddNewPerson";

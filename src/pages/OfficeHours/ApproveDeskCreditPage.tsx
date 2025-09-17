@@ -8,7 +8,7 @@ import { useSetPageTitle } from "src/hooks";
 import { formatDate, formatDateTime, formatDuration } from "src/lib/fmtDate";
 import { useGetSignupsQuery } from "src/redux/api";
 
-export function ApproveDeskCreditPage() {
+export default function ApproveDeskCreditPage() {
   useSetPageTitle("Approve desk credit requests");
   const { data, refetch } = useGetSignupsQuery({
     approved: false,

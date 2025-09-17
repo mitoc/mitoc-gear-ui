@@ -3,7 +3,7 @@ import { editGearType, GearType } from "src/apiClient/gear";
 import { useSetPageTitle } from "src/hooks";
 import { useGetGearTypesQuery } from "src/redux/api";
 
-export function GearInventoryPage() {
+export default function GearInventoryPage() {
   useSetPageTitle("Gear Inventory");
   const { data: allGearTypes, refetch } = useGetGearTypesQuery();
   return (

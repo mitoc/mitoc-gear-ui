@@ -15,7 +15,7 @@ type FormValues = {
   newPassword: string;
 };
 
-export function ChangePassword() {
+export default function ChangePassword() {
   useSetPageTitle("Change password");
   const dispatch = useAppDispatch();
   const { user } = useCurrentUser();
