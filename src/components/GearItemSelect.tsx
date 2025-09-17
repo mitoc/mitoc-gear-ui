@@ -1,10 +1,42 @@
 import { useState } from "react";
-import { useGearList } from "src/redux/api";
+import { components, OptionProps } from "react-select";
 
 import { GearSummary } from "src/apiClient/gear";
+import { useGearList } from "src/redux/api";
 
 import { Select } from "./Select";
 import { useDebounce } from "./useDebounce";
+
+type GearOption = {
+  value: string;
+  label: string;
+} & GearSummary;
+
+const GearItemOption = (props: OptionProps<GearOption>) => {
+  const { data } = props;
+  return (
+    <components.Option {...props}>
+      <span>{data.label}</span>
+      {data.specification && (
+        <div className="opacity-50 small">{data.specification}</div>
+      )}
+    </components.Option>
+  );
+};
+
+const GearItemSingleValue = (props: any) => {
+  const { data } = props;
+  return (
+    <components.SingleValue {...props}>
+      <div className="d-flex align-items-baseline gap-2">
+        <span>{data.label}</span>
+        {data.specification && (
+          <span className="opacity-50 small">{data.specification}</span>
+        )}
+      </div>
+    </components.SingleValue>
+  );
+};
 
 type Props = {
   value: string | null;
@@ -21,7 +53,7 @@ export function GearItemSelect({ value, onChange, className, invalid }: Props) {
     retired: false,
   });
 
-  const options =
+  const options: GearOption[] =
     gearList?.map((gear) => {
       return {
         value: gear.id,
@@ -33,14 +65,20 @@ export function GearItemSelect({ value, onChange, className, invalid }: Props) {
   const selectedOption = options.find((o) => o.value === value);
 
   return (
-    <Select
-      className={className}
-      options={options}
-      value={selectedOption}
-      onChange={onChange}
-      onInputChange={debouncedSetInput}
-      isLoading={isFetching || pending}
-      invalid={invalid}
-    />
+    <>
+      <Select
+        className={className}
+        options={options}
+        value={selectedOption}
+        onChange={onChange}
+        onInputChange={debouncedSetInput}
+        isLoading={isFetching || pending}
+        invalid={invalid}
+        components={{
+          Option: GearItemOption,
+          SingleValue: GearItemSingleValue,
+        }}
+      />
+    </>
   );
 }
