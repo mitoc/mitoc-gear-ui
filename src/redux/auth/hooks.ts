@@ -10,7 +10,7 @@ export enum Roles {
   GEAR_MANAGER = 6,
   DESK_CAPTAIN = 8,
   ADMIN = 24,
-  APPROVER = 25,
+  APPROVER = 26,
   OFFICE_ACCESS = 28,
 }
 
