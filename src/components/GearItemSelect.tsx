@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { components, OptionProps } from "react-select";
+import { components, createFilter, OptionProps } from "react-select";
 
 import { GearSummary } from "src/apiClient/gear";
 import { useGearList } from "src/redux/api";
@@ -74,6 +74,9 @@ export function GearItemSelect({ value, onChange, className, invalid }: Props) {
         onInputChange={debouncedSetInput}
         isLoading={isFetching || pending}
         invalid={invalid}
+        filterOption={createFilter({
+          stringify: (g) => `${g.label} ${g.data.specification}`,
+        })}
         components={{
           Option: GearItemOption,
           SingleValue: GearItemSingleValue,
