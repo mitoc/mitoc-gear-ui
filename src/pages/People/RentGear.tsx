@@ -9,7 +9,7 @@ import { useGearList } from "src/redux/api";
 
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
 
-export function MoreGear() {
+export function RentGear() {
   const { checkoutBasket, isApproved } = usePersonPageContext();
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);

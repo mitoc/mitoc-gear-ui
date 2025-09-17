@@ -8,7 +8,6 @@ import { useGetPersonQuery, useGetRenterApprovalsQuery } from "src/redux/api";
 
 import { BuyGear } from "./BuyGear";
 import { CheckoutStaging } from "./CheckoutStaging";
-import { MoreGear } from "./MoreGear";
 import {
   PersonPageContextProvider,
   usePersonPageContext,
@@ -18,6 +17,7 @@ import { PersonProfile } from "./PersonProfile";
 import { PersonRentals } from "./PersonRentals";
 import { PersonRentalsHistory } from "./PersonRentalsHistory";
 import { PersonPageTabs, PersonTabsSelector, useTab } from "./PersonTabs";
+import { RentGear } from "./RentGear";
 import { ReturnStaging } from "./ReturnStaging";
 
 export function PersonPage() {
@@ -69,18 +69,7 @@ function PersonPageInner() {
           Please remind renter to return overdue gear!
         </div>
       )}
-      {!isEmpty(unaprovedRestrictedItems) && (
-        <div className="alert alert-warning" role="alert">
-          ⚠️ <strong>Unapproved restricted gear</strong> in the basket:
-          <ul>
-            {unaprovedRestrictedItems.map((i) => (
-              <li key={i.id}>{i.id}</li>
-            ))}
-          </ul>
-          Please ensure that the renter has been approved by the relevant
-          activity chair to check this gear out (i.e. via email)
-        </div>
-      )}
+
       <div className="col-12 col-md-5 p-2">
         <PersonProfile />
         <Notes
@@ -106,7 +95,7 @@ function PersonPageInner() {
       <div className="col-12 col-md-7 p-2">
         <PersonTabsSelector activeTab={tab} updateTab={setTab} />
         {tab === PersonPageTabs.gearOut && <PersonRentals />}
-        {tab === PersonPageTabs.rent && <MoreGear />}
+        {tab === PersonPageTabs.rent && <RentGear />}
         {tab === PersonPageTabs.buy && <BuyGear />}
         {tab === PersonPageTabs.approvals && <PersonApprovals />}
         {tab === PersonPageTabs.history && (

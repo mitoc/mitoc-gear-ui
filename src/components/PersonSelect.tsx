@@ -1,3 +1,4 @@
+import { skipToken } from "@reduxjs/toolkit/query";
 import { countBy } from "lodash";
 import { useState } from "react";
 
@@ -20,7 +21,7 @@ export function PersonSelect({ value, onChange, className, invalid }: Props) {
   const { personList, isFetching } = usePeopleList({
     q: query,
   });
-  const { data: selectedPerson } = useGetPersonQuery(value ?? "", {
+  const { data: selectedPerson } = useGetPersonQuery(value ?? skipToken, {
     skip: value == null,
   });
 

@@ -30,6 +30,7 @@ export const gearDbApi = createApi({
     paramsSerializer: (params) =>
       queryString.stringify(params, { arrayFormat: "none" }),
   }),
+  tagTypes: ["Approvals"],
   endpoints: (builder) => ({
     getConfig: builder.query<Config, void>({
       query: () => `config/`,
@@ -152,8 +153,8 @@ export const gearDbApi = createApi({
           past,
         },
       }),
+      providesTags: ["Approvals"],
     }),
-
     getRenterApprovals: builder.query<
       ListWrapper<RenterApproval>,
       { personID: string; past: boolean; future?: boolean }
@@ -164,6 +165,7 @@ export const gearDbApi = createApi({
           past,
         },
       }),
+      providesTags: ["Approvals"],
     }),
     getGearLocations: builder.query<GearLocation[], void>({
       query: () => "/gear-locations/",

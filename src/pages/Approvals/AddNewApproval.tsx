@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import {
@@ -17,21 +18,17 @@ export default function AddNewApproval() {
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState<APIErrorType | undefined>();
-  const refetchAllApprovals = gearDbApi.useLazyGetApprovalsQuery()[0];
-  const refetchPersonApprovals = gearDbApi.useLazyGetRenterApprovalsQuery()[0];
 
   const searchParams = new URLSearchParams(location.search);
   const personId = searchParams.get("personId");
 
+  const dispatch = useDispatch();
   const onSubmit = (args: CreateNewApprovalArgs) => {
     createNewApproval(args)
       .then(() => {
         setError(undefined);
-        // TODO: We should use RTK's mutations instead of refetching everything
-        refetchAllApprovals({ past: false });
-        refetchAllApprovals({ past: undefined });
+        dispatch(gearDbApi.util.invalidateTags(["Approvals"]));
         if (personId != null) {
-          refetchPersonApprovals({ personID: personId, past: false });
           navigate(`/people/${personId}?tab=approvals`);
         } else {
           navigate("/approvals");

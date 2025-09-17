@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { flow, keyBy, map, mapValues, sum } from "lodash";
-import React, { useCallback, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { RenterApproval } from "src/apiClient/approvals";
 import { GearSummary } from "src/apiClient/gear";
@@ -72,31 +72,28 @@ function useMakePersonPageContext({ person, refreshPerson, approvals }: Props) {
     return startDate.isSameOrBefore(today) && endDate.isSameOrAfter(today);
   });
 
-  const isApproved = useCallback(
-    (gearId: string, typeId: number) => {
-      return activeApprovals.some(({ items }) => {
-        return items.some((item) => {
-          if (item.type === "specificItem") {
-            return item.item.gearItem.id === gearId;
-          }
-          if (item.item.gearType.id !== typeId) {
-            return false;
-          }
-          const checkedOut = checkoutBasketBase.items.filter(
-            ({ type }) => type.id === item.item.gearType.id,
-          );
-          if (checkedOut.length < item.item.quantity) {
-            return true;
-          }
-          return checkedOut
-            .slice(0, item.item.quantity)
-            .map((g) => g.id)
-            .includes(gearId);
-        });
+  const isApproved = (gearId: string, typeId: number) => {
+    return activeApprovals.some(({ items }) => {
+      return items.some((item) => {
+        if (item.type === "specificItem") {
+          return item.item.gearItem.id === gearId;
+        }
+        if (item.item.gearType.id !== typeId) {
+          return false;
+        }
+        const checkedOut = checkoutBasketBase.items.filter(
+          ({ type }) => type.id === item.item.gearType.id,
+        );
+        if (checkedOut.length < item.item.quantity) {
+          return true;
+        }
+        return checkedOut
+          .slice(0, item.item.quantity)
+          .map((g) => g.id)
+          .includes(gearId);
       });
-    },
-    [activeApprovals],
-  );
+    });
+  };
 
   const calculatedTotalRentals = sum(
     map(rentalsWithOverride, (item) => {

@@ -27,11 +27,14 @@ export function AddNewApprovalForm({ onSubmit }: Props) {
   const searchParams = new URLSearchParams(location.search);
   const personId = searchParams.get("personId");
 
+  const today = dayjs().startOf("day").toDate();
+  const endDate = nextTuesday(today);
   const formObject = useForm<FormValues>({
     defaultValues: {
       items: [defaultItem],
-      renter: personId || undefined,
+      renter: personId ?? undefined,
       startDate: dayjs().startOf("day").toDate(),
+      endDate: endDate,
     },
   });
 
@@ -117,6 +120,13 @@ export function AddNewApprovalForm({ onSubmit }: Props) {
       </div>
     </Form>
   );
+}
+
+function nextTuesday(from: Date): Date {
+  const today = dayjs(from);
+  // Ensure a weekend has passed
+  const nextSunday = today.day(7);
+  return nextSunday.day(2).toDate();
 }
 
 function validateApproval(approval: FormValues): CreateNewApprovalArgs {

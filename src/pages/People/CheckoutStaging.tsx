@@ -1,4 +1,4 @@
-import { map, sum } from "lodash";
+import { isEmpty, map, sum } from "lodash";
 
 import type { Person } from "src/apiClient/people";
 import { RemoveButton } from "src/components/Buttons";
@@ -6,16 +6,23 @@ import { GearLink } from "src/components/GearLink";
 import { fmtAmount } from "src/lib/fmtNumber";
 
 import { usePersonPageContext } from "./PeoplePage/PersonPageContext";
+import { RestrictedGearWarning } from "./RestrictedGearWarning";
 
 export function CheckoutStaging({ onCheckout }: { onCheckout: () => void }) {
   const { person, checkoutBasket, isApproved } = usePersonPageContext();
   const gearToCheckout = checkoutBasket.items;
   const totalDeposit = sum(map(gearToCheckout, "depositAmount"));
+  const unaprovedRestrictedItems = checkoutBasket.items.filter(
+    ({ id, type, restricted }) => restricted && !isApproved(id, type.id),
+  );
 
   return (
     <div className="border rounded-2 p-2 mb-3 bg-light">
       <h3>Gear to check out</h3>
       <hr />
+      {!isEmpty(unaprovedRestrictedItems) && (
+        <RestrictedGearWarning gear={unaprovedRestrictedItems} />
+      )}
       <h5>
         Deposit due:{" "}
         {hasFFCheck(person) ? (
