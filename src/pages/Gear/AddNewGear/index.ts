@@ -1,1 +1,1 @@
-export { AddNewGear } from "./AddNewGear";
+export { AddNewGear as default } from "./AddNewGear";

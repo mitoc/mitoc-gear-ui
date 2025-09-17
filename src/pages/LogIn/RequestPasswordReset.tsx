@@ -5,7 +5,7 @@ import { authClient } from "src/apiClient/auth";
 import { useSetPageTitle } from "src/hooks";
 import { validateEmail } from "src/lib/validation";
 
-export function RequestPasswordReset() {
+export default function RequestPasswordReset() {
   useSetPageTitle("Reset password");
   const { search } = useLocation();
   const params = new URLSearchParams(search);

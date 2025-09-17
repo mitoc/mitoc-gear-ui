@@ -12,7 +12,7 @@ import { gearDbApi } from "src/redux/api";
 
 import { AddNewApprovalForm } from "./AddNewApprovalForm";
 
-export function AddNewApproval() {
+export default function AddNewApproval() {
   useSetPageTitle("Approve restricted gear rental");
   const navigate = useNavigate();
   const location = useLocation();

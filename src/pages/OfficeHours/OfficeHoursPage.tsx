@@ -1,11 +1,16 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { faIdCard } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import weekOfYears from "dayjs/plugin/weekOfYear";
 import { groupBy, isEmpty, map } from "lodash";
 import React, { useEffect, useState } from "react";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import styled from "styled-components";
 
 import { cancelSignUp, signUp } from "src/apiClient/officeHours";
+import { updatePersonGroups } from "src/apiClient/people";
 import { OfficeHour, User } from "src/apiClient/types";
 import { PersonLink } from "src/components/PersonLink";
 import { useSetPageTitle } from "src/hooks";
@@ -16,16 +21,11 @@ import {
   useCurrentUserReload,
   usePermissions,
 } from "src/redux/auth";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faIdCard } from "@fortawesome/free-solid-svg-icons";
-import { updatePersonGroups } from "src/apiClient/people";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 dayjs.extend(weekOfYears);
 dayjs.extend(customParseFormat);
 
-export function OfficeHoursPage() {
+export default function OfficeHoursPage() {
   useSetPageTitle("Office Hours");
   const { data: officeHours } = useGetOfficeHoursQuery();
   const { user } = useCurrentUser();

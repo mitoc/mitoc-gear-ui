@@ -1,1 +1,1 @@
-export { AllGearPage } from "./AllGearPage";
+export { AllGearPage as default } from "./AllGearPage";

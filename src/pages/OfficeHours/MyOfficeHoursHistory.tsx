@@ -8,7 +8,7 @@ import { useCurrentUser } from "src/redux/auth";
 
 import { OfficeHoursSignupsTable } from "./OfficeHoursSignupsTable";
 
-export function MyOfficeHoursHistory() {
+export default function MyOfficeHoursHistory() {
   useSetPageTitle("Office Hours History");
   const { user } = useCurrentUser();
   const [page, setPage] = useState<number>(1);

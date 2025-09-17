@@ -9,7 +9,7 @@ import { GearInfoPanel } from "./GearInfoPanel";
 import { GearPicture } from "./GearPicture";
 import { GearRentalsHistory } from "./GearRentalsHistory";
 
-export function GearItemPage() {
+export default function GearItemPage() {
   const gearId = useParams<{ gearId: string }>().gearId!;
   useSetPageTitle(gearId);
   const { data: gearItem, refetch: refreshGear } = useGetGearItemQuery(gearId);

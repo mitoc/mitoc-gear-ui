@@ -1,1 +1,1 @@
-export { RequestDeskCreditPage } from "./RequestDeskCreditPage";
+export { RequestDeskCreditPage as default } from "./RequestDeskCreditPage";

@@ -11,7 +11,7 @@ type FormValues = {
   password: string;
 };
 
-export function RequestPasswordConfirm() {
+export default function RequestPasswordConfirm() {
   useSetPageTitle("Reset password");
   const [tokenVerified, setTokenVerified] = useState<boolean | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
