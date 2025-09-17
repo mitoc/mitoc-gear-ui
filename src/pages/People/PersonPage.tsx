@@ -69,18 +69,7 @@ function PersonPageInner() {
           Please remind renter to return overdue gear!
         </div>
       )}
-      {!isEmpty(unaprovedRestrictedItems) && (
-        <div className="alert alert-warning" role="alert">
-          ⚠️ <strong>Unapproved restricted gear</strong> in the basket:
-          <ul>
-            {unaprovedRestrictedItems.map((i) => (
-              <li key={i.id}>{i.id}</li>
-            ))}
-          </ul>
-          Please ensure that the renter has been approved by the relevant
-          activity chair to check this gear out (i.e. via email)
-        </div>
-      )}
+
       <div className="col-12 col-md-5 p-2">
         <PersonProfile />
         <Notes
