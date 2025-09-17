@@ -1,4 +1,4 @@
-import { useHistory, useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type Args<Filters> = {
   parse: (params: URLSearchParams) => Filters;
@@ -14,7 +14,7 @@ export function useQueryParamFilters<Filters extends Record<string, any>>({
   parse,
   serialize,
 }: Args<Filters>): ReturnType<Filters> {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const getFilters = () => {
@@ -26,7 +26,10 @@ export function useQueryParamFilters<Filters extends Record<string, any>>({
     const newFilters = updater(getFilters());
     const serialized = serialize(newFilters);
     const params = new URLSearchParams(serialized);
-    history.replace({ pathname: location.pathname, search: params.toString() });
+    navigate(
+      { pathname: location.pathname, search: params.toString() },
+      { replace: true },
+    );
   };
 
   return { filters: getFilters(), setFilters };

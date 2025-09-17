@@ -1,27 +1,25 @@
-import { newApprovalUI } from "src/featureFlags";
 import { useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 import { User } from "src/apiClient/types";
 import { PersonLink } from "src/components/PersonLink";
+import { newApprovalUI } from "src/featureFlags";
 import { logOut, useCurrentUser, usePermissions } from "src/redux/auth";
 import { useAppDispatch, useConfig } from "src/redux/hooks";
 
 export function Header() {
   const { user } = useCurrentUser();
 
-  const { listen } = useHistory();
+  const location = useLocation();
 
   // Hack to close the menu when the user clicks navigates to a new page
   useEffect(() => {
-    return listen(() => {
-      const menuToggle = document.querySelector(".navbar-collapse");
-      if (menuToggle) {
-        menuToggle.classList.remove("show");
-      }
-    });
-  }, [listen]);
+    const menuToggle = document.querySelector(".navbar-collapse");
+    if (menuToggle) {
+      menuToggle.classList.remove("show");
+    }
+  }, [location]);
 
   return (
     <StyledNavBar className="navbar navbar-expand-md navbar-dark bg-dark mb-3 ">

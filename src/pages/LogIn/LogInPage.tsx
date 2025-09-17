@@ -1,4 +1,4 @@
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import { useCurrentUser } from "src/redux/auth";
 
@@ -9,7 +9,7 @@ export default function Login() {
   const redirectTo = new URLSearchParams(search).get("redirectTo");
   const { isLoading, loggedIn, error } = useCurrentUser();
   if (!isLoading && loggedIn) {
-    return <Redirect to={redirectTo || "/"} />;
+    return <Navigate to={redirectTo || "/"} replace />;
   }
   return (
     <>
