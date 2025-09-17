@@ -21,7 +21,7 @@ import { PersonPageTabs, PersonTabsSelector, useTab } from "./PersonTabs";
 import { ReturnStaging } from "./ReturnStaging";
 
 export function PersonPage() {
-  const { personId } = useParams<{ personId: string }>();
+  const personId = useParams<{ personId: string }>().personId!;
   const { data: person, refetch: refreshPerson } = useGetPersonQuery(personId);
   const { data: approvalResult } = useGetRenterApprovalsQuery({
     personID: personId,

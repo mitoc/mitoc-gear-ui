@@ -1,15 +1,16 @@
+import { useParams } from "react-router-dom";
+
 import { addNote } from "src/apiClient/gear";
 import { Notes } from "src/components/Notes";
 import { useSetPageTitle } from "src/hooks";
-import { useParams } from "react-router-dom";
 import { useGetGearItemQuery } from "src/redux/api";
 
 import { GearInfoPanel } from "./GearInfoPanel";
-import { GearRentalsHistory } from "./GearRentalsHistory";
 import { GearPicture } from "./GearPicture";
+import { GearRentalsHistory } from "./GearRentalsHistory";
 
 export function GearItemPage() {
-  const { gearId } = useParams<{ gearId: string }>();
+  const gearId = useParams<{ gearId: string }>().gearId!;
   useSetPageTitle(gearId);
   const { data: gearItem, refetch: refreshGear } = useGetGearItemQuery(gearId);
 

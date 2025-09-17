@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   ApprovalItemToCreate,
@@ -22,7 +22,7 @@ type Props = {
 const LabeledInput = makeLabeledInput<FormValues>();
 
 export function AddNewApprovalForm({ onSubmit }: Props) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const personId = searchParams.get("personId");
@@ -107,7 +107,7 @@ export function AddNewApprovalForm({ onSubmit }: Props) {
         <button
           type="button"
           className="btn btn-outline-secondary"
-          onClick={history.goBack}
+          onClick={() => navigate(-1)}
         >
           Cancel
         </button>

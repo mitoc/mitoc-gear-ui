@@ -1,11 +1,10 @@
 import { useEffect } from "react";
 import {
   BrowserRouter as Router,
-  Redirect,
+  Navigate,
   Route,
-  Switch,
+  Routes,
 } from "react-router-dom";
-import { useLoadCurrentUser, usePermissions } from "src/redux/auth";
 
 import { refreshCsrfToken } from "src/apiClient/client";
 import BaseLayout from "src/components/BaseLayout";
@@ -17,6 +16,7 @@ import { MyOfficeHoursHistory } from "src/pages/OfficeHours/MyOfficeHoursHistory
 import { OfficeHoursHistory } from "src/pages/OfficeHours/OfficeHoursHistory";
 import { RequestDeskCreditPage } from "src/pages/OfficeHours/RequestDeskCreditPage";
 import { ChangePassword } from "src/pages/People/PersonProfile/PersonChangePassword";
+import { useLoadCurrentUser, usePermissions } from "src/redux/auth";
 
 import { AllGearPage, GearItemPage } from "./pages/Gear";
 import { AddNewGear } from "./pages/Gear/AddNewGear";
@@ -31,6 +31,7 @@ function App() {
   const { loggedIn, isLoading } = useLoadCurrentUser();
   const { pathname, search } = window.location;
   const { isApprover } = usePermissions();
+
   useEffect(() => {
     if (loggedIn) {
       // Pre-load CSRF token
@@ -38,91 +39,92 @@ function App() {
     }
   }, [loggedIn]);
 
+  if (isLoading) {
+    return null;
+  }
+
+  const publicRoutes = (
+    <>
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/reset-password/request"
+        element={<RequestPasswordReset />}
+      />
+      <Route
+        path="/reset-password/confirm"
+        element={<RequestPasswordConfirm />}
+      />
+    </>
+  );
+
+  // If not logged in and not loading, redirect to login
+  if (!isLoading && !loggedIn) {
+    return (
+      <Router basename="/">
+        <BaseLayout>
+          <Routes>
+            {publicRoutes}
+            <Route
+              path="*"
+              element={
+                <Navigate
+                  to={{
+                    pathname: "/login",
+                    search: `redirectTo=${encodeURIComponent(
+                      pathname + search,
+                    )}`,
+                  }}
+                  replace
+                />
+              }
+            />
+          </Routes>
+        </BaseLayout>
+      </Router>
+    );
+  }
+
   return (
     <Router basename="/">
       <BaseLayout>
-        <Switch>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
-          <Route exact path="/reset-password/request/">
-            <RequestPasswordReset />
-          </Route>
-          <Route exact path="/reset-password/confirm/">
-            <RequestPasswordConfirm />
-          </Route>
-          <Route exact path="/change-password/">
-            <ChangePassword />
-          </Route>
-          {!isLoading && !loggedIn && (
-            <Redirect
-              to={{
-                pathname: "/login",
-                search: `redirectTo=${encodeURIComponent(pathname + search)}`,
-              }}
-            />
-          )}
-          <Route exact path="/people">
-            <PeoplePage />
-          </Route>
-          <Route path="/people/:personId">
-            <PersonPage />
-          </Route>
-          <Route exact path="/add-person">
-            <AddNewPerson />
-          </Route>
-          <Route exact path="/add-gear">
-            <AddNewGear />
-          </Route>
-          <Route exact path="/gear">
-            <AllGearPage />
-          </Route>
-          <Route path="/gear/:gearId">
-            <GearItemPage />
-          </Route>
-          <Route exact path="/office-hours">
-            <OfficeHoursPage />
-          </Route>
-          <Route exact path="/gear-inventory">
-            <GearInventoryPage />
-          </Route>
-          <Route exact path="/approvals">
-            <ApprovalsPage />
-          </Route>
+        <Routes>
+          {publicRoutes}
+
+          <Route path="/change-password" element={<ChangePassword />} />
+
+          <Route path="/people" element={<PeoplePage />} />
+          <Route path="/people/:personId" element={<PersonPage />} />
+          <Route path="/add-person" element={<AddNewPerson />} />
+
+          <Route path="/add-gear" element={<AddNewGear />} />
+          <Route path="/gear" element={<AllGearPage />} />
+          <Route path="/gear/:gearId" element={<GearItemPage />} />
+
+          <Route path="/office-hours" element={<OfficeHoursPage />} />
+          <Route path="/gear-inventory" element={<GearInventoryPage />} />
+          <Route path="/approvals" element={<ApprovalsPage />} />
+
           {isApprover && (
-            <Route exact path="/add-approval">
-              <AddNewApproval />
-            </Route>
+            <Route path="/add-approval" element={<AddNewApproval />} />
           )}
-          {loggedIn && (
-            <Route exact path="/request-desk-credit">
-              <RequestDeskCreditPage />
-            </Route>
-          )}
-          {loggedIn && (
-            <Route exact path="/approve-desk-credit">
-              <ApproveDeskCreditPage />
-            </Route>
-          )}
-          {loggedIn && (
-            <Route exact path="/office-hours-history">
-              <OfficeHoursHistory />
-            </Route>
-          )}
-          {loggedIn && (
-            <Route exact path="/volunteer-history">
-              <MyOfficeHoursHistory />
-            </Route>
-          )}
-          <Route exact path="/">
-            <Redirect to="/people" />
-          </Route>
-          {loggedIn && (
-            <Route path="*">
-              <Redirect to="/people" />
-            </Route>
-          )}
-        </Switch>
+
+          <Route
+            path="/request-desk-credit"
+            element={<RequestDeskCreditPage />}
+          />
+          <Route
+            path="/approve-desk-credit"
+            element={<ApproveDeskCreditPage />}
+          />
+          <Route
+            path="/office-hours-history"
+            element={<OfficeHoursHistory />}
+          />
+          <Route path="/volunteer-history" element={<MyOfficeHoursHistory />} />
+
+          <Route path="/" element={<Navigate to="/people" replace />} />
+          <Route path="*" element={<Navigate to="/people" replace />} />
+        </Routes>
       </BaseLayout>
     </Router>
   );

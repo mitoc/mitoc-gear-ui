@@ -1,5 +1,4 @@
-import { useCallback } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type Props = {
   updateTab: (newTab: PersonPageTabs) => void;
@@ -45,7 +44,7 @@ export function PersonTabsSelector({ activeTab, updateTab }: Props) {
 }
 
 export function useTab(): [PersonPageTabs, (newTab: PersonPageTabs) => void] {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const searchParams = new URLSearchParams(location.search);
@@ -54,11 +53,11 @@ export function useTab(): [PersonPageTabs, (newTab: PersonPageTabs) => void] {
     ? (tabParam as PersonPageTabs)
     : PersonPageTabs.gearOut;
 
-  const setTab = useCallback((newTab: PersonPageTabs) => {
+  const setTab = (newTab: PersonPageTabs) => {
     const newSearchParams = new URLSearchParams(location.search);
     newSearchParams.set("tab", newTab);
-    history.push(`${location.pathname}?${newSearchParams.toString()}`);
-  }, []);
+    navigate(`${location.pathname}?${newSearchParams.toString()}`);
+  };
 
   return [tab, setTab];
 }

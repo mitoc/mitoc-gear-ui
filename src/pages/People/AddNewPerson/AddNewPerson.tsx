@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { APIError as APIErrorClass } from "src/apiClient/client";
 import { createPerson } from "src/apiClient/people";
@@ -21,7 +21,7 @@ type FormValues = {
 export function AddNewPerson() {
   useSetPageTitle("Add New Person");
   const [error, setError] = useState<APIErrorType | undefined>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const formObject = useForm<FormValues>();
 
@@ -29,7 +29,7 @@ export function AddNewPerson() {
     createPerson(args)
       .then((person) => {
         setError(undefined);
-        history.push(`/people/${person.id}`);
+        navigate(`/people/${person.id}`);
       })
       .catch((err) => {
         if (err instanceof APIErrorClass) {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   createNewApproval,
@@ -14,7 +14,7 @@ import { AddNewApprovalForm } from "./AddNewApprovalForm";
 
 export function AddNewApproval() {
   useSetPageTitle("Approve restricted gear rental");
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState<APIErrorType | undefined>();
   const refetchAllApprovals = gearDbApi.useLazyGetApprovalsQuery()[0];
@@ -32,9 +32,9 @@ export function AddNewApproval() {
         refetchAllApprovals({ past: undefined });
         if (personId != null) {
           refetchPersonApprovals({ personID: personId, past: false });
-          history.push(`/people/${personId}?tab=approvals`);
+          navigate(`/people/${personId}?tab=approvals`);
         } else {
-          history.push("/approvals");
+          navigate("/approvals");
         }
       })
       .catch((err) => {
