@@ -100,6 +100,7 @@ export function ApprovalItemsPicker() {
                       value={value ?? null}
                       onChange={(val) => onChange(val?.id)}
                       invalid={invalid}
+                      filters={{ restricted: true }}
                     />
                   );
                 }}
