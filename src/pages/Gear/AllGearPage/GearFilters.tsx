@@ -13,6 +13,7 @@ export enum GearStatusFilter {
 export type Filters = {
   q?: string;
   gearTypes?: number[];
+  restricted?: GearStatusFilter;
   broken?: GearStatusFilter;
   retired?: GearStatusFilter;
   missing?: GearStatusFilter;
@@ -65,7 +66,7 @@ export function GearFilters({ filters, setFilters }: Props) {
   );
 }
 
-const gearStatus = ["broken", "missing", "retired"] as const;
+const gearStatus = ["restricted", "broken", "missing", "retired"] as const;
 
 const gearStatusOptions = [
   { value: GearStatusFilter.include, label: "Include" },

@@ -21,11 +21,13 @@ function serialize({
   missing,
   retired,
   locations,
+  restricted,
 }: Filters): Record<string, string> {
   return {
     ...(q && { q }),
     ...(broken != null && { broken: String(broken) }),
     ...(missing != null && { missing: String(missing) }),
+    ...(restricted != null && { restricted: String(restricted) }),
     ...(retired != null &&
       retired !== GearStatusFilter.exclude && { retired: String(retired) }),
     ...(!isEmpty(gearTypes) && { gearTypes: gearTypes!.map(String).join(",") }),
@@ -40,6 +42,7 @@ function parse(params: URLSearchParams): Filters {
   const retired =
     parseStatus(params.get("retired")) ?? GearStatusFilter.exclude;
   const broken = parseStatus(params.get("broken"));
+  const restricted = parseStatus(params.get("restricted"));
   const q = params.get("q") ?? "";
   const locations = params.get("locations") ?? "";
 
@@ -48,6 +51,7 @@ function parse(params: URLSearchParams): Filters {
     ...(retired !== null && { retired }),
     ...(broken != null && { broken }),
     ...(missing != null && { missing }),
+    ...(restricted != null && { restricted }),
     ...(!isEmpty(gearTypes) && {
       gearTypes: gearTypes!.split(",").map(Number),
     }),
