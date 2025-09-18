@@ -73,6 +73,7 @@ export function ApprovalItemsPicker() {
                         value={value ?? null}
                         onChange={(val) => onChange(val?.id)}
                         invalid={invalid}
+                        restrictedOnly={true}
                       />
                     );
                   }}
