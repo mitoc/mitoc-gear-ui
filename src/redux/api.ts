@@ -70,11 +70,21 @@ export const gearDbApi = createApi({
         broken?: boolean;
         missing?: boolean;
         retired?: boolean;
+        restricted?: boolean;
         gearTypes?: number[];
         locations?: number[];
       }
     >({
-      query: ({ q, page, gearTypes, broken, missing, retired, locations }) => ({
+      query: ({
+        q,
+        page,
+        gearTypes,
+        broken,
+        missing,
+        retired,
+        restricted,
+        locations,
+      }) => ({
         url: "gear/",
         params: {
           ...(q && { q }),
@@ -82,6 +92,7 @@ export const gearDbApi = createApi({
           ...(broken != null && { broken }),
           ...(missing != null && { missing }),
           ...(retired != null && { retired }),
+          ...(restricted != null && { restricted }),
           ...(!isEmpty(gearTypes) && { gearTypes }),
           ...(!isEmpty(locations) && { locations }),
         },
@@ -200,12 +211,14 @@ export function useGearList({
   missing,
   retired,
   locations,
+  restricted,
 }: {
   q: string;
   page?: number;
   gearTypes?: number[];
   broken?: boolean;
   missing?: boolean;
+  restricted?: boolean;
   retired?: boolean;
   locations?: number[];
 }) {
@@ -217,6 +230,7 @@ export function useGearList({
     missing,
     retired,
     locations,
+    restricted,
   });
   const data = result.data;
   const gearList = data?.results;

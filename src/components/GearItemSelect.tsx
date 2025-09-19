@@ -43,14 +43,22 @@ type Props = {
   onChange: (person: GearSummary | null | undefined) => void;
   className?: string;
   invalid?: boolean;
+  filters?: { restricted?: boolean };
 };
 
-export function GearItemSelect({ value, onChange, className, invalid }: Props) {
+export function GearItemSelect({
+  className,
+  filters,
+  invalid,
+  onChange,
+  value,
+}: Props) {
   const [query, setInput] = useState<string>("");
   const { pending, fn: debouncedSetInput } = useDebounce(setInput, 250);
   const { gearList, isFetching } = useGearList({
     q: query,
     retired: false,
+    ...filters,
   });
 
   const options: GearOption[] =
