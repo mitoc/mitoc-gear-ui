@@ -8,6 +8,7 @@ import {
 import { APIError as APIErrorClass } from "src/apiClient/client";
 import { APIErrorType } from "src/apiClient/types";
 import { useSetPageTitle } from "src/hooks";
+import { TagType } from "src/redux/api";
 import { invalidateCache } from "src/redux/store";
 
 import { AddNewApprovalForm } from "./AddNewApprovalForm";
@@ -25,7 +26,7 @@ export default function AddNewApproval() {
     createNewApproval(args)
       .then(() => {
         setError(undefined);
-        invalidateCache(["Approvals"]);
+        invalidateCache([TagType.Approvals]);
         if (personId != null) {
           navigate(`/people/${personId}?tab=approvals`);
         } else {

@@ -5,6 +5,7 @@ import React, { useContext, useState } from "react";
 import { RenterApproval } from "src/apiClient/approvals";
 import { GearSummary } from "src/apiClient/gear";
 import { checkoutGear, Person, Rental, returnGear } from "src/apiClient/people";
+import { TagType } from "src/redux/api";
 import { invalidateCache } from "src/redux/store";
 
 import { ItemToPurchase } from "../types";
@@ -138,7 +139,7 @@ function useMakePersonPageContext({ person, approvals }: Props) {
         ).then(() => {
           returnBasketBase.clear();
           purchaseBasket.clear();
-          invalidateCache(["People"]);
+          invalidateCache([TagType.People]);
         });
       },
     },
@@ -148,7 +149,7 @@ function useMakePersonPageContext({ person, approvals }: Props) {
         const gearIDs = map(checkoutBasketBase.items, "id");
         return checkoutGear(person.id, gearIDs).then(() => {
           checkoutBasketBase.clear();
-          invalidateCache(["People"]);
+          invalidateCache([TagType.People]);
         });
       },
     },

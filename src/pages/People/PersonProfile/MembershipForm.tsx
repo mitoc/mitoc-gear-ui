@@ -5,7 +5,7 @@ import DatePicker from "react-datepicker";
 
 import { addMembership, Person } from "src/apiClient/people";
 import { Select } from "src/components/Inputs/Select";
-import { useGetAffiliationsQuery } from "src/redux/api";
+import { TagType, useGetAffiliationsQuery } from "src/redux/api";
 import { invalidateCache } from "src/redux/store";
 
 import { getNextExpirationDate } from "./utils";
@@ -63,7 +63,7 @@ export function MembershipForm({ person, onClose }: Props) {
               return;
             }
             addMembership(person.id, date, membershipType).then(() => {
-              invalidateCache(["People"]);
+              invalidateCache([TagType.People]);
               onClose();
             });
           }}

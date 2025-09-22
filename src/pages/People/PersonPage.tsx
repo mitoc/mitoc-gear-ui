@@ -4,7 +4,11 @@ import { useParams } from "react-router-dom";
 import { addNote, archiveNote } from "src/apiClient/people";
 import { Notes } from "src/components/Notes";
 import { useSetPageTitle } from "src/hooks";
-import { useGetPersonQuery, useGetRenterApprovalsQuery } from "src/redux/api";
+import {
+  TagType,
+  useGetPersonQuery,
+  useGetRenterApprovalsQuery,
+} from "src/redux/api";
 import { invalidateCache } from "src/redux/store";
 
 import { BuyGear } from "./BuyGear";
@@ -70,12 +74,12 @@ function PersonPageInner() {
           notes={person.notes}
           onAdd={(note) => {
             return addNote(person.id, note).then(() =>
-              invalidateCache(["People"]),
+              invalidateCache([TagType.People]),
             );
           }}
           onArchive={(noteId) => {
             archiveNote(person.id, noteId).then(() =>
-              invalidateCache(["People"]),
+              invalidateCache([TagType.People]),
             );
           }}
         />

@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { addMitocCredit, Person } from "src/apiClient/people";
 import { NumberField } from "src/components/Inputs/NumberField";
+import { TagType } from "src/redux/api";
 import { invalidateCache } from "src/redux/store";
 
 type Props = {
@@ -20,7 +21,7 @@ export function MitocCreditForm({ person, onClose }: Props) {
             return;
           }
           addMitocCredit(person.id, amount).then(() => {
-            invalidateCache(["People"]);
+            invalidateCache([TagType.People]);
             onClose();
           });
         }}

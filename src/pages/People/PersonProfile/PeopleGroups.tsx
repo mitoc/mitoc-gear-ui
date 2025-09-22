@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { PeopleGroup, Person, updatePersonGroups } from "src/apiClient/people";
 import { GroupSelect } from "src/components/GroupSelect";
+import { TagType } from "src/redux/api";
 import { useCurrentUser, usePermissions } from "src/redux/auth";
 import { invalidateCache } from "src/redux/store";
 
@@ -71,7 +72,7 @@ function PeopleGroupsForm({
       person.id,
       groups.map((g) => g.id),
     ).then(() => {
-      invalidateCache(["People"]);
+      invalidateCache([TagType.People]);
       closeForm();
     });
 

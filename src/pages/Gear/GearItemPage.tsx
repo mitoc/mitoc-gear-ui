@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { addNote } from "src/apiClient/gear";
 import { Notes } from "src/components/Notes";
 import { useSetPageTitle } from "src/hooks";
-import { useGetGearItemQuery } from "src/redux/api";
+import { TagType, useGetGearItemQuery } from "src/redux/api";
 import { invalidateCache } from "src/redux/store";
 
 import { GearInfoPanel } from "./GearInfoPanel";
@@ -26,7 +26,9 @@ export default function GearItemPage() {
         <Notes
           notes={gearItem.notes}
           onAdd={(note) =>
-            addNote(gearId, note).then(() => invalidateCache(["GearItems"]))
+            addNote(gearId, note).then(() =>
+              invalidateCache([TagType.GearItems]),
+            )
           }
         />
       </div>

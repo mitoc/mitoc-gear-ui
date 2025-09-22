@@ -4,6 +4,7 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 
 import { addWaiver, Person } from "src/apiClient/people";
+import { TagType } from "src/redux/api";
 import { invalidateCache } from "src/redux/store";
 
 import { getNextExpirationDate } from "./utils";
@@ -35,7 +36,7 @@ export function WaiverForm({ person, onClose }: Props) {
           onClick={(evt) => {
             evt.preventDefault();
             addWaiver(person.id, date).then(() => {
-              invalidateCache(["People"]);
+              invalidateCache([TagType.People]);
               onClose();
             });
           }}

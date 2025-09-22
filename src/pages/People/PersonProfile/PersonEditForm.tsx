@@ -6,6 +6,7 @@ import { editPerson, Person } from "src/apiClient/people";
 import { Form } from "src/components/Inputs/Form";
 import { LabeledInput } from "src/components/Inputs/LabeledInput";
 import { validateEmail } from "src/lib/validation";
+import { TagType } from "src/redux/api";
 import { useCurrentUser } from "src/redux/auth";
 import { invalidateCache } from "src/redux/store";
 
@@ -43,7 +44,7 @@ export function PersonEditForm({ person, closeForm }: Props) {
     const altEmails = map(rawAltEmails, "value").filter((v) => !isEmpty(v));
     editPerson(person.id, firstName, lastName, email, altEmails).then(() => {
       closeForm();
-      invalidateCache(["People"]);
+      invalidateCache([TagType.People]);
     });
   };
   const isPersonUser = person.groups.some(

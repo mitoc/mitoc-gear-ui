@@ -4,6 +4,7 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 
 import { addFFChecks, Person } from "src/apiClient/people";
+import { TagType } from "src/redux/api";
 import { invalidateCache } from "src/redux/store";
 
 import { getNextExpirationDate } from "./utils";
@@ -48,7 +49,7 @@ export function FrequentFlyerForm({ person, onClose }: Props) {
           onClick={(evt) => {
             evt.preventDefault();
             addFFChecks(person.id, date, checkNumber).then(() => {
-              invalidateCache(["People"]);
+              invalidateCache([TagType.People]);
               onClose();
             });
           }}

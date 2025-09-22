@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import type { GearSummary } from "src/apiClient/gear";
 import { newApprovalUI } from "src/featureFlags";
 import { fmtAmount } from "src/lib/fmtNumber";
+import { TagType } from "src/redux/api";
 import { useConfig } from "src/redux/hooks";
 import { invalidateCache } from "src/redux/store";
 
@@ -80,7 +81,7 @@ export function GearInfoPanel({ gearItem }: Props) {
           gearItem={gearItem}
           closeForm={() => setEditing(false)}
           refreshGear={() => {
-            invalidateCache(["GearItems"]);
+            invalidateCache([TagType.GearItems]);
           }}
         />
       )}
@@ -111,7 +112,7 @@ export function GearInfoPanel({ gearItem }: Props) {
           formType={formToShow}
           gearItem={gearItem}
           onChange={() => {
-            invalidateCache(["GearItems"]);
+            invalidateCache([TagType.GearItems]);
             setFormToShow(GearStatusFormType.none);
           }}
         />

@@ -4,6 +4,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { GearItem } from "src/apiClient/gear";
+import { TagType } from "src/redux/api";
 import { invalidateCache } from "src/redux/store";
 
 import { PicturePickerModal } from "./PicturePickerModal";
@@ -40,7 +41,7 @@ export function GearPicture({ gearItem }: Props) {
           isOpen={isModalOpen}
           close={() => setIsModalOpen(false)}
           item={gearItem}
-          refreshGear={() => invalidateCache(["GearItems"])}
+          refreshGear={() => invalidateCache([TagType.GearItems])}
         />
       )}
     </>
