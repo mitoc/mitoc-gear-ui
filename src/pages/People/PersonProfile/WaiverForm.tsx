@@ -4,7 +4,8 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 
 import { addWaiver, Person } from "src/apiClient/people";
-import { useGetPersonQuery } from "src/redux/api";
+import { TagType } from "src/redux/api";
+import { invalidateCache } from "src/redux/store";
 
 import { getNextExpirationDate } from "./utils";
 
@@ -14,7 +15,6 @@ type Props = {
 };
 
 export function WaiverForm({ person, onClose }: Props) {
-  const { refetch: refreshPerson } = useGetPersonQuery(String(person.id));
   const initial = getNextExpirationDate();
   const [date, setDate] = useState<Date>(initial);
   return (
@@ -36,7 +36,7 @@ export function WaiverForm({ person, onClose }: Props) {
           onClick={(evt) => {
             evt.preventDefault();
             addWaiver(person.id, date).then(() => {
-              refreshPerson();
+              invalidateCache([TagType.People]);
               onClose();
             });
           }}

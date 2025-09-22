@@ -22,6 +22,12 @@ import {
   Signup,
 } from "src/apiClient/types";
 
+export enum TagType {
+  Approvals = "Approvals",
+  GearItems = "GearItems",
+  People = "People",
+}
+
 export const gearDbApi = createApi({
   reducerPath: "gearDbApi",
   baseQuery: fetchBaseQuery({
@@ -30,7 +36,7 @@ export const gearDbApi = createApi({
     paramsSerializer: (params) =>
       queryString.stringify(params, { arrayFormat: "none" }),
   }),
-  tagTypes: ["Approvals"],
+  tagTypes: Object.values(TagType),
   endpoints: (builder) => ({
     getConfig: builder.query<Config, void>({
       query: () => `config/`,
@@ -39,6 +45,7 @@ export const gearDbApi = createApi({
     }),
     getPerson: builder.query<Person, string>({
       query: (personID) => `people/${personID}/`,
+      providesTags: [TagType.People],
     }),
     getPersonList: builder.query<
       ListWrapper<PersonSummary>,
@@ -58,9 +65,11 @@ export const gearDbApi = createApi({
           ...(!isEmpty(groups) && { groups }),
         },
       }),
+      providesTags: [TagType.People],
     }),
     getGearItem: builder.query<GearItem, string>({
       query: (gearItemID) => `gear/${gearItemID}/`,
+      providesTags: [TagType.GearItems],
     }),
     getGearList: builder.query<
       ListWrapper<GearSummary>,
@@ -97,6 +106,7 @@ export const gearDbApi = createApi({
           ...(!isEmpty(locations) && { locations }),
         },
       }),
+      providesTags: [TagType.GearItems],
     }),
     getGearTypePictures: builder.query<string[], string | number>({
       query: (gearType) => `/gear-types/${gearType}/pictures`,
@@ -164,7 +174,7 @@ export const gearDbApi = createApi({
           past,
         },
       }),
-      providesTags: ["Approvals"],
+      providesTags: [TagType.Approvals],
     }),
     getRenterApprovals: builder.query<
       ListWrapper<RenterApproval>,
@@ -176,7 +186,7 @@ export const gearDbApi = createApi({
           past,
         },
       }),
-      providesTags: ["Approvals"],
+      providesTags: [TagType.Approvals],
     }),
     getGearLocations: builder.query<GearLocation[], void>({
       query: () => "/gear-locations/",

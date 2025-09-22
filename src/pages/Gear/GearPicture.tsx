@@ -4,16 +4,17 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { GearItem } from "src/apiClient/gear";
+import { TagType } from "src/redux/api";
+import { invalidateCache } from "src/redux/store";
 
 import { PicturePickerModal } from "./PicturePickerModal";
 import { PicturePlaceholder } from "./PicturePlaceholder";
 
 type Props = {
   gearItem: GearItem;
-  refreshGear: () => void;
 };
 
-export function GearPicture({ gearItem, refreshGear }: Props) {
+export function GearPicture({ gearItem }: Props) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   return (
@@ -40,7 +41,7 @@ export function GearPicture({ gearItem, refreshGear }: Props) {
           isOpen={isModalOpen}
           close={() => setIsModalOpen(false)}
           item={gearItem}
-          refreshGear={refreshGear}
+          refreshGear={() => invalidateCache([TagType.GearItems])}
         />
       )}
     </>

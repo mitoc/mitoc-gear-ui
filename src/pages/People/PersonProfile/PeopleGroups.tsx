@@ -3,14 +3,15 @@ import { useState } from "react";
 
 import { PeopleGroup, Person, updatePersonGroups } from "src/apiClient/people";
 import { GroupSelect } from "src/components/GroupSelect";
+import { TagType } from "src/redux/api";
 import { useCurrentUser, usePermissions } from "src/redux/auth";
+import { invalidateCache } from "src/redux/store";
 
 type Props = {
   person: Person;
-  refreshPerson: () => void;
 };
 
-export default function PeopleGroups({ person, refreshPerson }: Props) {
+export default function PeopleGroups({ person }: Props) {
   const [showGroupsForm, setShowGroupForms] = useState<boolean>(false);
   const { user } = useCurrentUser();
   const { isOfficer } = usePermissions();
@@ -53,7 +54,6 @@ export default function PeopleGroups({ person, refreshPerson }: Props) {
     <PeopleGroupsForm
       isOfficer={isOfficer}
       person={person}
-      refreshPerson={refreshPerson}
       closeForm={() => setShowGroupForms(false)}
     />
   );
@@ -61,7 +61,7 @@ export default function PeopleGroups({ person, refreshPerson }: Props) {
 
 function PeopleGroupsForm({
   person,
-  refreshPerson,
+
   closeForm,
   isOfficer,
 }: Props & { isOfficer?: boolean; closeForm: () => void }) {
@@ -72,7 +72,7 @@ function PeopleGroupsForm({
       person.id,
       groups.map((g) => g.id),
     ).then(() => {
-      refreshPerson();
+      invalidateCache([TagType.People]);
       closeForm();
     });
 

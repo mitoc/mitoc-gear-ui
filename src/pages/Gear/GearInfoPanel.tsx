@@ -4,15 +4,17 @@ import { Link } from "react-router-dom";
 import type { GearSummary } from "src/apiClient/gear";
 import { newApprovalUI } from "src/featureFlags";
 import { fmtAmount } from "src/lib/fmtNumber";
+import { TagType } from "src/redux/api";
 import { useConfig } from "src/redux/hooks";
+import { invalidateCache } from "src/redux/store";
 
 import { GearItemEditForm } from "./GearItemEditForm";
 import { GearStatus } from "./GearStatus";
 import { GearStatusForm, GearStatusFormType } from "./GearStatusForm";
 
-type Props = { gearItem: GearSummary; refreshGear: () => void };
+type Props = { gearItem: GearSummary };
 
-export function GearInfoPanel({ gearItem, refreshGear }: Props) {
+export function GearInfoPanel({ gearItem }: Props) {
   const [formToShow, setFormToShow] = useState<GearStatusFormType>(
     GearStatusFormType.none,
   );
@@ -78,7 +80,9 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
         <GearItemEditForm
           gearItem={gearItem}
           closeForm={() => setEditing(false)}
-          refreshGear={refreshGear}
+          refreshGear={() => {
+            invalidateCache([TagType.GearItems]);
+          }}
         />
       )}
 
@@ -108,7 +112,7 @@ export function GearInfoPanel({ gearItem, refreshGear }: Props) {
           formType={formToShow}
           gearItem={gearItem}
           onChange={() => {
-            refreshGear();
+            invalidateCache([TagType.GearItems]);
             setFormToShow(GearStatusFormType.none);
           }}
         />
