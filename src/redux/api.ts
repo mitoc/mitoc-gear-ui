@@ -22,6 +22,8 @@ import {
   Signup,
 } from "src/apiClient/types";
 
+const tagTypes = ["Approvals", "GearItems", "People"] as const;
+export type TagType = (typeof tagTypes)[number];
 export const gearDbApi = createApi({
   reducerPath: "gearDbApi",
   baseQuery: fetchBaseQuery({
@@ -30,7 +32,7 @@ export const gearDbApi = createApi({
     paramsSerializer: (params) =>
       queryString.stringify(params, { arrayFormat: "none" }),
   }),
-  tagTypes: ["Approvals"],
+  tagTypes,
   endpoints: (builder) => ({
     getConfig: builder.query<Config, void>({
       query: () => `config/`,
@@ -39,6 +41,7 @@ export const gearDbApi = createApi({
     }),
     getPerson: builder.query<Person, string>({
       query: (personID) => `people/${personID}/`,
+      providesTags: ["People"],
     }),
     getPersonList: builder.query<
       ListWrapper<PersonSummary>,
@@ -58,9 +61,11 @@ export const gearDbApi = createApi({
           ...(!isEmpty(groups) && { groups }),
         },
       }),
+      providesTags: ["People"],
     }),
     getGearItem: builder.query<GearItem, string>({
       query: (gearItemID) => `gear/${gearItemID}/`,
+      providesTags: ["GearItems"],
     }),
     getGearList: builder.query<
       ListWrapper<GearSummary>,
@@ -97,6 +102,7 @@ export const gearDbApi = createApi({
           ...(!isEmpty(locations) && { locations }),
         },
       }),
+      providesTags: ["GearItems"],
     }),
     getGearTypePictures: builder.query<string[], string | number>({
       query: (gearType) => `/gear-types/${gearType}/pictures`,

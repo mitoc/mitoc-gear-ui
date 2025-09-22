@@ -5,7 +5,8 @@ import DatePicker from "react-datepicker";
 
 import { addMembership, Person } from "src/apiClient/people";
 import { Select } from "src/components/Inputs/Select";
-import { useGetAffiliationsQuery, useGetPersonQuery } from "src/redux/api";
+import { useGetAffiliationsQuery } from "src/redux/api";
+import { invalidateCache } from "src/redux/store";
 
 import { getNextExpirationDate } from "./utils";
 
@@ -15,7 +16,6 @@ type Props = {
 };
 
 export function MembershipForm({ person, onClose }: Props) {
-  const { refetch: refreshPerson } = useGetPersonQuery(String(person.id));
   const { data: affiliations = [] } = useGetAffiliationsQuery();
   const affiliationOptions = affiliations.map(({ id, name }) => ({
     value: id,
@@ -63,7 +63,7 @@ export function MembershipForm({ person, onClose }: Props) {
               return;
             }
             addMembership(person.id, date, membershipType).then(() => {
-              refreshPerson();
+              invalidateCache(["People"]);
               onClose();
             });
           }}

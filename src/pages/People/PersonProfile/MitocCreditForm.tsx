@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { addMitocCredit, Person } from "src/apiClient/people";
 import { NumberField } from "src/components/Inputs/NumberField";
-import { useGetPersonQuery } from "src/redux/api";
+import { invalidateCache } from "src/redux/store";
 
 type Props = {
   person: Person;
@@ -10,7 +10,6 @@ type Props = {
 };
 
 export function MitocCreditForm({ person, onClose }: Props) {
-  const { refetch: refreshPerson } = useGetPersonQuery(String(person.id));
   const [amount, setAmount] = useState<number | null>(15);
   return (
     <div>
@@ -21,7 +20,7 @@ export function MitocCreditForm({ person, onClose }: Props) {
             return;
           }
           addMitocCredit(person.id, amount).then(() => {
-            refreshPerson();
+            invalidateCache(["People"]);
             onClose();
           });
         }}

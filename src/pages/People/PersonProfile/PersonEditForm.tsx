@@ -7,11 +7,11 @@ import { Form } from "src/components/Inputs/Form";
 import { LabeledInput } from "src/components/Inputs/LabeledInput";
 import { validateEmail } from "src/lib/validation";
 import { useCurrentUser } from "src/redux/auth";
+import { invalidateCache } from "src/redux/store";
 
 type Props = {
   person: Person;
   closeForm: () => void;
-  refreshPerson: () => void;
 };
 
 type FormValues = {
@@ -21,7 +21,7 @@ type FormValues = {
   altEmails: { value: string }[];
 };
 
-export function PersonEditForm({ person, closeForm, refreshPerson }: Props) {
+export function PersonEditForm({ person, closeForm }: Props) {
   const { user } = useCurrentUser();
   const formObject = useForm<FormValues>({
     defaultValues: {
@@ -43,7 +43,7 @@ export function PersonEditForm({ person, closeForm, refreshPerson }: Props) {
     const altEmails = map(rawAltEmails, "value").filter((v) => !isEmpty(v));
     editPerson(person.id, firstName, lastName, email, altEmails).then(() => {
       closeForm();
-      refreshPerson();
+      invalidateCache(["People"]);
     });
   };
   const isPersonUser = person.groups.some(

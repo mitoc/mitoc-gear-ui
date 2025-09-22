@@ -4,7 +4,7 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 
 import { addFFChecks, Person } from "src/apiClient/people";
-import { useGetPersonQuery } from "src/redux/api";
+import { invalidateCache } from "src/redux/store";
 
 import { getNextExpirationDate } from "./utils";
 
@@ -14,7 +14,6 @@ type Props = {
 };
 
 export function FrequentFlyerForm({ person, onClose }: Props) {
-  const { refetch: refreshPerson } = useGetPersonQuery(String(person.id));
   const initial = getNextExpirationDate();
   const [date, setDate] = useState<Date>(initial);
   const [checkNumber, setCheckNumber] = useState<string>("");
@@ -49,7 +48,7 @@ export function FrequentFlyerForm({ person, onClose }: Props) {
           onClick={(evt) => {
             evt.preventDefault();
             addFFChecks(person.id, date, checkNumber).then(() => {
-              refreshPerson();
+              invalidateCache(["People"]);
               onClose();
             });
           }}

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import {
@@ -9,7 +8,7 @@ import {
 import { APIError as APIErrorClass } from "src/apiClient/client";
 import { APIErrorType } from "src/apiClient/types";
 import { useSetPageTitle } from "src/hooks";
-import { gearDbApi } from "src/redux/api";
+import { invalidateCache } from "src/redux/store";
 
 import { AddNewApprovalForm } from "./AddNewApprovalForm";
 
@@ -22,12 +21,11 @@ export default function AddNewApproval() {
   const searchParams = new URLSearchParams(location.search);
   const personId = searchParams.get("personId");
 
-  const dispatch = useDispatch();
   const onSubmit = (args: CreateNewApprovalArgs) => {
     createNewApproval(args)
       .then(() => {
         setError(undefined);
-        dispatch(gearDbApi.util.invalidateTags(["Approvals"]));
+        invalidateCache(["Approvals"]);
         if (personId != null) {
           navigate(`/people/${personId}?tab=approvals`);
         } else {

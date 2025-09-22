@@ -5,6 +5,7 @@ import { addNote, archiveNote } from "src/apiClient/people";
 import { Notes } from "src/components/Notes";
 import { useSetPageTitle } from "src/hooks";
 import { useGetPersonQuery, useGetRenterApprovalsQuery } from "src/redux/api";
+import { invalidateCache } from "src/redux/store";
 
 import { BuyGear } from "./BuyGear";
 import { CheckoutStaging } from "./CheckoutStaging";
@@ -22,7 +23,7 @@ import { ReturnStaging } from "./ReturnStaging";
 
 export function PersonPage() {
   const personId = useParams<{ personId: string }>().personId!;
-  const { data: person, refetch: refreshPerson } = useGetPersonQuery(personId);
+  const { data: person } = useGetPersonQuery(personId);
   const { data: approvalResult } = useGetRenterApprovalsQuery({
     personID: personId,
     past: false,
@@ -33,7 +34,6 @@ export function PersonPage() {
   return (
     <PersonPageContextProvider
       person={person}
-      refreshPerson={refreshPerson}
       // NOTE: This doesn't handle pagination for now, which could be a problem if someone has 50+ active approvals. Unlikely.
       approvals={approvalResult?.results ?? []}
     >
@@ -45,14 +45,8 @@ export function PersonPage() {
 function PersonPageInner() {
   const [tab, setTab] = useTab();
 
-  const {
-    person,
-    refreshPerson,
-    checkoutBasket,
-    returnBasket,
-    purchaseBasket,
-    isApproved,
-  } = usePersonPageContext();
+  const { person, checkoutBasket, returnBasket, purchaseBasket, isApproved } =
+    usePersonPageContext();
 
   useSetPageTitle(person ? `${person.firstName} ${person.lastName} ` : "");
 
@@ -75,10 +69,14 @@ function PersonPageInner() {
         <Notes
           notes={person.notes}
           onAdd={(note) => {
-            return addNote(person.id, note).then(refreshPerson);
+            return addNote(person.id, note).then(() =>
+              invalidateCache(["People"]),
+            );
           }}
           onArchive={(noteId) => {
-            archiveNote(person.id, noteId).then(refreshPerson);
+            archiveNote(person.id, noteId).then(() =>
+              invalidateCache(["People"]),
+            );
           }}
         />
         {!isEmpty(checkoutBasket.items) && (

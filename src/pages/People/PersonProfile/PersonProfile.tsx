@@ -23,7 +23,7 @@ export function PersonProfile() {
     setEditing(true);
   };
 
-  const { person, refreshPerson } = usePersonPageContext();
+  const { person } = usePersonPageContext();
 
   return (
     <StyledDiv className="border rounded-2 p-2 mb-3 bg-light">
@@ -56,14 +56,10 @@ export function PersonProfile() {
       )}
 
       {isEditing && (
-        <PersonEditForm
-          person={person}
-          closeForm={() => setEditing(false)}
-          refreshPerson={refreshPerson}
-        />
+        <PersonEditForm person={person} closeForm={() => setEditing(false)} />
       )}
 
-      <PeopleGroups person={person} refreshPerson={refreshPerson} />
+      <PeopleGroups person={person} />
       <ExpirableTile
         title="Membership"
         person={person}

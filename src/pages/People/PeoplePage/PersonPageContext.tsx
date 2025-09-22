@@ -5,6 +5,7 @@ import React, { useContext, useState } from "react";
 import { RenterApproval } from "src/apiClient/approvals";
 import { GearSummary } from "src/apiClient/gear";
 import { checkoutGear, Person, Rental, returnGear } from "src/apiClient/people";
+import { invalidateCache } from "src/redux/store";
 
 import { ItemToPurchase } from "../types";
 
@@ -14,7 +15,6 @@ type PersonPageContextType = ReturnType<typeof useMakePersonPageContext>;
 
 type Props = {
   person: Person;
-  refreshPerson: () => void;
   approvals: RenterApproval[];
 };
 
@@ -44,7 +44,7 @@ export function usePersonPageContext() {
   return context;
 }
 
-function useMakePersonPageContext({ person, refreshPerson, approvals }: Props) {
+function useMakePersonPageContext({ person, approvals }: Props) {
   const checkoutBasketBase = useBasket<GearSummary>();
   const returnBasketBase = useBasket<Rental>();
   const purchaseBasket = useBasket<ItemToPurchase>();
@@ -115,7 +115,6 @@ function useMakePersonPageContext({ person, refreshPerson, approvals }: Props) {
     person,
     approvals,
     isApproved,
-    refreshPerson,
     purchaseBasket,
     returnBasket: {
       ...returnBasketBase,
@@ -139,7 +138,7 @@ function useMakePersonPageContext({ person, refreshPerson, approvals }: Props) {
         ).then(() => {
           returnBasketBase.clear();
           purchaseBasket.clear();
-          refreshPerson();
+          invalidateCache(["People"]);
         });
       },
     },
@@ -149,7 +148,7 @@ function useMakePersonPageContext({ person, refreshPerson, approvals }: Props) {
         const gearIDs = map(checkoutBasketBase.items, "id");
         return checkoutGear(person.id, gearIDs).then(() => {
           checkoutBasketBase.clear();
-          refreshPerson();
+          invalidateCache(["People"]);
         });
       },
     },
