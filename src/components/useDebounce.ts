@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
 import { debounce } from "lodash";
+import { useMemo, useState } from "react";
 
 export function useDebounce<T extends (...args: any) => any>(
   fn: T,
