@@ -165,7 +165,7 @@ function TypeCell({ item: gearItem }: { item: GearSummary }) {
 }
 
 function LocationCell({ item: gearItem }: { item: GearSummary }) {
-  return <>{gearItem.location.shorthand}</>;
+  return gearItem.location.shorthand;
 }
 
 const ColoredCell = styled.div<{ color?: string }>`
