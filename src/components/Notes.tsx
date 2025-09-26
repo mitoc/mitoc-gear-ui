@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-import { formatDateTime } from "src/lib/fmtDate";
 import type { Person } from "src/apiClient/people";
-import { TextArea } from "src/components/Inputs/TextArea";
 import { ToggleExpandButton, ArchiveButton } from "src/components/Buttons";
+import { TextArea } from "src/components/Inputs/TextArea";
+import { formatDateTime } from "src/lib/fmtDate";
 
 type Props = {
   notes: Person["notes"];
