@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 
 import { GearRental, getGearRentalHistory } from "src/apiClient/gear";
 import { getPagesCount } from "src/apiClient/getPagesCount";
+import { GearItemID } from "src/apiClient/idTypes";
 import { PersonLink } from "src/components/PersonLink";
 import { TablePagination } from "src/components/TablePagination";
 import { formatDate } from "src/lib/fmtDate";
 
 type Props = {
-  gearId: string;
+  gearId: GearItemID;
 };
 
 export function GearRentalsHistory({ gearId }: Props) {

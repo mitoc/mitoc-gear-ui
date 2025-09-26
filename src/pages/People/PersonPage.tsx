@@ -1,6 +1,7 @@
 import { isEmpty } from "lodash";
 import { useParams } from "react-router-dom";
 
+import { PersonID } from "src/apiClient/idTypes";
 import { addNote, archiveNote } from "src/apiClient/people";
 import { Notes } from "src/components/Notes";
 import { useSetPageTitle } from "src/hooks";
@@ -26,7 +27,8 @@ import { RentGear } from "./RentGear";
 import { ReturnStaging } from "./ReturnStaging";
 
 export function PersonPage() {
-  const personId = useParams<{ personId: string }>().personId!;
+  const personIdParam = useParams<{ personId: string }>().personId!;
+  const personId = Number(personIdParam) as PersonID;
   const { data: person } = useGetPersonQuery(personId);
   const { data: approvalResult } = useGetRenterApprovalsQuery({
     personID: personId,

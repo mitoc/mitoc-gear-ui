@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 
 import { addNote } from "src/apiClient/gear";
+import { GearItemID } from "src/apiClient/idTypes";
 import { Notes } from "src/components/Notes";
 import { useSetPageTitle } from "src/hooks";
 import { TagType, useGetGearItemQuery } from "src/redux/api";
@@ -11,7 +12,7 @@ import { GearPicture } from "./GearPicture";
 import { GearRentalsHistory } from "./GearRentalsHistory";
 
 export default function GearItemPage() {
-  const gearId = useParams<{ gearId: string }>().gearId!;
+  const gearId = useParams<{ gearId: GearItemID }>().gearId!;
   useSetPageTitle(gearId);
   const { data: gearItem } = useGetGearItemQuery(gearId);
 

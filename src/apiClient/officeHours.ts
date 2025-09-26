@@ -4,7 +4,7 @@ export async function signUp(officeHourId: string) {
   return request(`/office-hours/${officeHourId}/signup/`, "POST");
 }
 
-export async function cancelSignUp(signupId: string) {
+export async function cancelSignUp(signupId: number) {
   return request(`/office-hour-signups/${signupId}/`, "DELETE");
 }
 

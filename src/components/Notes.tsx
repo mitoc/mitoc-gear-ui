@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
 import type { Person } from "src/apiClient/people";
-import { ToggleExpandButton, ArchiveButton } from "src/components/Buttons";
+import { ArchiveButton, ToggleExpandButton } from "src/components/Buttons";
 import { TextArea } from "src/components/Inputs/TextArea";
 import { formatDateTime } from "src/lib/fmtDate";
 
 type Props = {
   notes: Person["notes"];
   onAdd: (note: string) => Promise<any>;
-  onArchive?: (id: string) => void;
+  onArchive?: (id: number) => void;
 };
 
 export function Notes({ notes, onAdd, onArchive }: Props) {

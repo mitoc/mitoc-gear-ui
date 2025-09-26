@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 
 import { getPagesCount } from "src/apiClient/getPagesCount";
+import { PersonID } from "src/apiClient/idTypes";
 import { getPersonRentalHistory, Rental } from "src/apiClient/people";
 import { GearLink } from "src/components/GearLink";
 import { TablePagination } from "src/components/TablePagination";
 import { formatDate } from "src/lib/fmtDate";
 
 type Props = {
-  personId: string;
+  personId: PersonID;
 };
 
 export function PersonRentalsHistory({ personId }: Props) {

@@ -1,3 +1,4 @@
+import { SignupID } from "./idTypes";
 import { PeopleGroup, PersonBase, PersonWithOfficeAccess } from "./people";
 
 export interface ListWrapper<T> {
@@ -21,7 +22,7 @@ export interface APIErrorType {
 }
 
 export interface Note {
-  id: string;
+  id: number;
   note: string;
   dateInserted: string;
   author: PersonBase;
@@ -39,22 +40,22 @@ export interface OfficeHour {
   startTime: string;
   endTime: string;
   signups: {
-    id: string;
+    id: SignupID;
     deskWorker: PersonWithOfficeAccess;
   }[];
 }
 
 export interface PersonSignup {
+  id: SignupID;
   creditRequested?: string;
   approved?: string;
   duration?: string;
   date: string;
-  id: number;
   note?: string;
   eventType: string;
   credit?: number;
 }
 
 export interface Signup extends PersonSignup {
-  deskWorker: { id: string; firstName: string; lastName: string };
+  deskWorker: PersonWithOfficeAccess;
 }

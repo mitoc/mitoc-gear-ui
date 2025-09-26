@@ -2,11 +2,12 @@ import dayjs from "dayjs";
 
 import { request } from "./client";
 import { GearTypeWithFee } from "./gear";
+import { GearItemID, PeopleGroupID, PersonID } from "./idTypes";
 import { ListWrapper, Note } from "./types";
 
 /** The minimal representation of a person*/
 export interface PersonBase {
-  id: string;
+  id: PersonID;
   firstName: string;
   lastName: string;
 }
@@ -28,7 +29,7 @@ export interface Expireable {
 
 export interface PeopleGroup {
   groupName: string;
-  id: number;
+  id: PeopleGroupID;
 }
 
 /** The representation of a person in the retrieve endpoint*/
@@ -44,7 +45,7 @@ export interface Person extends PersonSummary {
 }
 
 export interface Rental {
-  id: string;
+  id: GearItemID;
   checkedout: string;
   returned?: string;
   totalAmount: number;
@@ -53,14 +54,8 @@ export interface Rental {
 }
 
 export interface GearToReturn {
-  id: string;
+  id: GearItemID;
   daysCharged?: number;
-}
-
-export interface Affiliation {
-  id: string;
-  name: string;
-  dues: number;
 }
 
 export type CreatePersonArgs = {
@@ -73,51 +68,51 @@ async function createPerson(args: CreatePersonArgs): Promise<PersonSummary> {
   return request(`/people/`, "POST", args);
 }
 
-async function addFFChecks(id: string, date: Date, checkNumber: string) {
+async function addFFChecks(id: PersonID, date: Date, checkNumber: string) {
   return request(`/people/${id}/frequent_flyer_check/`, "POST", {
     expires: dayjs(date).format("YYYY-MM-DD"),
     ...(checkNumber && { checkNumber }),
   });
 }
 
-async function addWaiver(id: string, date: Date) {
+async function addWaiver(id: PersonID, date: Date) {
   return request(`/people/${id}/waiver/`, "POST", {
     expires: dayjs(date).format("YYYY-MM-DD"),
   });
 }
 
-async function addMembership(id: string, date: Date, membershipType: string) {
+async function addMembership(id: PersonID, date: Date, membershipType: string) {
   return request(`/people/${id}/membership/`, "POST", {
     expires: dayjs(date).format("YYYY-MM-DD"),
     membershipType,
   });
 }
 
-async function addNote(id: string, note: string) {
+async function addNote(id: PersonID, note: string) {
   return request(`/people/${id}/note/`, "POST", {
     note,
   });
 }
 
-async function archiveNote(personId: string, noteId: string) {
+async function archiveNote(personId: PersonID, noteId: number) {
   return request(`/people/${personId}/note/${noteId}/archive/`, "POST");
 }
 
 async function getPersonRentalHistory(
-  id: string,
+  id: PersonID,
   page?: number,
 ): Promise<ListWrapper<Rental>> {
   return request(`/people/${id}/rentals/`, "GET", { ...(page && { page }) });
 }
 
-async function checkoutGear(personID: string, gearIDs: string[]) {
+async function checkoutGear(personID: PersonID, gearIDs: string[]) {
   return request(`/people/${personID}/rentals/`, "POST", { gearIds: gearIDs });
 }
 
 async function returnGear(
-  personID: string,
+  personID: PersonID,
   gear: GearToReturn[],
-  purchases: string[] = [],
+  purchases: number[] = [],
   checkNumber: string = "",
   useMitocCredit?: number,
 ) {
@@ -130,7 +125,7 @@ async function returnGear(
 }
 
 async function editPerson(
-  id: string,
+  id: PersonID,
   firstName: string,
   lastName: string,
   email: string,
@@ -144,11 +139,11 @@ async function editPerson(
   });
 }
 
-async function updatePersonGroups(id: string, groups: number[]) {
+async function updatePersonGroups(id: PersonID, groups: number[]) {
   return request(`/people/${id}/groups/`, "PUT", { groups });
 }
 
-async function addMitocCredit(id: string, amount: number) {
+async function addMitocCredit(id: PersonID, amount: number) {
   return request(`/people/${id}/credit/add/`, "PATCH", { amount });
 }
 

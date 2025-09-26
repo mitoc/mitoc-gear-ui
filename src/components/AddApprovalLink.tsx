@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 
-export function AddApprovalLink({ personId }: { personId?: string }) {
+import { PersonID } from "src/apiClient/idTypes";
+
+export function AddApprovalLink({ personId }: { personId?: PersonID }) {
   const to =
     personId == null ? "/add-approval" : `/add-approval?personId=${personId}`;
   return (
