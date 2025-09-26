@@ -1,6 +1,6 @@
+import { get, isArray, isPlainObject } from "lodash";
 import React from "react";
 import styled from "styled-components";
-import { isPlainObject, isArray, get } from "lodash";
 
 interface Item {
   id: string | number;
@@ -10,7 +10,7 @@ interface Item {
 type Column<T extends Item> = {
   key: string;
   header: string;
-  renderer?: React.ComponentType<{ item: T }>;
+  renderer?: (props: { item: T }) => React.ReactNode;
   className?: string;
   // TODO: hideOnMobile and width don't work well together
   hideOnMobile?: boolean;
@@ -113,8 +113,7 @@ function Row<T extends Item>({
 
 function renderValue<T extends Item>(col: Column<T>, item: T) {
   if (col.renderer != null) {
-    const Renderer = col.renderer;
-    return <Renderer item={item} />;
+    return col.renderer({ item });
   }
   const value = get(item, col.key);
   if (isPlainObject(value) || isArray(value)) {
