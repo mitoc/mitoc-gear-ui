@@ -36,6 +36,7 @@ export function FrequentFlyerForm({ person, onClose }: Props) {
             type="text"
             className="form-control"
             value={checkNumber}
+            maxLength={16}
             onChange={(evt) => {
               setCheckNumber(evt.target.value);
             }}
