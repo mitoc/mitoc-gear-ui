@@ -15,6 +15,7 @@ export function RequestDeskCreditPage() {
   const { data } = useGetPersonSignupsQuery({
     personID: user!.id,
     approved: false,
+    orderBy: "-date",
   });
   const [showForm, setShowForm] = useState<boolean>(true);
 

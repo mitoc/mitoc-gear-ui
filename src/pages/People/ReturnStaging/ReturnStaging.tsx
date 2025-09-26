@@ -150,6 +150,7 @@ export function ReturnStaging() {
             className="form-control sm"
             value={checkNumber}
             onChange={(evt) => setCheckNumber(evt.target.value)}
+            maxLength={16}
           ></input>
         </div>
       </label>
