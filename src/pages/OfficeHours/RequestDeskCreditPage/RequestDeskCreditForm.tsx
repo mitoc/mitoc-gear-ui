@@ -38,6 +38,7 @@ export function RequestDeskCreditForm({ onRequestSubmitted }: Props) {
   const { data, refetch } = useGetPersonSignupsQuery({
     personID: user!.id,
     approved: false,
+    orderBy: "-date",
   });
   const today = dayjs().format("YYYY-MM-DD");
 

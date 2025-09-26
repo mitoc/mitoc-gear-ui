@@ -138,7 +138,7 @@ export const gearDbApi = createApi({
       query: ({ personID, approved, page, orderBy }) => ({
         url: `/people/${personID}/office-hour-signups/`,
         params: {
-          ...(approved && { approved }),
+          ...(approved != null && { approved }),
           ...(page != null && { page }),
           ...(orderBy != null && { orderBy }),
         },
