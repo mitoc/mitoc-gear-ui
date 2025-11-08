@@ -1,4 +1,4 @@
-import { SignupID } from "./idTypes";
+import { NoteID, OfficeHourID, SignupID } from "./idTypes";
 import { PeopleGroup, PersonBase, PersonWithOfficeAccess } from "./people";
 
 export interface ListWrapper<T> {
@@ -22,7 +22,7 @@ export interface APIErrorType {
 }
 
 export interface Note {
-  id: number;
+  id: NoteID;
   note: string;
   dateInserted: string;
   author: PersonBase;
@@ -35,7 +35,7 @@ export interface Affiliations {
 }
 
 export interface OfficeHour {
-  googleId: string;
+  googleId: OfficeHourID;
   title: string;
   startTime: string;
   endTime: string;

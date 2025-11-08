@@ -1,10 +1,11 @@
 import { request } from "./client";
+import { OfficeHourID, SignupID } from "./idTypes";
 
-export async function signUp(officeHourId: string) {
+export async function signUp(officeHourId: OfficeHourID) {
   return request(`/office-hours/${officeHourId}/signup/`, "POST");
 }
 
-export async function cancelSignUp(signupId: number) {
+export async function cancelSignUp(signupId: SignupID) {
   return request(`/office-hour-signups/${signupId}/`, "DELETE");
 }
 
