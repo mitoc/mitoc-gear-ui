@@ -4,6 +4,7 @@ import React, { useContext, useState } from "react";
 
 import { RenterApproval } from "src/apiClient/approvals";
 import { GearSummary } from "src/apiClient/gear";
+import { GearItemID } from "src/apiClient/idTypes";
 import { checkoutGear, Person, Rental, returnGear } from "src/apiClient/people";
 import { TagType } from "src/redux/api";
 import { invalidateCache } from "src/redux/store";
@@ -73,7 +74,7 @@ function useMakePersonPageContext({ person, approvals }: Props) {
     return startDate.isSameOrBefore(today) && endDate.isSameOrAfter(today);
   });
 
-  const isApproved = (gearId: string, typeId: number) => {
+  const isApproved = (gearId: GearItemID, typeId: number) => {
     return activeApprovals.some(({ items }) => {
       return items.some((item) => {
         if (item.type === "specificItem") {

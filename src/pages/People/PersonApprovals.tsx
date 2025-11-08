@@ -103,7 +103,7 @@ function ApproverInfo({
   approvedBy: RenterApproval["approvedBy"];
 }) {
   return (
-    <PersonLink id={String(approvedBy.id)}>
+    <PersonLink id={approvedBy.id}>
       {approvedBy.firstName} {approvedBy.lastName}
     </PersonLink>
   );

@@ -2,9 +2,9 @@ import { useCallback, useEffect, useRef } from "react";
 import { Link, LinkProps } from "react-router-dom";
 
 type Props = {
-  id: string;
+  id: string | number;
   fetchAction: () => void;
-} & LinkProps;
+} & Omit<LinkProps, "id">;
 
 const delay = 150;
 

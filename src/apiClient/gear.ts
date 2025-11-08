@@ -1,9 +1,10 @@
 import { request } from "./client";
+import { GearItemID, GearTypeID, LocationID, PurchasableID } from "./idTypes";
 import { PersonBase, PersonSummary } from "./people";
 import { ListWrapper, Note } from "./types";
 
 export interface GearSummary {
-  id: string;
+  id: GearItemID;
   available: boolean;
   broken: string;
   // TODO: This is weird, we shouldn't have the rentals in there
@@ -19,7 +20,7 @@ export interface GearSummary {
   type: GearTypeWithFee;
   picture?: string;
   location: {
-    id: number;
+    id: LocationID;
     shorthand: string;
   };
 }
@@ -36,14 +37,14 @@ export interface GearRental {
 }
 
 export interface PurchasableItem {
-  id: string;
+  id: PurchasableID;
   price: number;
   name: string;
 }
 
 /** The minimal representation of a gear type*/
 export interface GearTypeBase {
-  id: number;
+  id: GearTypeID;
   typeName: string;
 }
 
@@ -63,49 +64,49 @@ export interface GearType extends GearTypeWithShorthand {
 }
 
 export interface GearLocation {
-  id: number;
+  id: LocationID;
   shorthand: string;
 }
 
 async function getGearRentalHistory(
-  id: string,
+  id: GearItemID,
   page?: number,
 ): Promise<ListWrapper<GearRental>> {
   return request(`/gear/${id}/rentals/`, "GET", { ...(page && { page }) });
 }
 
-async function addNote(id: string, note: string) {
+async function addNote(id: GearItemID, note: string) {
   return request(`/gear/${id}/note/`, "POST", {
     note,
   });
 }
 
-async function markRetired(id: string, note?: string) {
+async function markRetired(id: GearItemID, note?: string) {
   return request(`/gear/${id}/retired/`, "POST", {
     note,
   });
 }
-async function markBroken(id: string, note: string) {
+async function markBroken(id: GearItemID, note: string) {
   return request(`/gear/${id}/broken/`, "POST", {
     note,
   });
 }
-async function markMissing(id: string, note?: string) {
+async function markMissing(id: GearItemID, note?: string) {
   return request(`/gear/${id}/missing/`, "POST", {
     note,
   });
 }
-async function markUnretired(id: string, note?: string) {
+async function markUnretired(id: GearItemID, note?: string) {
   return request(`/gear/${id}/retired/`, "DELETE", {
     note,
   });
 }
-async function markFixed(id: string, note?: string) {
+async function markFixed(id: GearItemID, note?: string) {
   return request(`/gear/${id}/broken/`, "DELETE", {
     note,
   });
 }
-async function markFound(id: string, note?: string) {
+async function markFound(id: GearItemID, note?: string) {
   return request(`/gear/${id}/missing/`, "DELETE", {
     note,
   });
@@ -129,7 +130,7 @@ async function createGear(
 }
 
 async function editGearItem(
-  id: string,
+  id: GearItemID,
   item: {
     specification?: string;
     description?: string;

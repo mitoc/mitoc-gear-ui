@@ -13,6 +13,7 @@ import type {
   PurchasableItem,
 } from "src/apiClient/gear";
 import { getPagesCount } from "src/apiClient/getPagesCount";
+import { PersonID } from "src/apiClient/idTypes";
 import { PeopleGroup, Person, PersonSummary } from "src/apiClient/people";
 import {
   Affiliations,
@@ -43,7 +44,7 @@ export const gearDbApi = createApi({
       // Keep config in cache
       keepUnusedDataFor: 24 * 60 * 60,
     }),
-    getPerson: builder.query<Person, string>({
+    getPerson: builder.query<Person, PersonID>({
       query: (personID) => `people/${personID}/`,
       providesTags: [TagType.People],
     }),
@@ -129,7 +130,7 @@ export const gearDbApi = createApi({
     getPersonSignups: builder.query<
       ListWrapper<PersonSignup>,
       {
-        personID: string;
+        personID: PersonID;
         approved?: boolean;
         page?: number;
         orderBy?: "date" | "-date";
@@ -178,10 +179,10 @@ export const gearDbApi = createApi({
     }),
     getRenterApprovals: builder.query<
       ListWrapper<RenterApproval>,
-      { personID: string; past: boolean; future?: boolean }
+      { personID: PersonID; past: boolean; future?: boolean }
     >({
       query: ({ personID, past }) => ({
-        url: `people/${personID}/approvals`,
+        url: `people/${personID}/approvals/`,
         params: {
           past,
         },

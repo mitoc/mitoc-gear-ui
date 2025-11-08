@@ -2,6 +2,7 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import { countBy } from "lodash";
 import { useState } from "react";
 
+import { PersonID } from "src/apiClient/idTypes";
 import { PersonSummary } from "src/apiClient/people";
 import { useGetPersonQuery, usePeopleList } from "src/redux/api";
 
@@ -9,7 +10,7 @@ import { Select } from "./Select";
 import { useDebounce } from "./useDebounce";
 
 type Props = {
-  value: string | undefined;
+  value: PersonID | undefined;
   onChange: (person: PersonSummary | null | undefined) => void;
   className?: string;
   invalid?: boolean;

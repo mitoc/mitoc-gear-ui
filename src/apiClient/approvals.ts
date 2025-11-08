@@ -2,10 +2,11 @@ import { toIsoDate } from "src/lib/fmtDate";
 
 import { request } from "./client";
 import { GearTypeWithShorthand } from "./gear";
+import { ApprovalID, GearItemID, PersonID } from "./idTypes";
 import { PersonBase } from "./people";
 
 export type Approval = {
-  id: number;
+  id: ApprovalID;
   startDate: string;
   endDate: string;
   note: string;
@@ -17,7 +18,7 @@ export type Approval = {
 export type RenterApproval = Omit<Approval, "renter">;
 
 interface GearItem {
-  id: string;
+  id: GearItemID;
   type: GearTypeWithShorthand;
 }
 
@@ -57,7 +58,7 @@ export type CreateNewApprovalArgs = {
   startDate: Date;
   endDate: Date;
   note?: string;
-  renter: string;
+  renter: PersonID;
   items: ApprovalItemToCreate[];
 };
 

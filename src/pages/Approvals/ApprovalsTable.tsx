@@ -76,7 +76,7 @@ function ApproverCell({ item: approval }: { item: Approval }) {
 
 function PersonCell({ person }: { person: PersonBase }) {
   return (
-    <PersonLink id={String(person.id)}>
+    <PersonLink id={person.id}>
       {person.firstName} {person.lastName}
     </PersonLink>
   );

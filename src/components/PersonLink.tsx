@@ -1,10 +1,11 @@
 import { LinkProps } from "react-router-dom";
 
+import { PersonID } from "src/apiClient/idTypes";
 import { gearDbApi } from "src/redux/api";
 
 import { PrefetchLink } from "./PrefetchLink";
 
-type Props = { id: string } & Omit<LinkProps, "to">;
+type Props = { id: PersonID } & Omit<LinkProps, "to" | "id">;
 
 export function PersonLink({ id, ...otherProps }: Props) {
   const fetchPerson = gearDbApi.usePrefetch("getPerson");
@@ -12,8 +13,7 @@ export function PersonLink({ id, ...otherProps }: Props) {
     <PrefetchLink
       {...otherProps}
       id={id}
-      // TODO: id should be a string
-      fetchAction={() => fetchPerson(String(id))}
+      fetchAction={() => fetchPerson(id)}
       to={`/people/${id}/`}
     />
   );
