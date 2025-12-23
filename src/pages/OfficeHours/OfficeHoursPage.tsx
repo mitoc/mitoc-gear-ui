@@ -251,7 +251,10 @@ function OfficeHourBlock({ officeHour }: { officeHour: OfficeHour }) {
 }
 
 function formatDateTime(date: string) {
-  return dayjs(date).format("ddd MM/DD YYYY, ha");
+  const dayjsDate = dayjs(date);
+  const minutes = dayjsDate.minute();
+  const timeFormat = minutes === 0 ? "ha" : "h:mma";
+  return dayjsDate.format(`ddd MM/DD YYYY, ${timeFormat}`);
 }
 
 const WeekSection = styled.div`
