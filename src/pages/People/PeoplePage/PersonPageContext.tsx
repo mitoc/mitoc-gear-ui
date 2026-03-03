@@ -6,6 +6,7 @@ import { RenterApproval } from "src/apiClient/approvals";
 import { GearSummary } from "src/apiClient/gear";
 import { GearItemID } from "src/apiClient/idTypes";
 import { checkoutGear, Person, Rental, returnGear } from "src/apiClient/people";
+import { useBeforeUnloadWarning } from "src/hooks/useBeforeUnloadWarning";
 import { TagType } from "src/redux/api";
 import { invalidateCache } from "src/redux/store";
 
@@ -112,6 +113,12 @@ function useMakePersonPageContext({ person, approvals }: Props) {
   const potentialCreditToSpend = Math.min(person.mitocCredit, totalDue);
   const creditToSpent = shouldUseMitocCredit ? potentialCreditToSpend : 0;
   const paymentDue = totalDue - creditToSpent;
+
+  useBeforeUnloadWarning(
+    checkoutBasketBase.items.length > 0 ||
+      returnBasketBase.items.length > 0 ||
+      purchaseBasket.items.length > 0,
+  );
 
   return {
     person,
