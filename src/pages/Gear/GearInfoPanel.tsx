@@ -48,7 +48,7 @@ export function GearInfoPanel({ gearItem }: Props) {
           ⚠️ This item is restricted! See the{" "}
           <strong>
             {newApprovalUI ? (
-              <Link to="/approvals">Restricted gear approvals</Link>
+              <Link to="/approvals">Approvals</Link>
             ) : (
               <a href={restrictedDocUrl} target="_blank" rel="noreferrer">
                 Restricted gear doc
