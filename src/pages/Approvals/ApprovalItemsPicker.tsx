@@ -52,12 +52,14 @@ export function ApprovalItemsPicker({ alreadyApprovedItems }: Props) {
 
   return (
     <fieldset>
-      Items approved:
+      <legend className="h6 fw-semibold text-secondary mb-3">
+        Items approved
+      </legend>
       {itemFields.map((field, index) => {
         const conflict = getConflictForItem(index);
         return (
-          <StyledItem key={field.id} className="p-2 mb-3 mt-3">
-            <div className="d-flex justify-content-between mb-3">
+          <StyledItem key={field.id}>
+            <div className="d-flex justify-content-between align-items-center mb-3">
               <strong>Item #{index + 1}</strong>
               <div className="d-flex align-items-center gap-2">
                 {conflict && (
@@ -71,9 +73,7 @@ export function ApprovalItemsPicker({ alreadyApprovedItems }: Props) {
                     type="button"
                     className="btn btn-outline-secondary"
                     onClick={() => remove(index)}
-                    style={{
-                      borderColor: "#ced4da",
-                    }}
+                    aria-label="Remove item"
                   >
                     <FontAwesomeIcon icon={faClose} />
                   </button>
@@ -121,6 +121,7 @@ export function ApprovalItemsPicker({ alreadyApprovedItems }: Props) {
                   type="number"
                   name={`items.${index}.item.quantity`}
                   step={1}
+                  inputStyle={{ width: "120px" }}
                   options={{
                     valueAsNumber: true,
                   }}
@@ -162,13 +163,13 @@ export function ApprovalItemsPicker({ alreadyApprovedItems }: Props) {
           </StyledItem>
         );
       })}
-      <div className="mt-2 d-flex justify-content-end">
+      <div className="mt-2">
         <button
-          className="btn btn-outline-primary"
+          className="btn btn-link p-0 text-decoration-none fw-medium"
           onClick={() => append(defaultItem)}
           type="button"
         >
-          Approve another item
+          + Approve another item
         </button>
       </div>
     </fieldset>
@@ -215,8 +216,14 @@ function ApprovalTypePicker({
 }
 
 const StyledItem = styled.div`
-  margin-left: 30px;
-  border: solid 1px #ced4da;
-  border-radius: 0.375rem;
-  background-color: #f8f8f8;
+  border: solid 1px #dee2e6;
+  border-radius: 0.5rem;
+  background-color: #f8f9fa;
+  padding: 1.25rem !important;
+  margin-bottom: 1rem !important;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
 `;

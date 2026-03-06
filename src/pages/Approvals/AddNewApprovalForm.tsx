@@ -59,68 +59,86 @@ export function AddNewApprovalForm({ onSubmit }: Props) {
 
   return (
     <Form onSubmit={handleSubmit} form={formObject}>
-      <LabeledInput
-        title="Renter:"
-        name="renter"
-        renderComponent={({ value, onChange, invalid }) => {
-          return (
-            <PersonSelect
-              value={value}
-              onChange={(person) => onChange(person?.id)}
-              invalid={invalid}
+      <div className="mb-4 pb-3 border-bottom">
+        <LabeledInput
+          title="Renter:"
+          name="renter"
+          renderComponent={({ value, onChange, invalid }) => {
+            return (
+              <PersonSelect
+                value={value}
+                onChange={(person) => onChange(person?.id)}
+                invalid={invalid}
+              />
+            );
+          }}
+          options={{
+            required: true,
+          }}
+        />
+        <div className="row g-3">
+          <div className="col-md-6">
+            <LabeledInput
+              title="Start Date:"
+              name="startDate"
+              renderComponent={({ value, onChange, onBlur, invalid }) => {
+                return (
+                  <DatePicker
+                    selected={value}
+                    onChange={(val) => onChange(val ?? undefined)}
+                    className={`form-control ${invalid ? "is-invalid" : ""}`}
+                    wrapperClassName={invalid ? "is-invalid" : ""}
+                    onBlur={onBlur}
+                  />
+                );
+              }}
+              options={{
+                required: true,
+              }}
             />
-          );
-        }}
-        options={{
-          required: true,
-        }}
-      />
-      <LabeledInput
-        title="Start Date:"
-        name="startDate"
-        renderComponent={({ value, onChange, onBlur, invalid }) => {
-          return (
-            <DatePicker
-              selected={value}
-              onChange={(val) => onChange(val ?? undefined)}
-              className={`form-control ${invalid ? "is-invalid" : ""}`}
-              wrapperClassName={invalid ? "is-invalid" : ""}
-              onBlur={onBlur}
+          </div>
+          <div className="col-md-6">
+            <LabeledInput
+              title="End Date:"
+              name="endDate"
+              renderComponent={({ value, onChange, onBlur, invalid }) => {
+                return (
+                  <DatePicker
+                    selected={value}
+                    onChange={(val) => onChange(val ?? undefined)}
+                    className={`form-control ${invalid ? "is-invalid" : ""}`}
+                    wrapperClassName={invalid ? "is-invalid" : ""}
+                    onBlur={onBlur}
+                  />
+                );
+              }}
+              options={{
+                required: true,
+                validate: (value) => {
+                  if (startDate != null && value != null && value < startDate) {
+                    return "The approval end date cannot be before the start date.";
+                  }
+                },
+              }}
             />
-          );
-        }}
-        options={{
-          required: true,
-        }}
-      />
-      <LabeledInput
-        title="End Date:"
-        name="endDate"
-        renderComponent={({ value, onChange, onBlur, invalid }) => {
-          return (
-            <DatePicker
-              selected={value}
-              onChange={(val) => onChange(val ?? undefined)}
-              className={`form-control ${invalid ? "is-invalid" : ""}`}
-              wrapperClassName={invalid ? "is-invalid" : ""}
-              onBlur={onBlur}
-            />
-          );
-        }}
-        options={{
-          required: true,
-          validate: (value) => {
-            if (startDate != null && value != null && value < startDate) {
-              return "The approval end date cannot be before the start date.";
-            }
-          },
-        }}
-      />
-      <ApprovalItemsPicker alreadyApprovedItems={alreadyApprovedItems} />
+          </div>
+        </div>
+      </div>
 
-      <LabeledInput title="Note:" as="textarea" name="note" />
+      <div className="mb-4 pb-3 border-bottom">
+        <ApprovalItemsPicker alreadyApprovedItems={alreadyApprovedItems} />
+      </div>
 
-      <div className="d-flex justify-content-between mb-3">
+      <div className="mb-4">
+        <LabeledInput
+          title="Note:"
+          as="textarea"
+          name="note"
+          placeholder="Add any additional notes or special instructions..."
+        />
+      </div>
+
+      <div className="d-flex justify-content-between pt-3 mt-3 border-top">
         <button
           type="button"
           className="btn btn-outline-secondary"
