@@ -34,7 +34,9 @@ const GearItemOption = (props: OptionProps<GearOption>) => {
           <span
             className={
               data.badge.className ||
-              `badge bg-${data.badge.variant || "warning"} text-dark ms-2 flex-shrink-0`
+              `badge bg-${
+                data.badge.variant || "warning"
+              } text-dark ms-2 flex-shrink-0`
             }
           >
             {data.badge.text}
