@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { flow, keyBy, map, mapValues, sum } from "lodash";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { RenterApproval } from "src/apiClient/approvals";
 import { GearSummary } from "src/apiClient/gear";
