@@ -30,26 +30,55 @@ export function ApprovalItemsPicker({ alreadyApprovedItems }: Props) {
     name: "items",
   });
   const items = formObject.watch("items");
+
+  // Helper function to check if an item has a conflict
+  const getConflictForItem = (itemIndex: number) => {
+    const item = items[itemIndex];
+    if (item.type !== ApprovalItemType.specificItem) {
+      return null;
+    }
+
+    const gearItemId = item.item.gearItem;
+    if (!gearItemId) {
+      return null;
+    }
+
+    const approvedItem = alreadyApprovedItems.find(
+      (approved) => approved.id === gearItemId,
+    );
+
+    return approvedItem || null;
+  };
+
   return (
     <fieldset>
       Items approved:
       {itemFields.map((field, index) => {
+        const conflict = getConflictForItem(index);
         return (
           <StyledItem key={field.id} className="p-2 mb-3 mt-3">
             <div className="d-flex justify-content-between mb-3">
               <strong>Item #{index + 1}</strong>
-              {items.length > 1 && (
-                <button
-                  type="button"
-                  className="btn btn-outline-secondary"
-                  onClick={() => remove(index)}
-                  style={{
-                    borderColor: "#ced4da",
-                  }}
-                >
-                  <FontAwesomeIcon icon={faClose} />
-                </button>
-              )}
+              <div className="d-flex align-items-center gap-2">
+                {conflict && (
+                  <span className="badge bg-warning text-dark">
+                    ‼️ Approved for {conflict.renter.firstName}{" "}
+                    {conflict.renter.lastName}
+                  </span>
+                )}
+                {items.length > 1 && (
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => remove(index)}
+                    style={{
+                      borderColor: "#ced4da",
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faClose} />
+                  </button>
+                )}
+              </div>
             </div>
             <Controller
               control={formObject.control}
@@ -110,7 +139,7 @@ export function ApprovalItemsPicker({ alreadyApprovedItems }: Props) {
                       filters={{ restricted: true }}
                       renderBadge={(gear) => {
                         const approvedItem = alreadyApprovedItems.find(
-                          (item) => item.id === gear.id
+                          (item) => item.id === gear.id,
                         );
 
                         if (!approvedItem) {
@@ -118,7 +147,7 @@ export function ApprovalItemsPicker({ alreadyApprovedItems }: Props) {
                         }
 
                         return {
-                          text: `Approved to ${approvedItem.renter.firstName} ${approvedItem.renter.lastName}`,
+                          text: `‼️ Approved for ${approvedItem.renter.firstName} ${approvedItem.renter.lastName}`,
                           variant: "warning",
                         };
                       }}
