@@ -108,7 +108,20 @@ export function ApprovalItemsPicker({ alreadyApprovedItems }: Props) {
                       onChange={(val) => onChange(val?.id)}
                       invalid={invalid}
                       filters={{ restricted: true }}
-                      alreadyApprovedItems={alreadyApprovedItems}
+                      renderBadge={(gear) => {
+                        const approvedItem = alreadyApprovedItems.find(
+                          (item) => item.id === gear.id
+                        );
+
+                        if (!approvedItem) {
+                          return undefined;
+                        }
+
+                        return {
+                          text: `Approved to ${approvedItem.renter.firstName} ${approvedItem.renter.lastName}`,
+                          variant: "warning",
+                        };
+                      }}
                     />
                   );
                 }}

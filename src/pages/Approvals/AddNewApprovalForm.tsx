@@ -57,9 +57,6 @@ export function AddNewApprovalForm({ onSubmit }: Props) {
     endDate,
   );
 
-  console.log("existingApprovals", existingApprovals?.results ?? []);
-  console.log("alreadyApprovedItemIds", alreadyApprovedItems);
-
   return (
     <Form onSubmit={handleSubmit} form={formObject}>
       <LabeledInput

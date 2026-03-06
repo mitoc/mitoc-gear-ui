@@ -2,16 +2,21 @@ import { useState } from "react";
 import { components, createFilter, OptionProps } from "react-select";
 
 import { GearSummary } from "src/apiClient/gear";
-import { PersonBase } from "src/apiClient/people";
 import { useGearList } from "src/redux/api";
 
 import { Select } from "./Select";
 import { useDebounce } from "./useDebounce";
 
+export type OptionBadge = {
+  text: string;
+  variant?: "warning" | "danger" | "info" | "success";
+  className?: string;
+};
+
 type GearOption = {
   value: string;
   label: string;
-  approvedToRenter?: PersonBase;
+  badge?: OptionBadge;
 } & GearSummary;
 
 const GearItemOption = (props: OptionProps<GearOption>) => {
@@ -25,10 +30,14 @@ const GearItemOption = (props: OptionProps<GearOption>) => {
             <div className="opacity-50 small">{data.specification}</div>
           )}
         </div>
-        {data.approvedToRenter && (
-          <span className="badge bg-warning text-dark ms-2 flex-shrink-0">
-            Approved to {data.approvedToRenter.firstName}{" "}
-            {data.approvedToRenter.lastName}
+        {data.badge && (
+          <span
+            className={
+              data.badge.className ||
+              `badge bg-${data.badge.variant || "warning"} text-dark ms-2 flex-shrink-0`
+            }
+          >
+            {data.badge.text}
           </span>
         )}
       </div>
@@ -56,7 +65,7 @@ type Props = {
   className?: string;
   invalid?: boolean;
   filters?: { restricted?: boolean };
-  alreadyApprovedItems?: { id: string; renter: PersonBase }[];
+  renderBadge?: (gear: GearSummary) => OptionBadge | undefined;
 };
 
 export function GearItemSelect({
@@ -65,7 +74,7 @@ export function GearItemSelect({
   invalid,
   onChange,
   value,
-  alreadyApprovedItems = [],
+  renderBadge,
 }: Props) {
   const [query, setInput] = useState<string>("");
   const { pending, fn: debouncedSetInput } = useDebounce(setInput, 250);
@@ -77,14 +86,12 @@ export function GearItemSelect({
 
   const options: GearOption[] =
     gearList?.map((gear) => {
-      const approvedItem = alreadyApprovedItems.find(
-        (item) => item.id === gear.id,
-      );
+      const badge = renderBadge?.(gear);
       return {
         value: gear.id,
         label: gear.id,
         ...gear,
-        approvedToRenter: approvedItem?.renter,
+        ...(badge && { badge }),
       };
     }) ?? [];
 
