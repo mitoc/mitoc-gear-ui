@@ -4,6 +4,8 @@ import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import styled from "styled-components";
 
 import { ApprovalItemType, PartialApprovalItem } from "src/apiClient/approvals";
+import { GearItemID } from "src/apiClient/idTypes";
+import { PersonBase } from "src/apiClient/people";
 import { GearItemSelect } from "src/components/GearItemSelect";
 import { GearTypeSelect } from "src/components/GearTypeSelect";
 import { makeLabeledInput } from "src/components/Inputs/LabeledInput";
@@ -13,7 +15,11 @@ import { FormValues } from "./types";
 
 const LabeledInput = makeLabeledInput<FormValues>();
 
-export function ApprovalItemsPicker() {
+type Props = {
+  alreadyApprovedItems: { id: GearItemID; renter: PersonBase }[];
+};
+
+export function ApprovalItemsPicker({ alreadyApprovedItems }: Props) {
   const formObject = useFormContext<FormValues>();
   const {
     fields: itemFields,
@@ -102,6 +108,9 @@ export function ApprovalItemsPicker() {
                       onChange={(val) => onChange(val?.id)}
                       invalid={invalid}
                       filters={{ restricted: true }}
+                      alreadyApprovedItemIds={alreadyApprovedItems.map(
+                        (a) => a.id,
+                      )}
                     />
                   );
                 }}

@@ -10,16 +10,26 @@ import { useDebounce } from "./useDebounce";
 type GearOption = {
   value: string;
   label: string;
+  isAlreadyApproved?: boolean;
 } & GearSummary;
 
 const GearItemOption = (props: OptionProps<GearOption>) => {
   const { data } = props;
   return (
     <components.Option {...props}>
-      <span>{data.label}</span>
-      {data.specification && (
-        <div className="opacity-50 small">{data.specification}</div>
-      )}
+      <div className="d-flex justify-content-between align-items-start">
+        <div>
+          <span>{data.label}</span>
+          {data.specification && (
+            <div className="opacity-50 small">{data.specification}</div>
+          )}
+        </div>
+        {data.isAlreadyApproved && (
+          <span className="badge bg-warning text-dark ms-2">
+            Already approved
+          </span>
+        )}
+      </div>
     </components.Option>
   );
 };
@@ -44,6 +54,7 @@ type Props = {
   className?: string;
   invalid?: boolean;
   filters?: { restricted?: boolean };
+  alreadyApprovedItemIds?: string[];
 };
 
 export function GearItemSelect({
@@ -52,6 +63,7 @@ export function GearItemSelect({
   invalid,
   onChange,
   value,
+  alreadyApprovedItemIds = [],
 }: Props) {
   const [query, setInput] = useState<string>("");
   const { pending, fn: debouncedSetInput } = useDebounce(setInput, 250);
@@ -67,6 +79,7 @@ export function GearItemSelect({
         value: gear.id,
         label: gear.id,
         ...gear,
+        isAlreadyApproved: alreadyApprovedItemIds.includes(gear.id),
       };
     }) ?? [];
 
