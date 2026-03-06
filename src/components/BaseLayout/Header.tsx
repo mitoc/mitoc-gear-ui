@@ -79,7 +79,7 @@ function LoggedInHeader({ user }: { user: User }) {
           </Link>
           {newApprovalUI ? (
             <Link className="nav-link" to="/approvals">
-              Restricted gear
+              Approvals
             </Link>
           ) : (
             <a

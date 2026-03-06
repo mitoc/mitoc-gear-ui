@@ -12,7 +12,7 @@ import { useConfig } from "src/redux/hooks";
 import { ApprovalsTable } from "./ApprovalsTable";
 
 export default function ApprovalsPage() {
-  useSetPageTitle("Restricted gear");
+  useSetPageTitle("Approvals");
   const { isApprover } = usePermissions();
   const [showExpired, setShowExpired] = useState<boolean>(false);
   const { restrictedDocUrl } = useConfig();
@@ -23,7 +23,7 @@ export default function ApprovalsPage() {
   const nbPages = data ? getPagesCount(data) : undefined;
   return (
     <>
-      <h1>Restricted Gear Approvals</h1>
+      <h1>Approvals</h1>
       <p>
         The old{" "}
         <a href={restrictedDocUrl} target="_blank" rel="noreferrer">
