@@ -108,9 +108,7 @@ export function ApprovalItemsPicker({ alreadyApprovedItems }: Props) {
                       onChange={(val) => onChange(val?.id)}
                       invalid={invalid}
                       filters={{ restricted: true }}
-                      alreadyApprovedItemIds={alreadyApprovedItems.map(
-                        (a) => a.id,
-                      )}
+                      alreadyApprovedItems={alreadyApprovedItems}
                     />
                   );
                 }}
