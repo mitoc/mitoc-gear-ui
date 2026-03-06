@@ -89,7 +89,13 @@ export function ApprovalItemsPicker({ alreadyApprovedItems }: Props) {
                   <ApprovalTypePicker
                     value={value}
                     onChange={(v) => {
-                      formObject.resetField(`items.${index}`);
+                      if (v === ApprovalItemType.specificItem) {
+                        formObject.setValue(
+                          `items.${index}`,
+                          defaultSpecificItem,
+                        );
+                      }
+                      formObject.setValue(`items.${index}`, defaultItem);
                       onChange(v);
                     }}
                     onBlur={onBlur}
@@ -123,6 +129,7 @@ export function ApprovalItemsPicker({ alreadyApprovedItems }: Props) {
                   step={1}
                   inputStyle={{ width: "120px" }}
                   options={{
+                    required: true,
                     valueAsNumber: true,
                   }}
                 />
@@ -181,6 +188,13 @@ export const defaultItem: PartialApprovalItem = {
   item: {
     quantity: 1,
     gearType: undefined,
+  },
+};
+
+const defaultSpecificItem: PartialApprovalItem = {
+  type: ApprovalItemType.specificItem,
+  item: {
+    gearItem: undefined,
   },
 };
 
