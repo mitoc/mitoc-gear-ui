@@ -130,12 +130,7 @@ export function AddNewApprovalForm({ onSubmit }: Props) {
       </div>
 
       <div className="mb-4">
-        <LabeledInput
-          title="Note:"
-          as="textarea"
-          name="note"
-          placeholder="Add any additional notes or special instructions..."
-        />
+        <LabeledInput title="Note:" as="textarea" name="note" />
       </div>
 
       <div className="d-flex justify-content-between pt-3 mt-3 border-top">
