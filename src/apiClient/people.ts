@@ -53,9 +53,18 @@ export interface Rental {
   type: GearTypeWithFee;
 }
 
+export type FeeStatus = "charge" | "waived" | "coveredByTrip";
+
+const feeStatusCodes: Record<FeeStatus, string> = {
+  charge: "NW",
+  waived: "WF",
+  coveredByTrip: "TF",
+};
+
 export interface GearToReturn {
   id: GearItemID;
   daysCharged?: number;
+  feeStatus: FeeStatus;
 }
 
 export type CreatePersonArgs = {
@@ -119,12 +128,18 @@ async function returnGear(
   purchases: PurchaseInput[] = [],
   checkNumber: string = "",
   useMitocCredit?: number,
+  totalPaid?: number,
 ) {
   return request(`/people/${personID}/return/`, "POST", {
-    gear,
+    gear: gear.map(({ id, daysCharged, feeStatus }) => ({
+      id,
+      daysCharged,
+      feeStatus: feeStatusCodes[feeStatus],
+    })),
     checkNumber,
     purchases,
     useMitocCredit,
+    totalPaid,
   });
 }
 

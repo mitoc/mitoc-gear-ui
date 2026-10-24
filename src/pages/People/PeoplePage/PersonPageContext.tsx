@@ -5,7 +5,13 @@ import React, { useContext, useState } from "react";
 import { RenterApproval } from "src/apiClient/approvals";
 import { GearSummary } from "src/apiClient/gear";
 import { GearItemID } from "src/apiClient/idTypes";
-import { checkoutGear, Person, Rental, returnGear } from "src/apiClient/people";
+import {
+  checkoutGear,
+  FeeStatus,
+  Person,
+  Rental,
+  returnGear,
+} from "src/apiClient/people";
 import { useBeforeUnloadWarning } from "src/hooks/useBeforeUnloadWarning";
 import { TagType } from "src/redux/api";
 import { invalidateCache } from "src/redux/store";
@@ -60,7 +66,7 @@ function useMakePersonPageContext({ person, approvals }: Props) {
 
   const {
     rentals: rentalsWithOverride,
-    toggleWaiveFee,
+    setFeeStatus,
     overrideDaysOut,
   } = useReturnState(
     returnBasketBase.items,
@@ -100,7 +106,7 @@ function useMakePersonPageContext({ person, approvals }: Props) {
 
   const calculatedTotalRentals = sum(
     map(rentalsWithOverride, (item) => {
-      return item.waived
+      return item.feeStatus !== "charge"
         ? 0
         : item.daysOutOverride != null
           ? item.daysOutOverride * item.type.rentalAmount
@@ -132,7 +138,7 @@ function useMakePersonPageContext({ person, approvals }: Props) {
     returnBasket: {
       ...returnBasketBase,
       rentalsWithOverride,
-      toggleWaiveFee,
+      setFeeStatus,
       overrideDaysOut,
       submit(checkNumber: string) {
         return returnGear(
@@ -143,6 +149,7 @@ function useMakePersonPageContext({ person, approvals }: Props) {
               daysCharged:
                 rentalsWithOverride[rental.id].daysOutOverride ??
                 rental.weeksOut,
+              feeStatus: rentalsWithOverride[rental.id].feeStatus,
             };
           }),
           purchaseBasket.items.map((p) =>
@@ -152,6 +159,7 @@ function useMakePersonPageContext({ person, approvals }: Props) {
           ),
           checkNumber,
           creditToSpent,
+          paymentDue,
         ).then(() => {
           returnBasketBase.clear();
           purchaseBasket.clear();
@@ -185,7 +193,10 @@ function useMakePersonPageContext({ person, approvals }: Props) {
 
 type ReturnState = Record<
   string,
-  { waived?: boolean; daysOutOverride: number | null }
+  {
+    feeStatus?: FeeStatus;
+    daysOutOverride: number | null;
+  }
 >;
 
 function useReturnState(rentalsToReturn: Rental[], waiveByDefault?: boolean) {
@@ -196,17 +207,17 @@ function useReturnState(rentalsToReturn: Rental[], waiveByDefault?: boolean) {
     (r) =>
       mapValues(r, (rental, id) => ({
         ...rental,
-        ...(waiveByDefault && { waived: true }),
+        feeStatus: (waiveByDefault ? "waived" : "charge") as FeeStatus,
         ...(state[id] ?? {}),
       })),
   )(rentalsToReturn);
 
-  const toggleWaiveFee = (id: string, value: boolean) => {
+  const setFeeStatus = (id: string, status: FeeStatus) => {
     setState((state) => ({
       ...state,
       [id]: {
         ...(state[id] ?? {}),
-        waived: value,
+        feeStatus: status,
       },
     }));
   };
@@ -221,5 +232,5 @@ function useReturnState(rentalsToReturn: Rental[], waiveByDefault?: boolean) {
     }));
   };
 
-  return { rentals, toggleWaiveFee, overrideDaysOut };
+  return { rentals, setFeeStatus, overrideDaysOut };
 }
