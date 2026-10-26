@@ -129,15 +129,21 @@ export function ReturnStaging() {
               </tr>
             </thead>
             <tbody>
-              {purchaseBasket.items.map(({ id, item: { name, price } }) => (
-                <tr key={id}>
-                  <td>{name}</td>
-                  <td>{fmtAmount(price)}</td>
-                  <td className="text-end align-middle">
-                    <RemoveButton onClick={() => purchaseBasket.remove(id)} />
-                  </td>
-                </tr>
-              ))}
+              {purchaseBasket.items.map((p) => {
+                const name = p.kind === "catalog" ? p.item.name : p.description;
+                const price = p.kind === "catalog" ? p.item.price : p.price;
+                return (
+                  <tr key={p.id}>
+                    <td>{name}</td>
+                    <td>{fmtAmount(price)}</td>
+                    <td className="text-end align-middle">
+                      <RemoveButton
+                        onClick={() => purchaseBasket.remove(p.id)}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </>

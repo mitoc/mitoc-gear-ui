@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import { SearchTextField } from "src/components/Inputs/TextField";
+import { NumberField } from "src/components/Inputs/NumberField";
+import { SearchTextField, TextField } from "src/components/Inputs/TextField";
 import { fmtAmount } from "src/lib/fmtNumber";
 import { uniqueID } from "src/lib/uniqueID";
 import { useGetPurchasablesQuery } from "src/redux/api";
@@ -11,6 +12,24 @@ export function BuyGear() {
   const { data: items = [] } = useGetPurchasablesQuery();
   const { purchaseBasket } = usePersonPageContext();
   const [query, setQuery] = useState<string>("");
+  const [customDescription, setCustomDescription] = useState<string>("");
+  const [customPrice, setCustomPrice] = useState<number | null>(null);
+
+  const customValid =
+    customDescription.trim() !== "" && customPrice !== null && customPrice > 0;
+
+  const addCustomPurchase = () => {
+    if (!customValid) return;
+    purchaseBasket.add({
+      id: uniqueID(),
+      kind: "custom",
+      description: customDescription.trim(),
+      price: customPrice!,
+    });
+    setCustomDescription("");
+    setCustomPrice(null);
+  };
+
   return (
     <div className="border rounded-2 p-2 bg-light">
       <h3 className="mb-4">Buy gear</h3>
@@ -38,6 +57,30 @@ export function BuyGear() {
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <td className="text-center">
+              <button
+                className="btn btn-outline-primary w-100 h-100"
+                onClick={addCustomPurchase}
+                disabled={!customValid}
+              >
+                Add
+              </button>
+            </td>
+            <td>
+              <TextField
+                value={customDescription}
+                onChange={setCustomDescription}
+                placeholder="Other (describe)"
+                onKeyDown={(evt) => {
+                  if (evt.key === "Enter") addCustomPurchase();
+                }}
+              />
+            </td>
+            <td>
+              <NumberField value={customPrice} onChange={setCustomPrice} />
+            </td>
+          </tr>
           {items
             .filter((item) =>
               item.name.toLowerCase().includes(query.toLowerCase()),
@@ -50,7 +93,11 @@ export function BuyGear() {
                     <button
                       className="btn btn-outline-primary w-100 h-100"
                       onClick={() =>
-                        purchaseBasket.add({ id: uniqueID(), item })
+                        purchaseBasket.add({
+                          id: uniqueID(),
+                          kind: "catalog",
+                          item,
+                        })
                       }
                     >
                       Buy
