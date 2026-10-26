@@ -143,8 +143,8 @@ async function updatePersonGroups(id: PersonID, groups: number[]) {
   return request(`/people/${id}/groups/`, "PUT", { groups });
 }
 
-async function addMitocCredit(id: PersonID, amount: number) {
-  return request(`/people/${id}/credit/add/`, "PATCH", { amount });
+async function addMitocCredit(id: PersonID, amount: number, note: string) {
+  return request(`/people/${id}/credit/add/`, "PATCH", { amount, note });
 }
 
 export {
