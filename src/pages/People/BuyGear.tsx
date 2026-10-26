@@ -15,8 +15,11 @@ export function BuyGear() {
   const [customDescription, setCustomDescription] = useState<string>("");
   const [customPrice, setCustomPrice] = useState<number | null>(null);
 
+  const customPriceError = getCustomPriceError(customPrice);
   const customValid =
-    customDescription.trim() !== "" && customPrice !== null && customPrice > 0;
+    customDescription.trim() !== "" &&
+    customPrice !== null &&
+    customPriceError === null;
 
   const addCustomPurchase = () => {
     if (!customValid) return;
@@ -24,10 +27,14 @@ export function BuyGear() {
       id: uniqueID(),
       kind: "custom",
       description: customDescription.trim(),
-      price: customPrice!,
+      price: Math.round(customPrice! * 100) / 100,
     });
     setCustomDescription("");
     setCustomPrice(null);
+  };
+
+  const submitOnEnter = (evt: { key: string }) => {
+    if (evt.key === "Enter") addCustomPurchase();
   };
 
   return (
@@ -72,14 +79,29 @@ export function BuyGear() {
                 value={customDescription}
                 onChange={setCustomDescription}
                 placeholder="Other (describe)"
+                aria-label="Custom purchase description"
                 maxLength={64}
-                onKeyDown={(evt) => {
-                  if (evt.key === "Enter") addCustomPurchase();
-                }}
+                onKeyDown={submitOnEnter}
               />
             </td>
             <td>
-              <NumberField value={customPrice} onChange={setCustomPrice} />
+              <NumberField
+                value={customPrice}
+                onChange={setCustomPrice}
+                aria-label="Custom purchase price"
+                min={0.01}
+                max={9999.99}
+                step={0.01}
+                onKeyDown={submitOnEnter}
+                onBlur={() => {
+                  if (customPrice !== null) {
+                    setCustomPrice(Math.round(customPrice * 100) / 100);
+                  }
+                }}
+              />
+              {customPriceError && (
+                <div className="text-danger small mt-1">{customPriceError}</div>
+              )}
             </td>
           </tr>
           {items
@@ -113,4 +135,14 @@ export function BuyGear() {
       </table>
     </div>
   );
+}
+
+const PRICE_MIN = 0.01;
+const PRICE_MAX = 9999.99;
+
+function getCustomPriceError(price: number | null): string | null {
+  if (price === null) return null;
+  if (price < PRICE_MIN) return `Price must be at least $${PRICE_MIN}.`;
+  if (price > PRICE_MAX) return `Price must be at most $${PRICE_MAX}.`;
+  return null;
 }

@@ -1,12 +1,14 @@
+import { InputHTMLAttributes } from "react";
 import styled from "styled-components";
+
+type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
 type Props = {
   value: number | null;
   onChange: (value: number | null) => void;
   integer?: boolean;
-  className?: string;
   small?: boolean;
-};
+} & Omit<InputProps, "value" | "onChange" | "type">;
 
 export function NumberField({
   value,
@@ -14,6 +16,7 @@ export function NumberField({
   integer,
   small,
   className,
+  ...inputProps
 }: Props) {
   const Component = small
     ? SmallNumberInput
@@ -35,6 +38,7 @@ export function NumberField({
         const value = integer ? Math.round(valueAsNumber) : valueAsNumber;
         onChange(value);
       }}
+      {...inputProps}
     />
   );
 }
