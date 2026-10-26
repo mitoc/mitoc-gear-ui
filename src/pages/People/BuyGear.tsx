@@ -72,6 +72,7 @@ export function BuyGear() {
                 value={customDescription}
                 onChange={setCustomDescription}
                 placeholder="Other (describe)"
+                maxLength={64}
                 onKeyDown={(evt) => {
                   if (evt.key === "Enter") addCustomPurchase();
                 }}
