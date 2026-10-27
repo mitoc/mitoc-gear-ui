@@ -1,3 +1,5 @@
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { isEmpty } from "lodash";
 import { useState } from "react";
 import styled from "styled-components";
@@ -77,7 +79,7 @@ export function ReturnStaging() {
                         title="Remove"
                         onClick={() => returnBasket.remove(id)}
                       >
-                        ⨉
+                        <FontAwesomeIcon icon={faXmark} />
                       </RemoveIcon>
                       <dt className="d-md-none">
                         <GearLink id={id}>{id}</GearLink>
@@ -211,7 +213,6 @@ const RemoveIcon = styled.button`
   border-radius: 50%;
   background: none;
   line-height: 1;
-  font-size: 1.35rem;
   color: #6c757d;
   transition:
     color 0.15s ease-in-out,
