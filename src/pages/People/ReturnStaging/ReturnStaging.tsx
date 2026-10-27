@@ -17,9 +17,10 @@ import { PaymentSummary } from "./PaymentSummary";
 import { WinterSchoolDisclaimer } from "./WinterSchoolDisclaimer";
 
 const feeOptions: { value: FeeStatus; label: string }[] = [
-  { value: "charge", label: "Charge full fee" },
-  { value: "waived", label: "Waive fee" },
+  { value: "charge", label: "Charge fee" },
   { value: "coveredByTrip", label: "Covered by trip fee" },
+  { value: "clubOfficial", label: "Waived - Club official" },
+  { value: "waived", label: "Waived - Other reason" },
 ];
 
 export function ReturnStaging() {
@@ -82,7 +83,7 @@ export function ReturnStaging() {
                         <GearLink id={id}>{id}</GearLink>
                       </dt>
                       <dd className="d-md-none">{type.typeName}</dd>
-                      <dt>Checked on:</dt>
+                      <dt>Out since:</dt>
                       <dd>{formatDate(checkedout)}</dd>
                       <dt>Weeks out:</dt>
                       <dd>{weeksOut}</dd>
@@ -193,6 +194,7 @@ const StyledItemToReturn = styled.div`
 
   dt {
     font-weight: inherit;
+    white-space: nowrap;
   }
 `;
 

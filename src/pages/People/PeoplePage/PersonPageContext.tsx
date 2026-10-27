@@ -207,7 +207,7 @@ function useReturnState(rentalsToReturn: Rental[], waiveByDefault?: boolean) {
     (r) =>
       mapValues(r, (rental, id) => ({
         ...rental,
-        feeStatus: (waiveByDefault ? "waived" : "charge") as FeeStatus,
+        feeStatus: (waiveByDefault ? "clubOfficial" : "charge") as FeeStatus,
         ...(state[id] ?? {}),
       })),
   )(rentalsToReturn);
