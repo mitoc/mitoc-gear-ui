@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 
 import { request } from "./client";
 import { GearTypeWithFee } from "./gear";
-import { GearItemID, PeopleGroupID, PersonID } from "./idTypes";
+import { GearItemID, PeopleGroupID, PersonID, PurchasableID } from "./idTypes";
 import { ListWrapper, Note } from "./types";
 
 /** The minimal representation of a person*/
@@ -109,10 +109,14 @@ async function checkoutGear(personID: PersonID, gearIDs: string[]) {
   return request(`/people/${personID}/rentals/`, "POST", { gearIds: gearIDs });
 }
 
+export type PurchaseInput =
+  | { itemId: PurchasableID }
+  | { description: string; price: number };
+
 async function returnGear(
   personID: PersonID,
   gear: GearToReturn[],
-  purchases: number[] = [],
+  purchases: PurchaseInput[] = [],
   checkNumber: string = "",
   useMitocCredit?: number,
 ) {

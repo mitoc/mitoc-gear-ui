@@ -108,7 +108,11 @@ function useMakePersonPageContext({ person, approvals }: Props) {
     }),
   );
   const totalRentals = totalRentalsOverride ?? calculatedTotalRentals;
-  const totalPurchases = sum(map(purchaseBasket.items, "item.price"));
+  const totalPurchases = sum(
+    purchaseBasket.items.map((p) =>
+      p.kind === "catalog" ? p.item.price : p.price,
+    ),
+  );
   const totalDue = totalRentals + totalPurchases;
   const potentialCreditToSpend = Math.min(person.mitocCredit, totalDue);
   const creditToSpent = shouldUseMitocCredit ? potentialCreditToSpend : 0;
@@ -141,7 +145,11 @@ function useMakePersonPageContext({ person, approvals }: Props) {
                 rental.weeksOut,
             };
           }),
-          purchaseBasket.items.map((item) => item.item.id),
+          purchaseBasket.items.map((p) =>
+            p.kind === "catalog"
+              ? { itemId: p.item.id }
+              : { description: p.description, price: p.price },
+          ),
           checkNumber,
           creditToSpent,
         ).then(() => {
