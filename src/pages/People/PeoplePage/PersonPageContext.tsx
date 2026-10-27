@@ -199,7 +199,7 @@ type ReturnState = Record<
   }
 >;
 
-function useReturnState(rentalsToReturn: Rental[], waiveByDefault?: boolean) {
+function useReturnState(rentalsToReturn: Rental[], isClubOfficial?: boolean) {
   const [state, setState] = useState<ReturnState>({});
 
   const rentals = flow(
@@ -207,7 +207,7 @@ function useReturnState(rentalsToReturn: Rental[], waiveByDefault?: boolean) {
     (r) =>
       mapValues(r, (rental, id) => ({
         ...rental,
-        feeStatus: (waiveByDefault ? "clubOfficial" : "charge") as FeeStatus,
+        feeStatus: (isClubOfficial ? "clubOfficial" : "charge") as FeeStatus,
         ...(state[id] ?? {}),
       })),
   )(rentalsToReturn);
