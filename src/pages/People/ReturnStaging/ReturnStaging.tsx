@@ -1,11 +1,14 @@
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { isEmpty } from "lodash";
 import { useState } from "react";
 import styled from "styled-components";
 
+import { FeeStatus } from "src/apiClient/people";
 import { RemoveButton } from "src/components/Buttons";
 import { GearLink } from "src/components/GearLink";
-import { Checkbox } from "src/components/Inputs/Checkbox";
 import { NumberField } from "src/components/Inputs/NumberField";
+import { Select } from "src/components/Inputs/Select";
 import { formatDate } from "src/lib/fmtDate";
 import { fmtAmount } from "src/lib/fmtNumber";
 import { useConfig } from "src/redux/hooks";
@@ -14,6 +17,13 @@ import { usePersonPageContext } from "../PeoplePage/PersonPageContext";
 
 import { PaymentSummary } from "./PaymentSummary";
 import { WinterSchoolDisclaimer } from "./WinterSchoolDisclaimer";
+
+const feeOptions: { value: FeeStatus; label: string }[] = [
+  { value: "charge", label: "Charge fee" },
+  { value: "coveredByTrip", label: "Covered by trip fee" },
+  { value: "clubOfficial", label: "Waived - Club official" },
+  { value: "waived", label: "Waived - Other reason" },
+];
 
 export function ReturnStaging() {
   const { isWinterSchool } = useConfig();
@@ -49,9 +59,6 @@ export function ReturnStaging() {
               <tr>
                 <th>Gear</th>
                 <th className="d-none d-md-table-cell">Rental</th>
-                <th>
-                  <span className="d-none d-md-table-cell">Remove</span>
-                </th>
               </tr>
             </thead>
             <tbody>
@@ -65,13 +72,20 @@ export function ReturnStaging() {
                     Daily fee: {fmtAmount(type.rentalAmount)}
                     <br />
                   </td>
-                  <td className="pe-0">
+                  <td>
                     <StyledItemToReturn>
+                      <RemoveIcon
+                        aria-label="Remove"
+                        title="Remove"
+                        onClick={() => returnBasket.remove(id)}
+                      >
+                        <FontAwesomeIcon icon={faXmark} />
+                      </RemoveIcon>
                       <dt className="d-md-none">
                         <GearLink id={id}>{id}</GearLink>
                       </dt>
                       <dd className="d-md-none">{type.typeName}</dd>
-                      <dt>Checked on:</dt>
+                      <dt>Out since:</dt>
                       <dd>{formatDate(checkedout)}</dd>
                       <dt>Weeks out:</dt>
                       <dd>{weeksOut}</dd>
@@ -95,20 +109,18 @@ export function ReturnStaging() {
                         />{" "}
                         days
                       </dd>
-                      <dt>Waive fee:</dt>
+                      <dt>Fee:</dt>
                       <dd>
-                        <Checkbox
-                          value={rentals[id].waived}
+                        <Select
+                          className="form-select form-select-sm w-auto"
+                          value={rentals[id].feeStatus}
                           onChange={(value) => {
-                            returnBasket.toggleWaiveFee(id, value);
+                            returnBasket.setFeeStatus(id, value as FeeStatus);
                           }}
+                          options={feeOptions}
                         />
                       </dd>
                     </StyledItemToReturn>
-                  </td>
-
-                  <td className="text-end align-middle ps-0">
-                    <RemoveButton onClick={() => returnBasket.remove(id)} />
                   </td>
                 </tr>
               ))}
@@ -172,9 +184,11 @@ export function ReturnStaging() {
   );
 }
 const StyledItemToReturn = styled.div`
+  position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
   column-gap: 1rem;
+  padding-right: 1.5rem;
 
   dd {
     margin-bottom: 0;
@@ -182,5 +196,30 @@ const StyledItemToReturn = styled.div`
 
   dt {
     font-weight: inherit;
+    white-space: nowrap;
+  }
+`;
+
+const RemoveIcon = styled.button`
+  position: absolute;
+  top: -0.25rem;
+  right: -0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  line-height: 1;
+  color: #6c757d;
+  transition:
+    color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out;
+
+  &:hover {
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.1);
   }
 `;
